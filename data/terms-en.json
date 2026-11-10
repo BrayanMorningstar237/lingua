@@ -1,0 +1,1441 @@
+{
+ "licence": "CC BY-SA 4.0, Wiktionary contributors (https://en.wiktionary.org). Dictionary hints only, not validated by native speakers.",
+ "note": "fub entries come from the general \"Fula\" category and may reflect other Fula varieties rather than Adamawa Fulfulde.",
+ "harvestedAt": "2026-11-10T10:55:11.192Z",
+ "terms": {
+  "ewo": {
+   "water": [
+    {
+     "term": "məndím",
+     "definition": "water",
+     "source": "https://en.wiktionary.org/wiki/m%C9%99nd%C3%ADm"
+    }
+   ]
+  },
+  "fub": {
+   "never": [
+    {
+     "term": "abada",
+     "definition": "never",
+     "source": "https://en.wiktionary.org/wiki/abada"
+    },
+    {
+     "term": "abadan",
+     "definition": "never",
+     "source": "https://en.wiktionary.org/wiki/abadan"
+    },
+    {
+     "term": "muk",
+     "definition": "never",
+     "source": "https://en.wiktionary.org/wiki/muk"
+    }
+   ],
+   "no": [
+    {
+     "term": "alaa",
+     "definition": "no",
+     "source": "https://en.wiktionary.org/wiki/alaa"
+    },
+    {
+     "term": "aldaa",
+     "definition": ": there is not, is not, no",
+     "source": "https://en.wiktionary.org/wiki/aldaa"
+    },
+    {
+     "term": "walaa",
+     "definition": "no",
+     "source": "https://en.wiktionary.org/wiki/walaa"
+    },
+    {
+     "term": "woo",
+     "definition": "none, no, only if",
+     "source": "https://en.wiktionary.org/wiki/woo"
+    }
+   ],
+   "person": [
+    {
+     "term": "aaden",
+     "definition": "human, person",
+     "source": "https://en.wiktionary.org/wiki/aaden"
+    },
+    {
+     "term": "gimɗo",
+     "definition": "person, human being",
+     "source": "https://en.wiktionary.org/wiki/gim%C9%97o"
+    },
+    {
+     "term": "neɗɗo",
+     "definition": "person, human being",
+     "source": "https://en.wiktionary.org/wiki/ne%C9%97%C9%97o"
+    }
+   ],
+   "total": [
+    {
+     "term": "adadu",
+     "definition": "total, sum",
+     "source": "https://en.wiktionary.org/wiki/adadu"
+    },
+    {
+     "term": "kawral",
+     "definition": "sum, total",
+     "source": "https://en.wiktionary.org/wiki/kawral"
+    }
+   ],
+   "number": [
+    {
+     "term": "adadu",
+     "definition": "number, figure",
+     "source": "https://en.wiktionary.org/wiki/adadu"
+    }
+   ],
+   "before": [
+    {
+     "term": "adaade",
+     "definition": "before",
+     "source": "https://en.wiktionary.org/wiki/adaade"
+    }
+   ],
+   "take": [
+    {
+     "term": "addugol",
+     "definition": "to bring, take along",
+     "source": "https://en.wiktionary.org/wiki/addugol"
+    },
+    {
+     "term": "laatagol",
+     "definition": "to happen, occur, take place, come about, come to pass",
+     "source": "https://en.wiktionary.org/wiki/laatagol"
+    },
+    {
+     "term": "naɓugol",
+     "definition": "to take along",
+     "source": "https://en.wiktionary.org/wiki/na%C9%93ugol"
+    },
+    {
+     "term": "rentagol",
+     "definition": "to pay attention, take precautions",
+     "source": "https://en.wiktionary.org/wiki/rentagol"
+    },
+    {
+     "term": "selugol",
+     "definition": "to turn, take back",
+     "source": "https://en.wiktionary.org/wiki/selugol"
+    },
+    {
+     "term": "soobinagol",
+     "definition": "to take seriously, make an effort, persevere",
+     "source": "https://en.wiktionary.org/wiki/soobinagol"
+    },
+    {
+     "term": "suutugol",
+     "definition": "to extract, remove, take out, pull out",
+     "source": "https://en.wiktionary.org/wiki/suutugol"
+    },
+    {
+     "term": "yiltugol",
+     "definition": "to bring back, take back",
+     "source": "https://en.wiktionary.org/wiki/yiltugol"
+    },
+    {
+     "term": "ƴettugol",
+     "definition": "to take, seize",
+     "source": "https://en.wiktionary.org/wiki/%C6%B4ettugol"
+    }
+   ],
+   "know": [
+    {
+     "term": "anndugol",
+     "definition": "to know, feel",
+     "source": "https://en.wiktionary.org/wiki/anndugol"
+    }
+   ],
+   "error": [
+    {
+     "term": "ayiibe",
+     "definition": "sin, fault, error",
+     "source": "https://en.wiktionary.org/wiki/ayiibe"
+    },
+    {
+     "term": "faljere",
+     "definition": "error, mistake",
+     "source": "https://en.wiktionary.org/wiki/faljere"
+    },
+    {
+     "term": "hakkee",
+     "definition": "sin, error, wrong, injustice",
+     "source": "https://en.wiktionary.org/wiki/hakkee"
+    },
+    {
+     "term": "hayrere",
+     "definition": "destruction, perdition, loss, error",
+     "source": "https://en.wiktionary.org/wiki/hayrere"
+    }
+   ],
+   "return": [
+    {
+     "term": "artugol",
+     "definition": "to return, come back",
+     "source": "https://en.wiktionary.org/wiki/artugol"
+    }
+   ],
+   "help": [
+    {
+     "term": "ballal",
+     "definition": "help, aid",
+     "source": "https://en.wiktionary.org/wiki/ballal"
+    },
+    {
+     "term": "dankata",
+     "definition": "help, assistance",
+     "source": "https://en.wiktionary.org/wiki/dankata"
+    },
+    {
+     "term": "faabaade",
+     "definition": "to rescue, help",
+     "source": "https://en.wiktionary.org/wiki/faabaade"
+    },
+    {
+     "term": "wallugol",
+     "definition": "to help, aid",
+     "source": "https://en.wiktionary.org/wiki/wallugol"
+    }
+   ],
+   "letter": [
+    {
+     "term": "bataake",
+     "definition": "letter, epistle",
+     "source": "https://en.wiktionary.org/wiki/bataake"
+    }
+   ],
+   "after": [
+    {
+     "term": "caggal",
+     "definition": "after, afterward",
+     "source": "https://en.wiktionary.org/wiki/caggal"
+    },
+    {
+     "term": "ontuma",
+     "definition": "after, next",
+     "source": "https://en.wiktionary.org/wiki/ontuma"
+    },
+    {
+     "term": "ɓaawo",
+     "definition": "after",
+     "source": "https://en.wiktionary.org/wiki/%C9%93aawo"
+    },
+    {
+     "term": "ɓawto",
+     "definition": "after (some amount of time)",
+     "source": "https://en.wiktionary.org/wiki/%C9%93awto"
+    },
+    {
+     "term": "ɓawti",
+     "definition": "after",
+     "source": "https://en.wiktionary.org/wiki/%C9%93awti"
+    }
+   ],
+   "price": [
+    {
+     "term": "coggu",
+     "definition": "price, value",
+     "source": "https://en.wiktionary.org/wiki/coggu"
+    }
+   ],
+   "stop": [
+    {
+     "term": "darnugol",
+     "definition": "to stop, halt, erect (a tent or structure)",
+     "source": "https://en.wiktionary.org/wiki/darnugol"
+    },
+    {
+     "term": "faddagol",
+     "definition": "to prevent, stop",
+     "source": "https://en.wiktionary.org/wiki/faddagol"
+    },
+    {
+     "term": "haaɗugol",
+     "definition": "to stop, finish, end",
+     "source": "https://en.wiktionary.org/wiki/haa%C9%97ugol"
+    },
+    {
+     "term": "hokkugol",
+     "definition": "to cease, stop",
+     "source": "https://en.wiktionary.org/wiki/hokkugol"
+    },
+    {
+     "term": "nattinde",
+     "definition": "to stop",
+     "source": "https://en.wiktionary.org/wiki/nattinde"
+    }
+   ],
+   "work": [
+    {
+     "term": "darnugol",
+     "definition": "to solve, work out",
+     "source": "https://en.wiktionary.org/wiki/darnugol"
+    },
+    {
+     "term": "ciiwdi",
+     "definition": "the work, workmanship of a smith",
+     "source": "https://en.wiktionary.org/wiki/ciiwdi"
+    },
+    {
+     "term": "golle",
+     "definition": "work, occupation, job, task",
+     "source": "https://en.wiktionary.org/wiki/golle"
+    },
+    {
+     "term": "gollugol",
+     "definition": "to work",
+     "source": "https://en.wiktionary.org/wiki/gollugol"
+    },
+    {
+     "term": "gollidugol",
+     "definition": "to work with, collaborate",
+     "source": "https://en.wiktionary.org/wiki/gollidugol"
+    },
+    {
+     "term": "kuugal",
+     "definition": "work",
+     "source": "https://en.wiktionary.org/wiki/kuugal"
+    },
+    {
+     "term": "moƴƴitugol",
+     "definition": "to become good again, work again, be fixed",
+     "source": "https://en.wiktionary.org/wiki/mo%C6%B4%C6%B4itugol"
+    }
+   ],
+   "year": [
+    {
+     "term": "duuɓi",
+     "definition": "time, age, years",
+     "source": "https://en.wiktionary.org/wiki/duu%C9%93i"
+    }
+   ],
+   "free": [
+    {
+     "term": "dimo",
+     "definition": "free",
+     "source": "https://en.wiktionary.org/wiki/dimo"
+    },
+    {
+     "term": "hettaare",
+     "definition": "free time, leisure",
+     "source": "https://en.wiktionary.org/wiki/hettaare"
+    }
+   ],
+   "mistake": [
+    {
+     "term": "faljere",
+     "definition": "error, mistake",
+     "source": "https://en.wiktionary.org/wiki/faljere"
+    }
+   ],
+   "call": [
+    {
+     "term": "ewnagol",
+     "definition": "to call, hail",
+     "source": "https://en.wiktionary.org/wiki/ewnagol"
+    },
+    {
+     "term": "innugol",
+     "definition": "to name, title, call",
+     "source": "https://en.wiktionary.org/wiki/innugol"
+    },
+    {
+     "term": "noddugol",
+     "definition": "to call, convoke",
+     "source": "https://en.wiktionary.org/wiki/noddugol"
+    },
+    {
+     "term": "nodditugol",
+     "definition": "to call back, reconvene, re-invite",
+     "source": "https://en.wiktionary.org/wiki/nodditugol"
+    }
+   ],
+   "lie": [
+    {
+     "term": "fenaande",
+     "definition": "lie, untruth, mistruth",
+     "source": "https://en.wiktionary.org/wiki/fenaande"
+    },
+    {
+     "term": "waalagol",
+     "definition": "to go to bed, lie down",
+     "source": "https://en.wiktionary.org/wiki/waalagol"
+    }
+   ],
+   "look": [
+    {
+     "term": "fewtugol",
+     "definition": "to look at, face",
+     "source": "https://en.wiktionary.org/wiki/fewtugol"
+    },
+    {
+     "term": "nandude",
+     "definition": "to resemble, look like",
+     "source": "https://en.wiktionary.org/wiki/nandude"
+    },
+    {
+     "term": "nanndugol",
+     "definition": "to resemble, look like",
+     "source": "https://en.wiktionary.org/wiki/nanndugol"
+    },
+    {
+     "term": "ndaarugol",
+     "definition": "to watch, look at, observe, examine",
+     "source": "https://en.wiktionary.org/wiki/ndaarugol"
+    },
+    {
+     "term": "ɗaɓɓugol",
+     "definition": "to search, seek, look for",
+     "source": "https://en.wiktionary.org/wiki/%C9%97a%C9%93%C9%93ugol"
+    }
+   ],
+   "all": [
+    {
+     "term": "fow",
+     "definition": "all, all of",
+     "source": "https://en.wiktionary.org/wiki/fow"
+    },
+    {
+     "term": "haddu",
+     "definition": "as far as possible, up to the limit, all of",
+     "source": "https://en.wiktionary.org/wiki/haddu"
+    },
+    {
+     "term": "kala",
+     "definition": "each, every, all",
+     "source": "https://en.wiktionary.org/wiki/kala"
+    },
+    {
+     "term": "woo",
+     "definition": "each, all",
+     "source": "https://en.wiktionary.org/wiki/woo"
+    }
+   ],
+   "finish": [
+    {
+     "term": "gaynugol",
+     "definition": "to finish, end",
+     "source": "https://en.wiktionary.org/wiki/gaynugol"
+    },
+    {
+     "term": "haaɗugol",
+     "definition": "to stop, finish, end",
+     "source": "https://en.wiktionary.org/wiki/haa%C9%97ugol"
+    },
+    {
+     "term": "joofugol",
+     "definition": "to finish, come to an end",
+     "source": "https://en.wiktionary.org/wiki/joofugol"
+    },
+    {
+     "term": "lannugol",
+     "definition": "to finish, be over, end",
+     "source": "https://en.wiktionary.org/wiki/lannugol"
+    },
+    {
+     "term": "maayugol",
+     "definition": "to finish, end",
+     "source": "https://en.wiktionary.org/wiki/maayugol"
+    },
+    {
+     "term": "timmugol",
+     "definition": "to finish, accomplish, complete",
+     "source": "https://en.wiktionary.org/wiki/timmugol"
+    }
+   ],
+   "end": [
+    {
+     "term": "gaynugol",
+     "definition": "to finish, end",
+     "source": "https://en.wiktionary.org/wiki/gaynugol"
+    },
+    {
+     "term": "haaɗugol",
+     "definition": "to stop, finish, end",
+     "source": "https://en.wiktionary.org/wiki/haa%C9%97ugol"
+    },
+    {
+     "term": "kattuba",
+     "definition": "end, border, edge, terminus",
+     "source": "https://en.wiktionary.org/wiki/kattuba"
+    },
+    {
+     "term": "lannugol",
+     "definition": "to finish, be over, end",
+     "source": "https://en.wiktionary.org/wiki/lannugol"
+    },
+    {
+     "term": "maayugol",
+     "definition": "to finish, end",
+     "source": "https://en.wiktionary.org/wiki/maayugol"
+    }
+   ],
+   "succeed": [
+    {
+     "term": "gaynugol",
+     "definition": "to have success, succeed",
+     "source": "https://en.wiktionary.org/wiki/gaynugol"
+    },
+    {
+     "term": "laatagol",
+     "definition": "to succeed",
+     "source": "https://en.wiktionary.org/wiki/laatagol"
+    },
+    {
+     "term": "lontagol",
+     "definition": "to succeed, replace",
+     "source": "https://en.wiktionary.org/wiki/lontagol"
+    }
+   ],
+   "language": [
+    {
+     "term": "haala",
+     "definition": "language, dialect, idiom",
+     "source": "https://en.wiktionary.org/wiki/haala"
+    },
+    {
+     "term": "ɗemŋgal",
+     "definition": "language",
+     "source": "https://en.wiktionary.org/wiki/%C9%97em%C5%8Bgal"
+    }
+   ],
+   "message": [
+    {
+     "term": "haala",
+     "definition": "message",
+     "source": "https://en.wiktionary.org/wiki/haala"
+    },
+    {
+     "term": "nelal",
+     "definition": "message, messenger, commission",
+     "source": "https://en.wiktionary.org/wiki/nelal"
+    }
+   ],
+   "hide": [
+    {
+     "term": "gurii",
+     "definition": "skin, hide",
+     "source": "https://en.wiktionary.org/wiki/gurii"
+    },
+    {
+     "term": "suumugol",
+     "definition": "to hide, dissimulate, conceal",
+     "source": "https://en.wiktionary.org/wiki/suumugol"
+    }
+   ],
+   "wait": [
+    {
+     "term": "habbagol",
+     "definition": "to wait",
+     "source": "https://en.wiktionary.org/wiki/habbagol"
+    },
+    {
+     "term": "tijjagol",
+     "definition": "to wait for, count on, hope for",
+     "source": "https://en.wiktionary.org/wiki/tijjagol"
+    }
+   ],
+   "quickly": [
+    {
+     "term": "heña",
+     "definition": "quickly",
+     "source": "https://en.wiktionary.org/wiki/he%C3%B1a"
+    }
+   ],
+   "name": [
+    {
+     "term": "innde",
+     "definition": "name, title (of a thing or place)",
+     "source": "https://en.wiktionary.org/wiki/innde"
+    },
+    {
+     "term": "innugol",
+     "definition": "to name, title, call",
+     "source": "https://en.wiktionary.org/wiki/innugol"
+    },
+    {
+     "term": "toɗɗagol",
+     "definition": "to designate, name (as a person to a position)",
+     "source": "https://en.wiktionary.org/wiki/to%C9%97%C9%97agol"
+    }
+   ],
+   "now": [
+    {
+     "term": "jonta",
+     "definition": "now",
+     "source": "https://en.wiktionary.org/wiki/jonta"
+    }
+   ],
+   "receive": [
+    {
+     "term": "jaɓɓagol",
+     "definition": "to receive , host, welcome, entertain",
+     "source": "https://en.wiktionary.org/wiki/ja%C9%93%C9%93agol"
+    }
+   ],
+   "give": [
+    {
+     "term": "jonnugol",
+     "definition": "to give",
+     "source": "https://en.wiktionary.org/wiki/jonnugol"
+    }
+   ],
+   "read": [
+    {
+     "term": "jangude",
+     "definition": "to read, study, learn",
+     "source": "https://en.wiktionary.org/wiki/jangude"
+    },
+    {
+     "term": "janngugol",
+     "definition": "to read, study, learn",
+     "source": "https://en.wiktionary.org/wiki/janngugol"
+    }
+   ],
+   "listen": [
+    {
+     "term": "jentagol",
+     "definition": "to listen",
+     "source": "https://en.wiktionary.org/wiki/jentagol"
+    },
+    {
+     "term": "ɗoftagol",
+     "definition": "to obey, listen to",
+     "source": "https://en.wiktionary.org/wiki/%C9%97oftagol"
+    }
+   ],
+   "merchant": [
+    {
+     "term": "jula",
+     "definition": "merchant, tradesman, monger",
+     "source": "https://en.wiktionary.org/wiki/jula"
+    },
+    {
+     "term": "yeeyoowo",
+     "definition": "merchant, seller",
+     "source": "https://en.wiktionary.org/wiki/yeeyoowo"
+    }
+   ],
+   "money": [
+    {
+     "term": "kaalisi",
+     "definition": "money, funds",
+     "source": "https://en.wiktionary.org/wiki/kaalisi"
+    }
+   ],
+   "new": [
+    {
+     "term": "keso",
+     "definition": "new",
+     "source": "https://en.wiktionary.org/wiki/keso"
+    }
+   ],
+   "back": [
+    {
+     "term": "kééci",
+     "definition": "back",
+     "source": "https://en.wiktionary.org/wiki/k%C3%A9%C3%A9ci"
+    },
+    {
+     "term": "ɓaawo",
+     "definition": "back, rear-end",
+     "source": "https://en.wiktionary.org/wiki/%C9%93aawo"
+    },
+    {
+     "term": "ɓaawoojo",
+     "definition": "rear, back",
+     "source": "https://en.wiktionary.org/wiki/%C9%93aawoojo"
+    }
+   ],
+   "month": [
+    {
+     "term": "lewru",
+     "definition": "month",
+     "source": "https://en.wiktionary.org/wiki/lewru"
+    }
+   ],
+   "sell": [
+    {
+     "term": "marsingol",
+     "definition": "to sell",
+     "source": "https://en.wiktionary.org/wiki/marsingol"
+    },
+    {
+     "term": "soorugo",
+     "definition": "to sell",
+     "source": "https://en.wiktionary.org/wiki/soorugo"
+    },
+    {
+     "term": "yeeyugol",
+     "definition": "to sell, do commerce",
+     "source": "https://en.wiktionary.org/wiki/yeeyugol"
+    }
+   ],
+   "remain": [
+    {
+     "term": "luttugol",
+     "definition": "to stay, remain",
+     "source": "https://en.wiktionary.org/wiki/luttugol"
+    }
+   ],
+   "close": [
+    {
+     "term": "maɓɓugo",
+     "definition": "to close",
+     "source": "https://en.wiktionary.org/wiki/ma%C9%93%C9%93ugo"
+    },
+    {
+     "term": "moggo",
+     "definition": "near, close to",
+     "source": "https://en.wiktionary.org/wiki/moggo"
+    },
+    {
+     "term": "takko",
+     "definition": "near, close to, next to",
+     "source": "https://en.wiktionary.org/wiki/takko"
+    }
+   ],
+   "open": [
+    {
+     "term": "maɓɓititgo",
+     "definition": "to open",
+     "source": "https://en.wiktionary.org/wiki/ma%C9%93%C9%93ititgo"
+    },
+    {
+     "term": "udditugol",
+     "definition": "to open",
+     "source": "https://en.wiktionary.org/wiki/udditugol"
+    }
+   ],
+   "keep": [
+    {
+     "term": "marugol",
+     "definition": "to keep, retain, conserve, save, spare",
+     "source": "https://en.wiktionary.org/wiki/marugol"
+    }
+   ],
+   "good": [
+    {
+     "term": "moƴƴo",
+     "definition": "good, of good quality, nice, generous",
+     "source": "https://en.wiktionary.org/wiki/mo%C6%B4%C6%B4o"
+    },
+    {
+     "term": "suuraare",
+     "definition": "wellness, good health",
+     "source": "https://en.wiktionary.org/wiki/suuraare"
+    }
+   ],
+   "enter": [
+    {
+     "term": "naatugol",
+     "definition": "to enter, re-enter",
+     "source": "https://en.wiktionary.org/wiki/naatugol"
+    }
+   ],
+   "see": [
+    {
+     "term": "ndaarugol",
+     "definition": "to visit, see",
+     "source": "https://en.wiktionary.org/wiki/ndaarugol"
+    }
+   ],
+   "send": [
+    {
+     "term": "naɓugol",
+     "definition": "to send",
+     "source": "https://en.wiktionary.org/wiki/na%C9%93ugol"
+    },
+    {
+     "term": "nelde",
+     "definition": "to send, dispatch",
+     "source": "https://en.wiktionary.org/wiki/nelde"
+    }
+   ],
+   "water": [
+    {
+     "term": "ndiyam",
+     "definition": "water",
+     "source": "https://en.wiktionary.org/wiki/ndiyam"
+    }
+   ],
+   "salary": [
+    {
+     "term": "ngeenaari",
+     "definition": "reward, recompense, retribution, salary, wage",
+     "source": "https://en.wiktionary.org/wiki/ngeenaari"
+    }
+   ],
+   "wage": [
+    {
+     "term": "ngeenaari",
+     "definition": "reward, recompense, retribution, salary, wage",
+     "source": "https://en.wiktionary.org/wiki/ngeenaari"
+    }
+   ],
+   "success": [
+    {
+     "term": "poolal",
+     "definition": "victory, triumph, success",
+     "source": "https://en.wiktionary.org/wiki/poolal"
+    },
+    {
+     "term": "ɓantaare",
+     "definition": "development, growth, success",
+     "source": "https://en.wiktionary.org/wiki/%C9%93antaare"
+    }
+   ],
+   "reason": [
+    {
+     "term": "sababu",
+     "definition": "reason, cause, motive",
+     "source": "https://en.wiktionary.org/wiki/sababu"
+    }
+   ],
+   "date": [
+    {
+     "term": "ribinoore",
+     "definition": "date",
+     "source": "https://en.wiktionary.org/wiki/ribinoore"
+    },
+    {
+     "term": "saanga",
+     "definition": "period, moment, date",
+     "source": "https://en.wiktionary.org/wiki/saanga"
+    }
+   ],
+   "pay": [
+    {
+     "term": "rentagol",
+     "definition": "to pay attention, take precautions",
+     "source": "https://en.wiktionary.org/wiki/rentagol"
+    }
+   ],
+   "refuse": [
+    {
+     "term": "saltagol",
+     "definition": "to refuse, to unconditionally refuse, absolutely refuse",
+     "source": "https://en.wiktionary.org/wiki/saltagol"
+    }
+   ],
+   "lack": [
+    {
+     "term": "sannugol",
+     "definition": "to lack, not have",
+     "source": "https://en.wiktionary.org/wiki/sannugol"
+    },
+    {
+     "term": "ŋakkugol",
+     "definition": "to lack",
+     "source": "https://en.wiktionary.org/wiki/%C5%8Bakkugol"
+    }
+   ],
+   "many": [
+    {
+     "term": "sowre",
+     "definition": "many",
+     "source": "https://en.wiktionary.org/wiki/sowre"
+    },
+    {
+     "term": "ɗuuɗugol",
+     "definition": "to be numerous, abundant, many",
+     "source": "https://en.wiktionary.org/wiki/%C9%97uu%C9%97ugol"
+    }
+   ],
+   "buy": [
+    {
+     "term": "soodgo",
+     "definition": "to buy",
+     "source": "https://en.wiktionary.org/wiki/soodgo"
+    },
+    {
+     "term": "soodugol",
+     "definition": "to buy",
+     "source": "https://en.wiktionary.org/wiki/soodugol"
+    }
+   ],
+   "secret": [
+    {
+     "term": "suuraare",
+     "definition": "secret, security",
+     "source": "https://en.wiktionary.org/wiki/suuraare"
+    }
+   ],
+   "security": [
+    {
+     "term": "suuraare",
+     "definition": "secret, security",
+     "source": "https://en.wiktionary.org/wiki/suuraare"
+    }
+   ],
+   "account": [
+    {
+     "term": "tinndol",
+     "definition": "story, tale, account, legend",
+     "source": "https://en.wiktionary.org/wiki/tinndol"
+    }
+   ],
+   "little": [
+    {
+     "term": "tokooso",
+     "definition": "small, little",
+     "source": "https://en.wiktionary.org/wiki/tokooso"
+    }
+   ],
+   "write": [
+    {
+     "term": "winndugol",
+     "definition": "to write, record",
+     "source": "https://en.wiktionary.org/wiki/winndugol"
+    }
+   ],
+   "change": [
+    {
+     "term": "waylugol",
+     "definition": "to change, transform, modify",
+     "source": "https://en.wiktionary.org/wiki/waylugol"
+    }
+   ],
+   "speak": [
+    {
+     "term": "wowlugol",
+     "definition": "to talk, speak, converse",
+     "source": "https://en.wiktionary.org/wiki/wowlugol"
+    }
+   ],
+   "day": [
+    {
+     "term": "ñallal",
+     "definition": "day",
+     "source": "https://en.wiktionary.org/wiki/%C3%B1allal"
+    },
+    {
+     "term": "ñalaande",
+     "definition": "day",
+     "source": "https://en.wiktionary.org/wiki/%C3%B1alaande"
+    }
+   ],
+   "debt": [
+    {
+     "term": "ñamaande",
+     "definition": "loan, debt",
+     "source": "https://en.wiktionary.org/wiki/%C3%B1amaande"
+    }
+   ],
+   "telephone": [
+    {
+     "term": "ɓoggol",
+     "definition": "cable, telephone line",
+     "source": "https://en.wiktionary.org/wiki/%C9%93oggol"
+    }
+   ]
+  },
+  "dua": {
+   "person": [
+    {
+     "term": "moto",
+     "definition": "person, human being",
+     "source": "https://en.wiktionary.org/wiki/moto"
+    }
+   ],
+   "water": [
+    {
+     "term": "madíbá",
+     "definition": "water",
+     "source": "https://en.wiktionary.org/wiki/mad%C3%ADb%C3%A1"
+    }
+   ]
+  },
+  "bas": {
+   "water": [
+    {
+     "term": "malép",
+     "definition": "water",
+     "source": "https://en.wiktionary.org/wiki/mal%C3%A9p"
+    }
+   ]
+  },
+  "bbj": {
+   "good": [
+    {
+     "term": "bùŋ",
+     "definition": "good; important, of great importance",
+     "source": "https://en.wiktionary.org/wiki/b%C3%B9%C5%8B"
+    },
+    {
+     "term": "pəpúŋ",
+     "definition": "good",
+     "source": "https://en.wiktionary.org/wiki/p%C9%99p%C3%BA%C5%8B"
+    }
+   ],
+   "all": [
+    {
+     "term": "awɛ́",
+     "definition": "all",
+     "source": "https://en.wiktionary.org/wiki/aw%C9%9B%CC%81"
+    }
+   ],
+   "open": [
+    {
+     "term": "cwaə́'",
+     "definition": "to open, to take off",
+     "source": "https://en.wiktionary.org/wiki/cwa%C9%99%CC%81'"
+    }
+   ],
+   "lie": [
+    {
+     "term": "cwánwə̀",
+     "definition": "lie",
+     "source": "https://en.wiktionary.org/wiki/cw%C3%A1nw%C9%99%CC%80"
+    }
+   ],
+   "secret": [
+    {
+     "term": "càm",
+     "definition": "secret",
+     "source": "https://en.wiktionary.org/wiki/c%C3%A0m"
+    }
+   ],
+   "remain": [
+    {
+     "term": "cʉ́'",
+     "definition": "to stay/remain, to wait, to persist?",
+     "source": "https://en.wiktionary.org/wiki/c%CA%89%CC%81'"
+    }
+   ],
+   "look": [
+    {
+     "term": "cʉ'",
+     "definition": "to look at",
+     "source": "https://en.wiktionary.org/wiki/c%CA%89'"
+    },
+    {
+     "term": "lé",
+     "definition": "to look at, to frequent, to visit",
+     "source": "https://en.wiktionary.org/wiki/l%C3%A9"
+    },
+    {
+     "term": "mcʉ̀",
+     "definition": "look",
+     "source": "https://en.wiktionary.org/wiki/mc%CA%89%CC%80"
+    }
+   ],
+   "send": [
+    {
+     "term": "cyà",
+     "definition": "to send",
+     "source": "https://en.wiktionary.org/wiki/cy%C3%A0"
+    }
+   ],
+   "bad": [
+    {
+     "term": "cwə̀pùŋ",
+     "definition": "bad",
+     "source": "https://en.wiktionary.org/wiki/cw%C9%99%CC%80p%C3%B9%C5%8B"
+    }
+   ],
+   "day": [
+    {
+     "term": "dzʉ̌",
+     "definition": "outside, day, weather",
+     "source": "https://en.wiktionary.org/wiki/dz%CA%89%CC%8C"
+    },
+    {
+     "term": "tyə́'",
+     "definition": "day",
+     "source": "https://en.wiktionary.org/wiki/ty%C9%99%CC%81'"
+    }
+   ],
+   "new": [
+    {
+     "term": "cùŋ",
+     "definition": "news",
+     "source": "https://en.wiktionary.org/wiki/c%C3%B9%C5%8B"
+    },
+    {
+     "term": "sə́",
+     "definition": "new",
+     "source": "https://en.wiktionary.org/wiki/s%C9%99%CC%81"
+    }
+   ],
+   "never": [
+    {
+     "term": "dà",
+     "definition": "never",
+     "source": "https://en.wiktionary.org/wiki/d%C3%A0"
+    }
+   ],
+   "sell": [
+    {
+     "term": "fìŋ",
+     "definition": "to sell",
+     "source": "https://en.wiktionary.org/wiki/f%C3%AC%C5%8B"
+    },
+    {
+     "term": "syàp",
+     "definition": "to sell retail",
+     "source": "https://en.wiktionary.org/wiki/sy%C3%A0p"
+    }
+   ],
+   "speak": [
+    {
+     "term": "ghɔ̀m",
+     "definition": "to speak, to say",
+     "source": "https://en.wiktionary.org/wiki/gh%C9%94%CC%80m"
+    },
+    {
+     "term": "sò",
+     "definition": "to speak ill",
+     "source": "https://en.wiktionary.org/wiki/s%C3%B2"
+    }
+   ],
+   "language": [
+    {
+     "term": "ghɔ̀m",
+     "definition": "language",
+     "source": "https://en.wiktionary.org/wiki/gh%C9%94%CC%80m"
+    }
+   ],
+   "work": [
+    {
+     "term": "fà'",
+     "definition": "work",
+     "source": "https://en.wiktionary.org/wiki/f%C3%A0'"
+    }
+   ],
+   "give": [
+    {
+     "term": "há",
+     "definition": "to give",
+     "source": "https://en.wiktionary.org/wiki/h%C3%A1"
+    },
+    {
+     "term": "pà'",
+     "definition": "to give back, to restitute",
+     "source": "https://en.wiktionary.org/wiki/p%C3%A0'"
+    }
+   ],
+   "help": [
+    {
+     "term": "hé",
+     "definition": "to help out, to relieve (someone)",
+     "source": "https://en.wiktionary.org/wiki/h%C3%A9"
+    },
+    {
+     "term": "kwítə́",
+     "definition": "to help",
+     "source": "https://en.wiktionary.org/wiki/kw%C3%ADt%C9%99%CC%81"
+    }
+   ],
+   "ask": [
+    {
+     "term": "hə́ŋ",
+     "definition": "to ask",
+     "source": "https://en.wiktionary.org/wiki/h%C9%99%CC%81%C5%8B"
+    },
+    {
+     "term": "ló",
+     "definition": "to ask for",
+     "source": "https://en.wiktionary.org/wiki/l%C3%B3"
+    }
+   ],
+   "take": [
+    {
+     "term": "kwí",
+     "definition": "to take",
+     "source": "https://en.wiktionary.org/wiki/kw%C3%AD"
+    },
+    {
+     "term": "kə̀",
+     "definition": "to take",
+     "source": "https://en.wiktionary.org/wiki/k%C9%99%CC%80"
+    },
+    {
+     "term": "lə̀",
+     "definition": "to take, to confiscate",
+     "source": "https://en.wiktionary.org/wiki/l%C9%99%CC%80"
+    },
+    {
+     "term": "pé",
+     "definition": "to take, to pick up",
+     "source": "https://en.wiktionary.org/wiki/p%C3%A9"
+    },
+    {
+     "term": "yá'",
+     "definition": "to take or give on credit",
+     "source": "https://en.wiktionary.org/wiki/y%C3%A1'"
+    }
+   ],
+   "call": [
+    {
+     "term": "ké",
+     "definition": "to call",
+     "source": "https://en.wiktionary.org/wiki/k%C3%A9"
+    }
+   ],
+   "read": [
+    {
+     "term": "ké",
+     "definition": "to read",
+     "source": "https://en.wiktionary.org/wiki/k%C3%A9"
+    }
+   ],
+   "enter": [
+    {
+     "term": "kó",
+     "definition": "to enter",
+     "source": "https://en.wiktionary.org/wiki/k%C3%B3"
+    }
+   ],
+   "wage": [
+    {
+     "term": "ló'",
+     "definition": "to wage war",
+     "source": "https://en.wiktionary.org/wiki/l%C3%B3'"
+    }
+   ],
+   "lack": [
+    {
+     "term": "kɔ̀m",
+     "definition": "to lack, to miss, to not have",
+     "source": "https://en.wiktionary.org/wiki/k%C9%94%CC%80m"
+    }
+   ],
+   "close": [
+    {
+     "term": "kə̀ŋ",
+     "definition": "to close",
+     "source": "https://en.wiktionary.org/wiki/k%C9%99%CC%80%C5%8B"
+    },
+    {
+     "term": "vì'",
+     "definition": "to close, to lock?",
+     "source": "https://en.wiktionary.org/wiki/v%C3%AC'"
+    }
+   ],
+   "keep": [
+    {
+     "term": "lwɔ̀'",
+     "definition": "to keep, to hide, to conceal",
+     "source": "https://en.wiktionary.org/wiki/lw%C9%94%CC%80'"
+    }
+   ],
+   "finish": [
+    {
+     "term": "mì",
+     "definition": "to finish",
+     "source": "https://en.wiktionary.org/wiki/m%C3%AC"
+    }
+   ],
+   "person": [
+    {
+     "term": "mò",
+     "definition": "person",
+     "source": "https://en.wiktionary.org/wiki/m%C3%B2"
+    }
+   ],
+   "back": [
+    {
+     "term": "lə̂",
+     "definition": "Marker of the remote past tense (for persons other than 1st singular), back then",
+     "source": "https://en.wiktionary.org/wiki/l%C9%99%CC%82"
+    },
+    {
+     "term": "ŋka'tə̀",
+     "definition": "back",
+     "source": "https://en.wiktionary.org/wiki/%C5%8Bka't%C9%99%CC%80"
+    }
+   ],
+   "accept": [
+    {
+     "term": "píŋ",
+     "definition": "to accept",
+     "source": "https://en.wiktionary.org/wiki/p%C3%AD%C5%8B"
+    }
+   ],
+   "before": [
+    {
+     "term": "nə̂",
+     "definition": "before",
+     "source": "https://en.wiktionary.org/wiki/n%C9%99%CC%82"
+    }
+   ],
+   "wait": [
+    {
+     "term": "pyáp",
+     "definition": "to wait",
+     "source": "https://en.wiktionary.org/wiki/py%C3%A1p"
+    }
+   ],
+   "water": [
+    {
+     "term": "shyə",
+     "definition": "water",
+     "source": "https://en.wiktionary.org/wiki/shy%C9%99"
+    }
+   ],
+   "buy": [
+    {
+     "term": "syàp",
+     "definition": "to buy/pay retail",
+     "source": "https://en.wiktionary.org/wiki/sy%C3%A0p"
+    },
+    {
+     "term": "yó",
+     "definition": "to buy, to pay",
+     "source": "https://en.wiktionary.org/wiki/y%C3%B3"
+    }
+   ],
+   "pay": [
+    {
+     "term": "syàp",
+     "definition": "to buy/pay retail",
+     "source": "https://en.wiktionary.org/wiki/sy%C3%A0p"
+    }
+   ],
+   "enough": [
+    {
+     "term": "sàk",
+     "definition": "enough, a lot",
+     "source": "https://en.wiktionary.org/wiki/s%C3%A0k"
+    }
+   ],
+   "hide": [
+    {
+     "term": "pɔ̀m",
+     "definition": "to hide",
+     "source": "https://en.wiktionary.org/wiki/p%C9%94%CC%80m"
+    },
+    {
+     "term": "tʉ̀m",
+     "definition": "to hide, to dissimulate",
+     "source": "https://en.wiktionary.org/wiki/t%CA%89%CC%80m"
+    },
+    {
+     "term": "tʉ̀mnyə̀",
+     "definition": "to hide oneself",
+     "source": "https://en.wiktionary.org/wiki/t%CA%89%CC%80mny%C9%99%CC%80"
+    }
+   ],
+   "thousand": [
+    {
+     "term": "shǎ'",
+     "definition": "a thousand",
+     "source": "https://en.wiktionary.org/wiki/sh%C7%8E'"
+    }
+   ],
+   "thief": [
+    {
+     "term": "shǔŋ",
+     "definition": "thief",
+     "source": "https://en.wiktionary.org/wiki/sh%C7%94%C5%8B"
+    }
+   ],
+   "no": [
+    {
+     "term": "sɔ̀m",
+     "definition": "no, none",
+     "source": "https://en.wiktionary.org/wiki/s%C9%94%CC%80m"
+    }
+   ],
+   "name": [
+    {
+     "term": "tsǒ",
+     "definition": "name",
+     "source": "https://en.wiktionary.org/wiki/ts%C7%92"
+    }
+   ],
+   "many": [
+    {
+     "term": "yɔ́m",
+     "definition": "many",
+     "source": "https://en.wiktionary.org/wiki/y%C9%94%CC%81m"
+    }
+   ],
+   "write": [
+    {
+     "term": "və̀",
+     "definition": "to write, to scratch",
+     "source": "https://en.wiktionary.org/wiki/v%C9%99%CC%80"
+    }
+   ],
+   "see": [
+    {
+     "term": "yɔ́",
+     "definition": "to see",
+     "source": "https://en.wiktionary.org/wiki/y%C9%94%CC%81"
+    }
+   ],
+   "know": [
+    {
+     "term": "zhyə",
+     "definition": "to know (something)",
+     "source": "https://en.wiktionary.org/wiki/zhy%C9%99"
+    },
+    {
+     "term": "zhyə́",
+     "definition": "to know",
+     "source": "https://en.wiktionary.org/wiki/zhy%C9%99%CC%81"
+    }
+   ],
+   "money": [
+    {
+     "term": "ŋkap",
+     "definition": "money",
+     "source": "https://en.wiktionary.org/wiki/%C5%8Bkap"
+    }
+   ],
+   "yes": [
+    {
+     "term": "ə̌ŋ",
+     "definition": "yes",
+     "source": "https://en.wiktionary.org/wiki/%C9%99%CC%8C%C5%8B"
+    }
+   ],
+   "steal": [
+    {
+     "term": "zhʉ̀",
+     "definition": "to steal, to loot",
+     "source": "https://en.wiktionary.org/wiki/zh%CA%89%CC%80"
+    },
+    {
+     "term": "ŋɛ́",
+     "definition": "to steal",
+     "source": "https://en.wiktionary.org/wiki/%C5%8B%C9%9B%CC%81"
+    }
+   ]
+  },
+  "bkm": {
+   "water": [
+    {
+     "term": "mu",
+     "definition": "water",
+     "source": "https://en.wiktionary.org/wiki/mu"
+    },
+    {
+     "term": "jva",
+     "definition": "water source: river or stream, fountain or spring",
+     "source": "https://en.wiktionary.org/wiki/jva"
+    }
+   ],
+   "quickly": [
+    {
+     "term": "nyas",
+     "definition": "quickly, fast",
+     "source": "https://en.wiktionary.org/wiki/nyas"
+    }
+   ],
+   "person": [
+    {
+     "term": "wul",
+     "definition": "person",
+     "source": "https://en.wiktionary.org/wiki/wul"
+    }
+   ]
+  },
+  "nge": {}
+ }
+}

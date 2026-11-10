@@ -8,6 +8,10 @@
       {
         "name": "Wiktionnaire (éwondo)",
         "url": "https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:%C3%A9wondo"
+      },
+      {
+        "name": "Wiktionary (Ewondo)",
+        "url": "https://en.wiktionary.org/wiki/Category:Ewondo_lemmas"
       }
     ]
   },
@@ -20,6 +24,10 @@
       {
         "name": "Wiktionnaire (peul)",
         "url": "https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:peul"
+      },
+      {
+        "name": "Wiktionary (Fula)",
+        "url": "https://en.wiktionary.org/wiki/Category:Fula_lemmas"
       }
     ]
   },
@@ -32,6 +40,10 @@
       {
         "name": "Wiktionnaire (douala)",
         "url": "https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:douala"
+      },
+      {
+        "name": "Wiktionary (Duala)",
+        "url": "https://en.wiktionary.org/wiki/Category:Duala_lemmas"
       }
     ]
   },
@@ -40,7 +52,12 @@
     "region": "Ouest",
     "nllb": null,
     "mms": null,
-    "refs": []
+    "refs": [
+      {
+        "name": "Wiktionary (Ghomala')",
+        "url": "https://en.wiktionary.org/wiki/Category:Ghomala%27_lemmas"
+      }
+    ]
   },
   "bas": {
     "name": "Basaá",
@@ -51,6 +68,10 @@
       {
         "name": "Wiktionnaire (bassa)",
         "url": "https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:bassa_(Cameroun)"
+      },
+      {
+        "name": "Wiktionary (Basaa)",
+        "url": "https://en.wiktionary.org/wiki/Category:Basaa_lemmas"
       }
     ]
   },
@@ -75,6 +96,10 @@
       {
         "name": "Kom writing system (Omniglot)",
         "url": "https://omniglot.com/writing/kom.htm"
+      },
+      {
+        "name": "Wiktionary (Kom)",
+        "url": "https://en.wiktionary.org/wiki/Category:Kom_(Cameroon)_lemmas"
       }
     ]
   }

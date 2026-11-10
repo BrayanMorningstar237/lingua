@@ -64,6 +64,8 @@
     return { segs, names };
   }
 
+  const fold = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
   function createEngine(pack) {
     const index = new Map(); // key -> { entry, names }
     const phrases = [];      // for gist key-word spotting: { key, entry }
@@ -227,7 +229,7 @@
       }
       if (outs.some(o => !o)) {
         const g = gist(clean, literals);
-        return g && g.integrity.ok ? g : { ...base, status: 'untranslated', text: clean };
+        return g && g.integrity.ok ? g : { ...base, status: 'untranslated', text: clean, words: lexiconHits(clean) };
       }
       const text = outs.map(o => o.text).join('');
       const integrity = P.verify(clean, text, { literals });
@@ -266,7 +268,27 @@
       return finalize(text, p, outs, literals);
     }
 
-    return { plan, lookupMasked, finalize, gist, keywords, translateLocal, size: index.size };
+    /**
+     * Dictionary words (open sources, not validated) found in a sentence that has no translation:
+     * "Payer la facture" -> [{ src: 'payer', term: 'sáwa' }]. Shown as hints, never as a translation.
+     */
+    const lex = pack.lexicon || null;
+    function lexiconHits(text) {
+      if (!lex) return [];
+      const out = [];
+      const words = fold(P.mask(norm(text)).masked.replace(TOKEN_RE, ' ')).match(/[a-z]+/g) || [];
+      for (const w of new Set(words)) {
+        if (w.length < 3) continue;
+        for (const form of [w, w.replace(/s$/, ''), w.replace(/es$/, ''), w.replace(/(e|er|ez|e?d|ing)$/, '')]) {
+          const hit = (lex.fr && lex.fr[form]) || (lex.en && lex.en[form]);
+          if (hit && hit.length) { if (!out.some(o => o.src === form)) out.push({ src: form, term: hit[0] }); break; }
+        }
+        if (out.length >= 6) break;
+      }
+      return out;
+    }
+
+    return { plan, lookupMasked, finalize, gist, keywords, translateLocal, lexiconHits, size: index.size };
   }
 
   const api = { createEngine, keyOf, norm, classify, splitTemplate };

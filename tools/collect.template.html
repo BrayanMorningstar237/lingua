@@ -203,6 +203,9 @@ function suggestions(p) {
   const words = new Set(fold(`${p.fr} ${p.note || ''}`).match(/[a-z]+/g) || []);
   const out = [];
   for (const w of words) for (const t of terms[w] || terms[w.replace(/s$/, '')] || []) if (!out.some(o => o.term === t.term)) out.push({ ...t, fr: w });
+  // English Wiktionary has more words for some languages (Ghomala', Kom): match the English sentence too.
+  const en = (DATA.termsEn || {})[st.lang] || {};
+  for (const w of new Set(fold(p.en || '').match(/[a-z]+/g) || [])) for (const t of en[w] || en[w.replace(/s$/, '')] || []) if (!out.some(o => o.term === t.term)) out.push({ ...t, fr: w });
   return out.slice(0, 8);
 }
 

@@ -17,3 +17,4 @@ local-dev/
 
 # Raw Wiktionary download (re-created by tools/harvest-wiktionary.mjs --refresh)
 data/wiktionary-cache.json
+data/wiktionary-en-cache.json

@@ -145,6 +145,14 @@
   .say:disabled { background: var(--ebony-3); color: #9c8b78; box-shadow: none; cursor: not-allowed; transform: none; }
   @keyframes ring { from { box-shadow: 0 0 0 0 rgba(194,80,46,.55); } to { box-shadow: 0 0 0 12px rgba(194,80,46,0); } }
 
+  .words { margin-top: 10px; }
+  .words .wl { display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; letter-spacing: .03em; color: var(--sand); margin-bottom: 6px; }
+  .wchips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .wchip { display: inline-flex; align-items: baseline; gap: 6px; padding: 4px 9px; border-radius: 9px; background: var(--ebony-2); border: 1px solid var(--ebony-3); font-size: 13.5px; }
+  .wchip b { font-weight: 700; color: var(--ivory); } .wchip i { font-style: normal; font-size: 11.5px; color: var(--sand); }
+  .item .words .wl { color: var(--card-muted); }
+  .item .wchip { background: var(--soft); border-color: var(--line); } .item .wchip b { color: var(--card-fg); } .item .wchip i { color: var(--card-muted); }
+
   /* ---------- floating button ---------- */
   .fab { position: fixed; right: 18px; bottom: 18px; z-index: 2147483646; display: flex; align-items: center; gap: 10px;
     border: 0; border-radius: 999px; padding: 8px 18px 8px 8px; background: var(--ebony); color: var(--ivory); font-weight: 700; font-size: 15px;
@@ -299,6 +307,7 @@
     loader: '<path d="M21 12a9 9 0 1 1-6.2-8.6"/>',
     bubble: '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 10.5h7M8.5 13.5h4"/>',
     ok: '<path d="M20 6 9 17l-5-5"/>',
+    book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/>',
   };
   function icon(name, extra = '') {
     const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -480,6 +489,14 @@
   }
 
   /** One card block, used by the hover card, the panel and the alerts. */
+  /** "Mots du dictionnaire": open-source words for a sentence that has no translation yet. */
+  function wordsRow(r) {
+    if (!r || !r.words || !r.words.length) return null;
+    return h('div', { class: 'words' },
+      h('div', { class: 'wl' }, icon('book'), ui('ui_dict_words', 'Mots du dictionnaire (non validés)')),
+      h('div', { class: 'wchips' }, r.words.map(w => h('span', { class: 'wchip' }, h('b', {}, w.term), h('i', {}, w.src)))));
+  }
+
   function block(u, { isNew = false, inPanel = false } = {}) {
     const r = u.result;
     if (!r) {
@@ -501,6 +518,7 @@
       // Panel list: the original sentence stays readable, with a quiet "not translated" tag.
       return h('div', { class: `block k-${r.kind || 'info'}` },
         h('div', { class: 'row' }, h('div', { class: 'tr plain' }, newTag, kindIcon, u.text)),
+        wordsRow(r),
         h('div', { class: 'meta' }, chipsFor(u.text), r.status === 'blocked' ? pillFor(r) : h('span', { class: 'pill none' }, icon('dots'), ui('ui_missing', 'Pas encore traduit'))));
     }
     const missing = ui('ui_missing_lang', 'Pas encore traduit en {lang}').replace('{lang}', state.pack.name);
@@ -513,6 +531,7 @@
       r.explain ? h('div', { class: 'explain' }, icon('bulb'), h('span', {}, r.explain)) : null,
       shown && stepsFor(r) && stepsFor(r).voice !== 'human' ? h('div', { class: 'voice' }, icon('volume'), voiceName(stepsFor(r).voice)) : null,
       h('div', { class: 'orig' }, h('b', {}, ui('ui_original', 'Original')), u.text),
+      shown ? null : wordsRow(r),
       h('div', { class: 'meta' }, chipsFor(u.text), shown || r.status === 'blocked' ? pillFor(r) : null));
   }
 

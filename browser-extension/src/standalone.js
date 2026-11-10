@@ -41,6 +41,7 @@
     const l = D.langs[code] || {};
     return {
       code, name: l.name || code || '', mms: null,
+      lexicon: code && D.lexicon ? { fr: (D.lexicon.fr || {})[code] || {}, en: (D.lexicon.en || {})[code] || {} } : null,
       entries: D.source.entries.map(e => {
         const tr = { ...file[e.id], ...over[e.id] };
         return { ...e, t: tr.t || '', x: tr.x || '', verified: !!tr.verified, audio: tr.audio || '', audioParts: tr.audioParts || [] };

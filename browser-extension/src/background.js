@@ -81,7 +81,9 @@ async function loadPack(code) {
     };
   });
   const l = LANGS[code] || {};
-  return { code, name: l.name || code || '', mms: l.mms || null, entries };
+  const lex = (await fetchJson('lang/lexicon.json')) || {};
+  const lexicon = code ? { fr: (lex.fr || {})[code] || {}, en: (lex.en || {})[code] || {} } : null;
+  return { code, name: l.name || code || '', mms: l.mms || null, entries, lexicon };
 }
 
 /** Languages with the number of translated phrases (the chooser marks empty ones "Soon"). */

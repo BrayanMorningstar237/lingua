@@ -15,6 +15,20 @@ mkdirSync(DIST, { recursive: true });
 const manifest = JSON.parse(readFileSync(join(EXT, 'manifest.json'), 'utf8'));
 const read = p => readFileSync(join(EXT, p), 'utf8');
 
+// ---------- dictionary words shipped with the extension (open sources, CC BY-SA 4.0) ----------
+// lang/lexicon.json: { fr: { lang: { frenchWord: [term] } }, en: { lang: { englishWord: [term] } } }
+const loadTerms = f => (existsSync(join(ROOT, 'data', f)) ? JSON.parse(readFileSync(join(ROOT, 'data', f), 'utf8')).terms : {});
+const termsFr = loadTerms('terms.json');
+const termsEn = loadTerms('terms-en.json');
+const compact = terms => Object.fromEntries(Object.entries(terms).map(([l, idx]) =>
+  [l, Object.fromEntries(Object.entries(idx).map(([w, ts]) => [w, [...new Set(ts.map(t => t.term))].slice(0, 3)]))]));
+const lexicon = {
+  licence: 'Words from Wiktionnaire / Wiktionary contributors, CC BY-SA 4.0 (https://fr.wiktionary.org, https://en.wiktionary.org). Dictionary hints, not validated.',
+  fr: compact(termsFr),
+  en: compact(termsEn),
+};
+writeFileSync(join(EXT, 'lang', 'lexicon.json'), JSON.stringify(lexicon));
+
 // ---------- files that ship in the extension ----------
 function walk(dir) {
   return readdirSync(dir).flatMap(n => {
@@ -73,7 +87,7 @@ const langs = JSON.parse(read('lang/languages.json'));
 const packs = Object.fromEntries(Object.keys(langs).map(c => {
   try { return [c, JSON.parse(read(`lang/${c}.json`))]; } catch { return [c, { entries: {} }]; }
 }));
-const data = { source: JSON.parse(read('lang/source.json')), langs, packs };
+const data = { source: JSON.parse(read('lang/source.json')), langs, packs, lexicon };
 const header = `// ==UserScript==
 // @name         Langwa
 // @namespace    langwa
@@ -98,10 +112,9 @@ const userscript = [
 writeFileSync(join(DIST, 'langwa.user.js'), userscript);
 
 // ---------- contribution page for speakers (one file, works offline, phone first) ----------
-const termsFile = join(ROOT, 'data', 'terms.json');
-const terms = existsSync(termsFile) ? JSON.parse(readFileSync(termsFile, 'utf8')).terms : {};
+const terms = termsFr;
 const collect = readFileSync(join(ROOT, 'tools', 'collect.template.html'), 'utf8')
-  .replace('/*DATA*/null', () => JSON.stringify({ source: data.source, langs, terms }).replace(/</g, '\\u003c'));
+  .replace('/*DATA*/null', () => JSON.stringify({ source: data.source, langs, terms, termsEn }).replace(/</g, '\\u003c'));
 writeFileSync(join(DIST, 'langwa-collect.html'), collect);
 
 // ---------- public website (Vercel root directory = collect/) ----------
