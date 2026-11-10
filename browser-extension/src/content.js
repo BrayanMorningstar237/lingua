@@ -57,6 +57,7 @@
   // ======================================================================================
   // UI layer
   // ======================================================================================
+  let pageBtn = null;
   let host, shadow, tip, tipBody, tipArrow, panel, panelList, panelStatus, toastBox, hl, subLayer, fab, fabDot, fabCount;
 
   function h(tag, attrs = {}, ...kids) {
@@ -127,6 +128,15 @@
   .spin { animation: spin 1s linear infinite; } @keyframes spin { to { transform: rotate(360deg); } }
 
   /* listen button */
+  .say.wide { width: auto; height: 40px; padding: 0 14px 0 12px; display: inline-flex; gap: 8px; align-items: center; font-size: 18px; }
+  .say .lbl { font-size: 14px; font-weight: 700; white-space: nowrap; }
+  .bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 16px; }
+  .bars i { width: 3px; height: 6px; border-radius: 2px; background: currentColor; animation: eq .8s ease-in-out infinite; }
+  .bars i:nth-child(2) { animation-delay: .15s; } .bars i:nth-child(3) { animation-delay: .3s; }
+  @keyframes eq { 50% { height: 16px; } }
+  .voice { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 12px; color: var(--sand); opacity: .85; }
+  .voice .i { font-size: 13px; }
+  .item .voice { color: var(--card-muted); }
   .say { flex: none; width: 42px; height: 42px; border-radius: 999px; border: 0; display: grid; place-items: center; font-size: 20px;
     background: var(--forest); color: #fff; box-shadow: 0 4px 14px rgba(30,122,76,.45); transition: transform .1s ease, background .15s ease; }
   .say:hover { transform: scale(1.06); background: var(--forest-2); }
@@ -217,9 +227,9 @@
   .hl.pulse { animation: locate .9s ease-out 2; }
   @keyframes locate { 50% { box-shadow: 0 0 0 14px rgba(227,162,26,.06); } }
   .subs { position: fixed; inset: 0; pointer-events: none; z-index: 2147483644; }
-  .sub { position: fixed; background: rgba(29,23,18,.95); color: var(--ivory); font-size: 13px; font-weight: 600; line-height: 1.25; padding: 3px 8px; border-radius: 8px; max-width: 380px;
-    box-shadow: 0 4px 12px rgba(0,0,0,.25); }
-  .sub.k-error { background: rgba(140,48,22,.96); } .sub.k-warning { background: rgba(120,82,6,.96); }
+  .sub { position: fixed; padding: 0 2px; border-radius: 4px; box-sizing: border-box; overflow-wrap: anywhere;
+    text-decoration: underline dotted rgba(227,162,26,.75); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+
   .hint { position: fixed; right: 18px; bottom: 86px; z-index: 2147483647; width: min(330px, calc(100vw - 36px)); background: var(--ebony); color: var(--ivory);
     border-radius: 18px; padding: 22px 18px 16px; box-shadow: 0 20px 50px rgba(20,12,4,.45); animation: drop .3s ease; overflow: visible; }
   .hint::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px; border-radius: 18px 18px 0 0; background: var(--kente); }
@@ -324,8 +334,11 @@
 
     panelStatus = h('div', { class: 'status' });
     panelList = h('div', { class: 'list' });
-    const ccBtn = h('button', { class: 'icon-btn', title: `${ui('ui_subtitles', 'Sous-titres')} (Alt+Shift+S)`, 'aria-label': ui('ui_subtitles', 'Sous-titres') }, icon('captions'));
-    ccBtn.addEventListener('click', () => { setSubtitles(!state.subtitles); ccBtn.classList.toggle('on', state.subtitles); });
+    pageBtn = h('button', { class: `icon-btn${state.subtitles ? ' on' : ''}`, title: `${ui('ui_page_mode', 'Traduire la page')} (Alt+Shift+T)`, 'aria-label': ui('ui_page_mode', 'Traduire la page') }, icon('languages'));
+    pageBtn.addEventListener('click', () => setSubtitles(!state.subtitles, true));
+    const readBtn = h('button', { class: 'icon-btn', title: `${ui('ui_read_all', 'Tout lire')} (Alt+Shift+L)`, 'aria-label': ui('ui_read_all', 'Tout lire') }, icon('volume'));
+    readBtn.addEventListener('click', () => readAll(readBtn));
+    const ccBtn = h('span', { style: 'display:flex;gap:8px' }, pageBtn, readBtn);
     panel = h('div', { class: 'panel', role: 'dialog', 'aria-label': `Langwa, ${state.pack.name}` },
       h('div', { class: 'band' }),
       h('div', { class: 'ph' },
@@ -435,20 +448,31 @@
   });
   const ttsOn = () => !!(state.settings && state.settings.tts && state.settings.tts.mode === 'mms' && state.pack && state.pack.mms);
 
-  function sayButton(steps, label) {
-    if (!steps) return null; // no recording yet: show nothing rather than a dead button
-    const b = h('button', { class: 'say', title: label, 'aria-label': label }, icon('volume'));
+  const bars = () => h('span', { class: 'bars', 'aria-hidden': 'true' }, h('i'), h('i'), h('i'));
+  const voiceName = v => (v === 'human' ? ui('ui_voice_human', 'Voix humaine') : v === 'neural' ? ui('ui_voice_neural', 'Voix neuronale') : ui('ui_voice_synth', 'Voix de synthèse'));
+
+  /** One tap to listen, tap again to stop. Shows which voice will speak (human or synthetic). */
+  function sayButton(steps, label, { compact = false } = {}) {
+    if (!steps) return null;
+    const idle = () => [icon('volume'), compact ? null : h('span', { class: 'lbl' }, label)];
+    const b = h('button', { class: `say${compact ? '' : ' wide'}`, title: `${label} · ${voiceName(steps.voice)}`, 'aria-label': label }, ...idle());
     b.addEventListener('click', ev => {
       ev.stopPropagation();
       if (b.classList.contains('on')) { player.stop(); return; }
-      b.classList.add('on');
-      b.replaceChildren(icon('stop'));
-      player.play(steps, () => { b.classList.remove('on'); b.replaceChildren(icon('volume')); });
+      speak(steps, b, idle);
     });
     return b;
   }
+  /** Plays steps, animating the button that started it (if any). */
+  function speak(steps, b, idle) {
+    if (!steps) return;
+    if (b) { b.classList.add('on'); b.replaceChildren(bars(), compact(b) ? null : h('span', { class: 'lbl' }, ui('ui_stop', 'Arrêter'))); }
+    player.play(steps, () => { if (b) { b.classList.remove('on'); b.replaceChildren(...idle()); } });
+  }
+  const compact = b => !b.classList.contains('wide');
   const listenLabel = () => ui('ui_listen', 'Écouter');
-  const stepsFor = r => (r && (r.status === 'ok' || r.status === 'gist') ? player.prepare(r.speech, ttsOn()) : null);
+  const voiceOpts = () => ({ tts: ttsOn(), approx: !state.settings || state.settings.voiceFallback !== false });
+  const stepsFor = r => (r && (r.status === 'ok' || r.status === 'gist') ? player.prepare(r.speech, voiceOpts()) : null);
 
   function shownText(u) {
     const r = u.result;
@@ -487,6 +511,7 @@
           : h('div', { class: 'tr missing' }, isNew ? h('span', { class: 'new' }, ui('ui_new', 'NOUVEAU')) : null, kindIcon, missing),
         (r.status === 'ok' || r.status === 'gist') ? sayButton(stepsFor(r), listenLabel()) : null),
       r.explain ? h('div', { class: 'explain' }, icon('bulb'), h('span', {}, r.explain)) : null,
+      shown && stepsFor(r) && stepsFor(r).voice !== 'human' ? h('div', { class: 'voice' }, icon('volume'), voiceName(stepsFor(r).voice)) : null,
       h('div', { class: 'orig' }, h('b', {}, ui('ui_original', 'Original')), u.text),
       h('div', { class: 'meta' }, chipsFor(u.text), shown || r.status === 'blocked' ? pillFor(r) : null));
   }
@@ -509,6 +534,47 @@
     tipBody.replaceChildren(...list.map(u => block(u)));
     tip.classList.add('show');
     place(anchor);
+    autoReadSoon(list);
+  }
+
+  // Automatic reading: the card is read aloud as soon as it opens (settle 350 ms first).
+  let autoTimer = null;
+  let autoKey = '';
+  function autoReadSoon(list) {
+    clearTimeout(autoTimer);
+    if (!state.settings || !state.settings.autoRead) return;
+    const u = list.find(x => x.result && !x.result.value && stepsFor(x.result));
+    if (!u) return;
+    const key = u.text;
+    if (key === autoKey && player.isPlaying()) return;
+    autoTimer = setTimeout(() => {
+      if (!tip.classList.contains('show') || !tipUnits || !tipUnits.includes(u)) return;
+      autoKey = key;
+      const b = tip.querySelector('.say');
+      speak(stepsFor(u.result), b, () => [icon('volume'), h('span', { class: 'lbl' }, listenLabel())]);
+    }, 350);
+  }
+
+  /** Reads the whole page aloud: important messages first, then the page in order. */
+  let readingAll = false;
+  async function readAll(btn) {
+    if (readingAll) { readingAll = false; player.stop(); return; }
+    const shown = state.units.filter(u => u.result && !u.result.value && stepsFor(u.result));
+    const alerts = shown.filter(u => u.result.kind === 'error' || u.result.kind === 'warning');
+    const queue = [...alerts, ...shown.filter(u => !alerts.includes(u))];
+    if (!queue.length) return;
+    readingAll = true;
+    if (btn) btn.classList.add('on');
+    for (const u of queue) {
+      if (!readingAll) break;
+      highlight(u.el, true);
+      if (u.el.scrollIntoView) u.el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      await new Promise(res => player.play(stepsFor(u.result), res));
+      await new Promise(res => setTimeout(res, 250));
+    }
+    readingAll = false;
+    highlight(null);
+    if (btn) btn.classList.remove('on');
   }
 
   function place(anchor) {
@@ -577,6 +643,16 @@
   }
 
   function onModKey(e) {
+    // Ctrl + Space while a card is showing: listen to it (again = stop). Only then, so
+    // Ctrl + Space keeps its usual meaning everywhere else.
+    if (e.type === 'keydown' && e.code === 'Space' && (e.ctrlKey || e.metaKey) && tip && tip.classList.contains('show') && tipUnits) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (player.isPlaying()) { player.stop(); return; }
+      const u = tipUnits.find(x => x.result && stepsFor(x.result));
+      if (u) speak(stepsFor(u.result), tip.querySelector('.say'), () => [icon('volume'), h('span', { class: 'lbl' }, listenLabel())]);
+      return;
+    }
     if (hoverMode() !== 'ctrl' || (e.key !== 'Control' && e.key !== 'Meta')) return;
     setPassThrough(e.type === 'keydown');
     if (e.type === 'keydown' && lastTarget && !e.repeat) showFor(lastTarget);
@@ -677,7 +753,7 @@
   }
 
   const COUNT_WORDS = {
-    ok: ['ui_n_ok', 'validées'], mt: ['ui_n_mt', 'automatiques'], gist: ['ui_n_gist', 'résumés'],
+    ok: ['ui_n_ok', 'validées'], mt: ['ui_n_mt', 'non validées'], gist: ['ui_n_gist', 'résumés'],
     block: ['ui_n_block', 'bloquées'], none: ['ui_n_none', 'non traduites'],
   };
 
@@ -703,7 +779,8 @@
       if (!c[k]) continue;
       const [cls, ic, id, fr] = STATUS[k];
       const [wid, word] = COUNT_WORDS[k];
-      bits.push(h('span', { class: cls, title: ui(id, fr) }, icon(ic), `${c[k]} ${ui(wid, word)}`));
+      const label = c[k] === 1 ? ui(`${wid}_one`, ui(wid, word)) : ui(wid, word);
+      bits.push(h('span', { class: cls, title: ui(id, fr) }, icon(ic), `${c[k]} ${label}`));
     }
     if (state.mtError) bits.push(h('span', { class: 'warn' }, icon('alert'), ui('ui_mt_down', 'Traduction locale indisponible : résumé utilisé')));
     panelStatus.replaceChildren(...bits);
@@ -718,9 +795,38 @@
     hl.classList.toggle('pulse', pulse);
   }
 
-  function setSubtitles(on) {
+  /**
+   * Translate the whole page: each translated text is covered by its translation, drawn in the
+   * page's own font, colour and background. Nothing in the page is modified, clicks go through
+   * to the bank's buttons, and hovering still shows the card with the original.
+   */
+  function setSubtitles(on, remember = false) {
     state.subtitles = on;
-    if (on) placeSubtitles(); else subLayer.replaceChildren();
+    if (pageBtn) pageBtn.classList.toggle('on', on);
+    if (on) placeSubtitles(); else if (subLayer) subLayer.replaceChildren();
+    if (remember) send({ type: 'getSettings' }).then(cur => api.storage.local.set({ settings: { ...cur, pageMode: on } })).catch(() => {});
+  }
+
+  const lookCache = new WeakMap();
+  function pageLook(el) {
+    let l = lookCache.get(el);
+    if (l) return l;
+    const cs = getComputedStyle(el);
+    let bg = null;
+    for (let a = el; a; a = a.parentElement) {
+      const c = getComputedStyle(a);
+      if (c.backgroundImage && c.backgroundImage !== 'none') break; // gradient or image: decide below
+      const m = c.backgroundColor.match(/rgba?\(([^)]+)\)/);
+      if (m && (m[1].split(',')[3] === undefined || parseFloat(m[1].split(',')[3]) > 0.98)) { bg = c.backgroundColor; break; }
+    }
+    if (!bg) {
+      const rgb = (cs.color.match(/\d+/g) || [0, 0, 0]).map(Number);
+      const light = (rgb[0] * 299 + rgb[1] * 587 + rgb[2] * 114) / 1000 > 150;
+      bg = light ? 'rgb(24,18,40)' : 'rgb(255,255,255)'; // fully opaque: no trace of the original
+    }
+    l = { font: cs.fontFamily, size: parseFloat(cs.fontSize) || 15, weight: cs.fontWeight, color: cs.color, align: cs.textAlign, bg, lh: cs.lineHeight };
+    lookCache.set(el, l);
+    return l;
   }
 
   let subRaf = 0;
@@ -732,11 +838,31 @@
       for (const u of state.units) {
         const r = u.result;
         if (!r || r.value || u.attr || (r.status !== 'ok' && r.status !== 'gist')) continue;
+        if (u.el === document.body || u.el === document.documentElement) continue;
         const b = u.el.getBoundingClientRect();
         if (b.bottom < 0 || b.top > innerHeight || b.width === 0) continue;
-        const s = h('div', { class: `sub k-${r.kind || 'info'}` }, r.text);
-        s.style.top = `${Math.min(b.bottom + 2, innerHeight - 22)}px`;
-        s.style.left = `${Math.max(4, b.left)}px`;
+        const l = pageLook(u.el);
+        // A container holding several lines of mixed content is not covered (that would hide the page).
+        if (b.height > Math.max(140, l.size * 7)) continue;
+        // Free space on the line: up to the next item on the right (e.g. an amount), never over it.
+        let right = (u.el.parentElement || u.el).getBoundingClientRect().right;
+        for (let sib = u.el.nextElementSibling; sib; sib = sib.nextElementSibling) {
+          const sr = sib.getBoundingClientRect();
+          if (sr.width && sr.left >= b.right - 1 && sr.top < b.bottom && sr.bottom > b.top) { right = Math.min(right, sr.left - 8); break; }
+        }
+        const avail = Math.max(b.width, Math.min(right, innerWidth - 4) - b.left);
+        // Longer translations get a slightly smaller font so they stay in their place.
+        const ratio = Math.min(1, Math.max(0.78, Math.sqrt(u.text.length / Math.max(1, r.text.length))));
+        const isButton = /^(BUTTON|A)$/.test(u.el.tagName) || u.el.getAttribute('role') === 'button';
+        const s = h('div', { class: 'sub' }, r.text);
+        Object.assign(s.style, {
+          top: `${b.top}px`, left: `${b.left}px`, minWidth: `${b.width}px`, maxWidth: `${avail}px`, width: 'max-content', minHeight: `${b.height}px`,
+          display: 'flex', alignItems: 'center',
+          justifyContent: isButton || l.align === 'center' ? 'center' : l.align === 'right' || l.align === 'end' ? 'flex-end' : 'flex-start',
+          textAlign: isButton ? 'center' : l.align,
+          fontFamily: l.font, fontSize: `${(l.size * ratio).toFixed(1)}px`, fontWeight: l.weight, color: l.color,
+          background: l.bg, lineHeight: '1.25', borderRadius: isButton ? getComputedStyle(u.el).borderRadius : '4px',
+        });
         nodes.push(s);
       }
       subLayer.replaceChildren(...nodes);
@@ -763,7 +889,7 @@
   async function showFirstRunHint() {
     try {
       const { hintShown } = await api.storage.local.get('hintShown');
-      if (hintShown || !host || hoverMode() !== 'ctrl') return;
+      if (hintShown || !host || hoverMode() !== 'ctrl' || state.panelOpen) return;
     } catch { return; }
     const done = () => { hideHint(); api.storage.local.set({ hintShown: true }).catch(() => {}); };
     hintEl = h('div', { class: 'hint', role: 'dialog' },
@@ -771,7 +897,7 @@
       h('div', { class: 'line' }, isTouch
         ? ui('ui_hint_touch', 'Appuyez longuement sur un texte : sa traduction s\'affiche dessous.')
         : ui('ui_hint_hover', 'Maintenez Ctrl et pointez un texte : sa traduction s\'affiche dessous.')),
-      h('div', { class: 'line' }, h('span', { class: 'say' }, icon('volume')), ui('ui_hint_listen', 'Écoutez la traduction.')),
+      h('div', { class: 'line' }, h('span', { class: 'say' }, icon('volume')), isTouch ? ui('ui_hint_listen_touch', 'Touchez Écouter pour entendre la traduction.') : h('span', {}, h('kbd', {}, 'Ctrl+Espace'), ' ', ui('ui_space_listen', 'écouter'))),
       h('button', { class: 'ok', onclick: done }, icon('ok'), ui('ui_ok', 'Compris')));
     host.shadowRoot.querySelector('.layer').append(hintEl);
   }
@@ -984,7 +1110,8 @@
   const onShortcut = e => {
     if (!e.altKey || !e.shiftKey) return;
     if (e.code === 'KeyM') { togglePanel(); e.preventDefault(); }
-    if (e.code === 'KeyS') { setSubtitles(!state.subtitles); e.preventDefault(); }
+    if (e.code === 'KeyT' || e.code === 'KeyS') { setSubtitles(!state.subtitles, true); e.preventDefault(); }
+    if (e.code === 'KeyL') { readAll(pageBtn && pageBtn.nextSibling); e.preventDefault(); }
   };
   const onScroll = () => { if (state.subtitles) placeSubtitles(); if (tip) tip.classList.remove('show'); highlight(null); };
   const onResize = () => state.subtitles && placeSubtitles();
@@ -1057,6 +1184,7 @@
     state.startedAt = Date.now();
     listen(true);
     scan();
+    if (settings.pageMode) setSubtitles(true); // page translation stays on between pages
     showFirstRunHint();
     if (!observer) {
       observer = new MutationObserver(muts => {
@@ -1090,7 +1218,8 @@
     if (msg && msg.type === 'ping') { sendResponse({ active: state.active }); return; }
     if (!state.active || !msg) return;
     if (msg.type === 'togglePanel') togglePanel();
-    if (msg.type === 'toggleSubtitles') setSubtitles(!state.subtitles);
+    if (msg.type === 'toggleSubtitles' || msg.type === 'togglePage') setSubtitles(!state.subtitles, true);
+    if (msg.type === 'readAll') readAll(pageBtn && pageBtn.nextSibling);
   });
 
   start();

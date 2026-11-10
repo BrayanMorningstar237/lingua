@@ -18,7 +18,8 @@
   .logo svg { width: 20px; height: 20px; }
   header b { display: block; font-size: 16px; }
   header small { color: var(--sand); font-size: 12px; }
-  main { padding: 14px 16px 16px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  main { padding: 12px 16px 14px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 11px; }
+  html, body { overflow-x: hidden; }
   select { width: 100%; min-width: 0; }
   .switch-row { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; background: var(--soft); border: 1px solid var(--line); cursor: pointer; }
   .switch-row .txt { flex: 1; min-width: 0; }
@@ -67,6 +68,13 @@
   .lang-btn b { font-size: 16px; }
   .lang-btn small { font-size: 11.5px; color: var(--muted); line-height: 1.3; }
   .lang-btn.empty b, .lang-btn.empty small { opacity: .55; }
+  .btn.big { width: 100%; padding: 13px 14px; font-size: 15px; }
+  .btn.big kbd { margin-left: auto; font: 700 10.5px ui-monospace, Consolas, monospace; padding: 2px 6px; border-radius: 6px; background: rgba(251,246,238,.12); color: var(--sand); }
+  .btn.big.on { background: var(--gold); color: var(--ebony); } .btn.big.on svg { color: var(--ebony); } .btn.big.on kbd { background: rgba(29,23,18,.12); color: var(--ebony); }
+  .keys { display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: 11.5px; color: var(--muted); }
+  .keys span { display: inline-flex; align-items: center; gap: 4px; }
+  .keys svg { width: 13px; height: 13px; }
+  .keys kbd { font: 700 10.5px ui-monospace, Consolas, monospace; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 0 4px; background: var(--card); color: var(--fg); }
   .lang-btn .soon { position: absolute; top: 7px; right: 8px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; color: #8a5a00; }
 </style>
 </head>
@@ -105,10 +113,19 @@
     </div>
   </div>
 
+  <button class="btn primary big" id="page"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg><span data-ui="ui_page_mode">Traduire la page</span><kbd>Alt+Shift+T</kbd></button>
+
   <div class="actions">
-    <button class="btn primary" id="panel"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M15 4v16"/></svg><span data-ui="ui_panel">Panneau</span></button>
-    <button class="btn ghost" id="subs"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M7 15h4M14 15h3M7 11h3M13 11h4"/></svg><span data-ui="ui_subtitles">Sous-titres</span></button>
+    <button class="btn ghost" id="readAll"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg><span data-ui="ui_read_all">Tout lire</span></button>
+    <button class="btn ghost" id="panel"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M15 4v16"/></svg><span data-ui="ui_panel">Panneau</span></button>
   </div>
+
+  <label class="switch-row" for="autoRead">
+    <span class="txt"><b data-ui="ui_autoread">Lecture automatique</b><small data-ui="ui_autoread_sub">Lit la traduction dès qu’elle s’affiche</small></span>
+    <span class="switch"><input type="checkbox" id="autoRead"><span></span></span>
+  </label>
+
+  <div class="keys"><span><kbd>Ctrl</kbd> + <svg viewBox="0 0 24 24"><path d="M4 4l7 17 2.5-7.5L21 11 4 4z"/></svg></span><span><kbd>Ctrl+Espace</kbd> <span data-ui="ui_space_listen">écouter</span></span><span><kbd>Alt+Shift+L</kbd> <span data-ui="ui_read_all">Tout lire</span></span></div>
 
   <div class="progress" id="progress">
     <div class="bar"><i class="v" id="barV"></i><i class="t" id="barT"></i></div>

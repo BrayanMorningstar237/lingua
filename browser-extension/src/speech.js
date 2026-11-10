@@ -61,6 +61,34 @@
     return out + t.slice(pos);
   }
 
+  /**
+   * Coaches a French voice to read text written in the General Alphabet of Cameroon Languages
+   * (Fulfulde, Ewondo, Duala...). Used only when no human recording exists, and labelled
+   * "synthetic voice" in the interface.
+   *   ɓ ɗ ƴ -> b d y,  ŋ -> ng,  c -> tch,  j -> dj,  ny -> gn,  u -> ou,  e -> é,
+   *   long vowels shortened, g kept hard, s kept unvoiced, tone marks removed.
+   */
+  const LOANWORDS = new Set(['code', 'internet', 'safinum', 'pay', 'hackathon', 'mobile', 'money', 'orange', 'momo', 'sms', 'francs', 'fcfa', 'cfa']);
+  function adaptReading(text) {
+    let t = String(text).normalize('NFD').replace(/[̀-ͯ]/g, '').normalize('NFC');
+    t = t.replace(/ɓ/g, 'b').replace(/Ɓ/g, 'B').replace(/ɗ/g, 'd').replace(/Ɗ/g, 'D')
+      .replace(/ƴ/g, 'y').replace(/Ƴ/g, 'Y').replace(/ŋ/g, 'ng').replace(/Ŋ/g, 'Ng')
+      .replace(/ɛ/g, 'è').replace(/Ɛ/g, 'È').replace(/ɔ/g, 'o').replace(/Ɔ/g, 'O').replace(/ə/g, 'e').replace(/Ə/g, 'E')
+      .replace(/['’]/g, '');
+    return t.split(/(\s+|[,.;:!?()]+)/).map(w => {
+      if (!/\p{L}/u.test(w) || /^[A-Z0-9]{2,}$/.test(w) || LOANWORDS.has(w.toLowerCase())) return w; // acronyms (PIN), French loanwords
+      return w
+        .replace(/ny/gi, m => (m[0] === 'N' ? 'Gn' : 'gn'))
+        .replace(/c/g, 'tch').replace(/C/g, 'Tch')
+        .replace(/j/g, 'dj').replace(/J/g, 'Dj')
+        .replace(/aa/g, 'a').replace(/ee/g, 'é').replace(/ii/g, 'i').replace(/oo/g, 'o').replace(/uu/g, 'ou')
+        .replace(/(?<![oO])u/g, 'ou').replace(/U/g, 'Ou')
+        .replace(/e(?![éèê])/g, 'é')
+        .replace(/g([eéèiy])/g, 'gu$1')
+        .replace(/([aeéèiouy])s([aeéèiouy])/g, '$1ss$2');
+    }).join('');
+  }
+
   // ---------------- playback ----------------
   function bestFrenchVoice() {
     if (!root.speechSynthesis) return null;
@@ -101,11 +129,25 @@
       root.speechSynthesis.speak(u);
     });
 
-    /** Replace missing recordings by the synthetic national voice when one is available. */
-    function prepare(steps, ttsOn) {
+    /**
+     * Turns a speech plan into playable steps. Missing recordings are filled, in this order,
+     * by the local neural voice (opts.tts) or the device voice coached to the language's
+     * spelling (opts.approx). Without either, a sentence with a missing recording is not
+     * played at all (never half a sentence). The result carries .voice:
+     * 'human' (only recordings), 'neural' or 'synthetic'.
+     */
+    function prepare(steps, opts) {
       if (!steps || !steps.length) return null;
-      const out = steps.map(s => (s.missing && ttsOn ? { tts: s.text } : s));
-      if (out.some(s => s.missing || (s.tts && !ttsOn))) return null;
+      const o = typeof opts === 'object' && opts ? opts : { tts: !!opts, approx: false };
+      let voice = 'human';
+      const out = steps.map(s => {
+        if (s.missing && o.tts) { voice = 'neural'; return { tts: s.text }; }
+        if (s.missing && o.approx) { if (voice === 'human') voice = 'synthetic'; return { nat: s.text }; }
+        if (s.tts && !o.tts) return o.approx ? (voice = 'synthetic', { nat: s.tts }) : s;
+        return s;
+      });
+      if (out.some(s => s.missing || (s.tts && !o.tts))) return null;
+      out.voice = voice;
       return out;
     }
 
@@ -117,6 +159,7 @@
         if (s.stopped) break;
         if (step.audio) await playUrl(step.audio, s);
         else if (step.value) await sayFr(step.type ? speakValue(step.value, step.type) : speakable(step.value), s);
+        else if (step.nat) await sayFr(adaptReading(step.nat), s);
         else if (step.tts && tts) {
           const url = await tts(step.tts);
           if (url && !s.stopped) await playUrl(url, s);
@@ -128,7 +171,7 @@
     return { play, stop, prepare, isPlaying: () => !!session };
   }
 
-  const api = { speakValue, speakable, spokenNumber, createPlayer, bestFrenchVoice };
+  const api = { speakValue, speakable, spokenNumber, createPlayer, bestFrenchVoice, adaptReading };
   root.LangwaSpeech = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

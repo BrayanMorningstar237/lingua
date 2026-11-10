@@ -66,8 +66,7 @@ async function save(patch) {
   const ping = () => api.tabs.sendMessage(tab.id, { type: 'ping' }).then(r => !!r, () => false);
   const loaded = origin ? await ping() : false;
   const setActions = on => {
-    $('panel').disabled = !on || !loaded;
-    $('subs').disabled = !on || !loaded;
+    for (const id of ['panel', 'page', 'readAll']) $(id).disabled = !on || !loaded;
     $('reloadBox').classList.toggle('show', on && !loaded);
   };
   setActions($('site').checked);
@@ -82,7 +81,8 @@ async function save(patch) {
 
   // ---------- language ----------
   for (const [code, l] of Object.entries(langs)) {
-    const o = new Option(`${l.name} (${l.region})${l.count ? '' : ` · ${ui('ui_soon', 'Bientôt')}`}`, code);
+    const o = new Option(`${l.name}${l.count ? '' : ` · ${ui('ui_soon', 'Bientôt')}`}`, code);
+    o.title = l.region || '';
     o.selected = code === settings.lang;
     $('lang').append(o);
   }
@@ -101,7 +101,13 @@ async function save(patch) {
   // ---------- actions ----------
   const toTab = type => api.tabs.sendMessage(tab.id, { type }).catch(() => {}).finally(() => window.close());
   $('panel').onclick = () => toTab('togglePanel');
-  $('subs').onclick = () => toTab('toggleSubtitles');
+  $('page').onclick = () => toTab('togglePage');
+  $('page').classList.toggle('on', !!settings.pageMode);
+  $('readAll').onclick = () => toTab('readAll');
+
+  // Automatic reading (cards are read aloud as soon as they appear)
+  $('autoRead').checked = !!settings.autoRead;
+  $('autoRead').onchange = () => save({ autoRead: $('autoRead').checked });
   $('opts').onclick = () => api.runtime.openOptionsPage();
 
   // ---------- progress of the language pack ----------

@@ -42,8 +42,15 @@
     success: /(?<![\p{L}])(succès|réussie?|effectuée?|confirmée?|success|successful(?:ly)?|completed|confirmed)(?![\p{L}])/iu,
   };
 
+  /**
+   * Message kind. Short labels are headings, not messages: "Security" or "Success" alone is a
+   * title or a status, so a warning/success needs 3+ words and an error 2+ ("Solde insuffisant").
+   */
   function classify(text) {
-    for (const k of ['error', 'warning', 'success']) if (KIND_RES[k].test(text)) return k;
+    const words = (String(text).match(/\p{L}+/gu) || []).length;
+    if (words >= 2 && KIND_RES.error.test(text)) return 'error';
+    if (words >= 3 && KIND_RES.warning.test(text)) return 'warning';
+    if (words >= 3 && KIND_RES.success.test(text)) return 'success';
     return null;
   }
 

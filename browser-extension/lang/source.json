@@ -879,8 +879,8 @@
   {
    "id": "ui_hint_listen",
    "group": "ui",
-   "fr": "Écoutez la traduction.",
-   "en": "Listen to the translation."
+   "fr": "Puis appuyez sur Espace pour écouter.",
+   "en": "Then press Space to listen."
   },
   {
    "id": "ui_ok",
@@ -1017,8 +1017,8 @@
   {
    "id": "ui_n_mt",
    "group": "ui",
-   "fr": "automatiques",
-   "en": "automatic"
+   "fr": "non validées",
+   "en": "not validated"
   },
   {
    "id": "ui_n_gist",
@@ -1037,6 +1037,96 @@
    "group": "ui",
    "fr": "non traduites",
    "en": "not translated"
+  },
+  {
+   "id": "ui_n_ok_one",
+   "group": "ui",
+   "fr": "validée",
+   "en": "validated"
+  },
+  {
+   "id": "ui_n_mt_one",
+   "group": "ui",
+   "fr": "non validée",
+   "en": "not validated"
+  },
+  {
+   "id": "ui_n_gist_one",
+   "group": "ui",
+   "fr": "résumé",
+   "en": "summary"
+  },
+  {
+   "id": "ui_n_block_one",
+   "group": "ui",
+   "fr": "bloquée",
+   "en": "blocked"
+  },
+  {
+   "id": "ui_n_none_one",
+   "group": "ui",
+   "fr": "non traduite",
+   "en": "not translated"
+  },
+  {
+   "id": "ui_voice_human",
+   "group": "ui",
+   "fr": "Voix humaine",
+   "en": "Human voice"
+  },
+  {
+   "id": "ui_voice_neural",
+   "group": "ui",
+   "fr": "Voix neuronale",
+   "en": "Neural voice"
+  },
+  {
+   "id": "ui_voice_synth",
+   "group": "ui",
+   "fr": "Voix de synthèse",
+   "en": "Synthetic voice"
+  },
+  {
+   "id": "ui_stop",
+   "group": "ui",
+   "fr": "Arrêter",
+   "en": "Stop"
+  },
+  {
+   "id": "ui_page_mode",
+   "group": "ui",
+   "fr": "Traduire la page",
+   "en": "Translate the page"
+  },
+  {
+   "id": "ui_read_all",
+   "group": "ui",
+   "fr": "Tout lire",
+   "en": "Read all"
+  },
+  {
+   "id": "ui_autoread",
+   "group": "ui",
+   "fr": "Lecture automatique",
+   "en": "Read aloud automatically"
+  },
+  {
+   "id": "ui_autoread_sub",
+   "group": "ui",
+   "fr": "Lit la traduction dès qu’elle s’affiche",
+   "en": "Reads the translation as soon as it appears"
+  },
+  {
+   "id": "ui_space_listen",
+   "group": "ui",
+   "fr": "écouter",
+   "en": "listen"
+  },
+  {
+   "id": "ui_hint_listen_touch",
+   "group": "ui",
+   "fr": "Touchez Écouter pour entendre la traduction.",
+   "en": "Tap Listen to hear the translation."
   }
  ]
 }
