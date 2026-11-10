@@ -1,5 +1,5 @@
 /*
- * Mboa Lingua: content script.
+ * Langwa: content script.
  *
  * Reads the page, never changes it: no text, attribute, style or form value of the financial
  * service is modified. Everything is drawn in one isolated Shadow DOM layer:
@@ -12,15 +12,15 @@
  */
 (() => {
   'use strict';
-  if (window.__mboaLingua) return;
-  window.__mboaLingua = true;
+  if (window.__langwa) return;
+  window.__langwa = true;
 
   // Extension APIs, or the standalone runtime when running as a userscript on phones.
-  const api = globalThis.MboaRuntime ?? globalThis.browser ?? globalThis.chrome;
-  const P = globalThis.MboaProtect;
-  const E = globalThis.MboaEngine;
+  const api = globalThis.LangwaRuntime ?? globalThis.browser ?? globalThis.chrome;
+  const P = globalThis.LangwaProtect;
+  const E = globalThis.LangwaEngine;
 
-  const SKIP = 'script,style,noscript,textarea,code,pre,svg,template,iframe,canvas,[contenteditable=""],[contenteditable="true"],mboa-lingua-root';
+  const SKIP = 'script,style,noscript,textarea,code,pre,svg,template,iframe,canvas,[contenteditable=""],[contenteditable="true"],langwa-root';
   const ATTRS = ['placeholder', 'aria-label', 'title'];
   const NEW_AFTER_MS = 1500;
   const ALERT_KINDS = new Set(['error', 'warning', 'success']);
@@ -47,6 +47,10 @@
 
   /** Interface text: national-language version when the speaker has translated it, else French. */
   const ui = (id, fr) => state.ui.get(id) || fr;
+  /** Base interface language: the browser's (French or English), until the national language is translated. */
+  const BASE = /^en/i.test(navigator.language || '') ? 'en' : 'fr';
+  /** Interface strings: national-language translation, else French/English from the browser. */
+  const uiMap = pack => new Map(pack.entries.filter(e => e.group === 'ui').map(e => [e.id, e.t || (BASE === 'en' ? e.en : e.fr)]));
   /** Phones and tablets: no Ctrl key, no hover -> long press shows the card. */
   const isTouch = matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window;
 
@@ -67,7 +71,7 @@
   }
 
   /*
-   * Theme "Mboa": warm ebony and ivory surfaces, kente gold accent, forest green for
+   * Theme: warm ebony and ivory surfaces, kente gold accent, forest green for
    * validated/listen, terracotta for errors, indigo for information. A thin kente-stripe band
    * is the signature. All colours meet WCAG AA contrast on their surfaces.
    */
@@ -100,17 +104,16 @@
   .arrow { position: absolute; width: 14px; height: 14px; background: var(--ebony); transform: rotate(45deg); top: -6px; border-radius: 3px; }
   .tip.above .arrow { top: auto; bottom: -6px; }
   .block + .block { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--ebony-3); }
-  .block { border-left: 4px solid var(--forest-2); padding-left: 12px; margin-left: -4px; }
-  .k-error { border-left-color: var(--terracotta); } .k-warning { border-left-color: var(--gold); }
-  .k-success { border-left-color: var(--forest-2); } .k-info, .k-none { border-left-color: var(--indigo-2); }
-  .k-value { border-left-color: var(--sand); } .k-pending { border-left-color: var(--ebony-3); }
+  .tr .i.kind { margin-right: 7px; }
+  .tr .i.err { color: #ec8a6c; } .tr .i.warn { color: var(--gold); } .tr .i.okk { color: #6fd29d; }
+  .tr.missing { font-size: 15px; font-weight: 600; color: var(--sand); }
   .row { display: flex; align-items: flex-start; gap: 12px; }
   .tr { flex: 1; font-size: 19px; font-weight: 650; letter-spacing: -.005em; overflow-wrap: anywhere; }
   .tr .i { color: var(--sand); margin-right: 6px; }
   .explain { display: flex; gap: 8px; margin-top: 7px; font-size: 14px; color: #efe3d1; }
   .explain .i { color: var(--gold); margin-top: 2px; }
   .orig { margin-top: 7px; font-size: 13px; color: var(--sand); opacity: .85; overflow-wrap: anywhere; }
-  .orig b { font-size: 10px; font-weight: 800; letter-spacing: .08em; margin-right: 6px; opacity: .75; }
+  .orig b { font-size: 9.5px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; margin-right: 7px; opacity: .7; }
   .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 10px; }
   .chip { display: inline-flex; align-items: center; gap: 5px; font: 700 13px "Cascadia Mono", ui-monospace, Consolas, monospace;
     background: var(--gold-soft); color: #3b2604; padding: 3px 8px; border-radius: 8px; }
@@ -165,20 +168,25 @@
   .icon-btn { width: 38px; height: 38px; border-radius: 12px; border: 1px solid var(--ebony-3); background: var(--ebony-2); color: var(--ivory); display: grid; place-items: center; font-size: 18px; }
   .icon-btn:hover { border-color: var(--gold); }
   .icon-btn.on { background: var(--gold); color: var(--ebony); border-color: var(--gold); }
-  .list { overflow: auto; padding: 10px 12px 14px; overscroll-behavior: contain; }
-  .sec { display: flex; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--card-muted); margin: 10px 4px 8px; }
+  .list { overflow: auto; padding: 4px 16px 16px; overscroll-behavior: contain; }
+  .sec { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; color: var(--card-muted); margin: 16px 2px 10px; }
+  .sec .n { margin-left: auto; font-size: 11px; font-weight: 700; letter-spacing: 0; padding: 1px 8px; border-radius: 99px; background: var(--soft); color: var(--card-muted); }
   .sec.alert { color: var(--terracotta); }
-  .item { display: block; width: 100%; text-align: left; padding: 12px 12px 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--card); margin-bottom: 8px;
-    border-left: 4px solid var(--indigo); transition: background .12s ease, border-color .12s ease; }
-  .item:hover { background: var(--soft); }
-  .item.k-error { border-left-color: var(--terracotta); background: color-mix(in srgb, var(--terracotta) 7%, var(--card)); }
-  .item.k-warning { border-left-color: var(--gold); background: color-mix(in srgb, var(--gold) 10%, var(--card)); }
-  .item.k-success { border-left-color: var(--forest); }
-  .item .block { border: 0; padding: 0; margin: 0; }
-  .item .tr { font-size: 16.5px; } .item .tr .i { color: var(--card-muted); }
-  .item .orig, .item .explain { color: var(--card-muted); opacity: 1; }
+  .sec.alert .n { background: color-mix(in srgb, var(--terracotta) 12%, var(--card)); color: var(--terracotta); }
+  .item { display: block; width: 100%; text-align: left; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--line); background: var(--card); margin-bottom: 10px;
+    box-shadow: 0 1px 2px rgba(36,29,22,.05); transition: border-color .12s ease, box-shadow .12s ease; }
+  .item:hover { border-color: color-mix(in srgb, var(--gold) 55%, var(--line)); box-shadow: 0 6px 16px rgba(36,29,22,.08); }
+  .item.k-error { border-color: color-mix(in srgb, var(--terracotta) 30%, var(--line)); background: color-mix(in srgb, var(--terracotta) 6%, var(--card)); }
+  .item.k-warning { border-color: color-mix(in srgb, var(--gold) 40%, var(--line)); background: color-mix(in srgb, var(--gold) 8%, var(--card)); }
+  .item .row { gap: 14px; }
+  .item .tr { font-size: 16px; font-weight: 650; line-height: 1.45; color: var(--card-fg); }
+  .item .tr.plain { font-weight: 500; }
+  .item .tr .i { color: var(--card-muted); }
+  .item .tr .i.err { color: var(--terracotta); } .item .tr .i.warn { color: #b57d00; } .item .tr .i.okk { color: var(--forest); }
+  .item .orig { margin-top: 8px; font-size: 13px; line-height: 1.45; color: var(--card-muted); opacity: 1; }
+  .item .explain { margin-top: 8px; color: var(--card-fg); } .item .explain .i { color: #b57d00; }
+  .item .meta { margin-top: 12px; }
   .item .say { width: 38px; height: 38px; font-size: 18px; }
-  .item .say:disabled { background: var(--soft); color: var(--card-muted); }
   .item .chip { background: var(--gold-soft); }
   .item .pill.ok { background: rgba(30,122,76,.12); color: var(--forest); } .item .pill.mt { background: rgba(227,162,26,.16); color: #8a5a00; }
   .item .pill.gist { background: rgba(61,74,138,.12); color: var(--indigo); } .item .pill.block { background: rgba(194,80,46,.14); color: #9b3517; }
@@ -210,8 +218,8 @@
   @keyframes locate { 50% { box-shadow: 0 0 0 14px rgba(227,162,26,.06); } }
   .subs { position: fixed; inset: 0; pointer-events: none; z-index: 2147483644; }
   .sub { position: fixed; background: rgba(29,23,18,.95); color: var(--ivory); font-size: 13px; font-weight: 600; line-height: 1.25; padding: 3px 8px; border-radius: 8px; max-width: 380px;
-    box-shadow: 0 4px 12px rgba(0,0,0,.25); border-left: 3px solid var(--forest-2); }
-  .sub.k-error { border-left-color: var(--terracotta); } .sub.k-warning { border-left-color: var(--gold); }
+    box-shadow: 0 4px 12px rgba(0,0,0,.25); }
+  .sub.k-error { background: rgba(140,48,22,.96); } .sub.k-warning { background: rgba(120,82,6,.96); }
   .hint { position: fixed; right: 18px; bottom: 86px; z-index: 2147483647; width: min(330px, calc(100vw - 36px)); background: var(--ebony); color: var(--ivory);
     border-radius: 18px; padding: 22px 18px 16px; box-shadow: 0 20px 50px rgba(20,12,4,.45); animation: drop .3s ease; overflow: visible; }
   .hint::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px; border-radius: 18px 18px 0 0; background: var(--kente); }
@@ -224,6 +232,25 @@
   .hint .say { width: 32px; height: 32px; font-size: 16px; box-shadow: none; }
   .hint .ok { margin-top: 16px; width: 100%; border: 0; border-radius: 12px; padding: 11px; background: var(--gold); color: var(--ebony); font-weight: 800; font-size: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; }
   .hint .ok:hover { filter: brightness(1.06); }
+  /* ---------- first-use language chooser ---------- */
+  .chooser { position: fixed; right: 18px; bottom: 18px; z-index: 2147483647; width: min(400px, calc(100vw - 24px)); max-height: calc(100vh - 36px); overflow: auto;
+    background: var(--ebony); color: var(--ivory); border-radius: 20px; padding: 24px 16px 12px; box-shadow: 0 24px 60px rgba(20,12,4,.45); animation: drop .3s ease; }
+  .chooser::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px; border-radius: 20px 20px 0 0; background: var(--kente); }
+  .chooser[hidden], .fab[hidden] { display: none; }
+  .chooser .head { display: flex; gap: 12px; align-items: center; margin-bottom: 14px; }
+  .chooser .logo { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; background: var(--gold); color: var(--ebony); font-size: 22px; flex: none; }
+  .chooser h3 { font-size: 18px; font-weight: 800; }
+  .chooser p { font-size: 13px; color: var(--sand); margin-top: 2px; }
+  .langs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .lang-btn { position: relative; display: grid; gap: 2px; text-align: left; padding: 12px 12px 11px; border-radius: 14px; border: 1px solid var(--ebony-3); background: var(--ebony-2); transition: border-color .12s ease, transform .1s ease; }
+  .lang-btn:hover { border-color: var(--gold); transform: translateY(-1px); }
+  .lang-btn b { font-size: 16.5px; font-weight: 800; }
+  .lang-btn small { font-size: 11.5px; color: var(--sand); line-height: 1.3; }
+  .lang-btn { justify-items: start; align-content: start; }
+  .lang-btn .soon { position: absolute; top: 8px; right: 8px; font-size: 10px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--gold); }
+  .chooser .later { display: block; margin: 10px auto 0; border: 0; background: none; color: var(--sand); font-size: 13px; padding: 6px 10px; border-radius: 8px; }
+  .chooser .later:hover { color: #fff; background: var(--ebony-2); }
+
   /* ---------- phones: bottom sheet, larger touch targets ---------- */
   @media (max-width: 640px) {
     .panel { left: 0; right: 0; bottom: 0; width: 100%; max-height: 82vh; border-radius: 22px 22px 0 0; transform-origin: bottom center; }
@@ -236,6 +263,8 @@
     .say { width: 46px; height: 46px; }
     .toasts { top: 8px; width: calc(100vw - 16px); }
     .hint { right: 12px; bottom: 76px; }
+    .chooser { left: 0; right: 0; bottom: 0; width: 100%; border-radius: 22px 22px 0 0; padding-bottom: 18px; }
+    .lang-btn { padding: 14px 12px; }
   }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
   `;
@@ -270,10 +299,17 @@
     return s;
   }
 
+  /** Keep Chrome/Edge/Firefox page translators away from Langwa's own layer. */
+  function makeHost() {
+    host = document.createElement('langwa-root');
+    host.setAttribute('translate', 'no');
+    host.classList.add('notranslate');
+  }
+
   function buildUI() {
-    host = document.createElement('mboa-lingua-root');
+    makeHost();
     shadow = host.attachShadow({ mode: 'open' });
-    const layer = h('div', { class: 'layer' });
+    const layer = h('div', { class: 'layer notranslate', translate: 'no' });
     shadow.append(h('style', {}, CSS), layer);
 
     tipArrow = h('div', { class: 'arrow' });
@@ -290,7 +326,7 @@
     panelList = h('div', { class: 'list' });
     const ccBtn = h('button', { class: 'icon-btn', title: `${ui('ui_subtitles', 'Sous-titres')} (Alt+Shift+S)`, 'aria-label': ui('ui_subtitles', 'Sous-titres') }, icon('captions'));
     ccBtn.addEventListener('click', () => { setSubtitles(!state.subtitles); ccBtn.classList.toggle('on', state.subtitles); });
-    panel = h('div', { class: 'panel', role: 'dialog', 'aria-label': `Mboa Lingua, ${state.pack.name}` },
+    panel = h('div', { class: 'panel', role: 'dialog', 'aria-label': `Langwa, ${state.pack.name}` },
       h('div', { class: 'band' }),
       h('div', { class: 'ph' },
         h('div', { class: 'logo' }, icon('languages')),
@@ -304,7 +340,7 @@
 
     fabDot = h('span', { class: 'dot busy' });
     fabCount = h('span', { class: 'count' });
-    fab = h('button', { class: 'fab', title: 'Alt+Shift+M', 'aria-label': `Mboa Lingua, ${state.pack.name}`, onclick: () => togglePanel() },
+    fab = h('button', { class: 'fab', title: 'Alt+Shift+M', 'aria-label': `Langwa, ${state.pack.name}`, onclick: () => togglePanel() },
       h('span', { class: 'logo' }, icon('languages'), fabDot), state.pack.name, fabCount);
 
     layer.append(subLayer, hl, tip, panel, fab, toastBox);
@@ -315,9 +351,9 @@
   function langPicker() {
     const langs = Object.entries(state.langs || {});
     if (langs.length < 2) return h('div', { class: 'lang' }, state.pack.name);
-    const sel = h('select', { class: 'lang lang-select', 'aria-label': 'Langue / Language' },
+    const sel = h('select', { class: 'lang lang-select', 'aria-label': ui('ui_language', 'Langue') },
       langs.map(([code, l]) => {
-        const o = h('option', { value: code }, l.name);
+        const o = h('option', { value: code }, l.count || code === state.pack.code ? l.name : `${l.name} (${ui('ui_soon', 'Bientôt')})`);
         o.selected = code === state.pack.code;
         return o;
       }));
@@ -326,6 +362,39 @@
       await api.storage.local.set({ settings: { ...cur, lang: sel.value } });
     });
     return sel;
+  }
+
+  /**
+   * First use: "Which language do you speak?" with large buttons showing each language's own
+   * name and region (people recognise the name of their language even if they cannot read
+   * French). Languages without translations yet are marked "Soon". "Later" folds it into the
+   * round button.
+   */
+  function buildChooser() {
+    makeHost();
+    shadow = host.attachShadow({ mode: 'open' });
+    const layer = h('div', { class: 'layer notranslate', translate: 'no' });
+    shadow.append(h('style', {}, CSS), layer);
+
+    const choose = async code => {
+      const cur = await send({ type: 'getSettings' });
+      await api.storage.local.set({ settings: { ...cur, lang: code } }); // storage change restarts Langwa
+    };
+    const langs = Object.entries(state.langs || {}).sort((a, b) => (b[1].count > 0) - (a[1].count > 0));
+    const card = h('div', { class: 'chooser', role: 'dialog', 'aria-label': ui('ui_choose', 'Quelle langue parlez-vous ?') },
+      h('div', { class: 'head' },
+        h('div', { class: 'logo' }, icon('languages')),
+        h('div', {}, h('h3', {}, ui('ui_choose', 'Quelle langue parlez-vous ?')), h('p', {}, ui('ui_choose_sub', 'Langwa affichera la banque dans cette langue.')))),
+      h('div', { class: 'langs' }, langs.map(([code, l]) =>
+        h('button', { class: `lang-btn${l.count ? '' : ' empty'}`, onclick: () => choose(code) },
+          h('b', {}, l.name),
+          h('small', {}, l.region || ''),
+          l.count ? null : h('span', { class: 'soon' }, ui('ui_soon', 'Bientôt'))))),
+      h('button', { class: 'later', onclick: () => { card.hidden = true; fab.hidden = false; } }, ui('ui_later', 'Plus tard')));
+    const fab = h('button', { class: 'fab', hidden: true, 'aria-label': ui('ui_choose', 'Quelle langue parlez-vous ?'), onclick: () => { card.hidden = false; fab.hidden = true; } },
+      h('span', { class: 'logo' }, icon('languages')), 'Langwa');
+    layer.append(card, fab);
+    document.documentElement.append(host);
   }
 
   function destroyUI() {
@@ -361,7 +430,7 @@
   }
 
   // ---------------- listening (human recordings + exact values) ----------------
-  const player = globalThis.MboaSpeech.createPlayer({
+  const player = globalThis.LangwaSpeech.createPlayer({
     tts: text => send({ type: 'tts', lang: state.pack.code, text }).catch(() => null),
   });
   const ttsOn = () => !!(state.settings && state.settings.tts && state.settings.tts.mode === 'mms' && state.pack && state.pack.mms);
@@ -387,7 +456,7 @@
   }
 
   /** One card block, used by the hover card, the panel and the alerts. */
-  function block(u, { isNew = false } = {}) {
+  function block(u, { isNew = false, inPanel = false } = {}) {
     const r = u.result;
     if (!r) {
       return h('div', { class: 'block k-pending' },
@@ -401,13 +470,25 @@
           sayButton([{ value: u.text }], listenLabel())),
         h('div', { class: 'meta' }, h('span', { class: 'pill none' }, ui('ui_protected', 'Valeur protégée, identique à la page'))));
     }
+    const shown = r.status === 'ok' || r.status === 'gist';
+    const kindIcon = r.kind === 'error' ? icon('alert', 'kind err') : r.kind === 'warning' ? icon('alert', 'kind warn') : r.kind === 'success' ? icon('check', 'kind okk') : null;
+    const newTag = isNew ? h('span', { class: 'new' }, ui('ui_new', 'NOUVEAU')) : null;
+    if (!shown && inPanel) {
+      // Panel list: the original sentence stays readable, with a quiet "not translated" tag.
+      return h('div', { class: `block k-${r.kind || 'info'}` },
+        h('div', { class: 'row' }, h('div', { class: 'tr plain' }, newTag, kindIcon, u.text)),
+        h('div', { class: 'meta' }, chipsFor(u.text), r.status === 'blocked' ? pillFor(r) : h('span', { class: 'pill none' }, icon('dots'), ui('ui_missing', 'Pas encore traduit'))));
+    }
+    const missing = ui('ui_missing_lang', 'Pas encore traduit en {lang}').replace('{lang}', state.pack.name);
     return h('div', { class: `block k-${r.kind || 'info'}` },
       h('div', { class: 'row' },
-        h('div', { class: 'tr' }, isNew ? h('span', { class: 'new' }, ui('ui_new', 'NOUVEAU')) : null, shownText(u)),
+        shown
+          ? h('div', { class: 'tr' }, isNew ? h('span', { class: 'new' }, ui('ui_new', 'NOUVEAU')) : null, kindIcon, shownText(u))
+          : h('div', { class: 'tr missing' }, isNew ? h('span', { class: 'new' }, ui('ui_new', 'NOUVEAU')) : null, kindIcon, missing),
         (r.status === 'ok' || r.status === 'gist') ? sayButton(stepsFor(r), listenLabel()) : null),
       r.explain ? h('div', { class: 'explain' }, icon('bulb'), h('span', {}, r.explain)) : null,
-      h('div', { class: 'orig' }, h('b', {}, 'FR/EN'), u.text),
-      h('div', { class: 'meta' }, chipsFor(u.text), pillFor(r)));
+      h('div', { class: 'orig' }, h('b', {}, ui('ui_original', 'Original')), u.text),
+      h('div', { class: 'meta' }, chipsFor(u.text), shown || r.status === 'blocked' ? pillFor(r) : null));
   }
 
   // ======================================================================================
@@ -579,10 +660,7 @@
         u.el.scrollIntoView({ block: 'center', behavior: 'smooth' });
         setTimeout(() => highlight(u.el, true), 350);
       },
-    }, block(u, { isNew: u.isNew }));
-    item.firstChild.style.borderLeft = '0';
-    item.firstChild.style.paddingLeft = '0';
-    item.firstChild.style.marginLeft = '0';
+    }, block(u, { isNew: u.isNew, inPanel: true }));
     return item;
   }
 
@@ -592,11 +670,16 @@
     const rest = shown.filter(u => !alerts.includes(u));
     const scroll = panelList.scrollTop;
     panelList.replaceChildren(
-      ...(alerts.length ? [h('div', { class: 'sec alert' }, icon('alert'), ui('ui_important', 'Messages importants'), ` · ${alerts.length}`), ...alerts.map(itemFor)] : []),
-      ...(rest.length ? [h('div', { class: 'sec' }, ui('ui_page', 'Sur cette page'), ` · ${rest.length}`), ...rest.map(itemFor)] : []),
+      ...(alerts.length ? [h('div', { class: 'sec alert' }, icon('alert'), ui('ui_important', 'Messages importants'), h('span', { class: 'n' }, String(alerts.length))), ...alerts.map(itemFor)] : []),
+      ...(rest.length ? [h('div', { class: 'sec' }, ui('ui_page', 'Sur cette page'), h('span', { class: 'n' }, String(rest.length))), ...rest.map(itemFor)] : []),
       ...(!shown.length ? [h('div', { class: 'empty' }, icon('languages'), ui('ui_empty', 'Rien à traduire ici'))] : []));
     panelList.scrollTop = scroll;
   }
+
+  const COUNT_WORDS = {
+    ok: ['ui_n_ok', 'validées'], mt: ['ui_n_mt', 'automatiques'], gist: ['ui_n_gist', 'résumés'],
+    block: ['ui_n_block', 'bloquées'], none: ['ui_n_none', 'non traduites'],
+  };
 
   function updateStatus() {
     if (!host) return;
@@ -619,7 +702,8 @@
     for (const k of ['ok', 'mt', 'gist', 'block', 'none']) {
       if (!c[k]) continue;
       const [cls, ic, id, fr] = STATUS[k];
-      bits.push(h('span', { class: cls, title: ui(id, fr) }, icon(ic), String(c[k])));
+      const [wid, word] = COUNT_WORDS[k];
+      bits.push(h('span', { class: cls, title: ui(id, fr) }, icon(ic), `${c[k]} ${ui(wid, word)}`));
     }
     if (state.mtError) bits.push(h('span', { class: 'warn' }, icon('alert'), ui('ui_mt_down', 'Traduction locale indisponible : résumé utilisé')));
     panelStatus.replaceChildren(...bits);
@@ -805,7 +889,7 @@
     let r = state.results.get(key);
     if (!r) {
       r = translateText(text).catch(err => {
-        console.warn('[Mboa Lingua] translation failed:', err);
+        console.warn('[Langwa] translation failed:', err);
         return { status: 'untranslated', text, original: text, kind: E.classify(text) };
       });
       if (state.results.size >= 1500) state.results.delete(state.results.keys().next().value);
@@ -847,7 +931,7 @@
       state.unitsByEl = byEl;
       state.stats = { ms: Math.round(performance.now() - t0), count: units.length };
     } catch (err) {
-      console.warn('[Mboa Lingua] scan failed:', err);
+      console.warn('[Langwa] scan failed:', err);
     }
     renderPanelSoon();
   }
@@ -946,13 +1030,21 @@
       [pack, state.langs] = await Promise.all([send({ type: 'getPack', lang: settings.lang }), send({ type: 'getLangs' })]);
       if (gen !== state.gen) return;
     } catch (err) {
-      console.warn('[Mboa Lingua] cannot reach the extension:', err && err.message);
+      console.warn('[Langwa] cannot reach the extension:', err && err.message);
       return;
     }
     player.stop();
+    state.ui = uiMap(pack);
+    if (!settings.lang) {
+      // No language chosen yet: only the chooser, nothing else runs.
+      state.active = false;
+      listen(false);
+      destroyUI();
+      buildChooser();
+      return;
+    }
     state.pack = pack;
     state.engine = E.createEngine(pack);
-    state.ui = new Map(pack.entries.filter(e => e.group === 'ui' && e.t).map(e => [e.id, e.t]));
     state.results.clear();
     state.known = new WeakMap();
     state.units = [];
@@ -994,7 +1086,8 @@
     if (area !== 'local') return;
     if (changes.settings || Object.keys(changes).some(k => k.startsWith('overrides:'))) start();
   });
-  api.runtime.onMessage.addListener(msg => {
+  api.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
+    if (msg && msg.type === 'ping') { sendResponse({ active: state.active }); return; }
     if (!state.active || !msg) return;
     if (msg.type === 'togglePanel') togglePanel();
     if (msg.type === 'toggleSubtitles') setSubtitles(!state.subtitles);

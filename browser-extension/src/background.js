@@ -1,5 +1,5 @@
 /*
- * Mboa Lingua: background script (Chrome/Edge/Brave/Opera service worker, Firefox event page).
+ * Langwa: background script (Chrome/Edge/Brave/Opera service worker, Firefox event page).
  * - Builds the language pack: lang/source.json + lang/<code>.json + edits saved from the glossary editor.
  * - Optional fallback: LOCAL open-source machine translation. Only MASKED text is sent
  *   (amounts, names, numbers are already replaced by ⟦A⟧ tokens), and only to localhost.
@@ -12,7 +12,7 @@ const langsReady = fetch(api.runtime.getURL('lang/languages.json'))
   .then(r => r.json()).then(j => { LANGS = j; return j; }).catch(() => LANGS);
 
 const DEFAULT_SETTINGS = {
-  lang: 'ewo',
+  lang: null, // chosen by the user on first use (language chooser on the page and in the popup)
   sites: ['https://safinum.cm', 'http://localhost', 'http://127.0.0.1', 'file://'],
   toasts: true,
   hover: 'ctrl', // 'ctrl' = Ctrl/Cmd + hover shows the translation below the element; 'always'; 'off'
@@ -67,9 +67,10 @@ async function fetchJson(path) {
   }
 }
 
+/** code null = no language chosen yet: source strings only (used for the interface in French/English). */
 async function loadPack(code) {
   const source = (await fetchJson('lang/source.json')) || { entries: [] };
-  const file = (await fetchJson(`lang/${code}.json`)) || { entries: {} };
+  const file = (code && (await fetchJson(`lang/${code}.json`))) || { entries: {} };
   const key = `overrides:${code}`;
   const overrides = (await api.storage.local.get(key))[key] || {};
   const entries = source.entries.map(e => {
@@ -80,7 +81,22 @@ async function loadPack(code) {
     };
   });
   const l = LANGS[code] || {};
-  return { code, name: l.name || code, mms: l.mms || null, entries };
+  return { code, name: l.name || code || '', mms: l.mms || null, entries };
+}
+
+/** Languages with the number of translated phrases (the chooser marks empty ones "Soon"). */
+async function langsWithCounts() {
+  const out = {};
+  for (const [code, l] of Object.entries(LANGS)) {
+    const file = (await fetchJson(`lang/${code}.json`)) || { entries: {} };
+    const key = `overrides:${code}`;
+    const overrides = (await api.storage.local.get(key))[key] || {};
+    const ids = new Set([...Object.keys(file.entries || {}), ...Object.keys(overrides)]);
+    let count = 0;
+    for (const id of ids) if ((overrides[id] && overrides[id].t) || ((file.entries || {})[id] && file.entries[id].t)) count++;
+    out[code] = { ...l, count };
+  }
+  return out;
 }
 
 // ---------- local open-source machine translation ----------
@@ -172,7 +188,7 @@ async function translateBatch(code, items) {
   } catch (e) {
     error = e.message;
   }
-  if (error) console.warn('[Mboa Lingua] local MT unavailable:', error);
+  if (error) console.warn('[Langwa] local MT unavailable:', error);
   if (Object.keys(add).length) await cachePut(code, add);
   return { results: out, error };
 }
@@ -183,7 +199,7 @@ api.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     await langsReady;
     switch (msg && msg.type) {
       case 'getSettings': return getSettings();
-      case 'getLangs': return LANGS;
+      case 'getLangs': return langsWithCounts();
       case 'getPack': return loadPack(msg.lang || (await getSettings()).lang);
       case 'translateBatch': return translateBatch(msg.lang, msg.items || []);
       case 'tts': return synthesize(msg.lang, msg.text);

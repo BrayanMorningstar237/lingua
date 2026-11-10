@@ -1,5 +1,5 @@
 /*
- * Mboa Lingua: protection of financial information.
+ * Langwa: protection of financial information.
  *
  * Every amount, fee, percentage, phone number, account number, reference,
  * date, beneficiary name and user-typed value is:
@@ -159,6 +159,6 @@
   }
 
   const api = { extract, mask, unmask, verify, normSpaces };
-  root.MboaProtect = api;
+  root.LangwaProtect = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

@@ -1,5 +1,5 @@
 """
-Mboa Lingua: optional local translation server using Meta's open NLLB-200 model.
+Langwa: optional local translation server using Meta's open NLLB-200 model.
 
 Only masked text reaches this server (amounts, names and numbers are already replaced
 by tokens such as ⟦A⟧ in the browser). It listens on 127.0.0.1 only.

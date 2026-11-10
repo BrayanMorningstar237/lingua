@@ -2,6 +2,21 @@ const api = globalThis.browser ?? globalThis.chrome;
 const $ = id => document.getElementById(id);
 const send = msg => api.runtime.sendMessage(msg);
 
+// Interface language: national language when translated, else the browser's (French or English).
+const BASE = /^en/i.test(navigator.language || '') ? 'en' : 'fr';
+document.documentElement.lang = BASE;
+const TEXT = {
+  fr: { validated: 'validées', toValidate: 'à valider', missing: 'manquantes', progress: 'Phrases traduites et validées par un locuteur natif' },
+  en: { validated: 'validated', toValidate: 'to validate', missing: 'missing', progress: 'Phrases translated and validated by a native speaker' },
+}[BASE];
+let UI = new Map();
+const ui = (id, fallback) => UI.get(id) || fallback;
+
+function applyUi(pack) {
+  UI = new Map(pack.entries.filter(e => e.group === 'ui').map(e => [e.id, e.t || (BASE === 'en' ? e.en : e.fr)]));
+  for (const el of document.querySelectorAll('[data-ui]')) el.textContent = ui(el.dataset.ui, el.textContent);
+}
+
 async function save(patch) {
   const cur = await send({ type: 'getSettings' });
   await api.storage.local.set({ settings: { ...cur, ...patch } });
@@ -16,13 +31,47 @@ async function save(patch) {
   } catch { /* browser pages */ }
 
   const [settings, langs] = await Promise.all([send({ type: 'getSettings' }), send({ type: 'getLangs' })]);
+  applyUi(await send({ type: 'getPack', lang: settings.lang }));
 
-  // Site switch
-  $('origin').textContent = origin ? origin.replace(/^https?:\/\//, '') : 'Page non prise en charge';
+  // ---------- first use: choose a language ----------
+  if (!settings.lang) {
+    $('chooser').hidden = false;
+    const list = Object.entries(langs).sort((a, b) => (b[1].count > 0) - (a[1].count > 0));
+    for (const [code, l] of list) {
+      const b = document.createElement('button');
+      b.className = `lang-btn${l.count ? '' : ' empty'}`;
+      const name = document.createElement('b');
+      name.textContent = l.name;
+      const region = document.createElement('small');
+      region.textContent = l.region || '';
+      b.append(name, region);
+      if (!l.count) {
+        const soon = document.createElement('span');
+        soon.className = 'soon';
+        soon.textContent = ui('ui_soon', 'Bientôt');
+        b.append(soon);
+      }
+      b.onclick = async () => { await save({ lang: code }); location.reload(); };
+      $('langs').append(b);
+    }
+    return;
+  }
+
+  $('main').hidden = false;
+
+  // ---------- site switch (and reload hint for pages opened before install) ----------
+  $('origin').textContent = origin ? origin.replace(/^https?:\/\//, '') : ui('ui_unsupported', 'Page non prise en charge');
   $('site').checked = !!origin && settings.sites.includes(origin);
   $('site').disabled = !origin;
-  const setActions = on => { $('panel').disabled = !on; $('subs').disabled = !on; };
+  const ping = () => api.tabs.sendMessage(tab.id, { type: 'ping' }).then(r => !!r, () => false);
+  const loaded = origin ? await ping() : false;
+  const setActions = on => {
+    $('panel').disabled = !on || !loaded;
+    $('subs').disabled = !on || !loaded;
+    $('reloadBox').classList.toggle('show', on && !loaded);
+  };
   setActions($('site').checked);
+  $('reload').onclick = () => { api.tabs.reload(tab.id); window.close(); };
   $('site').onchange = async () => {
     const cur = await send({ type: 'getSettings' });
     const sites = new Set(cur.sites);
@@ -31,38 +80,43 @@ async function save(patch) {
     setActions($('site').checked);
   };
 
-  // Language
+  // ---------- language ----------
   for (const [code, l] of Object.entries(langs)) {
-    const o = new Option(`${l.name} (${l.region})`, code);
+    const o = new Option(`${l.name} (${l.region})${l.count ? '' : ` · ${ui('ui_soon', 'Bientôt')}`}`, code);
     o.selected = code === settings.lang;
     $('lang').append(o);
   }
-  $('lang').onchange = async () => { await save({ lang: $('lang').value }); progress(); };
+  $('lang').onchange = async () => {
+    await save({ lang: $('lang').value });
+    applyUi(await send({ type: 'getPack', lang: $('lang').value }));
+    progress();
+  };
 
-  // Hover mode (segmented control)
+  // ---------- display mode ----------
   const segs = [...$('hover').querySelectorAll('button')];
   const mark = v => segs.forEach(b => { b.classList.toggle('on', b.dataset.v === v); b.setAttribute('aria-pressed', b.dataset.v === v); });
   mark(settings.hover || 'ctrl');
   segs.forEach(b => { b.onclick = () => { mark(b.dataset.v); save({ hover: b.dataset.v }); }; });
 
-  // Actions
+  // ---------- actions ----------
   const toTab = type => api.tabs.sendMessage(tab.id, { type }).catch(() => {}).finally(() => window.close());
   $('panel').onclick = () => toTab('togglePanel');
   $('subs').onclick = () => toTab('toggleSubtitles');
   $('opts').onclick = () => api.runtime.openOptionsPage();
 
-  // Progress of the language pack
+  // ---------- progress of the language pack ----------
   async function progress() {
     const pack = await send({ type: 'getPack', lang: $('lang').value });
     const list = pack.entries.filter(e => e.group !== 'ui');
     const n = list.length;
     const v = list.filter(e => e.t && e.verified).length;
     const t = list.filter(e => e.t && !e.verified).length;
+    $('progress').title = TEXT.progress;
     $('barV').style.width = `${(100 * v) / n}%`;
     $('barT').style.width = `${(100 * t) / n}%`;
-    $('legV').textContent = `${v} validées`;
-    $('legT').textContent = `${t} à valider`;
-    $('legN').textContent = `${n - v - t} manquantes`;
+    $('legV').textContent = `${v} ${TEXT.validated}`;
+    $('legT').textContent = `${t} ${TEXT.toValidate}`;
+    $('legN').textContent = `${n - v - t} ${TEXT.missing}`;
   }
   progress();
 })();

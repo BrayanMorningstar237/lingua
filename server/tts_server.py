@@ -1,5 +1,5 @@
 """
-Mboa Lingua: optional local neural voice (Meta MMS-TTS, open source).
+Langwa: optional local neural voice (Meta MMS-TTS, open source).
 
 Used only to read national-language sentences that the native speaker has not recorded.
 Of the extension's languages, only Fulfulde has an MMS voice (facebook/mms-tts-ful).

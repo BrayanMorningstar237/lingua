@@ -1,14 +1,14 @@
 /*
- * Mboa Lingua: standalone runtime.
+ * Langwa: standalone runtime.
  * Lets the same content script run WITHOUT the extension APIs: as a userscript on phones
  * (Tampermonkey / Violentmonkey on Android, the "Userscripts" app in Safari on iPhone) or any
  * browser that has no extension support. Language data is embedded by tools/build.mjs in
- * globalThis.MBOA_DATA. Settings are kept in the userscript manager's own storage when
+ * globalThis.LANGWA_DATA. Settings are kept in the userscript manager's own storage when
  * available (GM_getValue), otherwise only for the current page.
  */
 (function (root) {
   'use strict';
-  const D = root.MBOA_DATA;
+  const D = root.LANGWA_DATA;
   if (!D) return;
 
   const hasGM = typeof GM_getValue === 'function' && typeof GM_setValue === 'function';
@@ -20,15 +20,15 @@
   };
   const listeners = [];
 
-  // Default language: the one with the most translated phrases.
-  const best = Object.keys(D.langs).sort((a, b) =>
-    Object.keys((D.packs[b] || {}).entries || {}).length - Object.keys((D.packs[a] || {}).entries || {}).length)[0];
+  // Translated phrases per language (the chooser marks empty languages "Soon").
+  const count = code => Object.values((D.packs[code] || {}).entries || {}).filter(e => e && e.t).length;
+  const langs = () => Object.fromEntries(Object.entries(D.langs).map(([c, l]) => [c, { ...l, count: count(c) }]));
 
   function settings() {
     const s = store.get('settings') || {};
     const here = location.protocol === 'file:' ? 'file://' : location.origin;
     return {
-      lang: best, hover: 'ctrl', toasts: true, autoSpeak: true,
+      lang: null, hover: 'ctrl', // language chosen by the user on first use toasts: true, autoSpeak: true,
       mt: { mode: 'none' }, tts: { mode: 'none' },
       ...s,
       sites: [here], // the userscript manager already decides on which sites it runs
@@ -36,11 +36,11 @@
   }
 
   function pack(code) {
-    const file = (D.packs[code] || {}).entries || {};
-    const over = store.get(`overrides:${code}`) || {};
+    const file = (code && (D.packs[code] || {}).entries) || {};
+    const over = (code && store.get(`overrides:${code}`)) || {};
     const l = D.langs[code] || {};
     return {
-      code, name: l.name || code, mms: null,
+      code, name: l.name || code || '', mms: null,
       entries: D.source.entries.map(e => {
         const tr = { ...file[e.id], ...over[e.id] };
         return { ...e, t: tr.t || '', x: tr.x || '', verified: !!tr.verified, audio: tr.audio || '', audioParts: tr.audioParts || [] };
@@ -50,14 +50,14 @@
 
   const handlers = {
     getSettings: () => settings(),
-    getLangs: () => D.langs,
-    getPack: m => pack(m.lang || settings().lang),
+    getLangs: () => langs(),
+    getPack: m => pack(m.lang !== undefined ? m.lang : settings().lang),
     translateBatch: m => ({ results: (m.items || []).map(() => null), error: null }),
     tts: () => null,
     clearCache: () => true,
   };
 
-  root.MboaRuntime = {
+  root.LangwaRuntime = {
     runtime: {
       sendMessage: async msg => (handlers[msg && msg.type] || (() => null))(msg || {}),
       onMessage: { addListener() {} },

@@ -1,7 +1,7 @@
 // Builds every distributable from browser-extension/ (no dependencies):
-//   dist/mboa-lingua-chromium.zip   Chrome, Edge, Brave, Opera (Web Store upload or "Load unpacked" after unzip)
-//   dist/mboa-lingua-firefox.xpi    Firefox desktop and Android (sign it on addons.mozilla.org)
-//   dist/mboa-lingua.user.js        any browser with a userscript manager, including phones
+//   dist/langwa-chromium.zip   Chrome, Edge, Brave, Opera (Web Store upload or "Load unpacked" after unzip)
+//   dist/langwa-firefox.xpi    Firefox desktop and Android (sign it on addons.mozilla.org)
+//   dist/langwa.user.js        any browser with a userscript manager, including phones
 // Usage: node tools/build.mjs
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, statSync } from 'node:fs';
 import { join, relative, dirname } from 'node:path';
@@ -65,8 +65,8 @@ function zip(entries) {
 }
 
 const files = shipped.map(name => ({ name, data: readFileSync(join(EXT, name)) }));
-writeFileSync(join(DIST, 'mboa-lingua-chromium.zip'), zip(files));
-writeFileSync(join(DIST, 'mboa-lingua-firefox.xpi'), zip(files));
+writeFileSync(join(DIST, 'langwa-chromium.zip'), zip(files));
+writeFileSync(join(DIST, 'langwa-firefox.xpi'), zip(files));
 
 // ---------- userscript ----------
 const langs = JSON.parse(read('lang/languages.json'));
@@ -75,8 +75,8 @@ const packs = Object.fromEntries(Object.keys(langs).map(c => {
 }));
 const data = { source: JSON.parse(read('lang/source.json')), langs, packs };
 const header = `// ==UserScript==
-// @name         Mboa Lingua
-// @namespace    mboa-lingua
+// @name         Langwa
+// @namespace    langwa
 // @version      ${manifest.version}
 // @description  ${manifest.description}
 // @match        https://safinum.cm/*
@@ -92,12 +92,12 @@ const header = `// ==UserScript==
 `;
 const userscript = [
   header,
-  `globalThis.MBOA_DATA = ${JSON.stringify(data)};`,
+  `globalThis.LANGWA_DATA = ${JSON.stringify(data)};`,
   read('src/protect.js'), read('src/engine.js'), read('src/speech.js'), read('src/standalone.js'), read('src/content.js'),
 ].join('\n');
-writeFileSync(join(DIST, 'mboa-lingua.user.js'), userscript);
+writeFileSync(join(DIST, 'langwa.user.js'), userscript);
 
 const kb = p => `${(statSync(join(DIST, p)).size / 1024).toFixed(0)} KB`;
-console.log(`Mboa Lingua ${manifest.version}`);
-for (const p of ['mboa-lingua-chromium.zip', 'mboa-lingua-firefox.xpi', 'mboa-lingua.user.js']) console.log(`  dist/${p.padEnd(28)} ${kb(p)}`);
+console.log(`Langwa ${manifest.version}`);
+for (const p of ['langwa-chromium.zip', 'langwa-firefox.xpi', 'langwa.user.js']) console.log(`  dist/${p.padEnd(28)} ${kb(p)}`);
 console.log(`  ${files.length} files: ${shipped.join(', ')}`);

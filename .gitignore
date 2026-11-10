@@ -11,3 +11,6 @@ __pycache__/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Local testing only (fake translations, offline test page). Never published.
+local-dev/

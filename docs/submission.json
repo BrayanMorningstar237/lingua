@@ -1,0 +1,10 @@
+{
+  "prototype": "Langwa",
+  "team": "",
+  "city": "",
+  "language": { "code": "", "name": "" },
+  "validators": [],
+  "videoUrl": "",
+  "repoUrl": "https://github.com/BrayanMorningstar237/lingua",
+  "teamContribution": "Problem analysis and product design, choice of the safety approach (protected values, safe summary, human recordings), linguistic work and validation with native speakers, testing on the Safinum Pay test environment, demo and documentation."
+}

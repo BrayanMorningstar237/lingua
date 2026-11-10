@@ -1,7 +1,7 @@
 const api = globalThis.browser ?? globalThis.chrome;
 const $ = id => document.getElementById(id);
-const P = globalThis.MboaProtect;
-const E = globalThis.MboaEngine;
+const P = globalThis.LangwaProtect;
+const E = globalThis.LangwaEngine;
 
 let langs = {};
 let code = 'ewo';
@@ -221,7 +221,7 @@ $('export').onclick = () => {
     };
   }
   const validators = [...new Set(Object.values(entries).filter(x => x.verified).map(x => x.validator))];
-  const file = { code, validation: { validators, exportedAt: new Date().toISOString(), method: 'Native-speaker review in the Mboa Lingua glossary editor' }, entries };
+  const file = { code, validation: { validators, exportedAt: new Date().toISOString(), method: 'Native-speaker review in the Langwa glossary editor' }, entries };
   const a = el('a', { href: URL.createObjectURL(new Blob([JSON.stringify(file, null, 2)], { type: 'application/json' })), download: `${code}.json` });
   a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 2000);
@@ -279,7 +279,7 @@ $('run').onclick = async () => {
   $('listen').onclick = () => steps && player.play(steps);
 };
 
-const player = globalThis.MboaSpeech.createPlayer({
+const player = globalThis.LangwaSpeech.createPlayer({
   tts: text => api.runtime.sendMessage({ type: 'tts', lang: code, text }),
 });
 

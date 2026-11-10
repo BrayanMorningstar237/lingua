@@ -1,6 +1,6 @@
-# Mboa Lingua
+# Langwa
 
-Mboa Lingua shows digital banking pages in Cameroon's national languages(traditional), without changing the
+Langwa shows digital banking pages in Cameroon's national languages(traditional), without changing the
 bank's code. Amounts, fees, beneficiaries, account numbers and references are protected: they
 are never translated, never sent anywhere, and every translation is checked against them
 before it is shown.
@@ -32,10 +32,10 @@ Build once: `node tools/build.mjs` (Node 18 or newer). This creates `dist/`.
 
 | Browser | How |
 |---|---|
-| **Chrome, Edge, Brave, Opera** (computer) | Open `chrome://extensions` (or `edge://extensions`), turn on **Developer mode**, click **Load unpacked**, choose the `browser-extension` folder. To give it to anyone with one click, upload `dist/mboa-lingua-chromium.zip` to the Chrome Web Store or Edge Add-ons. |
-| **Firefox** (computer) | `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on** → `browser-extension/manifest.json`. Then in `about:addons` → Mboa Lingua → Permissions, allow the sites. For a permanent install, sign `dist/mboa-lingua-firefox.xpi` on addons.mozilla.org (free, automated). |
+| **Chrome, Edge, Brave, Opera** (computer) | Open `chrome://extensions` (or `edge://extensions`), turn on **Developer mode**, click **Load unpacked**, choose the `browser-extension` folder. To give it to anyone with one click, upload `dist/langwa-chromium.zip` to the Chrome Web Store or Edge Add-ons. |
+| **Firefox** (computer) | `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on** → `browser-extension/manifest.json`. Then in `about:addons` → Langwa → Permissions, allow the sites. For a permanent install, sign `dist/langwa-firefox.xpi` on addons.mozilla.org (free, automated). |
 | **Firefox for Android** | Publish the signed xpi on addons.mozilla.org, then install it from there on the phone. |
-| **Any phone browser** (Android Chrome, Samsung Internet, iPhone Safari) | These browsers do not run extensions. Install a userscript manager: **Tampermonkey** or **Violentmonkey** (Android), or the free **Userscripts** app (iPhone, Safari). Then open `dist/mboa-lingua.user.js` and confirm the install. |
+| **Any phone browser** (Android Chrome, Samsung Internet, iPhone Safari) | These browsers do not run extensions. Install a userscript manager: **Tampermonkey** or **Violentmonkey** (Android), or the free **Userscripts** app (iPhone, Safari). Then open `dist/langwa.user.js` and confirm the install. |
 | **Safari** (Mac) | `xcrun safari-web-extension-converter browser-extension/`, then build the generated Xcode project. |
 
 The extension is active on `safinum.cm`, `localhost` and `127.0.0.1` by default. On another

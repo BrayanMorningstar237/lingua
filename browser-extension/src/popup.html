@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mboa Lingua</title>
+<title>Langwa</title>
 <style>
   :root { --ebony: #1d1712; --ebony-2: #2a221b; --ivory: #fbf6ee; --sand: #d9c9b4; --gold: #e3a21a; --forest: #1e7a4c; --terracotta: #c2502e; --indigo: #3d4a8a;
     --card: #fffcf7; --fg: #241d16; --muted: #76675a; --line: #ebdfcd; --soft: #f6eee2;
@@ -51,44 +51,71 @@
   .legend { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
   .legend span::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 99px; margin-right: 5px; vertical-align: 0; }
   .legend .lv::before { background: var(--forest); } .legend .lt::before { background: var(--gold); }
+  .reload { display: none; align-items: center; gap: 10px; padding: 12px; border-radius: 14px; background: color-mix(in srgb, var(--gold) 16%, var(--card)); border: 1px solid var(--gold); }
+  .reload.show { display: flex; }
+  .reload span { flex: 1; font-size: 13px; }
+  .reload .btn { padding: 8px 12px; background: var(--gold); color: var(--ebony); }
   .link { display: flex; align-items: center; justify-content: center; gap: 6px; border: 0; background: none; color: var(--muted); font: 600 13px inherit; font-family: inherit; cursor: pointer; padding: 2px; }
   .link:hover { color: var(--fg); }
+  [hidden] { display: none !important; }
+  .ask { display: grid; gap: 4px; }
+  .ask b { font-size: 17px; }
+  .ask small { color: var(--muted); }
+  .langs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .lang-btn { position: relative; display: grid; gap: 2px; text-align: left; padding: 12px; border-radius: 14px; border: 1px solid var(--line); background: var(--soft); color: var(--fg); cursor: pointer; font-family: inherit; }
+  .lang-btn:hover { border-color: var(--gold); }
+  .lang-btn b { font-size: 16px; }
+  .lang-btn small { font-size: 11.5px; color: var(--muted); line-height: 1.3; }
+  .lang-btn.empty b, .lang-btn.empty small { opacity: .55; }
+  .lang-btn .soon { position: absolute; top: 7px; right: 8px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; color: #8a5a00; }
 </style>
 </head>
 <body>
 <div class="band"></div>
 <header>
   <div class="logo"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></div>
-  <div><b>Mboa Lingua</b><small>Banque en langues nationales</small></div>
+  <div><b>Langwa</b><small data-ui="ui_tagline">Banque en langues nationales</small></div>
 </header>
-<main>
+
+<!-- First use: choose a language -->
+<main id="chooser" hidden>
+  <div class="ask"><b data-ui="ui_choose">Quelle langue parlez-vous ?</b><small data-ui="ui_choose_sub">Langwa affichera la banque dans cette langue.</small></div>
+  <div class="langs" id="langs"></div>
+</main>
+
+<main id="main" hidden>
   <label class="switch-row" for="site">
-    <span class="txt"><b>Actif sur ce site</b><small id="origin"></small></span>
+    <span class="txt"><b data-ui="ui_active">Actif sur ce site</b><small id="origin"></small></span>
     <span class="switch"><input type="checkbox" id="site"><span></span></span>
   </label>
 
-  <label class="field">Langue <select id="lang"></select></label>
+  <div class="reload" id="reloadBox" role="status">
+    <span data-ui="ui_reload_msg">Rechargez la page pour afficher les traductions.</span>
+    <button class="btn" id="reload"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg><span data-ui="ui_reload">Recharger</span></button>
+  </div>
 
-  <div class="field" role="group" aria-label="Afficher la traduction">
-    <span style="font-weight:650;font-size:13px;color:var(--muted)">Afficher la traduction</span>
+  <label class="field"><span data-ui="ui_language">Langue</span><select id="lang"></select></label>
+
+  <div class="field" role="group">
+    <span style="font-weight:650;font-size:13px;color:var(--muted)" data-ui="ui_show">Afficher la traduction</span>
     <div class="seg" id="hover">
-      <button data-v="ctrl"><kbd>Ctrl</kbd>+ survol</button>
-      <button data-v="always"><svg viewBox="0 0 24 24"><path d="M4 4l7 17 2.5-7.5L21 11 4 4z"/></svg>Survol</button>
-      <button data-v="off"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m6 6 12 12"/></svg>Non</button>
+      <button data-v="ctrl"><kbd>Ctrl</kbd><span data-ui="ui_mode_ctrl">+ survol</span></button>
+      <button data-v="always"><svg viewBox="0 0 24 24"><path d="M4 4l7 17 2.5-7.5L21 11 4 4z"/></svg><span data-ui="ui_mode_hover">Survol</span></button>
+      <button data-v="off"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m6 6 12 12"/></svg><span data-ui="ui_mode_off">Non</span></button>
     </div>
   </div>
 
   <div class="actions">
-    <button class="btn primary" id="panel"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M15 4v16"/></svg>Panneau</button>
-    <button class="btn ghost" id="subs"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M7 15h4M14 15h3M7 11h3M13 11h4"/></svg>Sous-titres</button>
+    <button class="btn primary" id="panel"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M15 4v16"/></svg><span data-ui="ui_panel">Panneau</span></button>
+    <button class="btn ghost" id="subs"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M7 15h4M14 15h3M7 11h3M13 11h4"/></svg><span data-ui="ui_subtitles">Sous-titres</span></button>
   </div>
 
-  <div class="progress" title="Phrases traduites et validées par un locuteur natif">
+  <div class="progress" id="progress">
     <div class="bar"><i class="v" id="barV"></i><i class="t" id="barT"></i></div>
     <div class="legend"><span class="lv" id="legV"></span><span class="lt" id="legT"></span><span id="legN"></span></div>
   </div>
 
-  <button class="link" id="opts"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M8 7h8M8 11h6"/></svg>Glossaire, voix et paramètres</button>
+  <button class="link" id="opts"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M8 7h8M8 11h6"/></svg><span data-ui="ui_settings">Glossaire, voix et paramètres</span></button>
 </main>
 <script src="popup.js"></script>
 </body>

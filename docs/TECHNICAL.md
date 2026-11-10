@@ -1,11 +1,11 @@
-# Mboa Lingua: technical document
+# Langwa: technical document
 
 SAFINUM Innovate Challenge, preselection.
 
 ## 1. Problem and solution
 
 Banking and mobile-money interfaces in Cameroon are in French or English. Many users read or
-speak a national language more comfortably. Mboa Lingua works on top of an **unchanged**
+speak a national language more comfortably. Langwa works on top of an **unchanged**
 financial service and makes its interface understandable in a national language, in writing
 and by voice. Every amount, fee, beneficiary, reference and security warning stays exactly as
 the bank displays it.

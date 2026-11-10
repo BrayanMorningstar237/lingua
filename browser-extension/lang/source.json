@@ -879,6 +879,156 @@
    "group": "ui",
    "fr": "Compris",
    "en": "Got it"
+  },
+  {
+   "id": "ui_tagline",
+   "group": "ui",
+   "fr": "Banque en langues nationales",
+   "en": "Banking in national languages"
+  },
+  {
+   "id": "ui_active",
+   "group": "ui",
+   "fr": "Actif sur ce site",
+   "en": "Active on this site"
+  },
+  {
+   "id": "ui_unsupported",
+   "group": "ui",
+   "fr": "Page non prise en charge",
+   "en": "Page not supported"
+  },
+  {
+   "id": "ui_reload_msg",
+   "group": "ui",
+   "fr": "Rechargez la page pour afficher les traductions.",
+   "en": "Reload the page to show the translations."
+  },
+  {
+   "id": "ui_reload",
+   "group": "ui",
+   "fr": "Recharger",
+   "en": "Reload"
+  },
+  {
+   "id": "ui_language",
+   "group": "ui",
+   "fr": "Langue",
+   "en": "Language"
+  },
+  {
+   "id": "ui_show",
+   "group": "ui",
+   "fr": "Afficher la traduction",
+   "en": "Show the translation"
+  },
+  {
+   "id": "ui_mode_ctrl",
+   "group": "ui",
+   "fr": "+ survol",
+   "en": "+ hover"
+  },
+  {
+   "id": "ui_mode_hover",
+   "group": "ui",
+   "fr": "Survol",
+   "en": "Hover"
+  },
+  {
+   "id": "ui_mode_off",
+   "group": "ui",
+   "fr": "Non",
+   "en": "Off"
+  },
+  {
+   "id": "ui_panel",
+   "group": "ui",
+   "fr": "Panneau",
+   "en": "Panel"
+  },
+  {
+   "id": "ui_settings",
+   "group": "ui",
+   "fr": "Glossaire, voix et paramètres",
+   "en": "Glossary, voice and settings"
+  },
+  {
+   "id": "ui_choose",
+   "group": "ui",
+   "fr": "Quelle langue parlez-vous ?",
+   "en": "Which language do you speak?"
+  },
+  {
+   "id": "ui_choose_sub",
+   "group": "ui",
+   "fr": "Langwa affichera la banque dans cette langue.",
+   "en": "Langwa will show the bank in this language."
+  },
+  {
+   "id": "ui_soon",
+   "group": "ui",
+   "fr": "Bientôt",
+   "en": "Soon"
+  },
+  {
+   "id": "ui_later",
+   "group": "ui",
+   "fr": "Plus tard",
+   "en": "Later"
+  },
+  {
+   "id": "ui_hint_touch",
+   "group": "ui",
+   "fr": "Appuyez longuement sur un texte : sa traduction s’affiche dessous.",
+   "en": "Long press any text: its translation appears below."
+  },
+  {
+   "id": "ui_hint_touch_short",
+   "group": "ui",
+   "fr": "appui long = traduction",
+   "en": "long press = translation"
+  },
+  {
+   "id": "ui_missing_lang",
+   "group": "ui",
+   "fr": "Pas encore traduit en {lang}",
+   "en": "Not yet translated into {lang}"
+  },
+  {
+   "id": "ui_original",
+   "group": "ui",
+   "fr": "Original",
+   "en": "Original"
+  },
+  {
+   "id": "ui_n_ok",
+   "group": "ui",
+   "fr": "validées",
+   "en": "validated"
+  },
+  {
+   "id": "ui_n_mt",
+   "group": "ui",
+   "fr": "automatiques",
+   "en": "automatic"
+  },
+  {
+   "id": "ui_n_gist",
+   "group": "ui",
+   "fr": "résumés",
+   "en": "summaries"
+  },
+  {
+   "id": "ui_n_block",
+   "group": "ui",
+   "fr": "bloquées",
+   "en": "blocked"
+  },
+  {
+   "id": "ui_n_none",
+   "group": "ui",
+   "fr": "non traduites",
+   "en": "not translated"
   }
  ]
 }

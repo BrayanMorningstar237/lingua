@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Langwa · Technical documentation</title>
+<style>
+  @page { size: A4; margin: 16mm 16mm 18mm; }
+  :root { --ebony: #1d1712; --ivory: #fbf6ee; --sand: #d9c9b4; --gold: #e3a21a; --gold-soft: #f6dfa6; --forest: #1e7a4c; --terracotta: #c2502e; --indigo: #3d4a8a;
+    --fg: #241d16; --muted: #6b5d50; --line: #e6d9c6; --soft: #f7f0e5;
+    --kente: repeating-linear-gradient(90deg, #e3a21a 0 18px, #1e7a4c 18px 24px, #c2502e 24px 36px, #1d1712 36px 40px, #e3a21a 40px 46px, #3d4a8a 46px 52px); }
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { margin: 0; color: var(--fg); font: 10.5pt/1.5 "Segoe UI", system-ui, -apple-system, Roboto, sans-serif; }
+  h1, h2, h3 { line-height: 1.2; margin: 0; }
+  h2 { font-size: 15pt; margin: 22px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--line); display: flex; align-items: baseline; gap: 10px; break-after: avoid; }
+  h2 .n { color: var(--gold); font-weight: 800; }
+  h3 { font-size: 11.5pt; margin: 14px 0 6px; break-after: avoid; }
+  p { margin: 0 0 8px; }
+  ul, ol { margin: 0 0 8px; padding-left: 20px; }
+  li { margin: 2px 0; }
+  code { font: 9pt "Cascadia Mono", Consolas, monospace; background: var(--soft); padding: 1px 4px; border-radius: 4px; }
+  a { color: var(--indigo); }
+  table { width: 100%; border-collapse: collapse; margin: 6px 0 10px; font-size: 9.6pt; break-inside: auto; }
+  th, td { text-align: left; vertical-align: top; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+  th { background: var(--soft); font-size: 8.6pt; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+  tr { break-inside: avoid; }
+  .band { height: 8px; background: var(--kente); border-radius: 3px; }
+  .section { break-inside: auto; }
+  .keep { break-inside: avoid; }
+  .page-break { break-before: page; }
+
+  /* cover */
+  .cover { height: 255mm; display: flex; flex-direction: column; }
+  .cover .top { background: var(--ebony); color: var(--ivory); border-radius: 18px; padding: 28px 28px 24px; position: relative; overflow: hidden; }
+  .cover .top .band { position: absolute; left: 0; right: 0; top: 0; border-radius: 0; }
+  .logo { width: 64px; height: 64px; border-radius: 16px; background: var(--gold); display: grid; place-items: center; margin: 10px 0 18px; }
+  .logo svg { width: 36px; height: 36px; fill: none; stroke: var(--ebony); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .cover h1 { font-size: 40pt; letter-spacing: -.01em; }
+  .cover .tag { font-size: 14pt; color: var(--sand); margin-top: 8px; max-width: 520px; }
+  .cover .meta { margin-top: 26px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; }
+  .cover .meta div { font-size: 9pt; color: var(--sand); text-transform: uppercase; letter-spacing: .06em; }
+  .cover .meta b { display: block; font-size: 11.5pt; color: var(--ivory); text-transform: none; letter-spacing: 0; margin-top: 2px; font-weight: 650; }
+  .cover .pillars { margin-top: 22px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .pillar { border: 1px solid var(--line); border-radius: 14px; padding: 14px; background: var(--soft); }
+  .pillar b { display: block; font-size: 11pt; margin-bottom: 4px; }
+  .pillar span { font-size: 9.4pt; color: var(--muted); }
+  .pillar i { display: block; width: 28px; height: 4px; border-radius: 4px; margin-bottom: 10px; }
+  .cover .foot { margin-top: auto; font-size: 9pt; color: var(--muted); }
+  .todo { display: inline-block; background: #fde2da; color: #9b3517; border: 1px dashed var(--terracotta); border-radius: 6px; padding: 0 6px; font-weight: 700; }
+
+  .callout { background: var(--soft); border-radius: 12px; padding: 12px 14px; margin: 8px 0 12px; }
+  .callout.green { background: #e8f3ec; } .callout.red { background: #fbe9e3; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* architecture */
+  .flow { display: grid; gap: 6px; margin: 8px 0 12px; }
+  .flow .row { display: grid; grid-template-columns: 34mm 1fr; gap: 10px; align-items: stretch; }
+  .flow .k { background: var(--ebony); color: var(--ivory); border-radius: 10px; padding: 8px 10px; font-weight: 700; font-size: 9.6pt; display: flex; align-items: center; }
+  .flow .v { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; font-size: 9.6pt; }
+  .flow .arrow { text-align: center; color: var(--gold); font-weight: 900; line-height: 1; font-size: 11pt; padding-left: 34mm; }
+  .chips span { display: inline-block; font: 600 8.6pt "Cascadia Mono", Consolas, monospace; background: var(--gold-soft); border-radius: 6px; padding: 1px 6px; margin: 2px 3px 0 0; }
+  .ok { color: var(--forest); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<section class="cover">
+  <div class="top">
+    <div class="band"></div>
+    <div class="logo"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></div>
+    <h1>Langwa</h1>
+    <div class="tag">Digital banking, understood in Cameroon's national languages. Amounts stay exact. The bank's code stays untouched.</div>
+    <div class="meta">
+      <div>Team<b>{{team}}</b></div>
+      <div>City<b>{{city}}</b></div>
+      <div>National language<b>{{languageName}}</b></div>
+      <div>Linguistic validation<b>{{validators}}</b></div>
+      <div>Source code<b>{{repoUrl}}</b></div>
+      <div>Demo video<b>{{videoUrl}}</b></div>
+    </div>
+  </div>
+  <div class="pillars">
+    <div class="pillar"><i style="background:var(--forest)"></i><b>Understand</b><span>Any text, button or message shown in the national language, by hover, long press or reading panel, and heard in a native speaker's voice.</span></div>
+    <div class="pillar"><i style="background:var(--gold)"></i><b>Protect</b><span>Amounts, signs, fees, beneficiaries and references are locked before translation and verified after. A mismatch blocks the translation.</span></div>
+    <div class="pillar"><i style="background:var(--indigo)"></i><b>Adapt</b><span>New messages are detected live and translated, or summarised safely with validated words and the exact amounts.</span></div>
+  </div>
+  <div class="foot">SAFINUM Innovate Challenge · Prototype submission · Technical documentation · {{date}}</div>
+</section>
+
+<!-- ============ 1 ============ -->
+<section class="section page-break">
+<h2><span class="n">1</span>Problem and proposed solution</h2>
+<p>Banking, payment and microfinance interfaces in Cameroon are in French or English. People who read or speak a national language more comfortably can misread a balance, a fee, a beneficiary or a security warning, and some avoid digital services altogether.</p>
+<p><b>Langwa</b> is a layer that sits on top of an <b>unchanged</b> digital financial service and makes it understandable in a national language. It reads the page in the browser, never modifies it, and shows the translation next to the original: under the element the user points at, in a reading panel, as subtitles, or as an alert when a new message appears. Each translation can be heard in a native speaker's voice.</p>
+<div class="callout green"><b>Design principle.</b> In finance, a wrong translation is worse than no translation. Langwa never lets a translation alter an amount, a sign, a fee, a beneficiary or a warning. When it cannot translate safely, it says what kind of message it is in the national language and shows the exact values.</div>
+
+<h3>Coverage of the minimum expected functionalities</h3>
+<table>
+  <tr><th style="width:28%">Requirement</th><th>How Langwa meets it</th></tr>
+  <tr><td>1. Interface language adaptation</td><td>Texts, buttons, labels, placeholders and messages are translated from a glossary validated by native speakers, with templates for sentences containing values (<code>Vous allez envoyer {amount} à {name}.</code>). The extension's own interface is also translatable.</td></tr>
+  <tr><td>2. Transaction journey</td><td>The full Safinum Pay journey is covered: balance, fees, beneficiary, summary, confirmation, plus common errors and security warnings. The reading panel lists the whole page with important messages first.</td></tr>
+  <tr><td>3. Preservation of financial information</td><td>Amounts with their sign, fees, percentages, phone and account numbers, references, dates and beneficiary names are masked before translation, restored verbatim and verified. Any mismatch blocks the translation.</td></tr>
+  <tr><td>4. Independent operation</td><td>Browser extension and userscript. No change to the service's code, data or requests. Works on any website, activated per site.</td></tr>
+  <tr><td>5. Adaptation to new content</td><td>A live observer detects new messages, translates them through templates or optional local machine translation, or shows a safe summary. New errors and warnings pop up as alerts.</td></tr>
+</table>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="section">
+<h2><span class="n">2</span>Architecture</h2>
+<div class="flow keep">
+  <div class="row"><div class="k">Bank page</div><div class="v">Unchanged financial service (French or English). Langwa only <b>reads</b> its text, labels, placeholders and buttons.</div></div>
+  <div class="arrow">↓</div>
+  <div class="row"><div class="k">Collect</div><div class="v">Text is grouped by the browser's own layout (paragraph, button, cell). A MutationObserver picks up new content. Scans are grouped and run when the browser is idle.</div></div>
+  <div class="arrow">↓</div>
+  <div class="row"><div class="k">Protect</div><div class="v">Financial values are replaced by tokens: <span class="chips"><span>-12,500 FCFA → ⟦A⟧</span><span>+237 6 99 12 34 56 → ⟦B⟧</span><span>SAF-2026-WX13I2 → ⟦C⟧</span><span>Jean-Paul Mbarga → ⟦D⟧</span></span></div></div>
+  <div class="arrow">↓</div>
+  <div class="row"><div class="k">Translate</div><div class="v">1. Validated glossary and templates · 2. "Label : value" (label translated, value kept) · 3. Optional local open-source MT on masked text · 4. Safe summary.</div></div>
+  <div class="arrow">↓</div>
+  <div class="row"><div class="k">Verify</div><div class="v">Every original value must be present character for character, with no new digit. Otherwise the translation is blocked.</div></div>
+  <div class="arrow">↓</div>
+  <div class="row"><div class="k">Show &amp; speak</div><div class="v">Isolated Shadow DOM layer: card under the element (Ctrl + hover on computer, long press on phone), reading panel, alerts, subtitles, listen button.</div></div>
+</div>
+<table>
+  <tr><th style="width:26%">Component</th><th>Role</th></tr>
+  <tr><td><code>protect.js</code></td><td>Detection, masking, restoring and integrity check of financial values</td></tr>
+  <tr><td><code>engine.js</code></td><td>Glossary and template matching, label/value split, message classification (error, warning, success), safe summary, speech plan</td></tr>
+  <tr><td><code>speech.js</code></td><td>Plays native-speaker recordings and reads protected values exactly</td></tr>
+  <tr><td><code>content.js</code></td><td>Page reading, display layer, gestures, panel, alerts, lifecycle</td></tr>
+  <tr><td><code>background.js</code></td><td>Language packs, optional local translation and voice adapters, cache</td></tr>
+  <tr><td><code>options</code> page</td><td>Glossary editor for native speakers: translation, explanation, validation, recording, test bench</td></tr>
+  <tr><td><code>standalone.js</code></td><td>Runtime for the phone version (userscript), same code as the extension</td></tr>
+</table>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="section">
+<h2><span class="n">3</span>Integration approach and independence</h2>
+<ul>
+  <li><b>No modification of the target service.</b> Text, attributes, styles, form values and network requests are never changed. All of Langwa's interface lives in one isolated Shadow DOM element. Disabling it leaves the page exactly as it was.</li>
+  <li><b>Not tied to one bank.</b> There is no site-specific selector. Recognition rules cover common Cameroonian formats (FCFA, +237 numbers, CM account numbers), and new formats can be added as rules.</li>
+  <li><b>Dynamic pages.</b> Step changes in single-page applications and injected messages are handled live.</li>
+  <li><b>Portable.</b> One Manifest V3 package for Chrome, Edge, Brave, Opera and Firefox (desktop and Android), Safari through Apple's converter, and a userscript for phone browsers without extension support (Tampermonkey, Violentmonkey, Userscripts for iPhone).</li>
+  <li><b>Lightweight.</b> No dependencies. About 150 KB for the extension, 98 KB for the userscript. Nothing runs on sites where it is switched off.</li>
+</ul>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="section">
+<h2><span class="n">4</span>Security and preservation of financial information</h2>
+<table>
+  <tr><th style="width:30%">Risk</th><th>Measure</th></tr>
+  <tr><td>A translation alters an amount, fee or number</td><td>Values are masked before translation and restored after. The integrity check requires every original value and rejects any extra digit. On failure: blocked, safe summary shown.</td></tr>
+  <tr><td>A lost sign turns a debit into a credit</td><td>The sign is part of the protected value (<code>-12,500 FCFA</code>, <code>+180,000 FCFA</code>). Covered by unit tests.</td></tr>
+  <tr><td>Beneficiary name altered</td><td>Names after "à / to / pour / vers", values next to a label, values typed by the user and standalone proper names are kept verbatim.</td></tr>
+  <tr><td>A gesture triggers a bank action</td><td>On phones, the click that follows a long press is cancelled. A long press on "Confirm" never confirms.</td></tr>
+  <tr><td>Wrong meaning in a security warning</td><td>Warnings and errors are detected, shown first and pushed as alerts. Unknown warnings are never guessed: a validated warning sentence is shown with validated key words.</td></tr>
+  <tr><td>Partial audio changes the meaning</td><td>The listen button plays only when every part of the sentence is recorded. A missing "never" can therefore never be skipped.</td></tr>
+  <tr><td>Personal data leaving the device</td><td>The glossary works offline. Optional machine translation receives only masked text and only on <code>localhost</code>. Typed values stay in memory for the page session. No analytics, no account.</td></tr>
+  <tr><td>Code injection from the page</td><td>Page text is always inserted as plain text, never as HTML.</td></tr>
+  <tr><td>Permissions</td><td><code>storage</code>, <code>activeTab</code> and <code>localhost</code> only.</td></tr>
+</table>
+<p>Every translation is labelled: <b>Validated</b> (native speaker), <b>Automatic translation</b>, <b>Safe summary</b> or <b>Blocked</b>. Protected values are shown as locked chips next to it.</p>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="section">
+<h2><span class="n">5</span>Adaptation to new content</h2>
+<ol>
+  <li>The observer detects the new message. Errors, warnings and confirmations appear as an alert marked <b>NEW</b>, read aloud when recorded.</li>
+  <li>If the sentence matches a template, it is translated with the new values (for example <code>Il vous reste {count} tentatives</code>).</li>
+  <li>Otherwise, optional local open-source machine translation translates the masked text, then the integrity check runs.</li>
+  <li>Otherwise, the safe summary is shown: a validated sentence for the message type, validated key words, and the exact amounts.</li>
+</ol>
+<p>The test bench in the glossary editor shows each step for any sentence, including what would leave the page (only masked text).</p>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="section">
+<h2><span class="n">6</span>Accessibility and user experience</h2>
+<ul>
+  <li><b>One gesture.</b> Ctrl + point on a computer, long press on a phone. A visual hint shows it once. The card opens right under the element.</li>
+  <li><b>Natural voice.</b> National-language text is played from recordings by the native speaker, not a synthetic voice. Amounts and names are read exactly by the device's most natural French voice, as amounts are commonly spoken in Cameroon. Sentences with values chain the recorded pieces with the real values.</li>
+  <li><b>Meaning, not words.</b> Translators write the idea as they would explain it to a relative, guided by context notes on each financial term. An optional short explanation (for example what "fees" means) is shown under the translation.</li>
+  <li><b>Visual language.</b> Colour and icons carry meaning before words: terracotta for errors, gold for warnings, green for validated, indigo for information, a lock on protected values. WCAG AA contrast, keyboard and screen-reader support, reduced-motion support.</li>
+  <li><b>Phones.</b> The panel becomes a full-width bottom sheet with large touch targets.</li>
+</ul>
+</section>
+
+<!-- ============ 7 ============ -->
+<section class="section">
+<h2><span class="n">7</span>National language and linguistic validation</h2>
+<table>
+  <tr><th style="width:30%">Language supported</th><td>{{languageName}}</td></tr>
+  <tr><th>Validated by</th><td>{{validators}}</td></tr>
+  <tr><th>Coverage</th><td>{{coverage}}</td></tr>
+  <tr><th>Ready to add</th><td>Ewondo, Fulfulde, Duala, Ghomálá', Basaá (one JSON file each)</td></tr>
+</table>
+<h3>Validation method</h3>
+<ol>
+  <li>A native speaker writes each translation in the glossary editor, in the standard orthography (General Alphabet of Cameroon Languages), guided by the context note of each term.</li>
+  <li>Each entry is validated individually. The validator's name and the date are stored with the entry and exported in the language file.</li>
+  <li>Placeholders (<code>{amount}</code>, <code>{name}</code>, <code>{count}</code>) are checked automatically: a translation that drops or adds one cannot be validated.</li>
+  <li>Warnings are reviewed for full strength: negations and irreversibility ("never", "cannot be cancelled") must be explicit.</li>
+  <li>The same speaker records the audio. Changing a text deletes its recordings, so audio and text always match.</li>
+  <li>Machine output is never marked as validated and always carries a warning label.</li>
+</ol>
+</section>
+
+<!-- ============ 8 ============ -->
+<section class="section">
+<h2><span class="n">8</span>Installation and test for the jury</h2>
+<div class="grid2">
+  <div class="callout keep"><b>Chrome, Edge, Brave, Opera</b>
+    <ol style="margin-top:6px">
+      <li>Unzip the submitted file <code>langwa-chromium.zip</code>.</li>
+      <li>Open <code>chrome://extensions</code> (Edge: <code>edge://extensions</code>) and turn on <b>Developer mode</b>.</li>
+      <li>Click <b>Load unpacked</b> and select the unzipped folder.</li>
+      <li>Open the test page, or reload it if it was already open.</li>
+    </ol>
+  </div>
+  <div class="callout keep"><b>Firefox</b>
+    <ol style="margin-top:6px">
+      <li><code>about:debugging#/runtime/this-firefox</code> → <b>Load Temporary Add-on</b>.</li>
+      <li>Select <code>manifest.json</code> inside the unzipped folder.</li>
+      <li>In <code>about:addons</code>, allow the extension on the test site.</li>
+    </ol>
+    <b>Phone</b>: install Tampermonkey (Android) or Userscripts (iPhone), then open <code>langwa.user.js</code> from the repository.
+  </div>
+</div>
+<h3>Suggested test</h3>
+<ol>
+  <li>Open <code>https://safinum.cm/hackathon-test</code> with the browser's own page translation turned off. Langwa is active on this site by default.</li>
+  <li>Hold <b>Ctrl</b> and point at the balance, a fee, a button, a warning. The translation appears below, with the values locked.</li>
+  <li>Click the round <b>{{languageName}}</b> button at the bottom right to open the reading panel. Press 🔊 to listen.</li>
+  <li>Go through fees, beneficiary, summary and confirmation. Check that amounts, the beneficiary and the reference are identical.</li>
+  <li>Introduce a new message: it appears as a translated alert, or as a safe summary with the exact amounts.</li>
+</ol>
+</section>
+
+<!-- ============ 9 ============ -->
+<section class="section">
+<h2><span class="n">9</span>Dependencies, tools and disclosure</h2>
+<table>
+  <tr><th style="width:36%">Component</th><th>Use</th><th style="width:22%">Licence</th></tr>
+  <tr><td>Browser extension APIs</td><td>Runtime</td><td>Built into the browser</td></tr>
+  <tr><td>Vanilla JavaScript, no npm packages</td><td>Extension and userscript</td><td>Team's code</td></tr>
+  <tr><td>Icon shapes in the style of Lucide</td><td>Interface icons</td><td>ISC</td></tr>
+  <tr><td>Node.js (<code>node:test</code>)</td><td>Unit tests and build script</td><td>MIT</td></tr>
+  <tr><td>Optional: Ollama with an open model (e.g. Qwen2.5)</td><td>Local machine translation fallback</td><td>MIT / Apache-2.0</td></tr>
+  <tr><td>Optional: Meta NLLB-200 (distilled 600M), Transformers, PyTorch</td><td>Local machine translation for Fulfulde</td><td>Weights CC-BY-NC-4.0</td></tr>
+  <tr><td>Optional: Meta MMS-TTS (<code>mms-tts-ful</code>)</td><td>Local voice for Fulfulde</td><td>Weights CC-BY-NC-4.0</td></tr>
+</table>
+<h3>Development tools</h3>
+<p>Visual Studio Code, Git and GitHub, Microsoft Edge and Google Chrome for testing. <b>Claude Code (Anthropic), an AI coding assistant, was used to help write and test the code and documentation.</b> No external service is used at run time.</p>
+<h3>Team's own contribution</h3>
+<p>{{teamContribution}}</p>
+</section>
+
+<!-- ============ 10 ============ -->
+<section class="section">
+<h2><span class="n">10</span>Known limitations</h2>
+<ul>
+  <li>Translation quality depends on the glossary. Open machine translation for Ewondo, Duala, Ghomálá' and Basaá is weak or does not exist, which is why the safe summary exists. NLLB-200 covers Nigerian Fulfulde, which differs from Adamawa Fulfulde.</li>
+  <li>No open synthetic voice exists for Ewondo, Duala, Ghomálá' or Basaá: unrecorded phrases have no audio in those languages.</li>
+  <li>Text drawn on <code>&lt;canvas&gt;</code>, inside cross-origin iframes, in closed Shadow DOM, or inside images cannot be read.</li>
+  <li>The phone version has no glossary editor: translations are prepared on a computer and built into the userscript.</li>
+  <li>Publication on browser stores (Chrome Web Store, Edge Add-ons, Firefox Add-ons) requires their review; the prototype is installed in developer mode.</li>
+</ul>
+<div class="band" style="margin-top:22px"></div>
+</section>
+
+</body>
+</html>

@@ -1,5 +1,5 @@
 /*
- * Mboa Lingua: reading translations aloud with natural voices.
+ * Langwa: reading translations aloud with natural voices.
  *
  * National-language text is ONLY played from human recordings made by the native-speaker
  * validator (or, for Fulfulde, from the local MMS neural voice if enabled). It is never read by
@@ -10,7 +10,7 @@
  */
 (function (root) {
   'use strict';
-  const P = root.MboaProtect || (typeof require !== 'undefined' ? require('./protect.js') : null);
+  const P = root.LangwaProtect || (typeof require !== 'undefined' ? require('./protect.js') : null);
 
   const CURRENCIES = [
     [/^(?:F\s?CFA|FCFA|XAF|XOF|CFA)$/i, 'francs CFA'],
@@ -129,6 +129,6 @@
   }
 
   const api = { speakValue, speakable, spokenNumber, createPlayer, bestFrenchVoice };
-  root.MboaSpeech = api;
+  root.LangwaSpeech = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

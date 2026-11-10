@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mboa Lingua · Glossaire</title>
+<title>Langwa · Glossaire</title>
 <style>
   :root { --ebony: #1d1712; --ebony-2: #2a221b; --ivory: #fbf6ee; --sand: #d9c9b4; --gold: #e3a21a; --gold-soft: #f6dfa6; --forest: #1e7a4c; --terracotta: #c2502e; --indigo: #3d4a8a;
     --bg: #f8f2e8; --card: #fffcf7; --fg: #241d16; --muted: #76675a; --line: #ebdfcd; --soft: #f6eee2;
@@ -40,7 +40,7 @@
   .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
   .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
   .muted { color: var(--muted); }
-  .guide { display: grid; gap: 6px; margin: 10px 0 14px; padding: 12px 14px; border-radius: 12px; background: var(--soft); border-left: 4px solid var(--gold); }
+  .guide { display: grid; gap: 6px; margin: 10px 0 14px; padding: 12px 14px; border-radius: 12px; background: var(--soft); }
   .guide b { color: var(--fg); }
   .bar { height: 8px; border-radius: 99px; background: var(--soft); overflow: hidden; display: flex; margin-top: 6px; }
   .bar i { display: block; height: 100%; } .bar .v { background: var(--forest); } .bar .t { background: var(--gold); }
@@ -54,7 +54,6 @@
   .check { display: inline-block; margin-top: 4px; color: #8a5a00; background: color-mix(in srgb, var(--gold) 18%, var(--card)); font-size: 11.5px; font-weight: 700; padding: 1px 7px; border-radius: 99px; }
   .ph { font-family: ui-monospace, Consolas, monospace; background: var(--gold-soft); color: #3b2604; padding: 0 4px; border-radius: 4px; }
   .bad { outline: 2px solid var(--terracotta) !important; }
-  .row-ok td:first-child { box-shadow: inset 4px 0 0 var(--forest); }
   .ok-label { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 99px; border: 1px solid var(--line); cursor: pointer; font-size: 13px; }
   .row-ok .ok-label { background: color-mix(in srgb, var(--forest) 12%, var(--card)); border-color: var(--forest); color: var(--forest); }
   input[type=checkbox] { accent-color: var(--forest); width: 16px; height: 16px; }
@@ -68,7 +67,7 @@
 <header>
   <div class="hwrap">
     <div class="logo"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></div>
-    <h1>Mboa Lingua<small>Glossaire, voix et paramètres</small></h1>
+    <h1>Langwa<small>Glossaire, voix et paramètres</small></h1>
     <label>Langue <select id="lang"></select></label>
   </div>
 </header>

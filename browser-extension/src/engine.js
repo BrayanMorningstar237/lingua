@@ -1,5 +1,5 @@
 /*
- * Mboa Lingua: translation engine (no network, deterministic).
+ * Langwa: translation engine (no network, deterministic).
  *
  * Order of resolution for a piece of interface text:
  *   1. Glossary / templates validated by native speakers
@@ -10,11 +10,11 @@
  *   4. Safe summary ("gist"): a pre-validated sentence saying what KIND of message it is
  *      (error / security warning / success / information) + the known key words + the
  *      protected amounts. Always correct in meaning, even for brand-new content.
- * Every assembled result is re-checked with MboaProtect.verify().
+ * Every assembled result is re-checked with LangwaProtect.verify().
  */
 (function (root) {
   'use strict';
-  const P = root.MboaProtect || (typeof require !== 'undefined' ? require('./protect.js') : null);
+  const P = root.LangwaProtect || (typeof require !== 'undefined' ? require('./protect.js') : null);
 
   const TOKEN_RE = /⟦[A-Z]+⟧/g;
 
@@ -263,6 +263,6 @@
   }
 
   const api = { createEngine, keyOf, norm, classify, splitTemplate };
-  root.MboaEngine = api;
+  root.LangwaEngine = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);
