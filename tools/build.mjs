@@ -3,7 +3,7 @@
 //   dist/langwa-firefox.xpi    Firefox desktop and Android (sign it on addons.mozilla.org)
 //   dist/langwa.user.js        any browser with a userscript manager, including phones
 // Usage: node tools/build.mjs
-import { readFileSync, writeFileSync, mkdirSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join, relative, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -97,7 +97,16 @@ const userscript = [
 ].join('\n');
 writeFileSync(join(DIST, 'langwa.user.js'), userscript);
 
+// ---------- contribution page for speakers (one file, works offline, phone first) ----------
+const termsFile = join(ROOT, 'data', 'terms.json');
+const terms = existsSync(termsFile) ? JSON.parse(readFileSync(termsFile, 'utf8')).terms : {};
+const collect = readFileSync(join(ROOT, 'tools', 'collect.template.html'), 'utf8')
+  .replace('/*DATA*/null', () => JSON.stringify({ source: data.source, langs, terms }).replace(/</g, '\\u003c'));
+writeFileSync(join(DIST, 'langwa-collect.html'), collect);
+mkdirSync(join(ROOT, 'collect'), { recursive: true });
+writeFileSync(join(ROOT, 'collect', 'index.html'), collect); // for GitHub Pages: <repo>/collect/
+
 const kb = p => `${(statSync(join(DIST, p)).size / 1024).toFixed(0)} KB`;
 console.log(`Langwa ${manifest.version}`);
-for (const p of ['langwa-chromium.zip', 'langwa-firefox.xpi', 'langwa.user.js']) console.log(`  dist/${p.padEnd(28)} ${kb(p)}`);
+for (const p of ['langwa-chromium.zip', 'langwa-firefox.xpi', 'langwa.user.js', 'langwa-collect.html']) console.log(`  dist/${p.padEnd(28)} ${kb(p)}`);
 console.log(`  ${files.length} files: ${shipped.join(', ')}`);

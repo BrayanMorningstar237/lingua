@@ -90,7 +90,7 @@ function row(e) {
   t.value = e.t || '';
   const ver = el('input', { type: 'checkbox' });
   ver.checked = !!e.verified;
-  const who = el('div', { class: 'muted' }, e.verified && e.validator ? `${e.validator}${e.date ? ' · ' + e.date : ''}` : '');
+  const who = el('div', { class: 'muted' }, e.verified && e.validator ? `${e.validator}${e.date ? ' · ' + e.date : ''}` : e.t && e.by ? `Proposé par ${e.by}` : '');
   const tr = el('tr', { class: e.verified ? 'row-ok' : '' });
 
   const phOk = () => !t.value.trim() || placeholders(t.value) === placeholders(e.fr);
@@ -227,16 +227,81 @@ $('export').onclick = () => {
   setTimeout(() => URL.revokeObjectURL(a.href), 2000);
 };
 $('importBtn').onclick = () => $('import').click();
+
+/** Minimal CSV parser (quotes, commas or semicolons, CRLF). */
+function parseCsv(text) {
+  const sep = (text.split('\n')[0].match(/;/g) || []).length > (text.split('\n')[0].match(/,/g) || []).length ? ';' : ',';
+  const rows = [];
+  let row = [], cell = '', q = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (q) { if (c === '"' && text[i + 1] === '"') { cell += '"'; i++; } else if (c === '"') q = false; else cell += c; }
+    else if (c === '"') q = true;
+    else if (c === sep) { row.push(cell); cell = ''; }
+    else if (c === '\n' || c === '\r') { if (c === '\r' && text[i + 1] === '\n') i++; row.push(cell); rows.push(row); row = []; cell = ''; }
+    else cell += c;
+  }
+  if (cell || row.length) { row.push(cell); rows.push(row); }
+  const head = (rows.shift() || []).map(h => h.trim().toLowerCase().replace(/^﻿/, ''));
+  const col = name => head.indexOf(name);
+  const entries = {};
+  for (const r of rows) {
+    const id = (r[col('id')] || '').trim();
+    const t = (r[col('translation')] ?? r[col('traduction')] ?? '').trim();
+    if (!id || !t) continue;
+    entries[id] = { t, x: (r[col('explanation')] ?? r[col('explication')] ?? '').trim(), by: (r[col('by')] ?? r[col('par')] ?? '').trim() };
+  }
+  return { entries };
+}
+
+/**
+ * Imports contribution files from the Langwa contribution page, exported language files and
+ * spreadsheets (CSV). Several files at once. Validated translations are never overwritten.
+ */
+$('import').multiple = true;
+$('import').accept = '.json,.csv,application/json,text/csv';
 $('import').onchange = async () => {
-  const f = $('import').files[0];
-  if (!f) return;
-  try {
-    const j = JSON.parse(await f.text());
-    if (j.code && j.code !== code && !confirm(`Ce fichier est pour « ${j.code} », pas « ${code} ». Importer quand même ?`)) return;
-    for (const [id, v] of Object.entries(j.entries || {})) overrides[id] = { ...(overrides[id] || {}), ...v };
-    await api.storage.local.set({ [`overrides:${code}`]: overrides });
-    await loadAll();
-  } catch (err) { alert('Fichier invalide : ' + err.message); }
+  const files = [...$('import').files];
+  $('import').value = '';
+  if (!files.length) return;
+  const report = { added: 0, updated: 0, kept: 0, files: 0, errors: [] };
+  const known = new Set(pack.entries.map(e => e.id));
+  for (const f of files) {
+    try {
+      const text = await f.text();
+      const j = /\.csv$/i.test(f.name) ? parseCsv(text) : JSON.parse(text);
+      if (j.code && j.code !== code && !confirm(`« ${f.name} » est pour « ${j.code} », pas « ${code} ». Importer quand même ?`)) continue;
+      const by = (j.contributor && j.contributor.name) || '';
+      for (const [id, v] of Object.entries(j.entries || {})) {
+        if (!known.has(id) || !v || !v.t) continue;
+        const cur = overrides[id] || {};
+        const existing = cur.t || (pack.entries.find(e => e.id === id) || {}).t;
+        if (cur.verified && existing && existing !== v.t) { report.kept++; continue; } // never replace validated text
+        const entry = { ...cur, ...v, by: v.by || by || cur.by || '' };
+        if (existing && existing !== v.t) { entry.verified = false; report.updated++; } else if (!existing) report.added++;
+        overrides[id] = entry;
+      }
+      report.files++;
+    } catch (err) { report.errors.push(`${f.name} : ${err.message}`); }
+  }
+  await api.storage.local.set({ [`overrides:${code}`]: overrides });
+  await loadAll();
+  alert([
+    `${report.files} fichier(s) importé(s).`,
+    `${report.added} nouvelle(s) traduction(s), ${report.updated} mise(s) à jour (à revalider).`,
+    report.kept ? `${report.kept} déjà validée(s), conservée(s) sans changement.` : '',
+    ...report.errors,
+  ].filter(Boolean).join('\n'));
+};
+
+/** Spreadsheet template (Google Sheets, Excel): one row per phrase, ready to fill. */
+$('exportCsv').onclick = () => {
+  const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  const lines = [['id', 'group', 'fr', 'en', 'note', 'translation', 'explanation', 'by'].join(',')];
+  for (const e of pack.entries) lines.push([e.id, e.group, e.fr, e.en, e.note || '', e.t || '', e.x || '', e.by || e.validator || ''].map(esc).join(','));
+  const a = el('a', { href: URL.createObjectURL(new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' })), download: `langwa-${code}.csv` });
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
 };
 
 // ---------- test bench ----------

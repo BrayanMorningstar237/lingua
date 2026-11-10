@@ -66,6 +66,19 @@ add others in the userscript manager (User matches).
 The **banc d'essai** (test bench) shows, for any sentence, what is protected, what would leave
 the page, the result, the integrity check, and lets you hear it.
 
+## Getting translations from speakers (no install needed)
+
+1. Run `node tools/build.mjs`. It creates `dist/langwa-collect.html`, a one-file contribution page.
+2. Send that file on WhatsApp, or host it: with GitHub Pages enabled, it is at `https://<user>.github.io/<repo>/collect/`.
+3. The speaker opens it on a phone, chooses the language, and translates one sentence per screen, starting with the test journey. They can record their voice, tap dictionary suggestions, and stop and continue later (everything is saved on the phone).
+4. **Envoyer mes traductions** shares a small file directly to WhatsApp (or downloads it).
+5. The team opens the glossary editor → **Importer (JSON, CSV)** and selects one or several received files. New translations are added as "Non validé"; validated ones are never overwritten.
+6. A second speaker (or the same one, re-reading) ticks **Validé** with their name.
+
+Teams that prefer a spreadsheet can use **Tableur (CSV)** to get every phrase in Google Sheets or Excel, fill the `translation` column, and import the CSV back.
+
+**Dictionary suggestions** come from `node tools/harvest-wiktionary.mjs`, which collects openly licensed terms (Wiktionnaire, CC BY-SA 4.0) into `data/terms.json`. They are hints for speakers, never shown to users as translations.
+
 ## Optional local open-source helpers
 
 Without them, sentences that are not in the glossary get a **safe summary**: a validated

@@ -77,7 +77,7 @@ async function loadPack(code) {
     const tr = { ...(file.entries || {})[e.id], ...overrides[e.id] };
     return {
       ...e, t: tr.t || '', x: tr.x || '', verified: !!tr.verified, validator: tr.validator || '', date: tr.date || '',
-      audio: tr.audio || '', audioParts: Array.isArray(tr.audioParts) ? tr.audioParts : [],
+      audio: tr.audio || '', audioParts: Array.isArray(tr.audioParts) ? tr.audioParts : [], by: tr.by || '',
     };
   });
   const l = LANGS[code] || {};

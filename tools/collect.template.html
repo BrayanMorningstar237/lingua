@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1d1712">
+<title>Langwa · Aidez à traduire</title>
+<style>
+  :root { --ebony: #1d1712; --ebony-2: #2a221b; --ivory: #fbf6ee; --sand: #d9c9b4; --gold: #e3a21a; --gold-soft: #f6dfa6; --forest: #1e7a4c; --terracotta: #c2502e; --indigo: #3d4a8a;
+    --bg: #f8f2e8; --card: #fffcf7; --fg: #241d16; --muted: #76675a; --line: #ebdfcd; --soft: #f3eadc;
+    --kente: repeating-linear-gradient(90deg, #e3a21a 0 18px, #1e7a4c 18px 24px, #c2502e 24px 36px, #1d1712 36px 40px, #e3a21a 40px 46px, #3d4a8a 46px 52px); }
+  @media (prefers-color-scheme: dark) { :root { --bg: #16110d; --card: #1f1913; --fg: #f6efe4; --muted: #b7a690; --line: #3a3027; --soft: #2a221b; } }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 "Segoe UI", system-ui, -apple-system, Roboto, "Noto Sans", sans-serif; -webkit-text-size-adjust: 100%; }
+  svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  [hidden] { display: none !important; }
+  .band { height: 6px; background: var(--kente); }
+  header { background: var(--ebony); color: var(--ivory); padding: 14px 16px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 2; }
+  .logo { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; background: var(--gold); color: var(--ebony); }
+  header .t { flex: 1; min-width: 0; }
+  header b { display: block; font-size: 16px; }
+  header small { color: var(--sand); font-size: 12.5px; }
+  .count { font-size: 13px; color: var(--sand); white-space: nowrap; }
+  .progress { height: 4px; background: var(--ebony-2); }
+  .progress i { display: block; height: 100%; width: 0; background: var(--gold); transition: width .2s ease; }
+  main { max-width: 640px; margin: 0 auto; padding: 18px 16px 120px; }
+  h1 { font-size: 22px; margin: 6px 0 6px; }
+  .lead { color: var(--muted); margin: 0 0 18px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 18px; }
+  .field { display: grid; gap: 6px; margin-bottom: 14px; font-weight: 600; font-size: 14px; }
+  .field small { font-weight: 400; color: var(--muted); }
+  input[type=text], textarea { font: inherit; width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: inherit; }
+  textarea { min-height: 96px; resize: vertical; font-size: 18px; line-height: 1.45; }
+  input:focus, textarea:focus { outline: 2px solid var(--gold); border-color: transparent; }
+  .langs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+  .lang { text-align: left; padding: 14px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--card); display: grid; gap: 2px; }
+  .lang b { font-size: 17px; } .lang small { color: var(--muted); font-size: 12.5px; }
+  .lang.on { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 12%, var(--card)); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 14px; padding: 14px 18px; font-weight: 700; }
+  .btn.primary { background: var(--ebony); color: var(--ivory); } .btn.primary svg { color: var(--gold); }
+  .btn.gold { background: var(--gold); color: var(--ebony); }
+  .btn.ghost { background: var(--soft); color: var(--fg); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .wide { width: 100%; }
+  .tag { display: inline-block; font-size: 11.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .src { font-size: 21px; font-weight: 700; line-height: 1.35; margin: 0 0 6px; }
+  .en { color: var(--muted); margin: 0 0 12px; }
+  .note { display: flex; gap: 10px; background: var(--soft); border-radius: 12px; padding: 10px 12px; font-size: 14px; margin-bottom: 14px; }
+  .note svg { color: var(--indigo); margin-top: 2px; width: 18px; height: 18px; }
+  .ph { font-family: ui-monospace, Consolas, monospace; background: var(--gold-soft); color: #3b2604; padding: 0 5px; border-radius: 5px; font-size: .9em; }
+  .warn { color: var(--terracotta); font-size: 13.5px; margin-top: 6px; }
+  .sugg { margin: 12px 0 2px; }
+  .sugg .lbl { font-size: 12.5px; color: var(--muted); margin-bottom: 6px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; margin: 0 6px 6px 0; padding: 6px 10px; border-radius: 99px; border: 1px solid var(--line); background: var(--card); font-size: 14px; }
+  .chip i { font-style: normal; color: var(--muted); font-size: 12px; }
+  .rec { margin-top: 16px; display: grid; gap: 8px; }
+  .recrow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .recrow .lbl { flex: 1 1 100%; font-size: 13px; color: var(--muted); }
+  .recbtn { border: 0; border-radius: 99px; padding: 10px 16px; background: var(--soft); font-weight: 700; display: inline-flex; gap: 8px; align-items: center; }
+  .recbtn.on { background: var(--terracotta); color: #fff; }
+  .recbtn.done { background: color-mix(in srgb, var(--forest) 14%, var(--card)); color: var(--forest); }
+  details { margin-top: 14px; } summary { cursor: pointer; color: var(--muted); font-size: 14px; }
+  .bar { position: fixed; left: 0; right: 0; bottom: 0; background: var(--card); border-top: 1px solid var(--line); padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); z-index: 2; }
+  .bar .in { max-width: 640px; margin: 0 auto; display: grid; grid-template-columns: auto auto 1fr; gap: 8px; }
+  .done-card { text-align: center; }
+  .done-card .big { font-size: 46px; font-weight: 800; color: var(--forest); }
+  .list { margin-top: 18px; display: grid; gap: 6px; }
+  .row { display: flex; gap: 10px; align-items: baseline; padding: 10px 12px; border-radius: 12px; background: var(--card); border: 1px solid var(--line); text-align: left; width: 100%; }
+  .row b { flex: 1; font-weight: 500; font-size: 14px; } .row span { font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .row.ok span { color: var(--forest); }
+  .toast { position: fixed; left: 50%; bottom: 96px; transform: translateX(-50%); background: var(--ebony); color: var(--ivory); padding: 10px 16px; border-radius: 12px; font-size: 14px; z-index: 3; }
+</style>
+</head>
+<body>
+<div class="band"></div>
+<header>
+  <div class="logo"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></div>
+  <div class="t"><b>Langwa</b><small data-t="subtitle"></small></div>
+  <div class="count" id="count"></div>
+</header>
+<div class="progress"><i id="prog"></i></div>
+
+<main>
+  <!-- 1. Who and which language -->
+  <section id="start">
+    <h1 data-t="title"></h1>
+    <p class="lead" data-t="lead"></p>
+    <div class="field" data-t="chooseLang"></div>
+    <div class="langs" id="langs"></div>
+    <label class="field"><span data-t="yourName"></span><input type="text" id="name" autocomplete="name"></label>
+    <label class="field"><span data-t="yourPlace"></span><input type="text" id="place"><small data-t="placeHelp"></small></label>
+    <button class="btn primary wide" id="go" disabled><span data-t="start"></span><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></button>
+  </section>
+
+  <!-- 2. One phrase per screen -->
+  <section id="phrase" hidden>
+    <div class="card">
+      <span class="tag" id="group"></span>
+      <p class="src" id="fr"></p>
+      <p class="en" id="enTxt"></p>
+      <div class="note" id="note" hidden><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span id="noteTxt"></span></div>
+      <label class="field"><span id="trLabel"></span><textarea id="tr" lang="" autocapitalize="sentences"></textarea></label>
+      <div class="warn" id="phWarn" hidden></div>
+      <div class="sugg" id="sugg" hidden><div class="lbl" data-t="suggestions"></div><div id="chips"></div></div>
+      <div class="sugg" id="refs" hidden><div class="lbl" data-t="dictionaries"></div><div id="refLinks"></div></div>
+      <div class="rec" id="rec"></div>
+      <details id="xBox"><summary data-t="addExplain"></summary><textarea id="x" style="min-height:60px;font-size:15px;margin-top:8px"></textarea></details>
+    </div>
+  </section>
+
+  <!-- 3. Send -->
+  <section id="finish" hidden>
+    <div class="card done-card">
+      <div class="big" id="doneCount">0</div>
+      <p data-t="doneText"></p>
+      <button class="btn gold wide" id="send"><svg viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg><span data-t="send"></span></button>
+      <p class="lead" style="margin-top:12px" data-t="sendHelp"></p>
+      <button class="btn ghost wide" id="back"><span data-t="continue"></span></button>
+    </div>
+    <div class="list" id="list"></div>
+  </section>
+</main>
+
+<div class="bar" id="nav" hidden>
+  <div class="in">
+    <button class="btn ghost" id="prev" aria-label="Précédent"><svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg></button>
+    <button class="btn ghost" id="skip"><span data-t="skip"></span></button>
+    <button class="btn primary" id="next"><span data-t="next"></span><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></button>
+  </div>
+</div>
+
+<script>
+/* Data embedded by tools/build.mjs: { source, langs, terms } */
+const DATA = /*DATA*/null;
+
+const EN = /^en/i.test(navigator.language || '');
+const T = EN ? {
+  subtitle: 'Help translate banking into your language', title: 'Translate Langwa into your language',
+  lead: 'You will see short banking sentences. Write what they mean in your language, as you would explain it to a relative. About 2 hours for everything; you can stop and continue later.',
+  chooseLang: 'Which language do you speak?', yourName: 'Your name', yourPlace: 'Village, town or region (optional)', placeHelp: 'Helps us know which variety of the language you speak.',
+  start: 'Start', suggestions: 'Dictionary words (tap to insert, check them):', addExplain: 'Add a short explanation (optional)',
+  skip: 'Skip', next: 'Next', translationIn: 'In', keep: 'Keep these markers exactly:', record: 'Record', again: 'Record again', stop: 'Stop', play: 'Play',
+  recordWhole: 'Record the whole sentence', recordPiece: 'Record this piece', valueAuto: 'read automatically',
+  doneText: 'translations ready. Send them to the Langwa team.', send: 'Send my translations', sendHelp: 'On a phone, choose WhatsApp. Otherwise the file is downloaded: send it to the team.',
+  dictionaries: 'Online dictionaries:', continue: 'Continue translating', saved: 'Saved', translated: 'translated', skipped: 'to do', all: 'All sentences',
+} : {
+  subtitle: 'Aidez à traduire la banque dans votre langue', title: 'Traduisez Langwa dans votre langue',
+  lead: 'Vous verrez de courtes phrases de banque. Écrivez leur sens dans votre langue, comme vous l’expliqueriez à un parent. Environ 2 heures pour tout ; vous pouvez arrêter et reprendre plus tard.',
+  chooseLang: 'Quelle langue parlez-vous ?', yourName: 'Votre nom', yourPlace: 'Village, ville ou région (facultatif)', placeHelp: 'Pour savoir quelle variété de la langue vous parlez.',
+  start: 'Commencer', suggestions: 'Mots du dictionnaire (touchez pour insérer, vérifiez-les) :', addExplain: 'Ajouter une courte explication (facultatif)',
+  skip: 'Passer', next: 'Suivant', translationIn: 'En', keep: 'Gardez exactement ces marqueurs :', record: 'Enregistrer', again: 'Réenregistrer', stop: 'Arrêter', play: 'Écouter',
+  recordWhole: 'Enregistrez toute la phrase', recordPiece: 'Enregistrez ce morceau', valueAuto: 'lu automatiquement',
+  doneText: 'traductions prêtes. Envoyez-les à l’équipe Langwa.', send: 'Envoyer mes traductions', sendHelp: 'Sur un téléphone, choisissez WhatsApp. Sinon le fichier est téléchargé : envoyez-le à l’équipe.',
+  dictionaries: 'Dictionnaires en ligne :', continue: 'Continuer à traduire', saved: 'Enregistré', translated: 'traduites', skipped: 'à faire', all: 'Toutes les phrases',
+};
+document.documentElement.lang = EN ? 'en' : 'fr';
+document.querySelectorAll('[data-t]').forEach(el => { el.textContent = T[el.dataset.t] || ''; });
+const $ = id => document.getElementById(id);
+const el = (tag, attrs = {}, ...kids) => { const n = document.createElement(tag); for (const [k, v] of Object.entries(attrs)) { if (k.startsWith('on')) n.addEventListener(k.slice(2), v); else n.setAttribute(k, v); } n.append(...kids.filter(k => k != null)); return n; };
+
+// Phrases in order of importance: the test journey first, interface labels last.
+const ORDER = ['test-env', 'steps', 'balance', 'fees', 'transfer', 'security', 'messages', 'safety-net', 'ui'];
+const PHRASES = DATA.source.entries.slice().sort((a, b) => ORDER.indexOf(a.group) - ORDER.indexOf(b.group));
+const GROUP_NAMES = EN
+  ? { 'test-env': 'Test journey', steps: 'Steps', balance: 'Balance', fees: 'Fees', transfer: 'Transfer', security: 'Security', messages: 'Messages', 'safety-net': 'General messages', ui: 'Langwa interface' }
+  : { 'test-env': 'Parcours de test', steps: 'Étapes', balance: 'Solde', fees: 'Frais', transfer: 'Virement', security: 'Sécurité', messages: 'Messages', 'safety-net': 'Messages généraux', ui: 'Interface Langwa' };
+
+// ---------- storage (IndexedDB: holds recordings too, survives closing the page) ----------
+const db = new Promise((res, rej) => { const r = indexedDB.open('langwa-collect', 1); r.onupgradeneeded = () => r.result.createObjectStore('kv'); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
+const idb = async (mode, fn) => { const d = await db; return new Promise((res, rej) => { const tx = d.transaction('kv', mode); const q = fn(tx.objectStore('kv')); tx.oncomplete = () => res(q && q.result); tx.onerror = () => rej(tx.error); }); };
+const load = k => idb('readonly', s => s.get(k)).catch(() => null);
+const save = (k, v) => idb('readwrite', s => s.put(v, k)).catch(() => {});
+
+let st = { lang: '', name: '', place: '', i: 0, entries: {} };
+const placeholders = s => (String(s || '').match(/\{\w+\}/g) || []).sort().join(',');
+const split = t => { const segs = [], names = []; let last = 0; String(t).replace(/\{(\w+)\}/g, (m, n, i) => { segs.push(t.slice(last, i)); names.push(n); last = i + m.length; return m; }); segs.push(String(t).slice(last)); return { segs, names }; };
+const fold = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+const persist = () => save('state', st);
+function toast(msg) { const t = el('div', { class: 'toast' }, msg); document.body.append(t); setTimeout(() => t.remove(), 1400); }
+function counts() { const done = PHRASES.filter(p => (st.entries[p.id] || {}).t).length; $('count').textContent = st.lang ? `${done} / ${PHRASES.length}` : ''; $('prog').style.width = `${(100 * done) / PHRASES.length}%`; return done; }
+
+// ---------- 1. start ----------
+function renderStart() {
+  $('langs').replaceChildren(...Object.entries(DATA.langs).map(([code, l]) => {
+    const b = el('button', { class: `lang${st.lang === code ? ' on' : ''}`, type: 'button' }, el('b', {}, l.name), el('small', {}, l.region || ''));
+    b.onclick = () => { st.lang = code; renderStart(); check(); };
+    return b;
+  }));
+  $('name').value = st.name; $('place').value = st.place;
+  const check = () => { $('go').disabled = !(st.lang && $('name').value.trim()); };
+  $('name').oninput = check; check();
+  $('go').onclick = () => { st.name = $('name').value.trim(); st.place = $('place').value.trim(); persist(); show('phrase'); renderPhrase(); };
+}
+
+// ---------- 2. phrases ----------
+function hl(text) { const out = []; let last = 0; String(text).replace(/\{\w+\}/g, (m, i) => { out.push(text.slice(last, i), el('span', { class: 'ph' }, m)); last = i + m.length; return m; }); out.push(String(text).slice(last)); return out; }
+
+function suggestions(p) {
+  const terms = (DATA.terms || {})[st.lang] || {};
+  const words = new Set(fold(`${p.fr} ${p.note || ''}`).match(/[a-z]+/g) || []);
+  const out = [];
+  for (const w of words) for (const t of terms[w] || terms[w.replace(/s$/, '')] || []) if (!out.some(o => o.term === t.term)) out.push({ ...t, fr: w });
+  return out.slice(0, 8);
+}
+
+let recorder = null;
+function recButton(get, set, label) {
+  const wrap = el('div', { class: 'recrow' }, el('div', { class: 'lbl' }, label));
+  const draw = () => {
+    const url = get();
+    const rec = el('button', { class: `recbtn${url ? ' done' : ''}`, type: 'button' }, url ? `✓ ${T.again}` : `● ${T.record}`);
+    rec.onclick = async () => {
+      if (recorder) { recorder.stop(); return; }
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
+        const chunks = []; recorder = new MediaRecorder(stream);
+        recorder.ondataavailable = e => chunks.push(e.data);
+        recorder.onstop = () => { stream.getTracks().forEach(t => t.stop()); const blob = new Blob(chunks, { type: recorder.mimeType }); recorder = null; const fr = new FileReader(); fr.onload = () => { set(fr.result); persist(); draw(); }; fr.readAsDataURL(blob); };
+        recorder.start(); rec.className = 'recbtn on'; rec.textContent = `■ ${T.stop}`;
+      } catch (e) { alert(e.message); }
+    };
+    const play = url ? el('button', { class: 'recbtn', type: 'button', onclick: () => new Audio(url).play() }, `▶ ${T.play}`) : null;
+    wrap.replaceChildren(el('div', { class: 'lbl' }, label), rec, play || '');
+  };
+  draw();
+  return wrap;
+}
+
+function renderRec(p) {
+  const e = st.entries[p.id] ||= {};
+  const box = $('rec');
+  box.replaceChildren();
+  if (!e.t || !window.MediaRecorder) return;
+  const { segs, names } = split(e.t);
+  if (!names.length) { box.append(recButton(() => e.audio, v => { e.audio = v; }, T.recordWhole)); return; }
+  e.audioParts ||= [];
+  segs.forEach((seg, i) => {
+    if (/\p{L}/u.test(seg)) box.append(recButton(() => e.audioParts[i], v => { e.audioParts[i] = v; }, `${T.recordPiece} : « ${seg.trim()} »`));
+    if (i < names.length) box.append(el('div', { class: 'recrow' }, el('span', { class: 'ph' }, `{${names[i]}}`), el('span', { class: 'lbl', style: 'flex:1' }, T.valueAuto)));
+  });
+}
+
+function renderPhrase() {
+  st.i = Math.max(0, Math.min(st.i, PHRASES.length - 1));
+  const p = PHRASES[st.i];
+  const e = st.entries[p.id] ||= {};
+  $('group').textContent = `${GROUP_NAMES[p.group] || p.group} · ${st.i + 1} / ${PHRASES.length}`;
+  $('fr').replaceChildren(...hl(p.fr));
+  $('enTxt').replaceChildren(...hl(p.en));
+  $('note').hidden = !p.note; $('noteTxt').textContent = p.note || '';
+  $('trLabel').textContent = `${T.translationIn} ${DATA.langs[st.lang].name}`;
+  $('tr').value = e.t || ''; $('tr').setAttribute('lang', st.lang);
+  $('x').value = e.x || ''; $('xBox').open = !!e.x;
+  const need = placeholders(p.fr);
+  const checkPh = () => { const ok = !$('tr').value.trim() || placeholders($('tr').value) === need; $('phWarn').hidden = ok; $('phWarn').textContent = `${T.keep} ${need.split(',').join(' ')}`; $('next').disabled = !ok; return ok; };
+  $('tr').oninput = () => { e.t = $('tr').value.trim(); checkPh(); counts(); clearTimeout(window.__s); window.__s = setTimeout(() => { persist(); renderRec(p); }, 500); };
+  $('x').oninput = () => { e.x = $('x').value.trim(); persist(); };
+  const sug = suggestions(p);
+  $('sugg').hidden = !sug.length;
+  $('chips').replaceChildren(...sug.map(s => {
+    const c = el('button', { class: 'chip', type: 'button', title: s.definition }, s.term, el('i', {}, s.fr));
+    c.onclick = () => { const ta = $('tr'); const pos = ta.selectionStart ?? ta.value.length; ta.value = ta.value.slice(0, pos) + s.term + ta.value.slice(pos); ta.dispatchEvent(new Event('input')); ta.focus(); };
+    return c;
+  }));
+  const refs = (DATA.langs[st.lang] || {}).refs || [];
+  $('refs').hidden = !refs.length;
+  $('refLinks').replaceChildren(...refs.map(r => el('a', { class: 'chip', href: r.url, target: '_blank', rel: 'noopener' }, r.name)));
+  checkPh(); renderRec(p); counts();
+  $('prev').disabled = st.i === 0;
+  window.scrollTo(0, 0);
+}
+
+function go(delta) {
+  persist();
+  if (st.i + delta >= PHRASES.length) { show('finish'); renderFinish(); return; }
+  st.i += delta; renderPhrase();
+}
+$('next').onclick = () => { if ((st.entries[PHRASES[st.i].id] || {}).t) toast(T.saved); go(1); };
+$('skip').onclick = () => go(1);
+$('prev').onclick = () => go(-1);
+
+// ---------- 3. send ----------
+function payload() {
+  const entries = {};
+  const date = new Date().toISOString().slice(0, 10);
+  for (const [id, e] of Object.entries(st.entries)) if (e.t) entries[id] = { t: e.t, x: e.x || '', audio: e.audio || '', audioParts: e.audioParts || [], by: st.name, place: st.place, date };
+  return { format: 'langwa-contribution-1', code: st.lang, contributor: { name: st.name, place: st.place }, createdAt: new Date().toISOString(), entries };
+}
+function renderFinish() {
+  $('doneCount').textContent = counts();
+  $('list').replaceChildren(el('div', { class: 'tag' }, T.all), ...PHRASES.map((p, i) => {
+    const done = !!(st.entries[p.id] || {}).t;
+    const r = el('button', { class: `row${done ? ' ok' : ''}`, type: 'button' }, el('b', {}, p.fr), el('span', {}, done ? `✓ ${T.translated}` : T.skipped));
+    r.onclick = () => { st.i = i; show('phrase'); renderPhrase(); };
+    return r;
+  }));
+}
+$('send').onclick = async () => {
+  const data = payload();
+  const safe = s => (s || 'x').normalize('NFD').replace(/[^\w-]+/g, '-').slice(0, 30);
+  const file = new File([JSON.stringify(data)], `langwa-${data.code}-${safe(st.name)}-${new Date().toISOString().slice(0, 10)}.json`, { type: 'application/json' });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try { await navigator.share({ files: [file], title: 'Langwa', text: `Langwa · ${DATA.langs[data.code].name} · ${st.name}` }); return; } catch { /* fall back to download */ }
+  }
+  const a = el('a', { href: URL.createObjectURL(file), download: file.name }); document.body.append(a); a.click(); a.remove();
+};
+$('back').onclick = () => { show('phrase'); renderPhrase(); };
+
+function show(id) { for (const s of ['start', 'phrase', 'finish']) $(s).hidden = s !== id; $('nav').hidden = id !== 'phrase'; }
+
+(async () => {
+  const saved = await load('state');
+  if (saved && saved.lang) { st = { ...st, ...saved }; show('phrase'); renderPhrase(); } else { show('start'); renderStart(); }
+  counts();
+})();
+</script>
+</body>
+</html>

@@ -408,7 +408,7 @@
   // ======================================================================================
   const STATUS = {
     ok: ['ok', 'check', 'ui_validated', 'Validé'],
-    mt: ['mt', 'auto', 'ui_auto', 'Traduction automatique'],
+    mt: ['mt', 'auto', 'ui_auto', 'Non validé'],
     gist: ['gist', 'info', 'ui_summary', 'Résumé sûr'],
     block: ['block', 'ban', 'ui_blocked', 'Bloqué : montant différent'],
     none: ['none', 'dots', 'ui_missing', 'Pas encore traduit'],

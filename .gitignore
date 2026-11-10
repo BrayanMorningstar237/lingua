@@ -14,3 +14,6 @@ Thumbs.db
 
 # Local testing only (fake translations, offline test page). Never published.
 local-dev/
+
+# Raw Wiktionary download (re-created by tools/harvest-wiktionary.mjs --refresh)
+data/wiktionary-cache.json
