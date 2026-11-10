@@ -108,6 +108,8 @@ async function save(patch) {
   // Automatic reading (cards are read aloud as soon as they appear)
   $('autoRead').checked = !!settings.autoRead;
   $('autoRead').onchange = () => save({ autoRead: $('autoRead').checked });
+  $('onlineVoice').checked = !!settings.onlineVoice;
+  $('onlineVoice').onchange = () => save({ onlineVoice: $('onlineVoice').checked });
   $('opts').onclick = () => api.runtime.openOptionsPage();
 
   // ---------- progress of the language pack ----------

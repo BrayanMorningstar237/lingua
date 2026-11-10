@@ -90,15 +90,51 @@
   }
 
   // ---------------- playback ----------------
-  function bestFrenchVoice() {
+  /**
+   * Best voice for a list of language prefixes. Online voices (Edge "Natural", Google) sound far
+   * more natural but send the spoken text to Microsoft or Google, so they are used only when the
+   * user allows it. Neural/natural voices are preferred over older ones.
+   */
+  function pickVoice(prefixes, allowOnline) {
     if (!root.speechSynthesis) return null;
-    const score = v => (/natural|neural|online|premium|enhanced|google/i.test(v.name) ? 10 : 0)
-      + (/^fr[-_](CM|FR)/i.test(v.lang) ? 2 : 0) + (v.localService ? 0 : 1);
-    return root.speechSynthesis.getVoices().filter(v => /^fr/i.test(v.lang)).sort((a, b) => score(b) - score(a))[0] || null;
+    const all = root.speechSynthesis.getVoices().filter(v => allowOnline || v.localService);
+    const score = v => (/natural|neural|premium|enhanced/i.test(v.name) ? 20 : 0) + (/online|google/i.test(v.name) ? 6 : 0)
+      + (/^fr[-_](CM|FR)/i.test(v.lang) ? 2 : 0);
+    for (const p of prefixes) {
+      const c = all.filter(v => v.lang.toLowerCase().startsWith(p));
+      if (c.length) return c.sort((a, b) => score(b) - score(a))[0];
+    }
+    return null;
   }
-  if (root.speechSynthesis) root.speechSynthesis.getVoices(); // warm up the voice list
+  const bestFrenchVoice = (allowOnline = false) => pickVoice(['fr'], allowOnline);
 
-  function createPlayer({ tts } = {}) {
+  /**
+   * Light adaptation for an African voice (Swahili): its vowels, "ny", "ng'" and "ch" already sound
+   * like Fulfulde, Ewondo or Duala, so only special letters need replacing. Much more natural than
+   * a French voice.
+   */
+  function adaptForSwahili(text) {
+    return String(text).split(/(\s+)/).map(w => (LOANWORDS.has(w.toLowerCase().replace(/[^a-z]/g, '')) ? w : swWord(w))).join('');
+  }
+  function swWord(text) {
+    return String(text).normalize('NFD').replace(/[\u0300-\u036f]/g, '').normalize('NFC')
+      .replace(/ɓ/g, 'b').replace(/Ɓ/g, 'B').replace(/ɗ/g, 'd').replace(/Ɗ/g, 'D').replace(/ƴ/g, 'y').replace(/Ƴ/g, 'Y')
+      .replace(/ŋ/g, "ng'").replace(/Ŋ/g, "Ng'").replace(/ɛ/g, 'e').replace(/ɔ/g, 'o').replace(/ə/g, 'e')
+      .replace(/c(?!h)/g, 'ch').replace(/C(?!h)/g, 'Ch').replace(/['’](?!\s)/g, '');
+  }
+
+  /** Voice for national-language text: an African voice if available, else French with coaching. */
+  function nationalVoice(allowOnline) {
+    const african = pickVoice(['sw', 'ha', 'ln', 'yo'], allowOnline);
+    if (african) return { voice: african, adapt: adaptForSwahili };
+    return { voice: bestFrenchVoice(allowOnline), adapt: adaptReading };
+  }
+  if (root.speechSynthesis) {
+    root.speechSynthesis.getVoices(); // the list loads asynchronously
+    if (root.speechSynthesis.addEventListener) root.speechSynthesis.addEventListener('voiceschanged', () => root.speechSynthesis.getVoices());
+  }
+
+  function createPlayer({ tts, online = () => false } = {}) {
     let session = null;
 
     function stop() {
@@ -118,13 +154,12 @@
       a.play().catch(() => res());
     });
 
-    const sayFr = (text, s) => new Promise(res => {
-      if (!root.speechSynthesis || s.stopped) return res();
+    const say = (text, voice, s) => new Promise(res => {
+      if (!root.speechSynthesis || s.stopped || !text.trim()) return res();
       const u = new SpeechSynthesisUtterance(text);
-      const v = bestFrenchVoice();
-      if (v) u.voice = v;
-      u.lang = v ? v.lang : 'fr-FR';
-      u.rate = 0.92;
+      if (voice) { u.voice = voice; u.lang = voice.lang; } else u.lang = 'fr-FR';
+      u.rate = 1;     // natural pace
+      u.pitch = 1;
       u.onend = u.onerror = () => res();
       root.speechSynthesis.speak(u);
     });
@@ -155,15 +190,31 @@
       stop();
       const s = { stopped: false, onStop };
       session = s;
+      // Consecutive pieces read by the same voice become ONE utterance: the sentence flows
+      // instead of being spoken word group by word group.
+      const allow = !!online();
+      const fr = bestFrenchVoice(allow);
+      const nat = nationalVoice(allow);
+      const runs = [];
       for (const step of steps) {
+        let piece = null;
+        // Numbers and amounts are read in French (exact figures). Names stay with the national
+        // voice so the sentence does not jump between voices ("e Jean-Paul Mbarga" in one go).
+        const isName = step.value && (step.type === 'name' || step.type === 'user-value' || (!step.type && !/\d/.test(step.value)));
+        if (step.value && isName && nat.voice && nat.voice !== fr) piece = { voice: nat.voice, text: step.value };
+        else if (step.value) piece = { voice: fr, text: step.type ? speakValue(step.value, step.type) : speakable(step.value) };
+        else if (step.nat) piece = { voice: nat.voice, text: nat.adapt(step.nat) };
+        const last = runs[runs.length - 1];
+        if (piece && last && last.voice === piece.voice && !last.audio && !last.tts) last.text += ` ${piece.text}`;
+        else runs.push(piece || step);
+      }
+      for (const r of runs) {
         if (s.stopped) break;
-        if (step.audio) await playUrl(step.audio, s);
-        else if (step.value) await sayFr(step.type ? speakValue(step.value, step.type) : speakable(step.value), s);
-        else if (step.nat) await sayFr(adaptReading(step.nat), s);
-        else if (step.tts && tts) {
-          const url = await tts(step.tts);
+        if (r.audio) await playUrl(r.audio, s);
+        else if (r.tts && tts) {
+          const url = await tts(r.tts);
           if (url && !s.stopped) await playUrl(url, s);
-        }
+        } else if (r.text !== undefined) await say(r.text, r.voice, s);
       }
       if (session === s) { session = null; if (onStop) onStop(); }
     }
@@ -171,7 +222,7 @@
     return { play, stop, prepare, isPlaying: () => !!session };
   }
 
-  const api = { speakValue, speakable, spokenNumber, createPlayer, bestFrenchVoice, adaptReading };
+  const api = { speakValue, speakable, spokenNumber, createPlayer, bestFrenchVoice, adaptReading, adaptForSwahili, pickVoice };
   root.LangwaSpeech = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

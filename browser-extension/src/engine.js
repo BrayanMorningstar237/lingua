@@ -108,7 +108,11 @@
       return steps;
     }
 
-    function lookupMasked(masked, tokens) {
+    function lookupMasked(masked, allTokens) {
+      // Brand tokens are compared as their text ("Safinum account"), not as placeholders.
+      const brands = allTokens.filter(t => t.type === 'brand');
+      for (const b of brands) masked = masked.split(b.key).join(b.value);
+      const tokens = allTokens.filter(t => t.type !== 'brand');
       const hit = index.get(keyOf(masked));
       if (!hit || hit.names.length !== tokens.length) return null;
       let t = hit.entry.t;
@@ -140,11 +144,14 @@
     }
 
     /** Split a text into parts: 'tr' parts to translate, 'lit' parts kept verbatim. */
-    function plan(text, literals = []) {
+    function plan(text, literals = [], brands = []) {
       const clean = norm(text);
-      const whole = { kind: 'tr', text: clean, ...P.mask(clean, { literals }) };
+      const whole = { kind: 'tr', text: clean, ...P.mask(clean, { literals, brands }) };
       // Pure values ("25,000 FCFA", "+237 6 99 12 34 56", a typed name): nothing to translate.
-      if (!/\p{L}{2,}/u.test(whole.masked.replace(TOKEN_RE, ''))) return { skip: true, value: true, text: clean };
+      if (!/\p{L}{2,}/u.test(whole.masked.replace(TOKEN_RE, ''))) {
+        const brand = whole.tokens.length && whole.tokens.every(t => t.type === 'brand');
+        return { skip: true, value: true, brand, text: clean };
+      }
       if (lookupMasked(whole.masked, whole.tokens)) return { text: clean, parts: [whole] };
       if (looksLikeProperName(clean)) return { skip: true, value: true, text: clean };
 
@@ -152,13 +159,13 @@
       if (lv && /\p{L}{2,}/u.test(lv[1]) && isValueLike(lv[3], literals)) {
         const label = lv[1].trim();
         const rest = lv[3];
-        const restMask = P.mask(rest, { literals });
+        const restMask = P.mask(rest, { literals, brands });
         const restPart = lookupMasked(restMask.masked, restMask.tokens)
           ? { kind: 'tr', text: rest, ...restMask }
           : { kind: 'lit', text: rest };
         return {
           text: clean,
-          parts: [{ kind: 'tr', text: label, ...P.mask(label, { literals }) }, { kind: 'lit', text: lv[2] }, restPart],
+          parts: [{ kind: 'tr', text: label, ...P.mask(label, { literals, brands }) }, { kind: 'lit', text: lv[2] }, restPart],
         };
       }
       return { text: clean, parts: [whole] };

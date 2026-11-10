@@ -145,6 +145,12 @@
   .say:disabled { background: var(--ebony-3); color: #9c8b78; box-shadow: none; cursor: not-allowed; transform: none; }
   @keyframes ring { from { box-shadow: 0 0 0 0 rgba(194,80,46,.55); } to { box-shadow: 0 0 0 12px rgba(194,80,46,0); } }
 
+  .consent { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--ebony-2); border: 1px solid var(--ebony-3); font-size: 13px; color: var(--sand); }
+  .consent b { color: var(--ivory); }
+  .cbtns { display: flex; gap: 8px; margin-top: 8px; }
+  .cbtns button { border: 0; border-radius: 9px; padding: 7px 12px; font-weight: 700; font-size: 13px; }
+  .cyes { background: var(--gold); color: var(--ebony); } .cno { background: transparent; color: var(--sand); box-shadow: inset 0 0 0 1px var(--ebony-3) !important; }
+  .item .consent { background: var(--soft); border-color: var(--line); color: var(--card-muted); } .item .consent b { color: var(--card-fg); }
   .words { margin-top: 10px; }
   .words .wl { display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; letter-spacing: .03em; color: var(--sand); margin-bottom: 6px; }
   .wchips { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -453,6 +459,7 @@
 
   // ---------------- listening (human recordings + exact values) ----------------
   const player = globalThis.LangwaSpeech.createPlayer({
+    online: () => !!(state.settings && state.settings.onlineVoice),
     tts: text => send({ type: 'tts', lang: state.pack.code, text }).catch(() => null),
   });
   const ttsOn = () => !!(state.settings && state.settings.tts && state.settings.tts.mode === 'mms' && state.pack && state.pack.mms);
@@ -468,10 +475,39 @@
     b.addEventListener('click', ev => {
       ev.stopPropagation();
       if (b.classList.contains('on')) { player.stop(); return; }
+      if (askOnlineVoice(b, () => speak(steps, b, idle))) return;
       speak(steps, b, idle);
     });
     return b;
   }
+  /**
+   * No good voice installed on the device (only online ones): ask once, in the card, whether to
+   * use the natural online voices. One tap turns them on and plays; nothing is sent without it.
+   */
+  let askedOnline = false;
+  function askOnlineVoice(b, then) {
+    if (askedOnline || (state.settings && state.settings.onlineVoice)) return false;
+    const L = globalThis.LangwaSpeech;
+    if (L.pickVoice(['sw', 'ha', 'fr'], false)) return false; // a decent local voice exists
+    if (!L.pickVoice(['sw', 'fr'], true)) return false;        // no online voice either
+    askedOnline = true;
+    const card = b.closest('.block') || b.parentElement;
+    const bar = h('div', { class: 'consent' },
+      h('div', {}, h('b', {}, ui('ui_online_ask', 'Voix plus naturelle ?')), ' ', ui('ui_online_voice_sub', 'Plus fluide. Le texte lu est envoyé à Microsoft ou Google.')),
+      h('div', { class: 'cbtns' },
+        h('button', { class: 'cyes', onclick: e => { e.stopPropagation(); bar.remove(); setLight({ onlineVoice: true }); then(); } }, ui('ui_enable', 'Activer')),
+        h('button', { class: 'cno', onclick: e => { e.stopPropagation(); bar.remove(); then(); } }, ui('ui_no_thanks', 'Non merci'))));
+    card.append(bar);
+    return true;
+  }
+
+  /** Settings that do not need Langwa to restart (voice, reading): saved without rebuilding the UI. */
+  const LIGHT_SETTINGS = ['onlineVoice', 'autoRead', 'pageMode'];
+  function setLight(patch) {
+    state.settings = { ...state.settings, ...patch };
+    send({ type: 'getSettings' }).then(cur => api.storage.local.set({ settings: { ...cur, ...patch } })).catch(() => {});
+  }
+
   /** Plays steps, animating the button that started it (if any). */
   function speak(steps, b, idle) {
     if (!steps) return;
@@ -508,8 +544,10 @@
       return h('div', { class: 'block k-value' },
         h('div', { class: 'row' },
           h('div', { class: 'tr' }, icon('lock'), u.text),
-          sayButton([{ value: u.text }], listenLabel())),
-        h('div', { class: 'meta' }, h('span', { class: 'pill none' }, ui('ui_protected', 'Valeur protégée, identique à la page'))));
+          sayButton([{ value: u.text, type: r.brand ? 'name' : undefined }], listenLabel())),
+        h('div', { class: 'meta' }, h('span', { class: 'pill none' }, r.brand
+          ? ui('ui_brand', 'Nom propre, non traduit')
+          : ui('ui_protected', 'Valeur protégée, identique à la page'))));
     }
     const shown = r.status === 'ok' || r.status === 'gist';
     const kindIcon = r.kind === 'error' ? icon('alert', 'kind err') : r.kind === 'warning' ? icon('alert', 'kind warn') : r.kind === 'success' ? icon('check', 'kind okk') : null;
@@ -823,7 +861,7 @@
     state.subtitles = on;
     if (pageBtn) pageBtn.classList.toggle('on', on);
     if (on) placeSubtitles(); else if (subLayer) subLayer.replaceChildren();
-    if (remember) send({ type: 'getSettings' }).then(cur => api.storage.local.set({ settings: { ...cur, pageMode: on } })).catch(() => {});
+    if (remember) setLight({ pageMode: on });
   }
 
   const lookCache = new WeakMap();
@@ -1011,10 +1049,25 @@
     for (const b of batch) b.resolve(res[uniq.indexOf(b.part.masked)] || null);
   }
 
+  /**
+   * Context: the platform's own name, read from the page (title, declared site name, logo
+   * description). It is protected like a brand: "Safinum Pay" is never translated.
+   */
+  function pageBrands() {
+    const names = new Set();
+    const add = s => { const v = (s || '').trim(); if (v && v.length <= 40 && v.split(/\s+/).length <= 4 && /^\p{Lu}/u.test(v)) names.add(v); };
+    for (const part of (document.title || '').split(/\s+[|·•:–—-]\s+/)) add(part);
+    for (const sel of ['meta[property="og:site_name"]', 'meta[name="application-name"]', 'meta[name="apple-mobile-web-app-title"]']) {
+      const m = document.querySelector(sel); if (m) add(m.content);
+    }
+    for (const img of document.querySelectorAll('header img[alt], nav img[alt], [class*="logo" i] img[alt], img[class*="logo" i][alt]')) add(img.alt);
+    return [...names].filter(n => !/^(accueil|home|connexion|login|test)$/i.test(n));
+  }
+
   async function translateText(text) {
     const literals = [...state.literals].filter(l => text.includes(l));
-    const plan = state.engine.plan(text, literals);
-    if (plan.skip) return { value: true, status: 'value', text: plan.text, original: plan.text };
+    const plan = state.engine.plan(text, literals, state.brands || []);
+    if (plan.skip) return { value: true, brand: !!plan.brand, status: 'value', text: plan.text, original: plan.text };
     const outs = await Promise.all(plan.parts.map(async part => {
       if (part.kind === 'lit') return { text: part.text, verified: true, source: 'literal' };
       const g = state.engine.lookupMasked(part.masked, part.tokens);
@@ -1191,6 +1244,7 @@
     }
     state.pack = pack;
     state.engine = E.createEngine(pack);
+    state.brands = pageBrands();
     state.results.clear();
     state.known = new WeakMap();
     state.units = [];
@@ -1231,6 +1285,16 @@
 
   api.storage.onChanged.addListener((changes, area) => {
     if (area !== 'local') return;
+    if (changes.settings && !Object.keys(changes).some(k => k.startsWith('overrides:'))) {
+      const before = changes.settings.oldValue || {};
+      const after = changes.settings.newValue || {};
+      const keys = new Set([...Object.keys(before), ...Object.keys(after)]);
+      const changed = [...keys].filter(k => JSON.stringify(before[k]) !== JSON.stringify(after[k]));
+      if (state.active && changed.length && changed.every(k => LIGHT_SETTINGS.includes(k))) {
+        state.settings = { ...state.settings, ...after }; // voice or reading preference: no restart
+        return;
+      }
+    }
     if (changes.settings || Object.keys(changes).some(k => k.startsWith('overrides:'))) start();
   });
   api.runtime.onMessage.addListener((msg, _sender, sendResponse) => {

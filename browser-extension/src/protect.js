@@ -55,8 +55,25 @@
   }
 
   /** Find every protected value in `text`. Non-overlapping, sorted by position. */
+  /**
+   * Brand and platform names are never translated: "Safinum Pay" stays "Safinum Pay".
+   * Built-in Cameroonian financial brands + names Langwa reads from the page itself (opts.brands).
+   */
+  const BRANDS = [
+    'Safinum Pay', 'Safinum', 'Afriland First Bank', 'Afriland', 'Orange Money', 'MTN Mobile Money', 'MTN MoMo', 'MoMo',
+    'Express Union', 'Ecobank', 'UBA', 'BICEC', 'SGC', 'Société Générale', 'CCA Bank', 'Commercial Bank', 'Wafacash',
+    'Visa', 'Mastercard', 'WhatsApp', 'Google', 'GIMAC', 'CEMAC', 'BEAC', 'CNEF', 'Huawei',
+  ];
+
   function extract(text, opts = {}) {
     const cands = [];
+    for (const b of [...(opts.brands || []), ...BRANDS]) {
+      const l = normSpaces(b).trim();
+      if (l.length < 2) continue;
+      const re = new RegExp(`(?<![\\p{L}\\d])${escapeRe(l)}(?![\\p{L}\\d])`, 'gu');
+      let m;
+      while ((m = re.exec(text))) cands.push({ start: m.index, end: m.index + l.length, type: 'brand', priority: 9.5 + l.length / 1000 });
+    }
     for (const lit of opts.literals || []) {
       const l = normSpaces(lit).trim();
       if (l.length < 2) continue;

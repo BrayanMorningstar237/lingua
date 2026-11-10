@@ -56,6 +56,7 @@ async function loadAll() {
   $('ttsMode').value = settings.tts.mode;
   $('ttsEndpoint').value = settings.tts.endpoint;
   $('autoSpeak').checked = settings.autoSpeak !== false;
+  $('onlineVoice').checked = onlineVoice = !!settings.onlineVoice;
   render();
 }
 
@@ -344,7 +345,9 @@ $('run').onclick = async () => {
   $('listen').onclick = () => steps && player.play(steps);
 };
 
+let onlineVoice = false;
 const player = globalThis.LangwaSpeech.createPlayer({
+  online: () => onlineVoice,
   tts: text => api.runtime.sendMessage({ type: 'tts', lang: code, text }),
 });
 
@@ -357,6 +360,7 @@ $('saveMt').onclick = async () => {
       mt: { mode: $('mtMode').value, endpoint: $('mtEndpoint').value.trim(), model: $('mtModel').value.trim() },
       tts: { mode: $('ttsMode').value, endpoint: $('ttsEndpoint').value.trim() },
       autoSpeak: $('autoSpeak').checked,
+      onlineVoice: (onlineVoice = $('onlineVoice').checked),
     },
   });
   $('mtMsg').textContent = 'Enregistré.';

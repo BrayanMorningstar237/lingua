@@ -71,10 +71,10 @@
    "fr": "Payer",
    "en": "Pay",
    "variants": [
-    "Compte",
-    "Account"
+    "Paiement",
+    "Payment"
    ],
-   "check": true
+   "note": "Étape 1 du parcours : payer / envoyer de l’argent. / Step 1 of the journey: paying."
   },
   {
    "id": "step_costs",
@@ -1133,6 +1133,42 @@
    "group": "ui",
    "fr": "Mots du dictionnaire (non validés)",
    "en": "Dictionary words (not validated)"
+  },
+  {
+   "id": "ui_online_voice",
+   "group": "ui",
+   "fr": "Voix naturelles en ligne",
+   "en": "Natural online voices"
+  },
+  {
+   "id": "ui_online_voice_sub",
+   "group": "ui",
+   "fr": "Plus fluide. Le texte lu est envoyé à Microsoft ou Google.",
+   "en": "More fluent. The text read is sent to Microsoft or Google."
+  },
+  {
+   "id": "ui_online_ask",
+   "group": "ui",
+   "fr": "Voix plus naturelle ?",
+   "en": "A more natural voice?"
+  },
+  {
+   "id": "ui_enable",
+   "group": "ui",
+   "fr": "Activer",
+   "en": "Turn on"
+  },
+  {
+   "id": "ui_no_thanks",
+   "group": "ui",
+   "fr": "Non merci",
+   "en": "No thanks"
+  },
+  {
+   "id": "ui_brand",
+   "group": "ui",
+   "fr": "Nom propre, non traduit",
+   "en": "Proper name, not translated"
   }
  ]
 }
