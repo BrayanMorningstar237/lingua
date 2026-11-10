@@ -116,6 +116,9 @@ const landing = readFileSync(join(ROOT, 'tools', 'site.template.html'), 'utf8')
 writeFileSync(join(SITE, 'index.html'), landing);
 writeFileSync(join(SITE, 'contribute', 'index.html'), collect);
 writeFileSync(join(SITE, 'icon.svg'), readFileSync(join(EXT, 'icons', 'icon.svg')));
+// Photos (Unsplash License) and real screenshots of the extension, shown on the landing page.
+mkdirSync(join(SITE, 'img'), { recursive: true });
+for (const f of readdirSync(join(ROOT, 'tools', 'site-assets'))) writeFileSync(join(SITE, 'img', f), readFileSync(join(ROOT, 'tools', 'site-assets', f)));
 writeFileSync(join(SITE, 'downloads', 'langwa-chromium.zip'), readFileSync(join(DIST, 'langwa-chromium.zip')));
 writeFileSync(join(SITE, 'downloads', 'langwa.user.js'), readFileSync(join(DIST, 'langwa.user.js')));
 
