@@ -1,0 +1,751 @@
+{
+ "code": "ewo",
+ "note": "FAKE demo translations («EWO» + French). For testing only, never submit.",
+ "entries": {
+  "gist_error": {
+   "t": "«EWO» Ceci est un message d'erreur. L'opération n'a pas abouti.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "gist_warning": {
+   "t": "«EWO» Avertissement de sécurité : lisez attentivement ou demandez de l'aide à une personne de confiance.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "gist_success": {
+   "t": "«EWO» L'opération a réussi.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "gist_info": {
+   "t": "«EWO» Message d'information.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "gist_keywords": {
+   "t": "«EWO» Mots clés :",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "test_banner": {
+   "t": "«EWO» Environnement de test — données fictives, aucune transaction réelle.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "test_protocol": {
+   "t": "«EWO» Protocole de test",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "back_hackathon": {
+   "t": "«EWO» Retour au hackathon",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "online_banking": {
+   "t": "«EWO» Banque en ligne",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "step_pay": {
+   "t": "«EWO» Payer",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "step_costs": {
+   "t": "«EWO» Frais",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "step_beneficiary": {
+   "t": "«EWO» Bénéficiaire",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "step_summary": {
+   "t": "«EWO» Récapitulatif",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "step_confirmation": {
+   "t": "«EWO» Confirmation",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "your_account": {
+   "t": "«EWO» Votre compte",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "hello_name": {
+   "t": "«EWO» Bonjour, {name}",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "intro_balance": {
+   "t": "«EWO» Consultez votre solde et initiez un virement sécurisé.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "available_balance": {
+   "t": "«EWO» Solde disponible",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "balance": {
+   "t": "«EWO» Solde",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "account_number": {
+   "t": "«EWO» Numéro de compte",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "current_account": {
+   "t": "«EWO» Compte courant",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "savings_account": {
+   "t": "«EWO» Compte épargne",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "perform_transfer": {
+   "t": "«EWO» Effectuer un virement",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "view_fees": {
+   "t": "«EWO» Voir les frais",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "recent_transactions": {
+   "t": "«EWO» Transactions récentes",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "merchant_payment": {
+   "t": "«EWO» Paiement marchand",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "salary_received": {
+   "t": "«EWO» Salaire reçu",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "transfer_received": {
+   "t": "«EWO» Virement reçu",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "transfer_sent": {
+   "t": "«EWO» Virement envoyé",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "electricity_bill": {
+   "t": "«EWO» Facture d'électricité",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "water_bill": {
+   "t": "«EWO» Facture d'eau",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "cash_withdrawal": {
+   "t": "«EWO» Retrait d'espèces",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "deposit": {
+   "t": "«EWO» Dépôt",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "airtime": {
+   "t": "«EWO» Achat de crédit",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "security": {
+   "t": "«EWO» Sécurité",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "security_check_beneficiary": {
+   "t": "«EWO» Vérifiez toujours le nom et le numéro du bénéficiaire avant de confirmer un virement.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "secure_connection": {
+   "t": "«EWO» Connexion sécurisée",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "demo_footer": {
+   "t": "«EWO» Safinum Pay — environnement de démonstration. N'entrez aucune donnée personnelle réelle.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "never_share_pin": {
+   "t": "«EWO» Ne communiquez jamais votre code PIN, même à un agent de la banque.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "fraud_warning": {
+   "t": "«EWO» Méfiez-vous des appels ou SMS qui vous demandent votre code secret.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "irreversible": {
+   "t": "«EWO» Une fois confirmé, le virement ne peut pas être annulé.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "check_details": {
+   "t": "«EWO» Vérifiez les informations avant de confirmer.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "transfer_fees": {
+   "t": "«EWO» Frais de virement",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "transaction_fees": {
+   "t": "«EWO» Frais de transaction",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "fees": {
+   "t": "«EWO» Frais",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "choose_type_amount": {
+   "t": "«EWO» Choisissez le type de virement et le montant. Les frais sont calculés automatiquement.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "operation_type": {
+   "t": "«EWO» Type d'opération",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "safinum_account": {
+   "t": "«EWO» Compte Safinum",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "instant_free": {
+   "t": "«EWO» Virement instantané et gratuit",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "other_bank": {
+   "t": "«EWO» Compte d'une autre banque",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "mobile_money": {
+   "t": "«EWO» Mobile Money",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "amount_to_send": {
+   "t": "«EWO» Montant à envoyer",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "amount": {
+   "t": "«EWO» Montant",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "free": {
+   "t": "«EWO» Gratuit",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "total_debited": {
+   "t": "«EWO» Total à débiter",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10",
+   "x": "«EWO» Tout ce qui sort du compte : montant + frais."
+  },
+  "balance_after": {
+   "t": "«EWO» Solde après l'opération",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "fee_rate_min": {
+   "t": "«EWO» {rate} du montant (minimum {min})",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "beneficiary": {
+   "t": "«EWO» Bénéficiaire",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "beneficiary_name": {
+   "t": "«EWO» Nom du bénéficiaire",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "phone_number": {
+   "t": "«EWO» Numéro de téléphone",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "account_or_phone": {
+   "t": "«EWO» Numéro de compte ou de téléphone",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "reason": {
+   "t": "«EWO» Motif",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "transfer_summary": {
+   "t": "«EWO» Récapitulatif du virement",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "send_amount_to": {
+   "t": "«EWO» Vous allez envoyer {amount} à {name}.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "pin_code": {
+   "t": "«EWO» Code PIN",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "enter_pin": {
+   "t": "«EWO» Saisissez votre code PIN",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "accept_terms": {
+   "t": "«EWO» J'accepte les conditions générales.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "terms": {
+   "t": "«EWO» Conditions générales",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "back": {
+   "t": "«EWO» Retour",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "continue": {
+   "t": "«EWO» Continuer",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "confirm": {
+   "t": "«EWO» Confirmer",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "confirm_transfer": {
+   "t": "«EWO» Confirmer le virement",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "cancel": {
+   "t": "«EWO» Annuler",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "reference": {
+   "t": "«EWO» Référence",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "date": {
+   "t": "«EWO» Date",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "status": {
+   "t": "«EWO» Statut",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "transfer_success": {
+   "t": "«EWO» Virement effectué avec succès.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "insufficient_balance": {
+   "t": "«EWO» Solde insuffisant pour effectuer cette opération.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "pin_incorrect_attempts": {
+   "t": "«EWO» Code PIN incorrect. Il vous reste {count} tentatives.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "pin_incorrect": {
+   "t": "«EWO» Code PIN incorrect.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "account_locked": {
+   "t": "«EWO» Votre compte est temporairement bloqué.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "required_field": {
+   "t": "«EWO» Ce champ est obligatoire.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "invalid_amount": {
+   "t": "«EWO» Montant invalide.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "must_accept_terms": {
+   "t": "«EWO» Vous devez accepter les conditions générales.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "session_expired": {
+   "t": "«EWO» Votre session a expiré. Veuillez vous reconnecter.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "network_error": {
+   "t": "«EWO» Erreur réseau. Veuillez réessayer.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "processing": {
+   "t": "«EWO» Traitement en cours...",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "enter_recipient_info": {
+   "t": "«EWO» Saisissez les informations du destinataire. Vérifiez toujours le numéro avant de valider.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "new_beneficiary_warning": {
+   "t": "«EWO» Ce bénéficiaire n'a jamais été utilisé sur ce compte. Veuillez vérifier le numéro avant de continuer.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "reason_for_transfer": {
+   "t": "«EWO» Motif du virement",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "note_optional": {
+   "t": "«EWO» Note (facultatif)",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "checked_name_number": {
+   "t": "«EWO» J'ai vérifié le nom et le numéro du bénéficiaire.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "check_info_before_confirm": {
+   "t": "«EWO» Vérifiez les informations avant de confirmer le virement.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "phone": {
+   "t": "«EWO» Téléphone",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "operation": {
+   "t": "«EWO» Opération",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "confirm_info_correct": {
+   "t": "«EWO» Je confirme que les informations ci-dessus sont exactes.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "modify": {
+   "t": "«EWO» Modifier",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "transfer_completed": {
+   "t": "«EWO» Virement effectué",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "transfer_sent_success": {
+   "t": "«EWO» Votre virement a été envoyé avec succès.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "status_success": {
+   "t": "«EWO» Succès",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "new_transfer": {
+   "t": "«EWO» Nouveau virement",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "services_payment": {
+   "t": "«EWO» Paiement de services",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "error": {
+   "t": "«EWO» Erreur",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "warning": {
+   "t": "«EWO» Attention",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "ui_translating": {
+   "t": "«EWO» Traduction en cours…",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "ui_protected": {
+   "t": "«EWO» Valeur protégée, identique à la page",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "ui_validated": {
+   "t": "«EWO» Validé",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "ui_auto": {
+   "t": "«EWO» Traduction automatique",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "ui_summary": {
+   "t": "«EWO» Résumé sûr",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "ui_blocked": {
+   "t": "«EWO» Bloqué : montant différent",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "ui_missing": {
+   "t": "«EWO» Pas encore traduit",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "ui_important": {
+   "t": "«EWO» Messages importants",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "ui_page": {
+   "t": "«EWO» Sur cette page",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "ui_new": {
+   "t": "«EWO» NOUVEAU",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "ui_listen": {
+   "t": "«EWO» Écouter",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "ui_no_audio": {
+   "t": "«EWO» Pas encore d’audio",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "ui_subtitles": {
+   "t": "«EWO» Sous-titres",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "ui_close": {
+   "t": "«EWO» Fermer",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "ui_empty": {
+   "t": "«EWO» Rien à traduire ici",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "ui_mt_down": {
+   "t": "«EWO» Traduction locale indisponible : résumé utilisé",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "ui_hint_hover": {
+   "t": "«EWO» Maintenez Ctrl et pointez un texte : sa traduction s’affiche dessous.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "ui_hint_hover_short": {
+   "t": "«EWO» survol = traduction",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "ui_hint_listen": {
+   "t": "«EWO» Écoutez la traduction.",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  },
+  "ui_ok": {
+   "t": "«EWO» Compris",
+   "verified": true,
+   "validator": "DEMO (faux)",
+   "date": "2026-11-10"
+  }
+ }
+}

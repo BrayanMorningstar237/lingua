@@ -1,0 +1,7 @@
+{
+  "ewo": { "name": "Ewondo", "region": "Centre", "nllb": null, "mms": null },
+  "fub": { "name": "Fulfulde", "region": "Adamaoua, Nord, Extrême-Nord", "nllb": "fuv_Latn", "mms": "ful" },
+  "dua": { "name": "Duala", "region": "Littoral", "nllb": null, "mms": null },
+  "bbj": { "name": "Ghomálá'", "region": "Ouest", "nllb": null, "mms": null },
+  "bas": { "name": "Basaá", "region": "Centre, Littoral", "nllb": null, "mms": null }
+}

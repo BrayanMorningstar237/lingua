@@ -1,0 +1,884 @@
+{
+ "about": "Source strings (French / English). Each national-language file (lang/<code>.json) maps an id to { t, verified, validator, audio }. {placeholders} are filled with the protected values from the page (amounts, names...) and MUST be kept in the translation. Strings marked \"check\": true were taken from an auto-translated view of the test page and must be compared with the page's real FR/EN text.",
+ "entries": [
+  {
+   "id": "gist_error",
+   "group": "safety-net",
+   "fr": "Ceci est un message d'erreur. L'opération n'a pas abouti.",
+   "en": "This is an error message. The operation did not go through.",
+   "note": "Phrase générale pour TOUTE nouvelle erreur inconnue : l’opération n’a pas marché."
+  },
+  {
+   "id": "gist_warning",
+   "group": "safety-net",
+   "fr": "Avertissement de sécurité : lisez attentivement ou demandez de l'aide à une personne de confiance.",
+   "en": "Security warning: read carefully or ask someone you trust for help.",
+   "note": "Phrase générale utilisée pour TOUT nouvel avertissement de sécurité inconnu. Doit inviter à la prudence."
+  },
+  {
+   "id": "gist_success",
+   "group": "safety-net",
+   "fr": "L'opération a réussi.",
+   "en": "The operation was successful."
+  },
+  {
+   "id": "gist_info",
+   "group": "safety-net",
+   "fr": "Message d'information.",
+   "en": "Information message."
+  },
+  {
+   "id": "gist_keywords",
+   "group": "safety-net",
+   "fr": "Mots clés :",
+   "en": "Key words:"
+  },
+  {
+   "id": "test_banner",
+   "group": "test-env",
+   "fr": "Environnement de test — données fictives, aucune transaction réelle.",
+   "en": "Test environment — dummy data, no real transactions.",
+   "check": true
+  },
+  {
+   "id": "test_protocol",
+   "group": "test-env",
+   "fr": "Protocole de test",
+   "en": "Test protocol",
+   "check": true
+  },
+  {
+   "id": "back_hackathon",
+   "group": "test-env",
+   "fr": "Retour au hackathon",
+   "en": "Back to the hackathon",
+   "check": true
+  },
+  {
+   "id": "online_banking",
+   "group": "test-env",
+   "fr": "Banque en ligne",
+   "en": "Online banking",
+   "check": true
+  },
+  {
+   "id": "step_pay",
+   "group": "steps",
+   "fr": "Payer",
+   "en": "Pay",
+   "variants": [
+    "Compte",
+    "Account"
+   ],
+   "check": true
+  },
+  {
+   "id": "step_costs",
+   "group": "steps",
+   "fr": "Frais",
+   "en": "Fees",
+   "variants": [
+    "Costs"
+   ],
+   "check": true,
+   "note": "Étape où l’on voit ce que la banque prend pour l’opération. / Step showing what the bank charges."
+  },
+  {
+   "id": "step_beneficiary",
+   "group": "steps",
+   "fr": "Bénéficiaire",
+   "en": "Beneficiary",
+   "note": "Étape où l’on dit qui reçoit l’argent. / Step where you say who receives the money."
+  },
+  {
+   "id": "step_summary",
+   "group": "steps",
+   "fr": "Récapitulatif",
+   "en": "Summary",
+   "variants": [
+    "Résumé"
+   ]
+  },
+  {
+   "id": "step_confirmation",
+   "group": "steps",
+   "fr": "Confirmation",
+   "en": "Confirmation"
+  },
+  {
+   "id": "your_account",
+   "group": "balance",
+   "fr": "Votre compte",
+   "en": "Your account"
+  },
+  {
+   "id": "hello_name",
+   "group": "balance",
+   "fr": "Bonjour, {name}",
+   "en": "Hello, {name}"
+  },
+  {
+   "id": "intro_balance",
+   "group": "balance",
+   "fr": "Consultez votre solde et initiez un virement sécurisé.",
+   "en": "Check your balance and initiate a secure transfer.",
+   "check": true
+  },
+  {
+   "id": "available_balance",
+   "group": "balance",
+   "fr": "Solde disponible",
+   "en": "Available balance",
+   "note": "L’argent que vous pouvez utiliser maintenant. / The money you can use right now."
+  },
+  {
+   "id": "balance",
+   "group": "balance",
+   "fr": "Solde",
+   "en": "Balance",
+   "note": "L’argent qui est sur le compte. / The money in the account."
+  },
+  {
+   "id": "account_number",
+   "group": "balance",
+   "fr": "Numéro de compte",
+   "en": "Account number",
+   "note": "Le numéro qui identifie le compte. / The number identifying the account."
+  },
+  {
+   "id": "current_account",
+   "group": "balance",
+   "fr": "Compte courant",
+   "en": "Current account",
+   "note": "Le compte de tous les jours. / The everyday account."
+  },
+  {
+   "id": "savings_account",
+   "group": "balance",
+   "fr": "Compte épargne",
+   "en": "Savings account"
+  },
+  {
+   "id": "perform_transfer",
+   "group": "balance",
+   "fr": "Effectuer un virement",
+   "en": "Make a transfer",
+   "variants": [
+    "Perform a transfer",
+    "Faire un virement",
+    "Faire un transfert"
+   ],
+   "check": true
+  },
+  {
+   "id": "view_fees",
+   "group": "balance",
+   "fr": "Voir les frais",
+   "en": "View fees",
+   "check": true
+  },
+  {
+   "id": "recent_transactions",
+   "group": "balance",
+   "fr": "Transactions récentes",
+   "en": "Recent transactions",
+   "variants": [
+    "Dernières opérations",
+    "Dernières transactions"
+   ],
+   "check": true
+  },
+  {
+   "id": "merchant_payment",
+   "group": "balance",
+   "fr": "Paiement marchand",
+   "en": "Merchant payment",
+   "check": true,
+   "note": "Argent payé dans un magasin ou à un commerçant."
+  },
+  {
+   "id": "salary_received",
+   "group": "balance",
+   "fr": "Salaire reçu",
+   "en": "Salary received",
+   "check": true,
+   "note": "Le salaire est arrivé sur le compte (argent qui entre)."
+  },
+  {
+   "id": "transfer_received",
+   "group": "balance",
+   "fr": "Virement reçu",
+   "en": "Transfer received",
+   "variants": [
+    "Transfert reçu"
+   ],
+   "note": "Quelqu un vous a envoyé de l’argent (argent qui entre)."
+  },
+  {
+   "id": "transfer_sent",
+   "group": "balance",
+   "fr": "Virement envoyé",
+   "en": "Transfer sent",
+   "variants": [
+    "Transfert envoyé"
+   ]
+  },
+  {
+   "id": "electricity_bill",
+   "group": "balance",
+   "fr": "Facture d'électricité",
+   "en": "Electricity bill"
+  },
+  {
+   "id": "water_bill",
+   "group": "balance",
+   "fr": "Facture d'eau",
+   "en": "Water bill"
+  },
+  {
+   "id": "cash_withdrawal",
+   "group": "balance",
+   "fr": "Retrait d'espèces",
+   "en": "Cash withdrawal"
+  },
+  {
+   "id": "deposit",
+   "group": "balance",
+   "fr": "Dépôt",
+   "en": "Deposit"
+  },
+  {
+   "id": "airtime",
+   "group": "balance",
+   "fr": "Achat de crédit",
+   "en": "Airtime purchase"
+  },
+  {
+   "id": "security",
+   "group": "security",
+   "fr": "Sécurité",
+   "en": "Security"
+  },
+  {
+   "id": "security_check_beneficiary",
+   "group": "security",
+   "fr": "Vérifiez toujours le nom et le numéro du bénéficiaire avant de confirmer un virement.",
+   "en": "Always check the beneficiary's name and number before confirming a transfer.",
+   "check": true,
+   "note": "Conseil de sécurité : regardez bien le nom et le numéro avant de valider."
+  },
+  {
+   "id": "secure_connection",
+   "group": "security",
+   "fr": "Connexion sécurisée",
+   "en": "Secure connection"
+  },
+  {
+   "id": "demo_footer",
+   "group": "security",
+   "fr": "Safinum Pay — environnement de démonstration. N'entrez aucune donnée personnelle réelle.",
+   "en": "Safinum Pay — demonstration environment. Do not enter any real personal data.",
+   "check": true
+  },
+  {
+   "id": "never_share_pin",
+   "group": "security",
+   "fr": "Ne communiquez jamais votre code PIN, même à un agent de la banque.",
+   "en": "Never share your PIN, not even with a bank employee.",
+   "note": "Le code secret ne se donne à personne, même pas à quelqu’un de la banque. La négation est essentielle."
+  },
+  {
+   "id": "fraud_warning",
+   "group": "security",
+   "fr": "Méfiez-vous des appels ou SMS qui vous demandent votre code secret.",
+   "en": "Beware of calls or text messages asking for your secret code.",
+   "note": "Si quelqu’un vous appelle pour demander votre code secret, c’est un voleur."
+  },
+  {
+   "id": "irreversible",
+   "group": "security",
+   "fr": "Une fois confirmé, le virement ne peut pas être annulé.",
+   "en": "Once confirmed, the transfer cannot be cancelled.",
+   "note": "Après confirmation, impossible de récupérer l’argent. Le sens doit être très clair."
+  },
+  {
+   "id": "check_details",
+   "group": "security",
+   "fr": "Vérifiez les informations avant de confirmer.",
+   "en": "Check the details before confirming."
+  },
+  {
+   "id": "transfer_fees",
+   "group": "fees",
+   "fr": "Frais de virement",
+   "en": "Transfer fees",
+   "variants": [
+    "Frais de transfert"
+   ],
+   "note": "Ce que la banque prend pour envoyer l’argent. / What the bank charges to send money."
+  },
+  {
+   "id": "transaction_fees",
+   "group": "fees",
+   "fr": "Frais de transaction",
+   "en": "Transaction fees"
+  },
+  {
+   "id": "fees",
+   "group": "fees",
+   "fr": "Frais",
+   "en": "Fees",
+   "variants": [
+    "Costs"
+   ],
+   "note": "L’argent que la banque prend pour faire l’opération. / What the bank charges for the operation."
+  },
+  {
+   "id": "choose_type_amount",
+   "group": "fees",
+   "fr": "Choisissez le type de virement et le montant. Les frais sont calculés automatiquement.",
+   "en": "Choose the transfer type and amount. Fees are calculated automatically.",
+   "check": true
+  },
+  {
+   "id": "operation_type",
+   "group": "fees",
+   "fr": "Type d'opération",
+   "en": "Type of operation",
+   "variants": [
+    "Operation type"
+   ],
+   "check": true
+  },
+  {
+   "id": "safinum_account",
+   "group": "fees",
+   "fr": "Compte Safinum",
+   "en": "Safinum account",
+   "check": true
+  },
+  {
+   "id": "instant_free",
+   "group": "fees",
+   "fr": "Virement instantané et gratuit",
+   "en": "Instant and free transfer",
+   "check": true,
+   "note": "L’argent arrive tout de suite et la banque ne prend rien. / Arrives immediately, the bank charges nothing."
+  },
+  {
+   "id": "other_bank",
+   "group": "fees",
+   "fr": "Compte d'une autre banque",
+   "en": "Account at another bank"
+  },
+  {
+   "id": "mobile_money",
+   "group": "fees",
+   "fr": "Mobile Money",
+   "en": "Mobile Money"
+  },
+  {
+   "id": "amount_to_send",
+   "group": "fees",
+   "fr": "Montant à envoyer",
+   "en": "Amount to send"
+  },
+  {
+   "id": "amount",
+   "group": "fees",
+   "fr": "Montant",
+   "en": "Amount"
+  },
+  {
+   "id": "free",
+   "group": "fees",
+   "fr": "Gratuit",
+   "en": "Free"
+  },
+  {
+   "id": "total_debited",
+   "group": "fees",
+   "fr": "Total à débiter",
+   "en": "Total to be debited",
+   "variants": [
+    "Total débité",
+    "Total debited"
+   ],
+   "check": true,
+   "note": "Tout ce qui va sortir du compte : montant envoyé + frais. / Everything that will leave the account: amount + fees."
+  },
+  {
+   "id": "balance_after",
+   "group": "fees",
+   "fr": "Solde après l'opération",
+   "en": "Balance after operation",
+   "variants": [
+    "Balance after the operation"
+   ],
+   "check": true,
+   "note": "L’argent qui restera sur le compte après cet envoi. / Money left after this transfer."
+  },
+  {
+   "id": "fee_rate_min",
+   "group": "fees",
+   "fr": "{rate} du montant (minimum {min})",
+   "en": "{rate} of the amount (minimum {min})"
+  },
+  {
+   "id": "beneficiary",
+   "group": "transfer",
+   "fr": "Bénéficiaire",
+   "en": "Beneficiary",
+   "note": "La personne qui va recevoir l’argent. / The person who will receive the money."
+  },
+  {
+   "id": "beneficiary_name",
+   "group": "transfer",
+   "fr": "Nom du bénéficiaire",
+   "en": "Beneficiary name",
+   "variants": [
+    "Beneficiary's name",
+    "Name of the beneficiary"
+   ]
+  },
+  {
+   "id": "phone_number",
+   "group": "transfer",
+   "fr": "Numéro de téléphone",
+   "en": "Phone number"
+  },
+  {
+   "id": "account_or_phone",
+   "group": "transfer",
+   "fr": "Numéro de compte ou de téléphone",
+   "en": "Account or phone number"
+  },
+  {
+   "id": "reason",
+   "group": "transfer",
+   "fr": "Motif",
+   "en": "Reason",
+   "variants": [
+    "Motif du virement",
+    "Purpose"
+   ]
+  },
+  {
+   "id": "transfer_summary",
+   "group": "transfer",
+   "fr": "Récapitulatif du virement",
+   "en": "Transfer summary"
+  },
+  {
+   "id": "send_amount_to",
+   "group": "transfer",
+   "fr": "Vous allez envoyer {amount} à {name}.",
+   "en": "You are about to send {amount} to {name}.",
+   "note": "Phrase de confirmation : qui reçoit et combien. Gardez {amount} et {name}. / Confirmation: who receives how much."
+  },
+  {
+   "id": "pin_code",
+   "group": "transfer",
+   "fr": "Code PIN",
+   "en": "PIN code",
+   "variants": [
+    "PIN"
+   ],
+   "note": "Le code secret de 4 chiffres. / The secret 4-digit code."
+  },
+  {
+   "id": "enter_pin",
+   "group": "transfer",
+   "fr": "Saisissez votre code PIN",
+   "en": "Enter your PIN"
+  },
+  {
+   "id": "accept_terms",
+   "group": "transfer",
+   "fr": "J'accepte les conditions générales.",
+   "en": "I accept the terms and conditions."
+  },
+  {
+   "id": "terms",
+   "group": "transfer",
+   "fr": "Conditions générales",
+   "en": "Terms and conditions"
+  },
+  {
+   "id": "back",
+   "group": "transfer",
+   "fr": "Retour",
+   "en": "Back"
+  },
+  {
+   "id": "continue",
+   "group": "transfer",
+   "fr": "Continuer",
+   "en": "Continue"
+  },
+  {
+   "id": "confirm",
+   "group": "transfer",
+   "fr": "Confirmer",
+   "en": "Confirm"
+  },
+  {
+   "id": "confirm_transfer",
+   "group": "transfer",
+   "fr": "Confirmer le virement",
+   "en": "Confirm the transfer",
+   "variants": [
+    "Confirm transfer"
+   ]
+  },
+  {
+   "id": "cancel",
+   "group": "transfer",
+   "fr": "Annuler",
+   "en": "Cancel"
+  },
+  {
+   "id": "reference",
+   "group": "transfer",
+   "fr": "Référence",
+   "en": "Reference",
+   "note": "Le code de cette opération ; à donner si vous appelez la banque. / The code of this operation; give it if you call the bank."
+  },
+  {
+   "id": "date",
+   "group": "transfer",
+   "fr": "Date",
+   "en": "Date"
+  },
+  {
+   "id": "status",
+   "group": "transfer",
+   "fr": "Statut",
+   "en": "Status"
+  },
+  {
+   "id": "transfer_success",
+   "group": "messages",
+   "fr": "Virement effectué avec succès.",
+   "en": "Transfer completed successfully.",
+   "variants": [
+    "Transfert effectué avec succès."
+   ]
+  },
+  {
+   "id": "insufficient_balance",
+   "group": "messages",
+   "fr": "Solde insuffisant pour effectuer cette opération.",
+   "en": "Insufficient balance for this transaction.",
+   "variants": [
+    "Solde insuffisant.",
+    "Insufficient balance."
+   ],
+   "note": "Il n’y a pas assez d’argent sur le compte pour cette opération."
+  },
+  {
+   "id": "pin_incorrect_attempts",
+   "group": "messages",
+   "fr": "Code PIN incorrect. Il vous reste {count} tentatives.",
+   "en": "Incorrect PIN. You have {count} attempts left.",
+   "note": "Le code secret est faux ; dire combien d’essais restent avant blocage. Gardez {count}."
+  },
+  {
+   "id": "pin_incorrect",
+   "group": "messages",
+   "fr": "Code PIN incorrect.",
+   "en": "Incorrect PIN."
+  },
+  {
+   "id": "account_locked",
+   "group": "messages",
+   "fr": "Votre compte est temporairement bloqué.",
+   "en": "Your account is temporarily locked."
+  },
+  {
+   "id": "required_field",
+   "group": "messages",
+   "fr": "Ce champ est obligatoire.",
+   "en": "This field is required."
+  },
+  {
+   "id": "invalid_amount",
+   "group": "messages",
+   "fr": "Montant invalide.",
+   "en": "Invalid amount."
+  },
+  {
+   "id": "must_accept_terms",
+   "group": "messages",
+   "fr": "Vous devez accepter les conditions générales.",
+   "en": "You must accept the terms and conditions."
+  },
+  {
+   "id": "session_expired",
+   "group": "messages",
+   "fr": "Votre session a expiré. Veuillez vous reconnecter.",
+   "en": "Your session has expired. Please log in again."
+  },
+  {
+   "id": "network_error",
+   "group": "messages",
+   "fr": "Erreur réseau. Veuillez réessayer.",
+   "en": "Network error. Please try again."
+  },
+  {
+   "id": "processing",
+   "group": "messages",
+   "fr": "Traitement en cours...",
+   "en": "Processing..."
+  },
+  {
+   "id": "enter_recipient_info",
+   "group": "test-env",
+   "fr": "Saisissez les informations du destinataire. Vérifiez toujours le numéro avant de valider.",
+   "en": "Enter the recipient's information. Always check the number before submitting.",
+   "check": true
+  },
+  {
+   "id": "new_beneficiary_warning",
+   "group": "test-env",
+   "fr": "Ce bénéficiaire n'a jamais été utilisé sur ce compte. Veuillez vérifier le numéro avant de continuer.",
+   "en": "This beneficiary has never been used on this account. Please verify the number before proceeding.",
+   "check": true,
+   "note": "Mise en garde : vous n’avez jamais envoyé d’argent à cette personne ; vérifiez le numéro. Garder le ton d’avertissement."
+  },
+  {
+   "id": "reason_for_transfer",
+   "group": "test-env",
+   "fr": "Motif du virement",
+   "en": "Reason for transfer",
+   "check": true,
+   "note": "Pourquoi vous envoyez l’argent. / Why you are sending the money."
+  },
+  {
+   "id": "note_optional",
+   "group": "test-env",
+   "fr": "Note (facultatif)",
+   "en": "Note (optional)",
+   "variants": [
+    "Note (facultative)"
+   ],
+   "check": true
+  },
+  {
+   "id": "checked_name_number",
+   "group": "test-env",
+   "fr": "J'ai vérifié le nom et le numéro du bénéficiaire.",
+   "en": "I checked the beneficiary's name and number.",
+   "check": true,
+   "note": "La personne dit qu’elle a bien vérifié le nom et le numéro."
+  },
+  {
+   "id": "check_info_before_confirm",
+   "group": "test-env",
+   "fr": "Vérifiez les informations avant de confirmer le virement.",
+   "en": "Check the information before confirming the transfer.",
+   "check": true
+  },
+  {
+   "id": "phone",
+   "group": "test-env",
+   "fr": "Téléphone",
+   "en": "Phone"
+  },
+  {
+   "id": "operation",
+   "group": "test-env",
+   "fr": "Opération",
+   "en": "Operation"
+  },
+  {
+   "id": "confirm_info_correct",
+   "group": "test-env",
+   "fr": "Je confirme que les informations ci-dessus sont exactes.",
+   "en": "I confirm that the above information is correct.",
+   "check": true,
+   "note": "La personne s’engage : les informations sont justes."
+  },
+  {
+   "id": "modify",
+   "group": "test-env",
+   "fr": "Modifier",
+   "en": "Edit",
+   "variants": [
+    "To modify",
+    "Modify"
+   ],
+   "check": true
+  },
+  {
+   "id": "transfer_completed",
+   "group": "test-env",
+   "fr": "Virement effectué",
+   "en": "Transfer completed",
+   "check": true
+  },
+  {
+   "id": "transfer_sent_success",
+   "group": "test-env",
+   "fr": "Votre virement a été envoyé avec succès.",
+   "en": "Your transfer has been sent successfully.",
+   "check": true
+  },
+  {
+   "id": "status_success",
+   "group": "test-env",
+   "fr": "Succès",
+   "en": "Success",
+   "variants": [
+    "Réussi"
+   ]
+  },
+  {
+   "id": "new_transfer",
+   "group": "test-env",
+   "fr": "Nouveau virement",
+   "en": "New transfer",
+   "variants": [
+    "Nouveau transfert"
+   ]
+  },
+  {
+   "id": "services_payment",
+   "group": "test-env",
+   "fr": "Paiement de services",
+   "en": "Payment for services"
+  },
+  {
+   "id": "error",
+   "group": "messages",
+   "fr": "Erreur",
+   "en": "Error"
+  },
+  {
+   "id": "warning",
+   "group": "messages",
+   "fr": "Attention",
+   "en": "Warning"
+  },
+  {
+   "id": "ui_translating",
+   "group": "ui",
+   "fr": "Traduction en cours…",
+   "en": "Translating…"
+  },
+  {
+   "id": "ui_protected",
+   "group": "ui",
+   "fr": "Valeur protégée, identique à la page",
+   "en": "Protected value, same as on the page"
+  },
+  {
+   "id": "ui_validated",
+   "group": "ui",
+   "fr": "Validé",
+   "en": "Validated"
+  },
+  {
+   "id": "ui_auto",
+   "group": "ui",
+   "fr": "Traduction automatique",
+   "en": "Automatic translation"
+  },
+  {
+   "id": "ui_summary",
+   "group": "ui",
+   "fr": "Résumé sûr",
+   "en": "Safe summary"
+  },
+  {
+   "id": "ui_blocked",
+   "group": "ui",
+   "fr": "Bloqué : montant différent",
+   "en": "Blocked: amount mismatch"
+  },
+  {
+   "id": "ui_missing",
+   "group": "ui",
+   "fr": "Pas encore traduit",
+   "en": "Not translated yet"
+  },
+  {
+   "id": "ui_important",
+   "group": "ui",
+   "fr": "Messages importants",
+   "en": "Important messages"
+  },
+  {
+   "id": "ui_page",
+   "group": "ui",
+   "fr": "Sur cette page",
+   "en": "On this page"
+  },
+  {
+   "id": "ui_new",
+   "group": "ui",
+   "fr": "NOUVEAU",
+   "en": "NEW"
+  },
+  {
+   "id": "ui_listen",
+   "group": "ui",
+   "fr": "Écouter",
+   "en": "Listen"
+  },
+  {
+   "id": "ui_no_audio",
+   "group": "ui",
+   "fr": "Pas encore d’audio",
+   "en": "No audio yet"
+  },
+  {
+   "id": "ui_subtitles",
+   "group": "ui",
+   "fr": "Sous-titres",
+   "en": "Subtitles"
+  },
+  {
+   "id": "ui_close",
+   "group": "ui",
+   "fr": "Fermer",
+   "en": "Close"
+  },
+  {
+   "id": "ui_empty",
+   "group": "ui",
+   "fr": "Rien à traduire ici",
+   "en": "Nothing to translate here"
+  },
+  {
+   "id": "ui_mt_down",
+   "group": "ui",
+   "fr": "Traduction locale indisponible : résumé utilisé",
+   "en": "Local translation unavailable: summary used"
+  },
+  {
+   "id": "ui_hint_hover",
+   "group": "ui",
+   "fr": "Maintenez Ctrl et pointez un texte : sa traduction s’affiche dessous.",
+   "en": "Hold Ctrl and point at any text: its translation appears below."
+  },
+  {
+   "id": "ui_hint_hover_short",
+   "group": "ui",
+   "fr": "survol = traduction",
+   "en": "hover = translation"
+  },
+  {
+   "id": "ui_hint_listen",
+   "group": "ui",
+   "fr": "Écoutez la traduction.",
+   "en": "Listen to the translation."
+  },
+  {
+   "id": "ui_ok",
+   "group": "ui",
+   "fr": "Compris",
+   "en": "Got it"
+  }
+ ]
+}

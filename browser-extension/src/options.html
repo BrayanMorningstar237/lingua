@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mboa Lingua · Glossaire</title>
+<style>
+  :root { --ebony: #1d1712; --ebony-2: #2a221b; --ivory: #fbf6ee; --sand: #d9c9b4; --gold: #e3a21a; --gold-soft: #f6dfa6; --forest: #1e7a4c; --terracotta: #c2502e; --indigo: #3d4a8a;
+    --bg: #f8f2e8; --card: #fffcf7; --fg: #241d16; --muted: #76675a; --line: #ebdfcd; --soft: #f6eee2;
+    --kente: repeating-linear-gradient(90deg, #e3a21a 0 18px, #1e7a4c 18px 24px, #c2502e 24px 36px, #1d1712 36px 40px, #e3a21a 40px 46px, #3d4a8a 46px 52px); }
+  @media (prefers-color-scheme: dark) { :root { --bg: #16110d; --card: #1f1913; --fg: #f6efe4; --muted: #b7a690; --line: #3a3027; --soft: #2a221b; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.5 "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif; }
+  svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; vertical-align: -3px; }
+  .band { height: 6px; background: var(--kente); }
+  header { background: var(--ebony); color: var(--ivory); }
+  .hwrap { max-width: 1200px; margin: 0 auto; padding: 16px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .logo { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--gold); color: var(--ebony); }
+  .logo svg { width: 22px; height: 22px; }
+  header h1 { font-size: 18px; margin: 0; flex: 1; min-width: 200px; }
+  header h1 small { display: block; font-size: 12.5px; font-weight: 400; color: var(--sand); }
+  header label { color: var(--sand); font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  header select { min-width: 180px; color: var(--fg); background: var(--card); }
+  main { max-width: 1200px; margin: 0 auto; padding: 16px; display: grid; gap: 16px; }
+  section { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
+  h2 { font-size: 15.5px; margin: 0 0 10px; display: flex; align-items: center; gap: 8px; }
+  h2 svg { color: var(--gold); }
+  label { font-weight: 600; }
+  input[type=text], input[type=url], select, textarea { font: inherit; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; width: 100%; background: var(--card); color: inherit; }
+  textarea { min-height: 40px; resize: vertical; }
+  textarea.x { min-height: 32px; font-size: 13px; margin-top: 6px; }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--gold); outline-offset: 1px; border-color: transparent; }
+  button { font: inherit; display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--soft); color: var(--fg); cursor: pointer; font-weight: 600; }
+  button:hover:not(:disabled) { border-color: var(--gold); }
+  button:disabled { opacity: .4; cursor: not-allowed; }
+  button.primary { background: var(--ebony); color: var(--ivory); border-color: var(--ebony); }
+  button.primary svg { color: var(--gold); }
+  button.icon { padding: 6px 8px; }
+  button.rec { background: var(--terracotta); color: #fff; border-color: var(--terracotta); }
+  .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .muted { color: var(--muted); }
+  .guide { display: grid; gap: 6px; margin: 10px 0 14px; padding: 12px 14px; border-radius: 12px; background: var(--soft); border-left: 4px solid var(--gold); }
+  .guide b { color: var(--fg); }
+  .bar { height: 8px; border-radius: 99px; background: var(--soft); overflow: hidden; display: flex; margin-top: 6px; }
+  .bar i { display: block; height: 100%; } .bar .v { background: var(--forest); } .bar .t { background: var(--gold); }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 8px; border-bottom: 1px solid var(--line); }
+  th { font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); position: sticky; top: 0; background: var(--card); z-index: 1; }
+  td.src div + div { color: var(--muted); }
+  .grp { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .note { margin-top: 6px; font-size: 12.5px; padding: 6px 8px; border-radius: 8px; background: color-mix(in srgb, var(--indigo) 9%, var(--card)); color: var(--fg); }
+  .note svg { color: var(--indigo); width: 14px; height: 14px; }
+  .check { display: inline-block; margin-top: 4px; color: #8a5a00; background: color-mix(in srgb, var(--gold) 18%, var(--card)); font-size: 11.5px; font-weight: 700; padding: 1px 7px; border-radius: 99px; }
+  .ph { font-family: ui-monospace, Consolas, monospace; background: var(--gold-soft); color: #3b2604; padding: 0 4px; border-radius: 4px; }
+  .bad { outline: 2px solid var(--terracotta) !important; }
+  .row-ok td:first-child { box-shadow: inset 4px 0 0 var(--forest); }
+  .ok-label { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 99px; border: 1px solid var(--line); cursor: pointer; font-size: 13px; }
+  .row-ok .ok-label { background: color-mix(in srgb, var(--forest) 12%, var(--card)); border-color: var(--forest); color: var(--forest); }
+  input[type=checkbox] { accent-color: var(--forest); width: 16px; height: 16px; }
+  pre { background: var(--ebony); color: var(--ivory); padding: 14px; border-radius: 12px; white-space: pre-wrap; word-break: break-word; font-size: 12.5px; margin: 10px 0 0; }
+  .tablewrap { max-height: 70vh; overflow: auto; }
+  @media (max-width: 760px) { thead { display: none; } tr, td { display: block; } td { border: 0; padding: 4px 0; } tr { border-bottom: 1px solid var(--line); padding: 10px 0; } }
+</style>
+</head>
+<body>
+<div class="band"></div>
+<header>
+  <div class="hwrap">
+    <div class="logo"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></div>
+    <h1>Mboa Lingua<small>Glossaire, voix et paramètres</small></h1>
+    <label>Langue <select id="lang"></select></label>
+  </div>
+</header>
+<main>
+  <section>
+    <h2><svg viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>Validation linguistique</h2>
+    <div class="grid2">
+      <label>Nom du validateur (locuteur natif)<input type="text" id="validator" placeholder="Nom, village ou région"></label>
+      <div><div class="muted" id="progress"></div><div class="bar"><i class="v" id="barV"></i><i class="t" id="barT"></i></div></div>
+    </div>
+    <div class="guide">
+      <div><b>Traduisez le sens, pas les mots.</b> Écrivez la phrase comme vous l'expliqueriez à un parent au marché : simple, naturelle, avec la même idée.</div>
+      <div><b>Gardez les marqueurs</b> <span class="ph">{amount}</span> <span class="ph">{name}</span>… : ils sont remplacés par les vraies valeurs de la page.</div>
+      <div><b>Les avertissements doivent garder toute leur force</b> : « jamais », « ne pas », « impossible d'annuler ».</div>
+      <div><b>Explication (facultatif)</b> : une phrase courte qui explique un mot difficile (ex. « frais » = ce que la banque prend). Elle s'affiche sous la traduction.</div>
+    </div>
+    <div class="toolbar">
+      <input type="text" id="filter" placeholder="Rechercher…" style="max-width:260px">
+      <label style="font-weight:500"><input type="checkbox" id="onlyMissing"> Seulement les phrases non traduites</label>
+      <span style="flex:1"></span>
+      <button id="importBtn"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>Importer</button><input type="file" id="import" accept="application/json" hidden>
+      <button id="export" class="primary"><svg viewBox="0 0 24 24"><path d="M12 21V9"/><path d="m7 14 5-5 5 5"/><path d="M5 3h14"/></svg>Exporter le fichier de langue</button>
+    </div>
+  </section>
+
+  <section>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th style="width:34%">Français / English</th><th>Traduction</th><th style="width:150px">Validé</th><th style="width:190px">Voix</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2><svg viewBox="0 0 24 24"><path d="M9 3h6"/><path d="M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21h11.6a2 2 0 0 0 1.7-2.5L14 9V3"/></svg>Banc d'essai : tester un nouveau message</h2>
+    <textarea id="probe" rows="3">Vous allez envoyer 25 000 FCFA à Jean-Paul Mbarga.</textarea>
+    <div class="toolbar" style="margin-top:10px">
+      <button id="run" class="primary"><svg viewBox="0 0 24 24"><path d="m6 4 14 8-14 8z"/></svg>Analyser</button>
+      <button id="listen" disabled><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg>Écouter la traduction</button>
+      <span class="muted" id="listenMsg"></span>
+    </div>
+    <pre id="out"></pre>
+  </section>
+
+  <section>
+    <h2><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/></svg>Traduction automatique locale (open source, optionnelle)</h2>
+    <p class="muted">Utilisée seulement pour les phrases absentes du glossaire. Seul le texte <b>masqué</b> est envoyé (les montants, noms et numéros sont remplacés par ⟦A⟧, ⟦B⟧…), et seulement à un serveur sur cet ordinateur. Sans serveur, l'extension affiche un résumé sûr : type de message, mots clés et montants exacts.</p>
+    <div class="grid2">
+      <label>Mode
+        <select id="mtMode">
+          <option value="none">Désactivée (glossaire et résumé sûr)</option>
+          <option value="openai">LLM local compatible OpenAI (Ollama, llama.cpp, LM Studio)</option>
+          <option value="nllb">Serveur NLLB-200 local (server/nllb_server.py)</option>
+        </select>
+      </label>
+      <label>Adresse<input type="url" id="mtEndpoint"></label>
+      <label>Modèle (mode LLM)<input type="text" id="mtModel"></label>
+    </div>
+
+    <h2 style="margin-top:18px"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg>Voix</h2>
+    <p class="muted">Le texte en langue nationale est lu avec les <b>enregistrements du locuteur natif</b> (voix humaine). Les montants, noms et numéros sont lus exactement par la voix française la plus naturelle du navigateur. Pour le fulfulde seulement, une voix neuronale locale (Meta MMS-TTS, open source) peut lire les phrases non enregistrées.</p>
+    <div class="grid2">
+      <label>Voix neuronale locale
+        <select id="ttsMode">
+          <option value="none">Désactivée (voix humaines seulement)</option>
+          <option value="mms">MMS-TTS local (server/tts_server.py), fulfulde</option>
+        </select>
+      </label>
+      <label>Adresse<input type="url" id="ttsEndpoint"></label>
+      <label style="font-weight:500;display:flex;gap:8px;align-items:center"><input type="checkbox" id="autoSpeak"> Lire à voix haute les nouveaux messages importants</label>
+    </div>
+    <div class="toolbar" style="margin-top:12px"><button id="saveMt" class="primary">Enregistrer</button><button id="clearCache">Vider le cache</button><span class="muted" id="mtMsg"></span></div>
+  </section>
+</main>
+<script src="protect.js"></script>
+<script src="engine.js"></script>
+<script src="speech.js"></script>
+<script src="options.js"></script>
+</body>
+</html>
