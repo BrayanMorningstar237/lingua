@@ -2,7 +2,10 @@
   "prototype": "Langwa",
   "team": "",
   "city": "",
-  "language": { "code": "", "name": "" },
+  "language": {
+    "code": "fub",
+    "name": "Fulfulde (Adamawa)"
+  },
   "validators": [],
   "videoUrl": "",
   "repoUrl": "https://github.com/BrayanMorningstar237/lingua",
