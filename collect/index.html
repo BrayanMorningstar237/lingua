@@ -4,316 +4,331 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1d1712">
-<title>Langwa · Aidez à traduire</title>
+<meta name="description" content="Langwa affiche les services bancaires en ligne dans les langues nationales du Cameroun. Les montants restent exacts, le site de la banque reste inchangé.">
+<title>Langwa · La banque en ligne, dans votre langue</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
 <style>
-  :root { --ebony: #1d1712; --ebony-2: #2a221b; --ivory: #fbf6ee; --sand: #d9c9b4; --gold: #e3a21a; --gold-soft: #f6dfa6; --forest: #1e7a4c; --terracotta: #c2502e; --indigo: #3d4a8a;
-    --bg: #f8f2e8; --card: #fffcf7; --fg: #241d16; --muted: #76675a; --line: #ebdfcd; --soft: #f3eadc;
+  :root { --ebony: #1d1712; --ebony-2: #2a221b; --ebony-3: #3d3229; --ivory: #fbf6ee; --sand: #d9c9b4; --gold: #e3a21a; --gold-soft: #f6dfa6;
+    --forest: #1e7a4c; --forest-2: #2f9e66; --terracotta: #c2502e; --indigo: #3d4a8a;
+    --bg: #fbf6ee; --card: #fffdf9; --fg: #241d16; --muted: #6f6152; --line: #ebdfcd; --soft: #f4ebde;
     --kente: repeating-linear-gradient(90deg, #e3a21a 0 18px, #1e7a4c 18px 24px, #c2502e 24px 36px, #1d1712 36px 40px, #e3a21a 40px 46px, #3d4a8a 46px 52px); }
   @media (prefers-color-scheme: dark) { :root { --bg: #16110d; --card: #1f1913; --fg: #f6efe4; --muted: #b7a690; --line: #3a3027; --soft: #2a221b; } }
   * { box-sizing: border-box; }
-  html, body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 "Segoe UI", system-ui, -apple-system, Roboto, "Noto Sans", sans-serif; -webkit-text-size-adjust: 100%; }
-  svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
-  button { font: inherit; color: inherit; cursor: pointer; }
-  [hidden] { display: none !important; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 17px/1.6 "Segoe UI", system-ui, -apple-system, Roboto, "Noto Sans", sans-serif; -webkit-text-size-adjust: 100%; }
+  a { color: inherit; }
+  svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
   .band { height: 6px; background: var(--kente); }
-  header { background: var(--ebony); color: var(--ivory); padding: 14px 16px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 2; }
-  .logo { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; background: var(--gold); color: var(--ebony); }
-  header .t { flex: 1; min-width: 0; }
-  header b { display: block; font-size: 16px; }
-  header small { color: var(--sand); font-size: 12.5px; }
-  .count { font-size: 13px; color: var(--sand); white-space: nowrap; }
-  .progress { height: 4px; background: var(--ebony-2); }
-  .progress i { display: block; height: 100%; width: 0; background: var(--gold); transition: width .2s ease; }
-  main { max-width: 640px; margin: 0 auto; padding: 18px 16px 120px; }
-  h1 { font-size: 22px; margin: 6px 0 6px; }
-  .lead { color: var(--muted); margin: 0 0 18px; }
-  .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 18px; }
-  .field { display: grid; gap: 6px; margin-bottom: 14px; font-weight: 600; font-size: 14px; }
-  .field small { font-weight: 400; color: var(--muted); }
-  input[type=text], textarea { font: inherit; width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: inherit; }
-  textarea { min-height: 96px; resize: vertical; font-size: 18px; line-height: 1.45; }
-  input:focus, textarea:focus { outline: 2px solid var(--gold); border-color: transparent; }
-  .langs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
-  .lang { text-align: left; padding: 14px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--card); display: grid; gap: 2px; }
-  .lang b { font-size: 17px; } .lang small { color: var(--muted); font-size: 12.5px; }
-  .lang.on { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 12%, var(--card)); }
-  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 14px; padding: 14px 18px; font-weight: 700; }
-  .btn.primary { background: var(--ebony); color: var(--ivory); } .btn.primary svg { color: var(--gold); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; border: 0; border-radius: 14px; padding: 15px 22px; font: 700 16px/1.2 inherit; font-family: inherit; text-decoration: none; cursor: pointer; transition: transform .12s ease, filter .12s ease; }
+  .btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
   .btn.gold { background: var(--gold); color: var(--ebony); }
-  .btn.ghost { background: var(--soft); color: var(--fg); }
-  .btn:disabled { opacity: .45; cursor: not-allowed; }
-  .wide { width: 100%; }
-  .tag { display: inline-block; font-size: 11.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-  .src { font-size: 21px; font-weight: 700; line-height: 1.35; margin: 0 0 6px; }
-  .en { color: var(--muted); margin: 0 0 12px; }
-  .note { display: flex; gap: 10px; background: var(--soft); border-radius: 12px; padding: 10px 12px; font-size: 14px; margin-bottom: 14px; }
-  .note svg { color: var(--indigo); margin-top: 2px; width: 18px; height: 18px; }
-  .ph { font-family: ui-monospace, Consolas, monospace; background: var(--gold-soft); color: #3b2604; padding: 0 5px; border-radius: 5px; font-size: .9em; }
-  .warn { color: var(--terracotta); font-size: 13.5px; margin-top: 6px; }
-  .sugg { margin: 12px 0 2px; }
-  .sugg .lbl { font-size: 12.5px; color: var(--muted); margin-bottom: 6px; }
-  .chip { display: inline-flex; align-items: center; gap: 6px; margin: 0 6px 6px 0; padding: 6px 10px; border-radius: 99px; border: 1px solid var(--line); background: var(--card); font-size: 14px; }
-  .chip i { font-style: normal; color: var(--muted); font-size: 12px; }
-  .rec { margin-top: 16px; display: grid; gap: 8px; }
-  .recrow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .recrow .lbl { flex: 1 1 100%; font-size: 13px; color: var(--muted); }
-  .recbtn { border: 0; border-radius: 99px; padding: 10px 16px; background: var(--soft); font-weight: 700; display: inline-flex; gap: 8px; align-items: center; }
-  .recbtn.on { background: var(--terracotta); color: #fff; }
-  .recbtn.done { background: color-mix(in srgb, var(--forest) 14%, var(--card)); color: var(--forest); }
-  details { margin-top: 14px; } summary { cursor: pointer; color: var(--muted); font-size: 14px; }
-  .bar { position: fixed; left: 0; right: 0; bottom: 0; background: var(--card); border-top: 1px solid var(--line); padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); z-index: 2; }
-  .bar .in { max-width: 640px; margin: 0 auto; display: grid; grid-template-columns: auto auto 1fr; gap: 8px; }
-  .done-card { text-align: center; }
-  .done-card .big { font-size: 46px; font-weight: 800; color: var(--forest); }
-  .list { margin-top: 18px; display: grid; gap: 6px; }
-  .row { display: flex; gap: 10px; align-items: baseline; padding: 10px 12px; border-radius: 12px; background: var(--card); border: 1px solid var(--line); text-align: left; width: 100%; }
-  .row b { flex: 1; font-weight: 500; font-size: 14px; } .row span { font-size: 12px; color: var(--muted); white-space: nowrap; }
-  .row.ok span { color: var(--forest); }
-  .toast { position: fixed; left: 50%; bottom: 96px; transform: translateX(-50%); background: var(--ebony); color: var(--ivory); padding: 10px 16px; border-radius: 12px; font-size: 14px; z-index: 3; }
+  .btn.light { background: rgba(251,246,238,.1); color: var(--ivory); box-shadow: inset 0 0 0 1.5px rgba(251,246,238,.28); }
+  .btn.dark { background: var(--ebony); color: var(--ivory); } .btn.dark svg { color: var(--gold); }
+  .btn.soft { background: var(--soft); color: var(--fg); }
+
+  /* nav */
+  nav { position: sticky; top: 0; z-index: 10; background: rgba(29,23,18,.96); backdrop-filter: blur(8px); color: var(--ivory); }
+  nav .wrap { display: flex; align-items: center; gap: 16px; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800; font-size: 19px; }
+  .logo { width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center; background: var(--gold); color: var(--ebony); }
+  .logo svg { width: 20px; height: 20px; }
+  nav .links { margin-left: auto; display: flex; align-items: center; gap: 22px; font-size: 15px; }
+  nav .links a { text-decoration: none; color: var(--sand); }
+  nav .links a:hover { color: #fff; }
+  nav .links .btn { padding: 10px 16px; font-size: 15px; color: var(--ebony); }
+  @media (max-width: 760px) { nav .links a:not(.btn) { display: none; } }
+
+  /* hero */
+  .hero { background: var(--ebony); color: var(--ivory); padding: 72px 0 88px; overflow: hidden; }
+  .hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+  h1 { font-size: clamp(36px, 5.4vw, 60px); line-height: 1.06; letter-spacing: -.02em; margin: 0 0 20px; }
+  h1 em { font-style: normal; color: var(--gold); }
+  .hero p.lead { font-size: 19px; color: var(--sand); max-width: 540px; margin: 0 0 32px; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; }
+  .hero .meta { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 14px; color: var(--sand); }
+  .hero .meta span { display: inline-flex; align-items: center; gap: 7px; }
+  .hero .meta svg { width: 17px; height: 17px; color: var(--forest-2); }
+
+  /* product preview (pure HTML, no screenshot) */
+  .preview { position: relative; }
+  .bank { background: #fff; color: #1b2430; border-radius: 18px; padding: 22px; box-shadow: 0 30px 70px rgba(0,0,0,.4); font-family: system-ui, sans-serif; }
+  .bank .top { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; margin-bottom: 14px; }
+  .bank .top i { width: 28px; height: 28px; border-radius: 8px; background: #e0f2fe; display: inline-block; }
+  .bank .row { display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid #edf0f4; font-size: 15px; }
+  .bank .row b { font-weight: 700; }
+  .bank .row.hl span { outline: 2.5px solid var(--gold); outline-offset: 4px; border-radius: 4px; }
+  .card { position: relative; margin: 14px 0 0 18px; width: calc(100% - 18px); background: var(--ebony-2); color: var(--ivory); border-radius: 16px; padding: 16px 18px; box-shadow: 0 24px 60px rgba(0,0,0,.45), 0 0 0 1px rgba(255,240,220,.08); }
+  .card::before { content: ""; position: absolute; top: -7px; left: 34px; width: 14px; height: 14px; background: var(--ebony-2); transform: rotate(45deg); border-radius: 3px; }
+  .card .line { display: flex; align-items: center; gap: 12px; }
+  .card .slot { flex: 1; font-size: 18px; font-weight: 700; }
+  .card .slot small { display: block; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .card .slot span { display: inline-block; padding: 2px 10px; border-radius: 8px; background: rgba(227,162,26,.14); color: var(--gold-soft); border: 1.5px dashed rgba(227,162,26,.6); }
+  .say { width: 42px; height: 42px; border-radius: 99px; display: grid; place-items: center; background: var(--forest); color: #fff; flex: none; }
+  .say svg { width: 20px; height: 20px; }
+  .card .orig { margin-top: 10px; font-size: 13px; color: var(--sand); }
+  .card .orig b { font-size: 10px; letter-spacing: .09em; text-transform: uppercase; margin-right: 6px; opacity: .7; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; font: 700 13px ui-monospace, Consolas, monospace; background: var(--gold-soft); color: #3b2604; padding: 4px 9px; border-radius: 8px; }
+  .chip svg { width: 13px; height: 13px; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 700; padding: 4px 10px; border-radius: 99px; background: rgba(47,158,102,.18); color: #7fd9a8; }
+  .pill svg { width: 14px; height: 14px; }
+
+  @media (max-width: 900px) { .hero .wrap { grid-template-columns: 1fr; gap: 44px; } .hero { padding: 48px 0 64px; } }
+
+  /* sections */
+  section.block { padding: 88px 0; }
+  section.alt { background: var(--soft); }
+  .kicker { font-size: 13px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 10px; }
+  h2 { font-size: clamp(28px, 3.6vw, 40px); line-height: 1.15; letter-spacing: -.015em; margin: 0 0 14px; }
+  .sub { font-size: 18px; color: var(--muted); max-width: 680px; margin: 0 0 44px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .grid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  @media (max-width: 860px) { .grid3, .grid2 { grid-template-columns: 1fr; } section.block { padding: 64px 0; } }
+  .tile { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 26px; }
+  .tile .ico { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 18px; }
+  .tile h3 { font-size: 20px; margin: 0 0 8px; }
+  .tile p { margin: 0; color: var(--muted); font-size: 16px; }
+  .num { font: 800 13px ui-monospace, Consolas, monospace; color: var(--muted); margin-bottom: 12px; }
+  .ico.g { background: color-mix(in srgb, var(--forest) 14%, var(--card)); color: var(--forest); }
+  .ico.o { background: color-mix(in srgb, var(--gold) 20%, var(--card)); color: #9a6a00; }
+  .ico.i { background: color-mix(in srgb, var(--indigo) 13%, var(--card)); color: var(--indigo); }
+  .ico.r { background: color-mix(in srgb, var(--terracotta) 13%, var(--card)); color: var(--terracotta); }
+
+  /* languages */
+  .langs { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .lang { display: block; text-decoration: none; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; transition: border-color .12s ease, transform .12s ease; }
+  .lang:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .lang b { display: block; font-size: 19px; }
+  .lang small { color: var(--muted); font-size: 14px; }
+  .lang .st { display: inline-block; margin-top: 10px; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 99px; background: color-mix(in srgb, var(--gold) 18%, var(--card)); color: #8a5a00; }
+
+  /* contribute */
+  .contribute { background: var(--ebony); color: var(--ivory); border-radius: 28px; padding: 56px; position: relative; overflow: hidden; display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; }
+  .contribute::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 8px; background: var(--kente); }
+  .contribute h2 { color: var(--ivory); }
+  .contribute .sub { color: var(--sand); margin-bottom: 28px; }
+  .steps { display: grid; gap: 12px; }
+  .step { display: flex; gap: 14px; align-items: flex-start; background: var(--ebony-2); border-radius: 16px; padding: 16px 18px; }
+  .step i { font-style: normal; width: 30px; height: 30px; border-radius: 99px; display: grid; place-items: center; background: var(--gold); color: var(--ebony); font-weight: 800; flex: none; }
+  .step b { display: block; } .step span { color: var(--sand); font-size: 15px; }
+  @media (max-width: 860px) { .contribute { grid-template-columns: 1fr; padding: 40px 22px 28px; border-radius: 22px; } }
+
+  /* install */
+  .install { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media (max-width: 860px) { .install { grid-template-columns: 1fr; } }
+  .install .tile ol { margin: 12px 0 18px; padding-left: 20px; color: var(--muted); font-size: 15.5px; }
+  .install .tile li { margin: 4px 0; }
+  code { font: 600 14px ui-monospace, Consolas, monospace; background: var(--soft); padding: 1px 6px; border-radius: 6px; }
+
+  /* ---------- phones: compact rows, shorter page ---------- */
+  @media (max-width: 640px) {
+    body { font-size: 16px; }
+    .wrap { padding: 0 18px; }
+    .hero { padding: 36px 0 48px; }
+    .hero p.lead { font-size: 17px; margin-bottom: 24px; }
+    .cta .btn { flex: 1 1 100%; }
+    section.block { padding: 48px 0; }
+    .sub { font-size: 16px; margin-bottom: 24px; }
+    .grid3, .grid2 { gap: 10px; }
+    .tile { display: grid; grid-template-columns: 44px 1fr; column-gap: 14px; align-items: start; padding: 16px; border-radius: 16px; }
+    .tile .ico { grid-row: span 2; width: 44px; height: 44px; margin: 0; border-radius: 12px; }
+    .tile .num { display: none; }
+    .tile h3 { font-size: 17px; margin: 0 0 2px; }
+    .tile p { font-size: 15px; }
+    .install .tile { display: block; }
+    .install .tile .ico { margin-bottom: 12px; }
+    .langs { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .lang { padding: 14px; border-radius: 14px; }
+    .lang b { font-size: 17px; }
+    .lang small { font-size: 13px; }
+    .contribute { padding: 36px 20px 22px; }
+    .card { margin-left: 10px; width: calc(100% - 10px); }
+    footer .sp { margin-left: 0; }
+  }
+
+  footer { background: var(--ebony); color: var(--sand); padding: 40px 0; font-size: 14px; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: center; }
+  footer .brand { color: var(--ivory); }
+  footer .sp { margin-left: auto; }
 </style>
 </head>
 <body>
+
 <div class="band"></div>
-<header>
-  <div class="logo"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></div>
-  <div class="t"><b>Langwa</b><small data-t="subtitle"></small></div>
-  <div class="count" id="count"></div>
-</header>
-<div class="progress"><i id="prog"></i></div>
-
-<main>
-  <!-- 1. Who and which language -->
-  <section id="start">
-    <h1 data-t="title"></h1>
-    <p class="lead" data-t="lead"></p>
-    <div class="field" data-t="chooseLang"></div>
-    <div class="langs" id="langs"></div>
-    <label class="field"><span data-t="yourName"></span><input type="text" id="name" autocomplete="name"></label>
-    <label class="field"><span data-t="yourPlace"></span><input type="text" id="place"><small data-t="placeHelp"></small></label>
-    <button class="btn primary wide" id="go" disabled><span data-t="start"></span><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></button>
-  </section>
-
-  <!-- 2. One phrase per screen -->
-  <section id="phrase" hidden>
-    <div class="card">
-      <span class="tag" id="group"></span>
-      <p class="src" id="fr"></p>
-      <p class="en" id="enTxt"></p>
-      <div class="note" id="note" hidden><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span id="noteTxt"></span></div>
-      <label class="field"><span id="trLabel"></span><textarea id="tr" lang="" autocapitalize="sentences"></textarea></label>
-      <div class="warn" id="phWarn" hidden></div>
-      <div class="sugg" id="sugg" hidden><div class="lbl" data-t="suggestions"></div><div id="chips"></div></div>
-      <div class="sugg" id="refs" hidden><div class="lbl" data-t="dictionaries"></div><div id="refLinks"></div></div>
-      <div class="rec" id="rec"></div>
-      <details id="xBox"><summary data-t="addExplain"></summary><textarea id="x" style="min-height:60px;font-size:15px;margin-top:8px"></textarea></details>
+<nav>
+  <div class="wrap">
+    <a class="brand" href="./"><span class="logo"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></span>Langwa</a>
+    <div class="links">
+      <a href="#how" data-en="How it works">Comment ça marche</a>
+      <a href="#safety" data-en="Safety">Sécurité</a>
+      <a href="#install" data-en="Install">Installer</a>
+      <a class="btn gold" href="contribute/" data-en="Contribute">Contribuer</a>
     </div>
-  </section>
-
-  <!-- 3. Send -->
-  <section id="finish" hidden>
-    <div class="card done-card">
-      <div class="big" id="doneCount">0</div>
-      <p data-t="doneText"></p>
-      <button class="btn gold wide" id="send"><svg viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg><span data-t="send"></span></button>
-      <p class="lead" style="margin-top:12px" data-t="sendHelp"></p>
-      <button class="btn ghost wide" id="back"><span data-t="continue"></span></button>
-    </div>
-    <div class="list" id="list"></div>
-  </section>
-</main>
-
-<div class="bar" id="nav" hidden>
-  <div class="in">
-    <button class="btn ghost" id="prev" aria-label="Précédent"><svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg></button>
-    <button class="btn ghost" id="skip"><span data-t="skip"></span></button>
-    <button class="btn primary" id="next"><span data-t="next"></span><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></button>
   </div>
-</div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow" data-en="SAFINUM Innovate Challenge prototype">Prototype · SAFINUM Innovate Challenge</div>
+      <h1><span data-en="Online banking,">La banque en ligne,</span> <em data-en="in your language.">dans votre langue.</em></h1>
+      <p class="lead" data-en="Langwa shows banking and mobile-money sites in Cameroon's national languages, in text and by voice. Amounts stay exact. The bank's site stays untouched.">Langwa affiche les sites de banque et de mobile money dans les langues nationales du Cameroun, à l’écrit et à l’oral. Les montants restent exacts. Le site de la banque reste inchangé.</p>
+      <div class="cta">
+        <a class="btn gold" href="contribute/"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span data-en="Contribute translations">Contribuer des traductions</span></a>
+        <a class="btn light" href="#install"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Install Langwa">Installer Langwa</span></a>
+      </div>
+      <div class="meta">
+        <span><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-en="Free and open source">Gratuit et open source</span></span>
+        <span><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-en="Computer and phone">Ordinateur et téléphone</span></span>
+        <span><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-en="No account, no data collected">Sans compte, sans collecte de données</span></span>
+      </div>
+    </div>
+
+    <div class="preview" aria-hidden="true">
+      <div class="bank">
+        <div class="top"><i></i><span data-en="Transfer summary">Récapitulatif du virement</span></div>
+        <div class="row"><span data-en="Amount">Montant</span><b>25 000 FCFA</b></div>
+        <div class="row"><span data-en="Fees">Frais</span><b>0 FCFA</b></div>
+        <div class="row hl"><span data-en="Total to be debited">Total à débiter</span><b>25 000 FCFA</b></div>
+        <div class="row"><span data-en="Beneficiary">Bénéficiaire</span><b>Jean-Paul Mbarga</b></div>
+      </div>
+      <div class="card">
+        <div class="line">
+          <div class="slot"><small data-en="Your language">Votre langue</small><span data-en="your translation here">votre traduction ici</span></div>
+          <div class="say"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg></div>
+        </div>
+        <div class="orig"><b>Original</b><span data-en="Total to be debited">Total à débiter</span></div>
+        <div class="chips">
+          <span class="chip"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>25 000 FCFA</span>
+          <span class="pill"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><span data-en="Validated">Validé</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="block" id="how">
+  <div class="wrap">
+    <div class="kicker" data-en="How it works">Comment ça marche</div>
+    <h2 data-en="Point, understand, listen.">Pointez, comprenez, écoutez.</h2>
+    <p class="sub" data-en="Langwa works on top of the bank's site. Nothing to learn: one gesture shows the translation right under what you are reading.">Langwa fonctionne par-dessus le site de la banque. Rien à apprendre : un seul geste affiche la traduction juste sous ce que vous lisez.</p>
+    <div class="grid3">
+      <div class="tile"><div class="num">01</div><div class="ico o"><svg viewBox="0 0 24 24"><path d="M4 4l7 17 2.5-7.5L21 11 4 4z"/></svg></div><h3 data-en="Point">Pointez</h3><p data-en="Hold Ctrl and point at any text or button on a computer, or press and hold on a phone.">Maintenez Ctrl et pointez un texte ou un bouton sur ordinateur, ou appuyez longuement sur téléphone.</p></div>
+      <div class="tile"><div class="num">02</div><div class="ico g"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></div><h3 data-en="Understand">Comprenez</h3><p data-en="The translation appears below it, written by native speakers, with amounts and names locked exactly as on the page.">La traduction apparaît dessous, écrite par des locuteurs natifs, avec les montants et les noms verrouillés comme sur la page.</p></div>
+      <div class="tile"><div class="num">03</div><div class="ico i"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg></div><h3 data-en="Listen">Écoutez</h3><p data-en="Press the speaker to hear it in a real human voice. New error or warning messages are read out automatically.">Touchez le haut-parleur pour l’entendre avec une vraie voix humaine. Les nouveaux messages d’erreur ou d’alerte sont lus automatiquement.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block alt" id="safety">
+  <div class="wrap">
+    <div class="kicker" data-en="Safety first">La sécurité d’abord</div>
+    <h2 data-en="In finance, a wrong translation is worse than none.">En finance, une mauvaise traduction est pire qu’aucune.</h2>
+    <p class="sub" data-en="Langwa is built so that a translation can never change what you are about to pay.">Langwa est conçu pour qu’une traduction ne puisse jamais changer ce que vous allez payer.</p>
+    <div class="grid2">
+      <div class="tile"><div class="ico o"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><h3 data-en="Amounts locked">Montants verrouillés</h3><p data-en="Amounts, signs, fees, phone and account numbers, references and names are locked before translation and checked after. Any difference blocks the translation.">Montants, signes, frais, numéros de téléphone et de compte, références et noms sont verrouillés avant la traduction et vérifiés après. Toute différence bloque la traduction.</p></div>
+      <div class="tile"><div class="ico g"><svg viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></div><h3 data-en="The bank stays untouched">La banque reste intacte</h3><p data-en="Langwa only reads the page. It never changes the bank's site, its forms or its requests, and never presses a button for you.">Langwa ne fait que lire la page. Il ne modifie jamais le site de la banque, ses formulaires ni ses échanges, et n’appuie jamais sur un bouton à votre place.</p></div>
+      <div class="tile"><div class="ico r"><svg viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div><h3 data-en="Warnings keep their force">Les alertes gardent leur force</h3><p data-en="Errors and security warnings are shown first. A new message is never guessed: Langwa says what kind of message it is and shows the exact amounts.">Erreurs et alertes de sécurité passent en premier. Un nouveau message n’est jamais deviné : Langwa dit de quel type de message il s’agit et montre les montants exacts.</p></div>
+      <div class="tile"><div class="ico i"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg></div><h3 data-en="Nothing leaves your device">Rien ne quitte votre appareil</h3><p data-en="No account, no tracking. Translations live inside Langwa on your device; your balance and your beneficiaries are never sent anywhere.">Pas de compte, pas de suivi. Les traductions sont dans Langwa, sur votre appareil ; votre solde et vos bénéficiaires ne sont envoyés nulle part.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="languages">
+  <div class="wrap">
+    <div class="kicker" data-en="Languages">Langues</div>
+    <h2 data-en="Seven languages, built with their speakers.">Sept langues, construites avec leurs locuteurs.</h2>
+    <p class="sub" data-en="Every translation is written and validated by native speakers. Translations are being collected now: each language opens as soon as its speakers have translated it.">Chaque traduction est écrite et validée par des locuteurs natifs. La collecte est en cours : chaque langue s’ouvre dès que ses locuteurs l’ont traduite.</p>
+    <div class="langs" id="langs"></div>
+  </div>
+</section>
+
+<section class="block" id="contribute" style="padding-top:0">
+  <div class="wrap">
+    <div class="contribute">
+      <div>
+        <div class="kicker" style="color:var(--gold)" data-en="Contribute your knowledge">Partagez votre savoir</div>
+        <h2 data-en="Do you speak one of these languages? Help us translate.">Vous parlez une de ces langues ? Aidez-nous à traduire.</h2>
+        <p class="sub" data-en="Short, everyday banking sentences, on your phone. Even ten minutes helps someone in your community use their bank with confidence.">De courtes phrases de banque de tous les jours, sur votre téléphone. Même dix minutes aident quelqu’un de votre communauté à utiliser sa banque en confiance.</p>
+        <a class="btn gold" href="contribute/"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span data-en="Start translating">Commencer à traduire</span></a>
+      </div>
+      <div class="steps">
+        <div class="step"><i>1</i><div><b data-en="Choose your language">Choisissez votre langue</b><span data-en="Ewondo, Fulfulde, Duala, Ghomálá', Basaá, Mankon or Kom.">Ewondo, fulfulde, duala, ghomálá', basaá, mankon ou kom.</span></div></div>
+        <div class="step"><i>2</i><div><b data-en="Translate the meaning">Traduisez le sens</b><span data-en="One sentence at a time, as you would explain it to a relative. Record your voice if you like.">Une phrase à la fois, comme vous l’expliqueriez à un parent. Enregistrez votre voix si vous le voulez.</span></div></div>
+        <div class="step"><i>3</i><div><b data-en="Send it on WhatsApp">Envoyez sur WhatsApp</b><span data-en="One tap shares your translations with the team. Your name is credited.">Un seul geste partage vos traductions avec l’équipe. Votre nom est crédité.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block alt" id="install">
+  <div class="wrap">
+    <div class="kicker" data-en="Install">Installer</div>
+    <h2 data-en="Ready in two minutes.">Prêt en deux minutes.</h2>
+    <p class="sub" data-en="Langwa is a prototype for the SAFINUM Innovate Challenge. It is installed manually while it awaits publication on browser stores.">Langwa est un prototype pour le SAFINUM Innovate Challenge. Il s’installe à la main en attendant sa publication sur les boutiques des navigateurs.</p>
+    <div class="install">
+      <div class="tile">
+        <div class="ico o"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg></div>
+        <h3>Chrome, Edge, Brave, Opera</h3>
+        <ol>
+          <li data-en="Download and unzip the file.">Téléchargez et décompressez le fichier.</li>
+          <li data-en="Open chrome://extensions and turn on Developer mode.">Ouvrez <code>chrome://extensions</code> et activez le mode développeur.</li>
+          <li data-en="Click Load unpacked and choose the folder.">Cliquez sur « Charger l’extension non empaquetée » et choisissez le dossier.</li>
+        </ol>
+        <a class="btn dark" href="downloads/langwa-chromium.zip" download><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Download">Télécharger</span></a>
+      </div>
+      <div class="tile">
+        <div class="ico r"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a14 14 0 0 1 0 18M3 12h18"/></svg></div>
+        <h3>Firefox</h3>
+        <ol>
+          <li data-en="Download and unzip the file.">Téléchargez et décompressez le fichier.</li>
+          <li data-en="Open about:debugging, then This Firefox.">Ouvrez <code>about:debugging</code>, puis « Ce Firefox ».</li>
+          <li data-en="Load Temporary Add-on and choose manifest.json.">« Charger un module temporaire » et choisissez <code>manifest.json</code>.</li>
+        </ol>
+        <a class="btn soft" href="downloads/langwa-chromium.zip" download><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Download">Télécharger</span></a>
+      </div>
+      <div class="tile">
+        <div class="ico g"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg></div>
+        <h3 data-en="Phone">Téléphone</h3>
+        <ol>
+          <li data-en="Android: install Tampermonkey. iPhone: install the free Userscripts app.">Android : installez Tampermonkey. iPhone : installez l’app gratuite Userscripts.</li>
+          <li data-en="Open the Langwa script below and confirm.">Ouvrez le script Langwa ci-dessous et confirmez.</li>
+          <li data-en="On your bank's page, press and hold any text.">Sur la page de votre banque, appuyez longuement sur un texte.</li>
+        </ol>
+        <a class="btn soft" href="downloads/langwa.user.js"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Phone version">Version téléphone</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="./"><span class="logo"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></span>Langwa</a>
+    <span data-en="Prototype for the SAFINUM Innovate Challenge. Simulated operations only.">Prototype pour le SAFINUM Innovate Challenge. Opérations simulées uniquement.</span>
+    <a class="sp" href="contribute/" data-en="Contribute translations">Contribuer des traductions</a>
+  </div>
+</footer>
 
 <script>
-/* Data embedded by tools/build.mjs: { source, langs, terms } */
-const DATA = {"source":{"about":"Source strings (French / English). Each national-language file (lang/\u003ccode>.json) maps an id to { t, verified, validator, audio }. {placeholders} are filled with the protected values from the page (amounts, names...) and MUST be kept in the translation. Strings marked \"check\": true were taken from an auto-translated view of the test page and must be compared with the page's real FR/EN text.","entries":[{"id":"gist_error","group":"safety-net","fr":"Ceci est un message d'erreur. L'opération n'a pas abouti.","en":"This is an error message. The operation did not go through.","note":"Phrase générale pour TOUTE nouvelle erreur inconnue : l’opération n’a pas marché."},{"id":"gist_warning","group":"safety-net","fr":"Avertissement de sécurité : lisez attentivement ou demandez de l'aide à une personne de confiance.","en":"Security warning: read carefully or ask someone you trust for help.","note":"Phrase générale utilisée pour TOUT nouvel avertissement de sécurité inconnu. Doit inviter à la prudence."},{"id":"gist_success","group":"safety-net","fr":"L'opération a réussi.","en":"The operation was successful."},{"id":"gist_info","group":"safety-net","fr":"Message d'information.","en":"Information message."},{"id":"gist_keywords","group":"safety-net","fr":"Mots clés :","en":"Key words:"},{"id":"test_banner","group":"test-env","fr":"Environnement de test — données fictives, aucune transaction réelle.","en":"Test environment — dummy data, no real transactions.","check":true},{"id":"test_protocol","group":"test-env","fr":"Protocole de test","en":"Test protocol","check":true},{"id":"back_hackathon","group":"test-env","fr":"Retour au hackathon","en":"Back to the hackathon","check":true},{"id":"online_banking","group":"test-env","fr":"Banque en ligne","en":"Online banking","check":true},{"id":"step_pay","group":"steps","fr":"Payer","en":"Pay","variants":["Compte","Account"],"check":true},{"id":"step_costs","group":"steps","fr":"Frais","en":"Fees","variants":["Costs"],"check":true,"note":"Étape où l’on voit ce que la banque prend pour l’opération. / Step showing what the bank charges."},{"id":"step_beneficiary","group":"steps","fr":"Bénéficiaire","en":"Beneficiary","note":"Étape où l’on dit qui reçoit l’argent. / Step where you say who receives the money."},{"id":"step_summary","group":"steps","fr":"Récapitulatif","en":"Summary","variants":["Résumé"]},{"id":"step_confirmation","group":"steps","fr":"Confirmation","en":"Confirmation"},{"id":"your_account","group":"balance","fr":"Votre compte","en":"Your account"},{"id":"hello_name","group":"balance","fr":"Bonjour, {name}","en":"Hello, {name}"},{"id":"intro_balance","group":"balance","fr":"Consultez votre solde et initiez un virement sécurisé.","en":"Check your balance and initiate a secure transfer.","check":true},{"id":"available_balance","group":"balance","fr":"Solde disponible","en":"Available balance","note":"L’argent que vous pouvez utiliser maintenant. / The money you can use right now."},{"id":"balance","group":"balance","fr":"Solde","en":"Balance","note":"L’argent qui est sur le compte. / The money in the account."},{"id":"account_number","group":"balance","fr":"Numéro de compte","en":"Account number","note":"Le numéro qui identifie le compte. / The number identifying the account."},{"id":"current_account","group":"balance","fr":"Compte courant","en":"Current account","note":"Le compte de tous les jours. / The everyday account."},{"id":"savings_account","group":"balance","fr":"Compte épargne","en":"Savings account"},{"id":"perform_transfer","group":"balance","fr":"Effectuer un virement","en":"Make a transfer","variants":["Perform a transfer","Faire un virement","Faire un transfert"],"check":true},{"id":"view_fees","group":"balance","fr":"Voir les frais","en":"View fees","check":true},{"id":"recent_transactions","group":"balance","fr":"Transactions récentes","en":"Recent transactions","variants":["Dernières opérations","Dernières transactions"],"check":true},{"id":"merchant_payment","group":"balance","fr":"Paiement marchand","en":"Merchant payment","check":true,"note":"Argent payé dans un magasin ou à un commerçant."},{"id":"salary_received","group":"balance","fr":"Salaire reçu","en":"Salary received","check":true,"note":"Le salaire est arrivé sur le compte (argent qui entre)."},{"id":"transfer_received","group":"balance","fr":"Virement reçu","en":"Transfer received","variants":["Transfert reçu"],"note":"Quelqu un vous a envoyé de l’argent (argent qui entre)."},{"id":"transfer_sent","group":"balance","fr":"Virement envoyé","en":"Transfer sent","variants":["Transfert envoyé"]},{"id":"electricity_bill","group":"balance","fr":"Facture d'électricité","en":"Electricity bill"},{"id":"water_bill","group":"balance","fr":"Facture d'eau","en":"Water bill"},{"id":"cash_withdrawal","group":"balance","fr":"Retrait d'espèces","en":"Cash withdrawal"},{"id":"deposit","group":"balance","fr":"Dépôt","en":"Deposit"},{"id":"airtime","group":"balance","fr":"Achat de crédit","en":"Airtime purchase"},{"id":"security","group":"security","fr":"Sécurité","en":"Security"},{"id":"security_check_beneficiary","group":"security","fr":"Vérifiez toujours le nom et le numéro du bénéficiaire avant de confirmer un virement.","en":"Always check the beneficiary's name and number before confirming a transfer.","check":true,"note":"Conseil de sécurité : regardez bien le nom et le numéro avant de valider."},{"id":"secure_connection","group":"security","fr":"Connexion sécurisée","en":"Secure connection"},{"id":"demo_footer","group":"security","fr":"Safinum Pay — environnement de démonstration. N'entrez aucune donnée personnelle réelle.","en":"Safinum Pay — demonstration environment. Do not enter any real personal data.","check":true},{"id":"never_share_pin","group":"security","fr":"Ne communiquez jamais votre code PIN, même à un agent de la banque.","en":"Never share your PIN, not even with a bank employee.","note":"Le code secret ne se donne à personne, même pas à quelqu’un de la banque. La négation est essentielle."},{"id":"fraud_warning","group":"security","fr":"Méfiez-vous des appels ou SMS qui vous demandent votre code secret.","en":"Beware of calls or text messages asking for your secret code.","note":"Si quelqu’un vous appelle pour demander votre code secret, c’est un voleur."},{"id":"irreversible","group":"security","fr":"Une fois confirmé, le virement ne peut pas être annulé.","en":"Once confirmed, the transfer cannot be cancelled.","note":"Après confirmation, impossible de récupérer l’argent. Le sens doit être très clair."},{"id":"check_details","group":"security","fr":"Vérifiez les informations avant de confirmer.","en":"Check the details before confirming."},{"id":"transfer_fees","group":"fees","fr":"Frais de virement","en":"Transfer fees","variants":["Frais de transfert"],"note":"Ce que la banque prend pour envoyer l’argent. / What the bank charges to send money."},{"id":"transaction_fees","group":"fees","fr":"Frais de transaction","en":"Transaction fees"},{"id":"fees","group":"fees","fr":"Frais","en":"Fees","variants":["Costs"],"note":"L’argent que la banque prend pour faire l’opération. / What the bank charges for the operation."},{"id":"choose_type_amount","group":"fees","fr":"Choisissez le type de virement et le montant. Les frais sont calculés automatiquement.","en":"Choose the transfer type and amount. Fees are calculated automatically.","check":true},{"id":"operation_type","group":"fees","fr":"Type d'opération","en":"Type of operation","variants":["Operation type"],"check":true},{"id":"safinum_account","group":"fees","fr":"Compte Safinum","en":"Safinum account","check":true},{"id":"instant_free","group":"fees","fr":"Virement instantané et gratuit","en":"Instant and free transfer","check":true,"note":"L’argent arrive tout de suite et la banque ne prend rien. / Arrives immediately, the bank charges nothing."},{"id":"other_bank","group":"fees","fr":"Compte d'une autre banque","en":"Account at another bank"},{"id":"mobile_money","group":"fees","fr":"Mobile Money","en":"Mobile Money"},{"id":"amount_to_send","group":"fees","fr":"Montant à envoyer","en":"Amount to send"},{"id":"amount","group":"fees","fr":"Montant","en":"Amount"},{"id":"free","group":"fees","fr":"Gratuit","en":"Free"},{"id":"total_debited","group":"fees","fr":"Total à débiter","en":"Total to be debited","variants":["Total débité","Total debited"],"check":true,"note":"Tout ce qui va sortir du compte : montant envoyé + frais. / Everything that will leave the account: amount + fees."},{"id":"balance_after","group":"fees","fr":"Solde après l'opération","en":"Balance after operation","variants":["Balance after the operation"],"check":true,"note":"L’argent qui restera sur le compte après cet envoi. / Money left after this transfer."},{"id":"fee_rate_min","group":"fees","fr":"{rate} du montant (minimum {min})","en":"{rate} of the amount (minimum {min})"},{"id":"beneficiary","group":"transfer","fr":"Bénéficiaire","en":"Beneficiary","note":"La personne qui va recevoir l’argent. / The person who will receive the money."},{"id":"beneficiary_name","group":"transfer","fr":"Nom du bénéficiaire","en":"Beneficiary name","variants":["Beneficiary's name","Name of the beneficiary"]},{"id":"phone_number","group":"transfer","fr":"Numéro de téléphone","en":"Phone number"},{"id":"account_or_phone","group":"transfer","fr":"Numéro de compte ou de téléphone","en":"Account or phone number"},{"id":"reason","group":"transfer","fr":"Motif","en":"Reason","variants":["Motif du virement","Purpose"]},{"id":"transfer_summary","group":"transfer","fr":"Récapitulatif du virement","en":"Transfer summary"},{"id":"send_amount_to","group":"transfer","fr":"Vous allez envoyer {amount} à {name}.","en":"You are about to send {amount} to {name}.","note":"Phrase de confirmation : qui reçoit et combien. Gardez {amount} et {name}. / Confirmation: who receives how much."},{"id":"pin_code","group":"transfer","fr":"Code PIN","en":"PIN code","variants":["PIN"],"note":"Le code secret de 4 chiffres. / The secret 4-digit code."},{"id":"enter_pin","group":"transfer","fr":"Saisissez votre code PIN","en":"Enter your PIN"},{"id":"accept_terms","group":"transfer","fr":"J'accepte les conditions générales.","en":"I accept the terms and conditions."},{"id":"terms","group":"transfer","fr":"Conditions générales","en":"Terms and conditions"},{"id":"back","group":"transfer","fr":"Retour","en":"Back"},{"id":"continue","group":"transfer","fr":"Continuer","en":"Continue"},{"id":"confirm","group":"transfer","fr":"Confirmer","en":"Confirm"},{"id":"confirm_transfer","group":"transfer","fr":"Confirmer le virement","en":"Confirm the transfer","variants":["Confirm transfer"]},{"id":"cancel","group":"transfer","fr":"Annuler","en":"Cancel"},{"id":"reference","group":"transfer","fr":"Référence","en":"Reference","note":"Le code de cette opération ; à donner si vous appelez la banque. / The code of this operation; give it if you call the bank."},{"id":"date","group":"transfer","fr":"Date","en":"Date"},{"id":"status","group":"transfer","fr":"Statut","en":"Status"},{"id":"transfer_success","group":"messages","fr":"Virement effectué avec succès.","en":"Transfer completed successfully.","variants":["Transfert effectué avec succès."]},{"id":"insufficient_balance","group":"messages","fr":"Solde insuffisant pour effectuer cette opération.","en":"Insufficient balance for this transaction.","variants":["Solde insuffisant.","Insufficient balance."],"note":"Il n’y a pas assez d’argent sur le compte pour cette opération."},{"id":"pin_incorrect_attempts","group":"messages","fr":"Code PIN incorrect. Il vous reste {count} tentatives.","en":"Incorrect PIN. You have {count} attempts left.","note":"Le code secret est faux ; dire combien d’essais restent avant blocage. Gardez {count}."},{"id":"pin_incorrect","group":"messages","fr":"Code PIN incorrect.","en":"Incorrect PIN."},{"id":"account_locked","group":"messages","fr":"Votre compte est temporairement bloqué.","en":"Your account is temporarily locked."},{"id":"required_field","group":"messages","fr":"Ce champ est obligatoire.","en":"This field is required."},{"id":"invalid_amount","group":"messages","fr":"Montant invalide.","en":"Invalid amount."},{"id":"must_accept_terms","group":"messages","fr":"Vous devez accepter les conditions générales.","en":"You must accept the terms and conditions."},{"id":"session_expired","group":"messages","fr":"Votre session a expiré. Veuillez vous reconnecter.","en":"Your session has expired. Please log in again."},{"id":"network_error","group":"messages","fr":"Erreur réseau. Veuillez réessayer.","en":"Network error. Please try again."},{"id":"processing","group":"messages","fr":"Traitement en cours...","en":"Processing..."},{"id":"enter_recipient_info","group":"test-env","fr":"Saisissez les informations du destinataire. Vérifiez toujours le numéro avant de valider.","en":"Enter the recipient's information. Always check the number before submitting.","check":true},{"id":"new_beneficiary_warning","group":"test-env","fr":"Ce bénéficiaire n'a jamais été utilisé sur ce compte. Veuillez vérifier le numéro avant de continuer.","en":"This beneficiary has never been used on this account. Please verify the number before proceeding.","check":true,"note":"Mise en garde : vous n’avez jamais envoyé d’argent à cette personne ; vérifiez le numéro. Garder le ton d’avertissement."},{"id":"reason_for_transfer","group":"test-env","fr":"Motif du virement","en":"Reason for transfer","check":true,"note":"Pourquoi vous envoyez l’argent. / Why you are sending the money."},{"id":"note_optional","group":"test-env","fr":"Note (facultatif)","en":"Note (optional)","variants":["Note (facultative)"],"check":true},{"id":"checked_name_number","group":"test-env","fr":"J'ai vérifié le nom et le numéro du bénéficiaire.","en":"I checked the beneficiary's name and number.","check":true,"note":"La personne dit qu’elle a bien vérifié le nom et le numéro."},{"id":"check_info_before_confirm","group":"test-env","fr":"Vérifiez les informations avant de confirmer le virement.","en":"Check the information before confirming the transfer.","check":true},{"id":"phone","group":"test-env","fr":"Téléphone","en":"Phone"},{"id":"operation","group":"test-env","fr":"Opération","en":"Operation"},{"id":"confirm_info_correct","group":"test-env","fr":"Je confirme que les informations ci-dessus sont exactes.","en":"I confirm that the above information is correct.","check":true,"note":"La personne s’engage : les informations sont justes."},{"id":"modify","group":"test-env","fr":"Modifier","en":"Edit","variants":["To modify","Modify"],"check":true},{"id":"transfer_completed","group":"test-env","fr":"Virement effectué","en":"Transfer completed","check":true},{"id":"transfer_sent_success","group":"test-env","fr":"Votre virement a été envoyé avec succès.","en":"Your transfer has been sent successfully.","check":true},{"id":"status_success","group":"test-env","fr":"Succès","en":"Success","variants":["Réussi"]},{"id":"new_transfer","group":"test-env","fr":"Nouveau virement","en":"New transfer","variants":["Nouveau transfert"]},{"id":"services_payment","group":"test-env","fr":"Paiement de services","en":"Payment for services"},{"id":"error","group":"messages","fr":"Erreur","en":"Error"},{"id":"warning","group":"messages","fr":"Attention","en":"Warning"},{"id":"ui_translating","group":"ui","fr":"Traduction en cours…","en":"Translating…"},{"id":"ui_protected","group":"ui","fr":"Valeur protégée, identique à la page","en":"Protected value, same as on the page"},{"id":"ui_validated","group":"ui","fr":"Validé","en":"Validated"},{"id":"ui_auto","group":"ui","fr":"Non validé","en":"Not validated"},{"id":"ui_summary","group":"ui","fr":"Résumé sûr","en":"Safe summary"},{"id":"ui_blocked","group":"ui","fr":"Bloqué : montant différent","en":"Blocked: amount mismatch"},{"id":"ui_missing","group":"ui","fr":"Pas encore traduit","en":"Not translated yet"},{"id":"ui_important","group":"ui","fr":"Messages importants","en":"Important messages"},{"id":"ui_page","group":"ui","fr":"Sur cette page","en":"On this page"},{"id":"ui_new","group":"ui","fr":"NOUVEAU","en":"NEW"},{"id":"ui_listen","group":"ui","fr":"Écouter","en":"Listen"},{"id":"ui_no_audio","group":"ui","fr":"Pas encore d’audio","en":"No audio yet"},{"id":"ui_subtitles","group":"ui","fr":"Sous-titres","en":"Subtitles"},{"id":"ui_close","group":"ui","fr":"Fermer","en":"Close"},{"id":"ui_empty","group":"ui","fr":"Rien à traduire ici","en":"Nothing to translate here"},{"id":"ui_mt_down","group":"ui","fr":"Traduction locale indisponible : résumé utilisé","en":"Local translation unavailable: summary used"},{"id":"ui_hint_hover","group":"ui","fr":"Maintenez Ctrl et pointez un texte : sa traduction s’affiche dessous.","en":"Hold Ctrl and point at any text: its translation appears below."},{"id":"ui_hint_hover_short","group":"ui","fr":"survol = traduction","en":"hover = translation"},{"id":"ui_hint_listen","group":"ui","fr":"Écoutez la traduction.","en":"Listen to the translation."},{"id":"ui_ok","group":"ui","fr":"Compris","en":"Got it"},{"id":"ui_tagline","group":"ui","fr":"Banque en langues nationales","en":"Banking in national languages"},{"id":"ui_active","group":"ui","fr":"Actif sur ce site","en":"Active on this site"},{"id":"ui_unsupported","group":"ui","fr":"Page non prise en charge","en":"Page not supported"},{"id":"ui_reload_msg","group":"ui","fr":"Rechargez la page pour afficher les traductions.","en":"Reload the page to show the translations."},{"id":"ui_reload","group":"ui","fr":"Recharger","en":"Reload"},{"id":"ui_language","group":"ui","fr":"Langue","en":"Language"},{"id":"ui_show","group":"ui","fr":"Afficher la traduction","en":"Show the translation"},{"id":"ui_mode_ctrl","group":"ui","fr":"+ survol","en":"+ hover"},{"id":"ui_mode_hover","group":"ui","fr":"Survol","en":"Hover"},{"id":"ui_mode_off","group":"ui","fr":"Non","en":"Off"},{"id":"ui_panel","group":"ui","fr":"Panneau","en":"Panel"},{"id":"ui_settings","group":"ui","fr":"Glossaire, voix et paramètres","en":"Glossary, voice and settings"},{"id":"ui_choose","group":"ui","fr":"Quelle langue parlez-vous ?","en":"Which language do you speak?"},{"id":"ui_choose_sub","group":"ui","fr":"Langwa affichera la banque dans cette langue.","en":"Langwa will show the bank in this language."},{"id":"ui_soon","group":"ui","fr":"Bientôt","en":"Soon"},{"id":"ui_later","group":"ui","fr":"Plus tard","en":"Later"},{"id":"ui_hint_touch","group":"ui","fr":"Appuyez longuement sur un texte : sa traduction s’affiche dessous.","en":"Long press any text: its translation appears below."},{"id":"ui_hint_touch_short","group":"ui","fr":"appui long = traduction","en":"long press = translation"},{"id":"ui_missing_lang","group":"ui","fr":"Pas encore traduit en {lang}","en":"Not yet translated into {lang}"},{"id":"ui_original","group":"ui","fr":"Original","en":"Original"},{"id":"ui_n_ok","group":"ui","fr":"validées","en":"validated"},{"id":"ui_n_mt","group":"ui","fr":"automatiques","en":"automatic"},{"id":"ui_n_gist","group":"ui","fr":"résumés","en":"summaries"},{"id":"ui_n_block","group":"ui","fr":"bloquées","en":"blocked"},{"id":"ui_n_none","group":"ui","fr":"non traduites","en":"not translated"}]},"langs":{"ewo":{"name":"Ewondo","region":"Centre","nllb":null,"mms":null,"refs":[{"name":"Wiktionnaire (éwondo)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:%C3%A9wondo"}]},"fub":{"name":"Fulfulde","region":"Adamaoua, Nord, Extrême-Nord","nllb":"fuv_Latn","mms":"ful","refs":[{"name":"Wiktionnaire (peul)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:peul"}]},"dua":{"name":"Duala","region":"Littoral","nllb":null,"mms":null,"refs":[{"name":"Wiktionnaire (douala)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:douala"}]},"bbj":{"name":"Ghomálá'","region":"Ouest","nllb":null,"mms":null,"refs":[]},"bas":{"name":"Basaá","region":"Centre, Littoral","nllb":null,"mms":null,"refs":[{"name":"Wiktionnaire (bassa)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:bassa_(Cameroun)"}]},"nge":{"name":"Mankon","region":"Nord-Ouest (Bamenda)","nllb":null,"mms":null,"refs":[{"name":"Mankon Dictionary","url":"https://mankon-dictionary.vercel.app/"}]},"bkm":{"name":"Kom","region":"Nord-Ouest (Boyo)","nllb":null,"mms":null,"refs":[{"name":"Kom writing system (Omniglot)","url":"https://omniglot.com/writing/kom.htm"}]}},"terms":{"ewo":{"eau":[{"term":"məndím","definition":"Eau.","source":"https://fr.wiktionary.org/wiki/m%C9%99nd%C3%ADm"}],"bonjour":[{"term":"bembekiri","definition":"Bonjour.","source":"https://fr.wiktionary.org/wiki/bembekiri"}]},"fub":{"non":[{"term":"ala","definition":"Non.","source":"https://fr.wiktionary.org/wiki/ala"}],"merci":[{"term":"adjarama","definition":"Merci.","source":"https://fr.wiktionary.org/wiki/adjarama"},{"term":"tiyaabu","definition":"Merci.","source":"https://fr.wiktionary.org/wiki/tiyaabu"}],"savoir":[{"term":"annduude","definition":"Savoir, connaître, être au courant.","source":"https://fr.wiktionary.org/wiki/annduude"}],"connaitre":[{"term":"annduude","definition":"Savoir, connaître, être au courant.","source":"https://fr.wiktionary.org/wiki/annduude"}],"aide":[{"term":"ballal","definition":"Aide.","source":"https://fr.wiktionary.org/wiki/ballal"}],"travail":[{"term":"ballal","definition":"Travail collectif.","source":"https://fr.wiktionary.org/wiki/ballal"}],"eau":[{"term":"ceeɗoojam","definition":"Eau permanente (eau qui ne s’évapore pas à la saison sèche).","source":"https://fr.wiktionary.org/wiki/cee%C9%97oojam"},{"term":"ndiyam","definition":"Eau.","source":"https://fr.wiktionary.org/wiki/ndiyam"},{"term":"ndiiam","definition":"Eau.","source":"https://fr.wiktionary.org/wiki/ndiiam"}],"voleur":[{"term":"gujjo","definition":"Voleur, voleuse.","source":"https://fr.wiktionary.org/wiki/gujjo"}],"personne":[{"term":"goɗɗo","definition":"Personne, individu.","source":"https://fr.wiktionary.org/wiki/go%C9%97%C9%97o"}],"mois":[{"term":"lewru","definition":"Mois.","source":"https://fr.wiktionary.org/wiki/lewru"}]},"dua":{"acheter":[{"term":"anda","definition":"Acheter","source":"https://fr.wiktionary.org/wiki/anda"}],"savoir":[{"term":"bía","definition":"Savoir.","source":"https://fr.wiktionary.org/wiki/b%C3%ADa"}],"vendre":[{"term":"andisɛ","definition":"Vendre.","source":"https://fr.wiktionary.org/wiki/andis%C9%9B"}],"jour":[{"term":"búńa","definition":"Jour.","source":"https://fr.wiktionary.org/wiki/b%C3%BA%C5%84a"}],"changer":[{"term":"cenci","definition":"Changer.","source":"https://fr.wiktionary.org/wiki/cenci"},{"term":"tukwa","definition":"changer, transformer, traduire","source":"https://fr.wiktionary.org/wiki/tukwa"}],"travail":[{"term":"ebolo","definition":"Travail.","source":"https://fr.wiktionary.org/wiki/ebolo"}],"accepter":[{"term":"koa","definition":"Accepter, consentir.","source":"https://fr.wiktionary.org/wiki/koa"}],"lire":[{"term":"lánga","definition":"lire","source":"https://fr.wiktionary.org/wiki/l%C3%A1nga"}],"prendre":[{"term":"lámba ńolo","definition":"prendre garde, faire attention","source":"https://fr.wiktionary.org/wiki/l%C3%A1mba%20%C5%84olo"},{"term":"no̱ngo̱ jangame̱n","definition":"prendre garde, faire attention","source":"https://fr.wiktionary.org/wiki/no%CC%B1ngo%CC%B1%20jangame%CC%B1n"}],"dire":[{"term":"kwála","definition":"Dire.","source":"https://fr.wiktionary.org/wiki/kw%C3%A1la"}],"lettre":[{"term":"kálati","definition":"Papier, lettre, cahier, livre.","source":"https://fr.wiktionary.org/wiki/k%C3%A1lati"}],"eau":[{"term":"madíbá","definition":"Eau.","source":"https://fr.wiktionary.org/wiki/mad%C3%ADb%C3%A1"}],"personne":[{"term":"moto","definition":"Homme, personne.","source":"https://fr.wiktionary.org/wiki/moto"}],"garder":[{"term":"táta","definition":"Garder, veiller.","source":"https://fr.wiktionary.org/wiki/t%C3%A1ta"}],"payer":[{"term":"sáwa","definition":"Payer.","source":"https://fr.wiktionary.org/wiki/s%C3%A1wa"}],"ouvrir":[{"term":"télɛ","definition":"Ouvrir.","source":"https://fr.wiktionary.org/wiki/t%C3%A9l%C9%9B"}]},"bas":{"changer":[{"term":"hɛ̀ŋlà","definition":"Changer.","source":"https://fr.wiktionary.org/wiki/h%C9%9B%CC%80%C5%8Bl%C3%A0"}],"eau":[{"term":"malép","definition":"Eau.","source":"https://fr.wiktionary.org/wiki/mal%C3%A9p"},{"term":"màlep","definition":"Eau.","source":"https://fr.wiktionary.org/wiki/m%C3%A0lep"},{"term":"màlep ma ɓâs","definition":"Eau salée","source":"https://fr.wiktionary.org/wiki/m%C3%A0lep%20ma%20%C9%93%C3%A2s"}]},"bbj":{},"nge":{"eau":[{"term":"ŋkyi","definition":"eau","source":"https://fr.wiktionary.org/wiki/%C5%8Bkyi"}]},"bkm":{"eau":[{"term":"mu","definition":"Eau.","source":"https://fr.wiktionary.org/wiki/mu"}]}}};
-
-const EN = /^en/i.test(navigator.language || '');
-const T = EN ? {
-  subtitle: 'Help translate banking into your language', title: 'Translate Langwa into your language',
-  lead: 'You will see short banking sentences. Write what they mean in your language, as you would explain it to a relative. About 2 hours for everything; you can stop and continue later.',
-  chooseLang: 'Which language do you speak?', yourName: 'Your name', yourPlace: 'Village, town or region (optional)', placeHelp: 'Helps us know which variety of the language you speak.',
-  start: 'Start', suggestions: 'Dictionary words (tap to insert, check them):', addExplain: 'Add a short explanation (optional)',
-  skip: 'Skip', next: 'Next', translationIn: 'In', keep: 'Keep these markers exactly:', record: 'Record', again: 'Record again', stop: 'Stop', play: 'Play',
-  recordWhole: 'Record the whole sentence', recordPiece: 'Record this piece', valueAuto: 'read automatically',
-  doneText: 'translations ready. Send them to the Langwa team.', send: 'Send my translations', sendHelp: 'On a phone, choose WhatsApp. Otherwise the file is downloaded: send it to the team.',
-  dictionaries: 'Online dictionaries:', continue: 'Continue translating', saved: 'Saved', translated: 'translated', skipped: 'to do', all: 'All sentences',
-} : {
-  subtitle: 'Aidez à traduire la banque dans votre langue', title: 'Traduisez Langwa dans votre langue',
-  lead: 'Vous verrez de courtes phrases de banque. Écrivez leur sens dans votre langue, comme vous l’expliqueriez à un parent. Environ 2 heures pour tout ; vous pouvez arrêter et reprendre plus tard.',
-  chooseLang: 'Quelle langue parlez-vous ?', yourName: 'Votre nom', yourPlace: 'Village, ville ou région (facultatif)', placeHelp: 'Pour savoir quelle variété de la langue vous parlez.',
-  start: 'Commencer', suggestions: 'Mots du dictionnaire (touchez pour insérer, vérifiez-les) :', addExplain: 'Ajouter une courte explication (facultatif)',
-  skip: 'Passer', next: 'Suivant', translationIn: 'En', keep: 'Gardez exactement ces marqueurs :', record: 'Enregistrer', again: 'Réenregistrer', stop: 'Arrêter', play: 'Écouter',
-  recordWhole: 'Enregistrez toute la phrase', recordPiece: 'Enregistrez ce morceau', valueAuto: 'lu automatiquement',
-  doneText: 'traductions prêtes. Envoyez-les à l’équipe Langwa.', send: 'Envoyer mes traductions', sendHelp: 'Sur un téléphone, choisissez WhatsApp. Sinon le fichier est téléchargé : envoyez-le à l’équipe.',
-  dictionaries: 'Dictionnaires en ligne :', continue: 'Continuer à traduire', saved: 'Enregistré', translated: 'traduites', skipped: 'à faire', all: 'Toutes les phrases',
-};
-document.documentElement.lang = EN ? 'en' : 'fr';
-document.querySelectorAll('[data-t]').forEach(el => { el.textContent = T[el.dataset.t] || ''; });
-const $ = id => document.getElementById(id);
-const el = (tag, attrs = {}, ...kids) => { const n = document.createElement(tag); for (const [k, v] of Object.entries(attrs)) { if (k.startsWith('on')) n.addEventListener(k.slice(2), v); else n.setAttribute(k, v); } n.append(...kids.filter(k => k != null)); return n; };
-
-// Phrases in order of importance: the test journey first, interface labels last.
-const ORDER = ['test-env', 'steps', 'balance', 'fees', 'transfer', 'security', 'messages', 'safety-net', 'ui'];
-const PHRASES = DATA.source.entries.slice().sort((a, b) => ORDER.indexOf(a.group) - ORDER.indexOf(b.group));
-const GROUP_NAMES = EN
-  ? { 'test-env': 'Test journey', steps: 'Steps', balance: 'Balance', fees: 'Fees', transfer: 'Transfer', security: 'Security', messages: 'Messages', 'safety-net': 'General messages', ui: 'Langwa interface' }
-  : { 'test-env': 'Parcours de test', steps: 'Étapes', balance: 'Solde', fees: 'Frais', transfer: 'Virement', security: 'Sécurité', messages: 'Messages', 'safety-net': 'Messages généraux', ui: 'Interface Langwa' };
-
-// ---------- storage (IndexedDB: holds recordings too, survives closing the page) ----------
-const db = new Promise((res, rej) => { const r = indexedDB.open('langwa-collect', 1); r.onupgradeneeded = () => r.result.createObjectStore('kv'); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
-const idb = async (mode, fn) => { const d = await db; return new Promise((res, rej) => { const tx = d.transaction('kv', mode); const q = fn(tx.objectStore('kv')); tx.oncomplete = () => res(q && q.result); tx.onerror = () => rej(tx.error); }); };
-const load = k => idb('readonly', s => s.get(k)).catch(() => null);
-const save = (k, v) => idb('readwrite', s => s.put(v, k)).catch(() => {});
-
-let st = { lang: '', name: '', place: '', i: 0, entries: {} };
-const placeholders = s => (String(s || '').match(/\{\w+\}/g) || []).sort().join(',');
-const split = t => { const segs = [], names = []; let last = 0; String(t).replace(/\{(\w+)\}/g, (m, n, i) => { segs.push(t.slice(last, i)); names.push(n); last = i + m.length; return m; }); segs.push(String(t).slice(last)); return { segs, names }; };
-const fold = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-const persist = () => save('state', st);
-function toast(msg) { const t = el('div', { class: 'toast' }, msg); document.body.append(t); setTimeout(() => t.remove(), 1400); }
-function counts() { const done = PHRASES.filter(p => (st.entries[p.id] || {}).t).length; $('count').textContent = st.lang ? `${done} / ${PHRASES.length}` : ''; $('prog').style.width = `${(100 * done) / PHRASES.length}%`; return done; }
-
-// ---------- 1. start ----------
-function renderStart() {
-  $('langs').replaceChildren(...Object.entries(DATA.langs).map(([code, l]) => {
-    const b = el('button', { class: `lang${st.lang === code ? ' on' : ''}`, type: 'button' }, el('b', {}, l.name), el('small', {}, l.region || ''));
-    b.onclick = () => { st.lang = code; renderStart(); check(); };
-    return b;
-  }));
-  $('name').value = st.name; $('place').value = st.place;
-  const check = () => { $('go').disabled = !(st.lang && $('name').value.trim()); };
-  $('name').oninput = check; check();
-  $('go').onclick = () => { st.name = $('name').value.trim(); st.place = $('place').value.trim(); persist(); show('phrase'); renderPhrase(); };
-}
-
-// ---------- 2. phrases ----------
-function hl(text) { const out = []; let last = 0; String(text).replace(/\{\w+\}/g, (m, i) => { out.push(text.slice(last, i), el('span', { class: 'ph' }, m)); last = i + m.length; return m; }); out.push(String(text).slice(last)); return out; }
-
-function suggestions(p) {
-  const terms = (DATA.terms || {})[st.lang] || {};
-  const words = new Set(fold(`${p.fr} ${p.note || ''}`).match(/[a-z]+/g) || []);
-  const out = [];
-  for (const w of words) for (const t of terms[w] || terms[w.replace(/s$/, '')] || []) if (!out.some(o => o.term === t.term)) out.push({ ...t, fr: w });
-  return out.slice(0, 8);
-}
-
-let recorder = null;
-function recButton(get, set, label) {
-  const wrap = el('div', { class: 'recrow' }, el('div', { class: 'lbl' }, label));
-  const draw = () => {
-    const url = get();
-    const rec = el('button', { class: `recbtn${url ? ' done' : ''}`, type: 'button' }, url ? `✓ ${T.again}` : `● ${T.record}`);
-    rec.onclick = async () => {
-      if (recorder) { recorder.stop(); return; }
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
-        const chunks = []; recorder = new MediaRecorder(stream);
-        recorder.ondataavailable = e => chunks.push(e.data);
-        recorder.onstop = () => { stream.getTracks().forEach(t => t.stop()); const blob = new Blob(chunks, { type: recorder.mimeType }); recorder = null; const fr = new FileReader(); fr.onload = () => { set(fr.result); persist(); draw(); }; fr.readAsDataURL(blob); };
-        recorder.start(); rec.className = 'recbtn on'; rec.textContent = `■ ${T.stop}`;
-      } catch (e) { alert(e.message); }
-    };
-    const play = url ? el('button', { class: 'recbtn', type: 'button', onclick: () => new Audio(url).play() }, `▶ ${T.play}`) : null;
-    wrap.replaceChildren(el('div', { class: 'lbl' }, label), rec, play || '');
-  };
-  draw();
-  return wrap;
-}
-
-function renderRec(p) {
-  const e = st.entries[p.id] ||= {};
-  const box = $('rec');
-  box.replaceChildren();
-  if (!e.t || !window.MediaRecorder) return;
-  const { segs, names } = split(e.t);
-  if (!names.length) { box.append(recButton(() => e.audio, v => { e.audio = v; }, T.recordWhole)); return; }
-  e.audioParts ||= [];
-  segs.forEach((seg, i) => {
-    if (/\p{L}/u.test(seg)) box.append(recButton(() => e.audioParts[i], v => { e.audioParts[i] = v; }, `${T.recordPiece} : « ${seg.trim()} »`));
-    if (i < names.length) box.append(el('div', { class: 'recrow' }, el('span', { class: 'ph' }, `{${names[i]}}`), el('span', { class: 'lbl', style: 'flex:1' }, T.valueAuto)));
-  });
-}
-
-function renderPhrase() {
-  st.i = Math.max(0, Math.min(st.i, PHRASES.length - 1));
-  const p = PHRASES[st.i];
-  const e = st.entries[p.id] ||= {};
-  $('group').textContent = `${GROUP_NAMES[p.group] || p.group} · ${st.i + 1} / ${PHRASES.length}`;
-  $('fr').replaceChildren(...hl(p.fr));
-  $('enTxt').replaceChildren(...hl(p.en));
-  $('note').hidden = !p.note; $('noteTxt').textContent = p.note || '';
-  $('trLabel').textContent = `${T.translationIn} ${DATA.langs[st.lang].name}`;
-  $('tr').value = e.t || ''; $('tr').setAttribute('lang', st.lang);
-  $('x').value = e.x || ''; $('xBox').open = !!e.x;
-  const need = placeholders(p.fr);
-  const checkPh = () => { const ok = !$('tr').value.trim() || placeholders($('tr').value) === need; $('phWarn').hidden = ok; $('phWarn').textContent = `${T.keep} ${need.split(',').join(' ')}`; $('next').disabled = !ok; return ok; };
-  $('tr').oninput = () => { e.t = $('tr').value.trim(); checkPh(); counts(); clearTimeout(window.__s); window.__s = setTimeout(() => { persist(); renderRec(p); }, 500); };
-  $('x').oninput = () => { e.x = $('x').value.trim(); persist(); };
-  const sug = suggestions(p);
-  $('sugg').hidden = !sug.length;
-  $('chips').replaceChildren(...sug.map(s => {
-    const c = el('button', { class: 'chip', type: 'button', title: s.definition }, s.term, el('i', {}, s.fr));
-    c.onclick = () => { const ta = $('tr'); const pos = ta.selectionStart ?? ta.value.length; ta.value = ta.value.slice(0, pos) + s.term + ta.value.slice(pos); ta.dispatchEvent(new Event('input')); ta.focus(); };
-    return c;
-  }));
-  const refs = (DATA.langs[st.lang] || {}).refs || [];
-  $('refs').hidden = !refs.length;
-  $('refLinks').replaceChildren(...refs.map(r => el('a', { class: 'chip', href: r.url, target: '_blank', rel: 'noopener' }, r.name)));
-  checkPh(); renderRec(p); counts();
-  $('prev').disabled = st.i === 0;
-  window.scrollTo(0, 0);
-}
-
-function go(delta) {
-  persist();
-  if (st.i + delta >= PHRASES.length) { show('finish'); renderFinish(); return; }
-  st.i += delta; renderPhrase();
-}
-$('next').onclick = () => { if ((st.entries[PHRASES[st.i].id] || {}).t) toast(T.saved); go(1); };
-$('skip').onclick = () => go(1);
-$('prev').onclick = () => go(-1);
-
-// ---------- 3. send ----------
-function payload() {
-  const entries = {};
-  const date = new Date().toISOString().slice(0, 10);
-  for (const [id, e] of Object.entries(st.entries)) if (e.t) entries[id] = { t: e.t, x: e.x || '', audio: e.audio || '', audioParts: e.audioParts || [], by: st.name, place: st.place, date };
-  return { format: 'langwa-contribution-1', code: st.lang, contributor: { name: st.name, place: st.place }, createdAt: new Date().toISOString(), entries };
-}
-function renderFinish() {
-  $('doneCount').textContent = counts();
-  $('list').replaceChildren(el('div', { class: 'tag' }, T.all), ...PHRASES.map((p, i) => {
-    const done = !!(st.entries[p.id] || {}).t;
-    const r = el('button', { class: `row${done ? ' ok' : ''}`, type: 'button' }, el('b', {}, p.fr), el('span', {}, done ? `✓ ${T.translated}` : T.skipped));
-    r.onclick = () => { st.i = i; show('phrase'); renderPhrase(); };
-    return r;
-  }));
-}
-$('send').onclick = async () => {
-  const data = payload();
-  const safe = s => (s || 'x').normalize('NFD').replace(/[^\w-]+/g, '-').slice(0, 30);
-  const file = new File([JSON.stringify(data)], `langwa-${data.code}-${safe(st.name)}-${new Date().toISOString().slice(0, 10)}.json`, { type: 'application/json' });
-  if (navigator.canShare && navigator.canShare({ files: [file] })) {
-    try { await navigator.share({ files: [file], title: 'Langwa', text: `Langwa · ${DATA.langs[data.code].name} · ${st.name}` }); return; } catch { /* fall back to download */ }
+  const LANGS = {"ewo":{"name":"Ewondo","region":"Centre","nllb":null,"mms":null,"refs":[{"name":"Wiktionnaire (éwondo)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:%C3%A9wondo"}]},"fub":{"name":"Fulfulde","region":"Adamaoua, Nord, Extrême-Nord","nllb":"fuv_Latn","mms":"ful","refs":[{"name":"Wiktionnaire (peul)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:peul"}]},"dua":{"name":"Duala","region":"Littoral","nllb":null,"mms":null,"refs":[{"name":"Wiktionnaire (douala)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:douala"}]},"bbj":{"name":"Ghomálá'","region":"Ouest","nllb":null,"mms":null,"refs":[]},"bas":{"name":"Basaá","region":"Centre, Littoral","nllb":null,"mms":null,"refs":[{"name":"Wiktionnaire (bassa)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:bassa_(Cameroun)"}]},"nge":{"name":"Mankon","region":"Nord-Ouest (Bamenda)","nllb":null,"mms":null,"refs":[{"name":"Mankon Dictionary","url":"https://mankon-dictionary.vercel.app/"}]},"bkm":{"name":"Kom","region":"Nord-Ouest (Boyo)","nllb":null,"mms":null,"refs":[{"name":"Kom writing system (Omniglot)","url":"https://omniglot.com/writing/kom.htm"}]}};
+  const EN = /^en/i.test(navigator.language || '');
+  if (EN) {
+    document.documentElement.lang = 'en';
+    document.title = 'Langwa · Online banking, in your language';
+    document.querySelectorAll('[data-en]').forEach(el => { el.textContent = el.dataset.en; });
   }
-  const a = el('a', { href: URL.createObjectURL(file), download: file.name }); document.body.append(a); a.click(); a.remove();
-};
-$('back').onclick = () => { show('phrase'); renderPhrase(); };
-
-function show(id) { for (const s of ['start', 'phrase', 'finish']) $(s).hidden = s !== id; $('nav').hidden = id !== 'phrase'; }
-
-(async () => {
-  const saved = await load('state');
-  if (saved && saved.lang) { st = { ...st, ...saved }; show('phrase'); renderPhrase(); } else { show('start'); renderStart(); }
-  counts();
-})();
+  // Each language card leads to the contribution page with that language preselected.
+  document.getElementById('langs').replaceChildren(...Object.entries(LANGS).map(([code, l]) => {
+    const d = document.createElement('a');
+    d.className = 'lang';
+    d.href = `contribute/#${code}`;
+    const b = document.createElement('b'); b.textContent = l.name;
+    const s = document.createElement('small'); s.textContent = l.region || '';
+    d.append(b, s);
+    return d;
+  }));
 </script>
 </body>
 </html>

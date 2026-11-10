@@ -36,9 +36,13 @@
   {
    "id": "test_banner",
    "group": "test-env",
-   "fr": "Environnement de test — données fictives, aucune transaction réelle.",
-   "en": "Test environment — dummy data, no real transactions.",
-   "check": true
+   "fr": "Environnement de test : données fictives, aucune transaction réelle.",
+   "en": "Test environment: dummy data, no real transactions.",
+   "check": true,
+   "variants": [
+    "Environnement de test — données fictives, aucune transaction réelle.",
+    "Test environment — dummy data, no real transactions."
+   ]
   },
   {
    "id": "test_protocol",
@@ -276,9 +280,13 @@
   {
    "id": "demo_footer",
    "group": "security",
-   "fr": "Safinum Pay — environnement de démonstration. N'entrez aucune donnée personnelle réelle.",
-   "en": "Safinum Pay — demonstration environment. Do not enter any real personal data.",
-   "check": true
+   "fr": "Safinum Pay : environnement de démonstration. N'entrez aucune donnée personnelle réelle.",
+   "en": "Safinum Pay: demonstration environment. Do not enter any real personal data.",
+   "check": true,
+   "variants": [
+    "Safinum Pay — environnement de démonstration. N'entrez aucune donnée personnelle réelle.",
+    "Safinum Pay — demonstration environment. Do not enter any real personal data."
+   ]
   },
   {
    "id": "never_share_pin",

@@ -103,8 +103,21 @@ const terms = existsSync(termsFile) ? JSON.parse(readFileSync(termsFile, 'utf8')
 const collect = readFileSync(join(ROOT, 'tools', 'collect.template.html'), 'utf8')
   .replace('/*DATA*/null', () => JSON.stringify({ source: data.source, langs, terms }).replace(/</g, '\\u003c'));
 writeFileSync(join(DIST, 'langwa-collect.html'), collect);
-mkdirSync(join(ROOT, 'collect'), { recursive: true });
-writeFileSync(join(ROOT, 'collect', 'index.html'), collect); // for GitHub Pages: <repo>/collect/
+
+// ---------- public website (Vercel root directory = collect/) ----------
+//   /              landing page about Langwa
+//   /contribute/   contribution page for speakers
+//   /downloads/    extension zip and phone userscript
+const SITE = join(ROOT, 'collect');
+mkdirSync(join(SITE, 'contribute'), { recursive: true });
+mkdirSync(join(SITE, 'downloads'), { recursive: true });
+const landing = readFileSync(join(ROOT, 'tools', 'site.template.html'), 'utf8')
+  .replace('/*LANGS*/{}', () => JSON.stringify(langs).replace(/</g, '\\u003c'));
+writeFileSync(join(SITE, 'index.html'), landing);
+writeFileSync(join(SITE, 'contribute', 'index.html'), collect);
+writeFileSync(join(SITE, 'icon.svg'), readFileSync(join(EXT, 'icons', 'icon.svg')));
+writeFileSync(join(SITE, 'downloads', 'langwa-chromium.zip'), readFileSync(join(DIST, 'langwa-chromium.zip')));
+writeFileSync(join(SITE, 'downloads', 'langwa.user.js'), readFileSync(join(DIST, 'langwa.user.js')));
 
 const kb = p => `${(statSync(join(DIST, p)).size / 1024).toFixed(0)} KB`;
 console.log(`Langwa ${manifest.version}`);

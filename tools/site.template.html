@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1d1712">
+<meta name="description" content="Langwa affiche les services bancaires en ligne dans les langues nationales du Cameroun. Les montants restent exacts, le site de la banque reste inchangé.">
+<title>Langwa · La banque en ligne, dans votre langue</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<style>
+  :root { --ebony: #1d1712; --ebony-2: #2a221b; --ebony-3: #3d3229; --ivory: #fbf6ee; --sand: #d9c9b4; --gold: #e3a21a; --gold-soft: #f6dfa6;
+    --forest: #1e7a4c; --forest-2: #2f9e66; --terracotta: #c2502e; --indigo: #3d4a8a;
+    --bg: #fbf6ee; --card: #fffdf9; --fg: #241d16; --muted: #6f6152; --line: #ebdfcd; --soft: #f4ebde;
+    --kente: repeating-linear-gradient(90deg, #e3a21a 0 18px, #1e7a4c 18px 24px, #c2502e 24px 36px, #1d1712 36px 40px, #e3a21a 40px 46px, #3d4a8a 46px 52px); }
+  @media (prefers-color-scheme: dark) { :root { --bg: #16110d; --card: #1f1913; --fg: #f6efe4; --muted: #b7a690; --line: #3a3027; --soft: #2a221b; } }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 17px/1.6 "Segoe UI", system-ui, -apple-system, Roboto, "Noto Sans", sans-serif; -webkit-text-size-adjust: 100%; }
+  a { color: inherit; }
+  svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+  .band { height: 6px; background: var(--kente); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; border: 0; border-radius: 14px; padding: 15px 22px; font: 700 16px/1.2 inherit; font-family: inherit; text-decoration: none; cursor: pointer; transition: transform .12s ease, filter .12s ease; }
+  .btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
+  .btn.gold { background: var(--gold); color: var(--ebony); }
+  .btn.light { background: rgba(251,246,238,.1); color: var(--ivory); box-shadow: inset 0 0 0 1.5px rgba(251,246,238,.28); }
+  .btn.dark { background: var(--ebony); color: var(--ivory); } .btn.dark svg { color: var(--gold); }
+  .btn.soft { background: var(--soft); color: var(--fg); }
+
+  /* nav */
+  nav { position: sticky; top: 0; z-index: 10; background: rgba(29,23,18,.96); backdrop-filter: blur(8px); color: var(--ivory); }
+  nav .wrap { display: flex; align-items: center; gap: 16px; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800; font-size: 19px; }
+  .logo { width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center; background: var(--gold); color: var(--ebony); }
+  .logo svg { width: 20px; height: 20px; }
+  nav .links { margin-left: auto; display: flex; align-items: center; gap: 22px; font-size: 15px; }
+  nav .links a { text-decoration: none; color: var(--sand); }
+  nav .links a:hover { color: #fff; }
+  nav .links .btn { padding: 10px 16px; font-size: 15px; color: var(--ebony); }
+  @media (max-width: 760px) { nav .links a:not(.btn) { display: none; } }
+
+  /* hero */
+  .hero { background: var(--ebony); color: var(--ivory); padding: 72px 0 88px; overflow: hidden; }
+  .hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+  h1 { font-size: clamp(36px, 5.4vw, 60px); line-height: 1.06; letter-spacing: -.02em; margin: 0 0 20px; }
+  h1 em { font-style: normal; color: var(--gold); }
+  .hero p.lead { font-size: 19px; color: var(--sand); max-width: 540px; margin: 0 0 32px; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; }
+  .hero .meta { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 14px; color: var(--sand); }
+  .hero .meta span { display: inline-flex; align-items: center; gap: 7px; }
+  .hero .meta svg { width: 17px; height: 17px; color: var(--forest-2); }
+
+  /* product preview (pure HTML, no screenshot) */
+  .preview { position: relative; }
+  .bank { background: #fff; color: #1b2430; border-radius: 18px; padding: 22px; box-shadow: 0 30px 70px rgba(0,0,0,.4); font-family: system-ui, sans-serif; }
+  .bank .top { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; margin-bottom: 14px; }
+  .bank .top i { width: 28px; height: 28px; border-radius: 8px; background: #e0f2fe; display: inline-block; }
+  .bank .row { display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid #edf0f4; font-size: 15px; }
+  .bank .row b { font-weight: 700; }
+  .bank .row.hl span { outline: 2.5px solid var(--gold); outline-offset: 4px; border-radius: 4px; }
+  .card { position: relative; margin: 14px 0 0 18px; width: calc(100% - 18px); background: var(--ebony-2); color: var(--ivory); border-radius: 16px; padding: 16px 18px; box-shadow: 0 24px 60px rgba(0,0,0,.45), 0 0 0 1px rgba(255,240,220,.08); }
+  .card::before { content: ""; position: absolute; top: -7px; left: 34px; width: 14px; height: 14px; background: var(--ebony-2); transform: rotate(45deg); border-radius: 3px; }
+  .card .line { display: flex; align-items: center; gap: 12px; }
+  .card .slot { flex: 1; font-size: 18px; font-weight: 700; }
+  .card .slot small { display: block; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .card .slot span { display: inline-block; padding: 2px 10px; border-radius: 8px; background: rgba(227,162,26,.14); color: var(--gold-soft); border: 1.5px dashed rgba(227,162,26,.6); }
+  .say { width: 42px; height: 42px; border-radius: 99px; display: grid; place-items: center; background: var(--forest); color: #fff; flex: none; }
+  .say svg { width: 20px; height: 20px; }
+  .card .orig { margin-top: 10px; font-size: 13px; color: var(--sand); }
+  .card .orig b { font-size: 10px; letter-spacing: .09em; text-transform: uppercase; margin-right: 6px; opacity: .7; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; font: 700 13px ui-monospace, Consolas, monospace; background: var(--gold-soft); color: #3b2604; padding: 4px 9px; border-radius: 8px; }
+  .chip svg { width: 13px; height: 13px; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 700; padding: 4px 10px; border-radius: 99px; background: rgba(47,158,102,.18); color: #7fd9a8; }
+  .pill svg { width: 14px; height: 14px; }
+
+  @media (max-width: 900px) { .hero .wrap { grid-template-columns: 1fr; gap: 44px; } .hero { padding: 48px 0 64px; } }
+
+  /* sections */
+  section.block { padding: 88px 0; }
+  section.alt { background: var(--soft); }
+  .kicker { font-size: 13px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 10px; }
+  h2 { font-size: clamp(28px, 3.6vw, 40px); line-height: 1.15; letter-spacing: -.015em; margin: 0 0 14px; }
+  .sub { font-size: 18px; color: var(--muted); max-width: 680px; margin: 0 0 44px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .grid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  @media (max-width: 860px) { .grid3, .grid2 { grid-template-columns: 1fr; } section.block { padding: 64px 0; } }
+  .tile { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 26px; }
+  .tile .ico { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 18px; }
+  .tile h3 { font-size: 20px; margin: 0 0 8px; }
+  .tile p { margin: 0; color: var(--muted); font-size: 16px; }
+  .num { font: 800 13px ui-monospace, Consolas, monospace; color: var(--muted); margin-bottom: 12px; }
+  .ico.g { background: color-mix(in srgb, var(--forest) 14%, var(--card)); color: var(--forest); }
+  .ico.o { background: color-mix(in srgb, var(--gold) 20%, var(--card)); color: #9a6a00; }
+  .ico.i { background: color-mix(in srgb, var(--indigo) 13%, var(--card)); color: var(--indigo); }
+  .ico.r { background: color-mix(in srgb, var(--terracotta) 13%, var(--card)); color: var(--terracotta); }
+
+  /* languages */
+  .langs { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .lang { display: block; text-decoration: none; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; transition: border-color .12s ease, transform .12s ease; }
+  .lang:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .lang b { display: block; font-size: 19px; }
+  .lang small { color: var(--muted); font-size: 14px; }
+  .lang .st { display: inline-block; margin-top: 10px; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 99px; background: color-mix(in srgb, var(--gold) 18%, var(--card)); color: #8a5a00; }
+
+  /* contribute */
+  .contribute { background: var(--ebony); color: var(--ivory); border-radius: 28px; padding: 56px; position: relative; overflow: hidden; display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; }
+  .contribute::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 8px; background: var(--kente); }
+  .contribute h2 { color: var(--ivory); }
+  .contribute .sub { color: var(--sand); margin-bottom: 28px; }
+  .steps { display: grid; gap: 12px; }
+  .step { display: flex; gap: 14px; align-items: flex-start; background: var(--ebony-2); border-radius: 16px; padding: 16px 18px; }
+  .step i { font-style: normal; width: 30px; height: 30px; border-radius: 99px; display: grid; place-items: center; background: var(--gold); color: var(--ebony); font-weight: 800; flex: none; }
+  .step b { display: block; } .step span { color: var(--sand); font-size: 15px; }
+  @media (max-width: 860px) { .contribute { grid-template-columns: 1fr; padding: 40px 22px 28px; border-radius: 22px; } }
+
+  /* install */
+  .install { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media (max-width: 860px) { .install { grid-template-columns: 1fr; } }
+  .install .tile ol { margin: 12px 0 18px; padding-left: 20px; color: var(--muted); font-size: 15.5px; }
+  .install .tile li { margin: 4px 0; }
+  code { font: 600 14px ui-monospace, Consolas, monospace; background: var(--soft); padding: 1px 6px; border-radius: 6px; }
+
+  /* ---------- phones: compact rows, shorter page ---------- */
+  @media (max-width: 640px) {
+    body { font-size: 16px; }
+    .wrap { padding: 0 18px; }
+    .hero { padding: 36px 0 48px; }
+    .hero p.lead { font-size: 17px; margin-bottom: 24px; }
+    .cta .btn { flex: 1 1 100%; }
+    section.block { padding: 48px 0; }
+    .sub { font-size: 16px; margin-bottom: 24px; }
+    .grid3, .grid2 { gap: 10px; }
+    .tile { display: grid; grid-template-columns: 44px 1fr; column-gap: 14px; align-items: start; padding: 16px; border-radius: 16px; }
+    .tile .ico { grid-row: span 2; width: 44px; height: 44px; margin: 0; border-radius: 12px; }
+    .tile .num { display: none; }
+    .tile h3 { font-size: 17px; margin: 0 0 2px; }
+    .tile p { font-size: 15px; }
+    .install .tile { display: block; }
+    .install .tile .ico { margin-bottom: 12px; }
+    .langs { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .lang { padding: 14px; border-radius: 14px; }
+    .lang b { font-size: 17px; }
+    .lang small { font-size: 13px; }
+    .contribute { padding: 36px 20px 22px; }
+    .card { margin-left: 10px; width: calc(100% - 10px); }
+    footer .sp { margin-left: 0; }
+  }
+
+  footer { background: var(--ebony); color: var(--sand); padding: 40px 0; font-size: 14px; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: center; }
+  footer .brand { color: var(--ivory); }
+  footer .sp { margin-left: auto; }
+</style>
+</head>
+<body>
+
+<div class="band"></div>
+<nav>
+  <div class="wrap">
+    <a class="brand" href="./"><span class="logo"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></span>Langwa</a>
+    <div class="links">
+      <a href="#how" data-en="How it works">Comment ça marche</a>
+      <a href="#safety" data-en="Safety">Sécurité</a>
+      <a href="#install" data-en="Install">Installer</a>
+      <a class="btn gold" href="contribute/" data-en="Contribute">Contribuer</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow" data-en="SAFINUM Innovate Challenge prototype">Prototype · SAFINUM Innovate Challenge</div>
+      <h1><span data-en="Online banking,">La banque en ligne,</span> <em data-en="in your language.">dans votre langue.</em></h1>
+      <p class="lead" data-en="Langwa shows banking and mobile-money sites in Cameroon's national languages, in text and by voice. Amounts stay exact. The bank's site stays untouched.">Langwa affiche les sites de banque et de mobile money dans les langues nationales du Cameroun, à l’écrit et à l’oral. Les montants restent exacts. Le site de la banque reste inchangé.</p>
+      <div class="cta">
+        <a class="btn gold" href="contribute/"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span data-en="Contribute translations">Contribuer des traductions</span></a>
+        <a class="btn light" href="#install"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Install Langwa">Installer Langwa</span></a>
+      </div>
+      <div class="meta">
+        <span><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-en="Free and open source">Gratuit et open source</span></span>
+        <span><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-en="Computer and phone">Ordinateur et téléphone</span></span>
+        <span><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-en="No account, no data collected">Sans compte, sans collecte de données</span></span>
+      </div>
+    </div>
+
+    <div class="preview" aria-hidden="true">
+      <div class="bank">
+        <div class="top"><i></i><span data-en="Transfer summary">Récapitulatif du virement</span></div>
+        <div class="row"><span data-en="Amount">Montant</span><b>25 000 FCFA</b></div>
+        <div class="row"><span data-en="Fees">Frais</span><b>0 FCFA</b></div>
+        <div class="row hl"><span data-en="Total to be debited">Total à débiter</span><b>25 000 FCFA</b></div>
+        <div class="row"><span data-en="Beneficiary">Bénéficiaire</span><b>Jean-Paul Mbarga</b></div>
+      </div>
+      <div class="card">
+        <div class="line">
+          <div class="slot"><small data-en="Your language">Votre langue</small><span data-en="your translation here">votre traduction ici</span></div>
+          <div class="say"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg></div>
+        </div>
+        <div class="orig"><b>Original</b><span data-en="Total to be debited">Total à débiter</span></div>
+        <div class="chips">
+          <span class="chip"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>25 000 FCFA</span>
+          <span class="pill"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><span data-en="Validated">Validé</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="block" id="how">
+  <div class="wrap">
+    <div class="kicker" data-en="How it works">Comment ça marche</div>
+    <h2 data-en="Point, understand, listen.">Pointez, comprenez, écoutez.</h2>
+    <p class="sub" data-en="Langwa works on top of the bank's site. Nothing to learn: one gesture shows the translation right under what you are reading.">Langwa fonctionne par-dessus le site de la banque. Rien à apprendre : un seul geste affiche la traduction juste sous ce que vous lisez.</p>
+    <div class="grid3">
+      <div class="tile"><div class="num">01</div><div class="ico o"><svg viewBox="0 0 24 24"><path d="M4 4l7 17 2.5-7.5L21 11 4 4z"/></svg></div><h3 data-en="Point">Pointez</h3><p data-en="Hold Ctrl and point at any text or button on a computer, or press and hold on a phone.">Maintenez Ctrl et pointez un texte ou un bouton sur ordinateur, ou appuyez longuement sur téléphone.</p></div>
+      <div class="tile"><div class="num">02</div><div class="ico g"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></div><h3 data-en="Understand">Comprenez</h3><p data-en="The translation appears below it, written by native speakers, with amounts and names locked exactly as on the page.">La traduction apparaît dessous, écrite par des locuteurs natifs, avec les montants et les noms verrouillés comme sur la page.</p></div>
+      <div class="tile"><div class="num">03</div><div class="ico i"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg></div><h3 data-en="Listen">Écoutez</h3><p data-en="Press the speaker to hear it in a real human voice. New error or warning messages are read out automatically.">Touchez le haut-parleur pour l’entendre avec une vraie voix humaine. Les nouveaux messages d’erreur ou d’alerte sont lus automatiquement.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block alt" id="safety">
+  <div class="wrap">
+    <div class="kicker" data-en="Safety first">La sécurité d’abord</div>
+    <h2 data-en="In finance, a wrong translation is worse than none.">En finance, une mauvaise traduction est pire qu’aucune.</h2>
+    <p class="sub" data-en="Langwa is built so that a translation can never change what you are about to pay.">Langwa est conçu pour qu’une traduction ne puisse jamais changer ce que vous allez payer.</p>
+    <div class="grid2">
+      <div class="tile"><div class="ico o"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><h3 data-en="Amounts locked">Montants verrouillés</h3><p data-en="Amounts, signs, fees, phone and account numbers, references and names are locked before translation and checked after. Any difference blocks the translation.">Montants, signes, frais, numéros de téléphone et de compte, références et noms sont verrouillés avant la traduction et vérifiés après. Toute différence bloque la traduction.</p></div>
+      <div class="tile"><div class="ico g"><svg viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></div><h3 data-en="The bank stays untouched">La banque reste intacte</h3><p data-en="Langwa only reads the page. It never changes the bank's site, its forms or its requests, and never presses a button for you.">Langwa ne fait que lire la page. Il ne modifie jamais le site de la banque, ses formulaires ni ses échanges, et n’appuie jamais sur un bouton à votre place.</p></div>
+      <div class="tile"><div class="ico r"><svg viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div><h3 data-en="Warnings keep their force">Les alertes gardent leur force</h3><p data-en="Errors and security warnings are shown first. A new message is never guessed: Langwa says what kind of message it is and shows the exact amounts.">Erreurs et alertes de sécurité passent en premier. Un nouveau message n’est jamais deviné : Langwa dit de quel type de message il s’agit et montre les montants exacts.</p></div>
+      <div class="tile"><div class="ico i"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg></div><h3 data-en="Nothing leaves your device">Rien ne quitte votre appareil</h3><p data-en="No account, no tracking. Translations live inside Langwa on your device; your balance and your beneficiaries are never sent anywhere.">Pas de compte, pas de suivi. Les traductions sont dans Langwa, sur votre appareil ; votre solde et vos bénéficiaires ne sont envoyés nulle part.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="languages">
+  <div class="wrap">
+    <div class="kicker" data-en="Languages">Langues</div>
+    <h2 data-en="Seven languages, built with their speakers.">Sept langues, construites avec leurs locuteurs.</h2>
+    <p class="sub" data-en="Every translation is written and validated by native speakers. Translations are being collected now: each language opens as soon as its speakers have translated it.">Chaque traduction est écrite et validée par des locuteurs natifs. La collecte est en cours : chaque langue s’ouvre dès que ses locuteurs l’ont traduite.</p>
+    <div class="langs" id="langs"></div>
+  </div>
+</section>
+
+<section class="block" id="contribute" style="padding-top:0">
+  <div class="wrap">
+    <div class="contribute">
+      <div>
+        <div class="kicker" style="color:var(--gold)" data-en="Contribute your knowledge">Partagez votre savoir</div>
+        <h2 data-en="Do you speak one of these languages? Help us translate.">Vous parlez une de ces langues ? Aidez-nous à traduire.</h2>
+        <p class="sub" data-en="Short, everyday banking sentences, on your phone. Even ten minutes helps someone in your community use their bank with confidence.">De courtes phrases de banque de tous les jours, sur votre téléphone. Même dix minutes aident quelqu’un de votre communauté à utiliser sa banque en confiance.</p>
+        <a class="btn gold" href="contribute/"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span data-en="Start translating">Commencer à traduire</span></a>
+      </div>
+      <div class="steps">
+        <div class="step"><i>1</i><div><b data-en="Choose your language">Choisissez votre langue</b><span data-en="Ewondo, Fulfulde, Duala, Ghomálá', Basaá, Mankon or Kom.">Ewondo, fulfulde, duala, ghomálá', basaá, mankon ou kom.</span></div></div>
+        <div class="step"><i>2</i><div><b data-en="Translate the meaning">Traduisez le sens</b><span data-en="One sentence at a time, as you would explain it to a relative. Record your voice if you like.">Une phrase à la fois, comme vous l’expliqueriez à un parent. Enregistrez votre voix si vous le voulez.</span></div></div>
+        <div class="step"><i>3</i><div><b data-en="Send it on WhatsApp">Envoyez sur WhatsApp</b><span data-en="One tap shares your translations with the team. Your name is credited.">Un seul geste partage vos traductions avec l’équipe. Votre nom est crédité.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block alt" id="install">
+  <div class="wrap">
+    <div class="kicker" data-en="Install">Installer</div>
+    <h2 data-en="Ready in two minutes.">Prêt en deux minutes.</h2>
+    <p class="sub" data-en="Langwa is a prototype for the SAFINUM Innovate Challenge. It is installed manually while it awaits publication on browser stores.">Langwa est un prototype pour le SAFINUM Innovate Challenge. Il s’installe à la main en attendant sa publication sur les boutiques des navigateurs.</p>
+    <div class="install">
+      <div class="tile">
+        <div class="ico o"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg></div>
+        <h3>Chrome, Edge, Brave, Opera</h3>
+        <ol>
+          <li data-en="Download and unzip the file.">Téléchargez et décompressez le fichier.</li>
+          <li data-en="Open chrome://extensions and turn on Developer mode.">Ouvrez <code>chrome://extensions</code> et activez le mode développeur.</li>
+          <li data-en="Click Load unpacked and choose the folder.">Cliquez sur « Charger l’extension non empaquetée » et choisissez le dossier.</li>
+        </ol>
+        <a class="btn dark" href="downloads/langwa-chromium.zip" download><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Download">Télécharger</span></a>
+      </div>
+      <div class="tile">
+        <div class="ico r"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a14 14 0 0 1 0 18M3 12h18"/></svg></div>
+        <h3>Firefox</h3>
+        <ol>
+          <li data-en="Download and unzip the file.">Téléchargez et décompressez le fichier.</li>
+          <li data-en="Open about:debugging, then This Firefox.">Ouvrez <code>about:debugging</code>, puis « Ce Firefox ».</li>
+          <li data-en="Load Temporary Add-on and choose manifest.json.">« Charger un module temporaire » et choisissez <code>manifest.json</code>.</li>
+        </ol>
+        <a class="btn soft" href="downloads/langwa-chromium.zip" download><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Download">Télécharger</span></a>
+      </div>
+      <div class="tile">
+        <div class="ico g"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg></div>
+        <h3 data-en="Phone">Téléphone</h3>
+        <ol>
+          <li data-en="Android: install Tampermonkey. iPhone: install the free Userscripts app.">Android : installez Tampermonkey. iPhone : installez l’app gratuite Userscripts.</li>
+          <li data-en="Open the Langwa script below and confirm.">Ouvrez le script Langwa ci-dessous et confirmez.</li>
+          <li data-en="On your bank's page, press and hold any text.">Sur la page de votre banque, appuyez longuement sur un texte.</li>
+        </ol>
+        <a class="btn soft" href="downloads/langwa.user.js"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Phone version">Version téléphone</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="./"><span class="logo"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></span>Langwa</a>
+    <span data-en="Prototype for the SAFINUM Innovate Challenge. Simulated operations only.">Prototype pour le SAFINUM Innovate Challenge. Opérations simulées uniquement.</span>
+    <a class="sp" href="contribute/" data-en="Contribute translations">Contribuer des traductions</a>
+  </div>
+</footer>
+
+<script>
+  const LANGS = /*LANGS*/{};
+  const EN = /^en/i.test(navigator.language || '');
+  if (EN) {
+    document.documentElement.lang = 'en';
+    document.title = 'Langwa · Online banking, in your language';
+    document.querySelectorAll('[data-en]').forEach(el => { el.textContent = el.dataset.en; });
+  }
+  // Each language card leads to the contribution page with that language preselected.
+  document.getElementById('langs').replaceChildren(...Object.entries(LANGS).map(([code, l]) => {
+    const d = document.createElement('a');
+    d.className = 'lang';
+    d.href = `contribute/#${code}`;
+    const b = document.createElement('b'); b.textContent = l.name;
+    const s = document.createElement('small'); s.textContent = l.region || '';
+    d.append(b, s);
+    return d;
+  }));
+</script>
+</body>
+</html>

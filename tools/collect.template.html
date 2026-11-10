@@ -75,7 +75,7 @@
 <body>
 <div class="band"></div>
 <header>
-  <div class="logo"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></div>
+  <a class="logo" href="../" aria-label="Langwa"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></a>
   <div class="t"><b>Langwa</b><small data-t="subtitle"></small></div>
   <div class="count" id="count"></div>
 </header>
@@ -311,7 +311,9 @@ function show(id) { for (const s of ['start', 'phrase', 'finish']) $(s).hidden =
 
 (async () => {
   const saved = await load('state');
-  if (saved && saved.lang) { st = { ...st, ...saved }; show('phrase'); renderPhrase(); } else { show('start'); renderStart(); }
+  const fromLink = location.hash.slice(1); // langwa.../contribute/#fub preselects Fulfulde
+  if (saved && saved.lang && (!fromLink || fromLink === saved.lang)) { st = { ...st, ...saved }; show('phrase'); renderPhrase(); }
+  else { if (DATA.langs[fromLink]) st.lang = fromLink; show('start'); renderStart(); }
   counts();
 })();
 </script>
