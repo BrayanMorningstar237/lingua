@@ -22,3 +22,4 @@ data/wiktionary-en-cache.json
 .venv/
 server/*.log
 server/models/
+data/bible-cache/

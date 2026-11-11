@@ -202,6 +202,7 @@
       });
       if (out.some(s => s.missing || (s.tts && !o.tts))) return null;
       out.voice = voice;
+      out.raw = steps; // kept so the voice can be decided again when Listen is pressed
       return out;
     }
 
@@ -225,9 +226,21 @@
       const allow = !!online();
       const fr = bestFrenchVoice(allow);
       const nat = nationalVoice(allow, language() || {});
+      // Languages that say amounts in their own words (Pidgin): when the local model reads the
+      // sentence, it reads the amounts and names too, so the whole sentence is ONE voice and one
+      // flowing utterance instead of model / browser voice / model.
+      const modelSentence = !!tts && (language() || {}).reading === 'none' && steps.some(st => st.tts);
       const runs = [];
       for (const step of steps) {
         let piece = null;
+        const prev = runs[runs.length - 1];
+        const valueWords = () => (step.type ? speakValue(step.value, step.type).replace(/francs CFA/g, 'CFA francs') : speakable(step.value));
+        const ttsText = step.tts || (modelSentence && step.value ? valueWords() : null);
+        if (ttsText) { // model pieces next to each other are sent as one request
+          if (prev && prev.tts && !prev.audio) prev.tts += ` ${ttsText}`;
+          else runs.push({ tts: ttsText });
+          continue;
+        }
         // Numbers and amounts are read in French (exact figures). Names stay with the national
         // voice so the sentence does not jump between voices ("e Jean-Paul Mbarga" in one go).
         const isName = step.value && (step.type === 'name' || step.type === 'user-value' || (!step.type && !/\d/.test(step.value)));
@@ -235,7 +248,6 @@
         else if (step.value && isName && nat.voice && nat.voice !== fr) piece = { voice: nat.voice, text: step.value };
         else if (step.value) piece = { voice: fr, text: step.type ? speakValue(step.value, step.type) : speakable(step.value) };
         else if (step.nat) piece = { voice: nat.voice, text: nat.adapt(step.nat), national: true };
-        const prev = runs[runs.length - 1];
         if (piece && prev && prev.voice === piece.voice && !prev.audio && !prev.tts) { prev.text += ` ${piece.text}`; prev.national = prev.national || piece.national; }
         else runs.push(piece || step);
       }

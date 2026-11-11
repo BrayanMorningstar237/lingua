@@ -37,7 +37,31 @@ HOST, PORT = "127.0.0.1", 8770
 MAX_TEXT = 600            # characters per request (a card or an answer)
 CACHE_MAX = 300           # recent phrases kept in memory
 # Africa TTS language codes Langwa uses (Pidgin is sent as "eng").
-LANGS = {"ewo", "dua", "bas", "eng", "fub", "bbj", "nge", "bkm"}
+LANGS = {"ewo", "dua", "bas", "eng", "pcm", "fub", "bbj", "nge", "bkm"}
+
+# Cameroonian Pidgin ("pcm") is read by the English voice, but English pronunciation rules
+# (American, in eSpeak) get Pidgin words wrong: "una" -> "yoo-na", "am" -> "am" as in "ham",
+# "e" -> "ee". Common Pidgin words are respelled so the English rules land on the Pidgin sound.
+PIDGIN = {
+    "una": "oona", "wuna": "woona", "am": "ahm", "e": "eh", "don": "dawn", "di": "dee",
+    "dis": "deess", "dat": "daht", "dey": "day", "wey": "way", "na": "nah", "comot": "kaw mot",
+    "abeg": "ah beg", "sabi": "sah bee", "pikin": "pee keen", "wetin": "weh tin",
+    "wahala": "wah hah lah", "oga": "oh gah", "im": "eem", "tok": "tawk", "moni": "money",
+    "sey": "say", "kam": "kahm", "o": "oh", "shey": "shay", "dem": "dem", "fit": "fit",
+    "chop": "chop", "sef": "sef", "ehn": "en", "ehen": "eh hen", "kontri": "kon tree",
+    "pipul": "pee pul", "mek": "mek", "bifo": "bee for", "awa": "ah wah", "yi": "yee",
+}
+_WORD = __import__("re").compile(r"[A-Za-z']+")
+
+
+def pidgin_respell(text: str) -> str:
+    def sub(m):
+        w = m.group(0)
+        r = PIDGIN.get(w.lower())
+        if r is None:
+            return w
+        return r.capitalize() if w[0].isupper() else r
+    return _WORD.sub(sub, text)
 WARM = ["eng", "ewo", "dua", "bas", "fub"]  # voices prepared ahead
 # Voice timbre. "default" = the language's own recorded speaker. "female" = a clear female
 # speaker from the model's voices (pronunciation still follows the language). Any voice id
@@ -173,7 +197,7 @@ def load_model(folder: Path) -> None:
 # Languages whose own recorded speaker is already female: "female" keeps it, because a voice
 # trained on the language's own speech sounds more natural than a borrowed one. English (used
 # for Pidgin) is a native Ghanaian English speaker.
-OWN_FEMALE = {"eng"}
+OWN_FEMALE = {"eng", "pcm"}
 
 
 def voice_path(voice: str, lang: str = ""):
@@ -199,6 +223,8 @@ def synthesize(text: str, lang: str, voice: str = "") -> bytes:
     import soundfile as sf
 
     with LOCK:  # one synthesis at a time: predictable CPU use
+        if lang == "pcm":
+            text, lang = pidgin_respell(text), "eng"
         audio = MODEL.generate(text[:MAX_TEXT], lang=lang, voice=vpath)
     buf = io.BytesIO()
     sf.write(buf, np.clip(audio, -1.0, 1.0), MODEL.sample_rate, format="WAV", subtype="PCM_16")

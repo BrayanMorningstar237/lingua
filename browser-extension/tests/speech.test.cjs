@@ -77,3 +77,14 @@ test('local voice on: the model audio plays and "local" is reported', async () =
   assert.deepEqual(seen, ['wait', 'local']);
   assert.equal(spoken.length, 0, 'no browser voice needed');
 });
+
+test('Pidgin with the local model: words, amount and name are one request, one voice', async () => {
+  stubVoices();
+  const S = require('../src/speech.js');
+  const asked = [];
+  const player = S.createPlayer({ tts: async t => { asked.push(t); return 'data:audio/wav;base64,AA'; }, online: () => false, language: () => ({ reading: 'none' }) });
+  const steps = player.prepare([{ missing: true, text: 'You go send' }, { value: '25 000 FCFA', type: 'money' }, { missing: true, text: 'give' }, { value: 'Jean Mballa', type: 'name' }], { tts: true, approx: true });
+  await new Promise(res => player.play(steps, res));
+  assert.equal(asked.length, 1, 'a single model request');
+  assert.match(asked[0], /^You go send .*CFA francs give Jean Mballa$/);
+});

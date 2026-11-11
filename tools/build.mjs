@@ -20,10 +20,28 @@ const read = p => readFileSync(join(EXT, p), 'utf8');
 const loadTerms = f => (existsSync(join(ROOT, 'data', f)) ? JSON.parse(readFileSync(join(ROOT, 'data', f), 'utf8')).terms : {});
 const termsFr = loadTerms('terms.json');
 const termsEn = loadTerms('terms-en.json');
+// Words learned from an open Bible translation (tools/harvest-bible-lexicon.mjs), for languages
+// Wiktionary does not cover (Lamnso'). Keyed by English word; French pages use the table below.
+const EN_FR = {
+  money: ['argent'], pay: ['payer', 'paiement'], give: ['donner'], receive: ['recevoir', 'reçu'], take: ['prendre'],
+  send: ['envoyer', 'envoi'], name: ['nom'], day: ['jour'], month: ['mois'], year: ['année'], thousand: ['mille'],
+  hundred: ['cent'], buy: ['acheter', 'achat'], sell: ['vendre'], thief: ['voleur'], lie: ['mensonge', 'mentir'],
+  ask: ['demander'], say: ['dire'], hear: ['entendre', 'écouter'], see: ['voir'], know: ['savoir', 'connaître'],
+  write: ['écrire'], good: ['bon', 'bien'], evil: ['mal'], true: ['vrai', 'vérité'], new: ['nouveau', 'nouvelle'],
+  open: ['ouvrir'], call: ['appeler', 'appel'], hand: ['main'], house: ['maison'], now: ['maintenant'],
+  many: ['beaucoup'], little: ['peu'], choose: ['choisir'], enter: ['entrer', 'saisir'], come: ['venir'],
+  go: ['aller'], wages: ['salaire'], price: ['prix'], poor: ['pauvre'], rich: ['riche'],
+  fear: ['peur'], no: ['non'], thanks: ['merci'], peace: ['paix'], language: ['langue'],
+};
+for (const [lang, idx] of Object.entries(loadTerms('terms-bible.json'))) {
+  termsEn[lang] = { ...idx, ...(termsEn[lang] || {}) };
+  termsFr[lang] = termsFr[lang] || {};
+  for (const [en, ts] of Object.entries(idx)) for (const fr of EN_FR[en] || []) termsFr[lang][fr] = termsFr[lang][fr] || ts;
+}
 const compact = terms => Object.fromEntries(Object.entries(terms).map(([l, idx]) =>
   [l, Object.fromEntries(Object.entries(idx).map(([w, ts]) => [w, [...new Set(ts.map(t => t.term))].slice(0, 3)]))]));
 const lexicon = {
-  licence: 'Words from Wiktionnaire / Wiktionary contributors, CC BY-SA 4.0 (https://fr.wiktionary.org, https://en.wiktionary.org). Dictionary hints, not validated.',
+  licence: 'Words from Wiktionnaire / Wiktionary contributors, CC BY-SA 4.0 (https://fr.wiktionary.org, https://en.wiktionary.org); Lamnso words learned from the Lamnso New Testament (flagship-ai/cameroon_bibles, CC BY 4.0) aligned with the King James Version (public domain). Dictionary hints, not validated.',
   fr: compact(termsFr),
   en: compact(termsEn),
 };

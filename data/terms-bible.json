@@ -1,0 +1,416 @@
+{
+ "licence": "Lamnso' New Testament text: flagship-ai/cameroon_bibles, CC BY 4.0. English: King James Version, public domain.",
+ "note": "Learned by statistical word alignment of Bible verses. Dictionary hints only, not validated by native speakers; Bible vocabulary may differ from everyday banking words.",
+ "harvestedAt": "2026-11-11",
+ "terms": {
+  "lns": {
+   "money": [
+    {
+     "term": "mbàm",
+     "definition": "money",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "pay": [
+    {
+     "term": "làʼ",
+     "definition": "pay",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "give": [
+    {
+     "term": "fò",
+     "definition": "give",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "take": [
+    {
+     "term": "lì",
+     "definition": "take",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "send": [
+    {
+     "term": "tùm",
+     "definition": "send",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    },
+    {
+     "term": "tumen",
+     "definition": "send",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "name": [
+    {
+     "term": "yír",
+     "definition": "name",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    },
+    {
+     "term": "yir",
+     "definition": "name",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "day": [
+    {
+     "term": "kishiíy",
+     "definition": "day",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "month": [
+    {
+     "term": "ŋwee",
+     "definition": "month",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "year": [
+    {
+     "term": "kiyá",
+     "definition": "year",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "thousand": [
+    {
+     "term": "nsə̀kì",
+     "definition": "thousand",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    },
+    {
+     "term": "ansə̀kì",
+     "definition": "thousand",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "hundred": [
+    {
+     "term": "wií",
+     "definition": "hundred",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    },
+    {
+     "term": "ghii",
+     "definition": "hundred",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "buy": [
+    {
+     "term": "yùn",
+     "definition": "buy",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "sell": [
+    {
+     "term": "fiìnè",
+     "definition": "sell",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "thief": [
+    {
+     "term": "shóŋ",
+     "definition": "thief",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    },
+    {
+     "term": "shòŋ",
+     "definition": "thief",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "lie": [
+    {
+     "term": "kimboʼtì",
+     "definition": "lie",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    },
+    {
+     "term": "bóʼti",
+     "definition": "lie",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "ask": [
+    {
+     "term": "dzə̀r",
+     "definition": "ask",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "say": [
+    {
+     "term": "jii",
+     "definition": "say",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "hear": [
+    {
+     "term": "yú",
+     "definition": "hear",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    },
+    {
+     "term": "yù",
+     "definition": "hear",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "see": [
+    {
+     "term": "yén",
+     "definition": "see",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    },
+    {
+     "term": "yèn",
+     "definition": "see",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "know": [
+    {
+     "term": "kì",
+     "definition": "know",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    },
+    {
+     "term": "kìíy",
+     "definition": "know",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "write": [
+    {
+     "term": "ŋwàʼ",
+     "definition": "write",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    },
+    {
+     "term": "saŋen",
+     "definition": "write",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "good": [
+    {
+     "term": "juŋ",
+     "definition": "good",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "evil": [
+    {
+     "term": "bi",
+     "definition": "evil",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "true": [
+    {
+     "term": "ru",
+     "definition": "true",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "new": [
+    {
+     "term": "fíy",
+     "definition": "new",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "open": [
+    {
+     "term": "mvə̀ʼ",
+     "definition": "open",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "call": [
+    {
+     "term": "yoŋ",
+     "definition": "call",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "hand": [
+    {
+     "term": "kiwó",
+     "definition": "hand",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    },
+    {
+     "term": "wó",
+     "definition": "hand",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "house": [
+    {
+     "term": "lav",
+     "definition": "house",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "now": [
+    {
+     "term": "lèn",
+     "definition": "now",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "many": [
+    {
+     "term": "anín",
+     "definition": "many",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "little": [
+    {
+     "term": "shishàr",
+     "definition": "little",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "choose": [
+    {
+     "term": "shòʼ",
+     "definition": "choose",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "enter": [
+    {
+     "term": "nə̀ə́",
+     "definition": "enter",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "come": [
+    {
+     "term": "wìy",
+     "definition": "come",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "go": [
+    {
+     "term": "dù",
+     "definition": "go",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    },
+    {
+     "term": "du",
+     "definition": "go",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "wages": [
+    {
+     "term": "vilaʼày",
+     "definition": "wages",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "price": [
+    {
+     "term": "káv",
+     "definition": "price",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "gold": [
+    {
+     "term": "kisha",
+     "definition": "gold",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "poor": [
+    {
+     "term": "ŋgeʼe",
+     "definition": "poor",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    },
+    {
+     "term": "kitàn",
+     "definition": "poor",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "rich": [
+    {
+     "term": "bùʼ",
+     "definition": "rich",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "fear": [
+    {
+     "term": "fàn",
+     "definition": "fear",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    },
+    {
+     "term": "fan",
+     "definition": "fear",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "no": [
+    {
+     "term": "yòʼ",
+     "definition": "no",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    },
+    {
+     "term": "bó",
+     "definition": "no",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "thanks": [
+    {
+     "term": "beèrì",
+     "definition": "thanks",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    },
+    {
+     "term": "beerì",
+     "definition": "thanks",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "peace": [
+    {
+     "term": "nyaáŋ",
+     "definition": "peace",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ],
+   "language": [
+    {
+     "term": "làm",
+     "definition": "language",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    },
+    {
+     "term": "lám",
+     "definition": "language",
+     "source": "Bible alignment (flagship-ai/cameroon_bibles, CC BY 4.0 + KJV)"
+    }
+   ]
+  }
+ }
+}

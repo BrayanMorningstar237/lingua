@@ -169,7 +169,7 @@
   .item .vchip[data-src="human"] { --c: color-mix(in srgb, #b07a0a 80%, var(--card-fg)); }
   .voice .i { font-size: 13px; }
   .item .voice { color: var(--card-muted); }
-  .say { flex: none; width: 42px; height: 42px; border-radius: 999px; border: 0; display: grid; place-items: center; font-size: 20px;
+  .say { flex: none; width: 42px; height: 42px; border-radius: 999px; border: 0; display: grid; grid-auto-flow: column; gap: 4px; place-items: center; place-content: center; overflow: hidden; font-size: 20px;
     background: var(--forest); color: #fff; box-shadow: 0 4px 14px rgba(30,122,76,.45); transition: transform .1s ease, background .15s ease; }
   .say:hover { transform: scale(1.06); background: var(--forest-2); }
   .say:active { transform: scale(.95); }
@@ -309,10 +309,7 @@
   @keyframes shrink { from { width: 100%; } to { width: 0; } }
 
   /* ---------- page highlight, subtitles, first-run hint ---------- */
-  .hl { position: fixed; z-index: 2147483645; border: 3px solid var(--gold); border-radius: 10px; pointer-events: none; display: none;
-    box-shadow: 0 0 0 6px rgba(227,162,26,.22); transition: all .08s ease; }
-  .hl.pulse { animation: locate .9s ease-out 2; }
-  @keyframes locate { 50% { box-shadow: 0 0 0 14px rgba(227,162,26,.06); } }
+  .hl { display: none !important; }
   .subs { position: fixed; inset: 0; pointer-events: none; z-index: 2147483644; }
   .sub { position: fixed; padding: 0 2px; border-radius: 4px; box-sizing: border-box; overflow-wrap: anywhere;
     text-decoration: underline dotted rgba(227,162,26,.75); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
@@ -648,7 +645,7 @@
     const b = h('button', { class: `say${compact ? '' : ' wide'}`, title: `${label} · ${voiceName(steps.voice)}`, 'aria-label': label }, ...idle());
     b.addEventListener('click', ev => {
       ev.stopPropagation();
-      if (b.classList.contains('on')) { player.stop(); return; }
+      if (b.classList.contains('on')) { player.stop(); if (!player.isPlaying()) { b.classList.remove('on'); b.replaceChildren(...idle()); } return; }
       if (askOnlineVoice(b, () => speak(steps, b, idle))) return;
       speak(steps, b, idle);
     });
@@ -685,9 +682,14 @@
   }
 
   /** Plays steps, animating the button that started it (if any). */
-  function speak(steps, b, idle) {
-    if (!steps) return;
+  async function speak(planned, b, idle) {
+    if (!planned) return;
     if (b) { b.classList.add('on'); b.replaceChildren(bars(), compact(b) ? null : h('span', { class: 'lbl' }, ui('ui_stop', 'Arrêter'))); }
+    // The voice is decided now, not when the card or chat bubble was drawn: the local voice
+    // may have started (or stopped) since. The check is cached, so this takes milliseconds.
+    if (state.settings && state.settings.tts && state.settings.tts.mode === 'auto') await refreshVoice();
+    const steps = (planned.raw && player.prepare(planned.raw, voiceOpts())) || planned;
+    if (b && !b.classList.contains('on')) return; // stopped while checking
     const chip = chipFor(b);
     player.play(steps,
       () => { if (b) { b.classList.remove('on'); b.replaceChildren(...idle()); } if (chip) chip.classList.remove('live'); },
