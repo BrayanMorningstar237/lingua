@@ -80,7 +80,18 @@ function zip(entries) {
 
 const files = shipped.map(name => ({ name, data: readFileSync(join(EXT, name)) }));
 writeFileSync(join(DIST, 'langwa-chromium.zip'), zip(files));
-writeFileSync(join(DIST, 'langwa-firefox.xpi'), zip(files));
+
+// Firefox: same files, its own manifest (event page instead of service worker, add-on id).
+// Kept out of the Chromium manifest so Chrome/Edge show no warnings.
+const firefoxManifest = {
+  ...manifest,
+  background: { scripts: [manifest.background.service_worker] },
+  browser_specific_settings: { gecko: { id: 'langwa@hackathon.local', strict_min_version: '121.0' } },
+};
+const firefoxFiles = files.map(f => (f.name === 'manifest.json'
+  ? { name: f.name, data: Buffer.from(JSON.stringify(firefoxManifest, null, 2)) }
+  : f));
+writeFileSync(join(DIST, 'langwa-firefox.xpi'), zip(firefoxFiles));
 
 // ---------- userscript ----------
 const langs = JSON.parse(read('lang/languages.json'));
@@ -133,6 +144,7 @@ writeFileSync(join(SITE, 'icon.svg'), readFileSync(join(EXT, 'icons', 'icon.svg'
 mkdirSync(join(SITE, 'img'), { recursive: true });
 for (const f of readdirSync(join(ROOT, 'tools', 'site-assets'))) writeFileSync(join(SITE, 'img', f), readFileSync(join(ROOT, 'tools', 'site-assets', f)));
 writeFileSync(join(SITE, 'downloads', 'langwa-chromium.zip'), readFileSync(join(DIST, 'langwa-chromium.zip')));
+writeFileSync(join(SITE, 'downloads', 'langwa-firefox.xpi'), readFileSync(join(DIST, 'langwa-firefox.xpi')));
 writeFileSync(join(SITE, 'downloads', 'langwa.user.js'), readFileSync(join(DIST, 'langwa.user.js')));
 
 const kb = p => `${(statSync(join(DIST, p)).size / 1024).toFixed(0)} KB`;

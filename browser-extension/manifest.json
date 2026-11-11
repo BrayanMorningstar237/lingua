@@ -4,34 +4,49 @@
   "short_name": "Langwa",
   "version": "0.1.0",
   "description": "Read digital banking services in Cameroon's national languages, with amounts, fees and beneficiaries protected.",
-  "icons": { "16": "icons/icon-16.png", "32": "icons/icon-32.png", "48": "icons/icon-48.png", "128": "icons/icon-128.png" },
-  "permissions": ["storage", "activeTab"],
-  "host_permissions": ["http://localhost/*", "http://127.0.0.1/*"],
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "http://localhost/*",
+    "http://127.0.0.1/*"
+  ],
   "background": {
-    "service_worker": "src/background.js",
-    "scripts": ["src/background.js"]
+    "service_worker": "src/background.js"
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["src/protect.js", "src/engine.js", "src/speech.js", "src/content.js"],
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "src/protect.js",
+        "src/engine.js",
+        "src/speech.js",
+        "src/content.js"
+      ],
       "run_at": "document_idle",
       "all_frames": false
     }
   ],
   "action": {
     "default_title": "Langwa",
-    "default_icon": { "16": "icons/icon-16.png", "32": "icons/icon-32.png", "48": "icons/icon-48.png" },
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png"
+    },
     "default_popup": "src/popup.html"
   },
   "options_ui": {
     "page": "src/options.html",
     "open_in_tab": true
-  },
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "langwa@hackathon.local",
-      "strict_min_version": "121.0"
-    }
   }
 }
