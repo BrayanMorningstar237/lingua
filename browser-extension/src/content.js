@@ -1257,7 +1257,9 @@
   const mtQueue = [];
   let mtTimer = null;
   function requestMT(part) {
-    if (!state.settings.mt || state.settings.mt.mode === 'none') return Promise.resolve(null);
+    // Lamnso' has a dedicated local model and should use it whenever this language is
+    // selected, even when the optional general MT setting is left at "none".
+    if ((!state.settings.mt || state.settings.mt.mode === 'none') && state.pack.code !== 'lns') return Promise.resolve(null);
     return new Promise(resolve => {
       mtQueue.push({ part, resolve });
       clearTimeout(mtTimer);

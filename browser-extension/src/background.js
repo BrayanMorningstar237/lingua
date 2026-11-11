@@ -267,7 +267,12 @@ async function mtNllb(settings, code, texts) {
 
 async function mtCameroon(settings, code, texts) {
   if (code !== 'lns') return texts.map(() => null);
-  const r = await fetch(settings.mt.endpoint, {
+  // Keep Lamnso' available with the default MT setting. This endpoint is the local
+  // Flagship AI MarianMT server; it never sends page text to a hosted service.
+  const endpoint = settings.mt.mode === 'cameroon'
+    ? settings.mt.endpoint
+    : 'http://127.0.0.1:8768/translate';
+  const r = await fetch(endpoint, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ texts, target: 'lamnso' }),
@@ -299,7 +304,8 @@ async function translateBatch(code, items) {
   const cache = await cacheGet(code);
   const out = items.map(it => cache[it.masked] || null);
   const missing = items.map((it, i) => (out[i] ? null : i)).filter(i => i !== null);
-  if (!missing.length || settings.mt.mode === 'none') return { results: out, error: null };
+  const autoLamnso = code === 'lns' && (settings.mt.mode === 'none' || settings.mt.mode === 'nllb');
+  if (!missing.length || (settings.mt.mode === 'none' && !autoLamnso)) return { results: out, error: null };
   let error = null;
 
   const pack = await loadPack(code);
@@ -307,11 +313,11 @@ async function translateBatch(code, items) {
     .map(e => ({ src: [e.fr, e.en].filter(Boolean).join(' / '), t: e.t, note: e.note || '' }));
   const add = {};
   try {
-    if (settings.mt.mode === 'nllb') {
-      const res = await mtNllb(settings, code, missing.map(i => items[i].masked));
-      missing.forEach((i, k) => { out[i] = res[k]; if (res[k]) add[items[i].masked] = res[k]; });
-    } else if (settings.mt.mode === 'cameroon') {
+    if (autoLamnso || settings.mt.mode === 'cameroon') {
       const res = await mtCameroon(settings, code, missing.map(i => items[i].masked));
+      missing.forEach((i, k) => { out[i] = res[k]; if (res[k]) add[items[i].masked] = res[k]; });
+    } else if (settings.mt.mode === 'nllb') {
+      const res = await mtNllb(settings, code, missing.map(i => items[i].masked));
       missing.forEach((i, k) => { out[i] = res[k]; if (res[k]) add[items[i].masked] = res[k]; });
     } else {
       // 3 requests at a time: small local models are faster on short single strings.

@@ -175,11 +175,11 @@
 
   <section>
     <h2><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/></svg>Traduction automatique locale (open source, optionnelle)</h2>
-    <p class="muted">Utilisée seulement pour les phrases absentes du glossaire. Seul le texte <b>masqué</b> est envoyé (les montants, noms et numéros sont remplacés par ⟦A⟧, ⟦B⟧…), et seulement à un serveur sur cet ordinateur. Sans serveur, l'extension affiche un résumé sûr : type de message, mots clés et montants exacts.</p>
+    <p class="muted">Utilisée pour les phrases absentes du glossaire. Lamnso’ utilise automatiquement son modèle local lorsque cette langue est sélectionnée. Seul le texte <b>masqué</b> est envoyé (les montants, noms et numéros sont remplacés par ⟦A⟧, ⟦B⟧…), et seulement à un serveur sur cet ordinateur. Sans serveur, l'extension affiche un résumé sûr : type de message, mots clés et montants exacts.</p>
     <div class="grid2">
       <label>Mode
         <select id="mtMode">
-          <option value="none">Désactivée (glossaire et résumé sûr)</option>
+          <option value="none">Désactivée (sauf le modèle Lamnso’ dédié)</option>
           <option value="openai">LLM local compatible OpenAI (Ollama, llama.cpp, LM Studio)</option>
           <option value="nllb">Serveur NLLB-200 local (server/nllb_server.py)</option>
           <option value="cameroon">Serveur local de traduction du Cameroun (Lamnso’, brouillon)</option>
