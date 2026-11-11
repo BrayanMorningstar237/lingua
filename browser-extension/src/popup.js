@@ -36,10 +36,10 @@ async function save(patch) {
   // ---------- first use: choose a language ----------
   if (!settings.lang) {
     $('chooser').hidden = false;
-    const list = Object.entries(langs).sort((a, b) => (b[1].count > 0) - (a[1].count > 0));
+    const list = Object.entries(langs).sort((a, b) => ((b[1].count > 0 || b[1].machineTranslation) - (a[1].count > 0 || a[1].machineTranslation)));
     for (const [code, l] of list) {
       const b = document.createElement('button');
-      b.className = `lang-btn${l.count ? '' : ' empty'}`;
+      b.className = `lang-btn${l.count || l.machineTranslation ? '' : ' empty'}`;
       const name = document.createElement('b');
       name.textContent = l.name;
       const region = document.createElement('small');
@@ -48,7 +48,9 @@ async function save(patch) {
       if (!l.count) {
         const soon = document.createElement('span');
         soon.className = 'soon';
-        soon.textContent = ui('ui_soon', 'Bientôt');
+        soon.textContent = l.machineTranslation
+          ? (BASE === 'en' ? 'MT draft - unvalidated' : 'Brouillon MT - non validé')
+          : ui('ui_soon', BASE === 'en' ? 'Soon' : 'Bientôt');
         b.append(soon);
       }
       b.onclick = async () => { await save({ lang: code }); location.reload(); };
@@ -81,7 +83,10 @@ async function save(patch) {
 
   // ---------- language ----------
   for (const [code, l] of Object.entries(langs)) {
-    const o = new Option(`${l.name}${l.count ? '' : ` · ${ui('ui_soon', 'Bientôt')}`}`, code);
+    const status = l.machineTranslation
+      ? (BASE === 'en' ? ' - MT draft, unvalidated' : ' - Brouillon MT, non validé')
+      : ` - ${ui('ui_soon', BASE === 'en' ? 'Soon' : 'Bientôt')}`;
+    const o = new Option(`${l.name}${l.count ? '' : status}`, code);
     o.title = l.region || '';
     o.selected = code === settings.lang;
     $('lang').append(o);

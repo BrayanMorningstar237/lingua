@@ -142,15 +142,15 @@ function row(e) {
   x.addEventListener('change', () => saveOverride(e.id, { x: x.value.trim() }));
 
   tr.append(
-    el('td', { class: 'src' },
+    el('td', { class: 'src', 'data-label': 'Source' },
       el('div', {}, highlightPh(e.fr)),
       el('div', {}, highlightPh(e.en)),
       e.note ? el('div', { class: 'note' }, ico('info'), ' ', e.note) : null,
       el('div', { class: 'grp' }, `${e.group} · ${e.id}`),
       e.check ? el('span', { class: 'check' }, 'À vérifier sur la vraie page') : null),
-    el('td', {}, t, e.group === 'ui' || e.group === 'safety-net' ? null : x),
-    el('td', {}, el('label', { class: 'ok-label' }, ver, 'Validé'), who),
-    el('td', {}, audio));
+    el('td', { 'data-label': 'Traduction' }, t, e.group === 'ui' || e.group === 'safety-net' ? null : x),
+    el('td', { 'data-label': 'Validation' }, el('label', { class: 'ok-label' }, ver, 'Validé'), who),
+    el('td', { 'data-label': 'Voix' }, audio));
   return tr;
 }
 

@@ -34,6 +34,7 @@
   button { font: inherit; display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--soft); color: var(--fg); cursor: pointer; font-weight: 600; }
   button:hover:not(:disabled) { border-color: var(--gold); }
   button:disabled { opacity: .4; cursor: not-allowed; }
+  button:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
   button.primary { background: var(--ebony); color: var(--ivory); border-color: var(--ebony); }
   button.primary svg { color: var(--gold); }
   button.icon { padding: 6px 8px; }
@@ -60,7 +61,15 @@
   input[type=checkbox] { accent-color: var(--forest); width: 16px; height: 16px; }
   pre { background: var(--ebony); color: var(--ivory); padding: 14px; border-radius: 12px; white-space: pre-wrap; word-break: break-word; font-size: 12.5px; margin: 10px 0 0; }
   .tablewrap { max-height: 70vh; overflow: auto; }
-  @media (max-width: 760px) { thead { display: none; } tr, td { display: block; } td { border: 0; padding: 4px 0; } tr { border-bottom: 1px solid var(--line); padding: 10px 0; } }
+  @media (max-width: 760px) {
+    .tablewrap { max-height: 68vh; max-height: 68dvh; overflow: visible; }
+    table, tbody { display: block; width: 100%; }
+    thead { display: none; }
+    tr { display: grid; gap: 10px; margin: 0 0 12px; padding: 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+    td { display: block; min-width: 0; padding: 0; border: 0; overflow-wrap: anywhere; }
+    td::before { content: attr(data-label); display: block; margin-bottom: 4px; color: var(--muted); font-size: 10.5px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
+    td.src::before { display: none; }
+  }
   .vstat { grid-column: 1 / -1; display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--soft); }
   .vstat .led { flex: none; width: 10px; height: 10px; margin-top: 5px; border-radius: 50%; background: var(--muted); box-shadow: 0 0 0 4px color-mix(in srgb, var(--muted) 18%, transparent); }
   .vstat[data-s="ready"] .led { background: var(--ok); box-shadow: 0 0 0 4px color-mix(in srgb, var(--ok) 20%, transparent); }
@@ -71,6 +80,34 @@
   .vstat code { display: inline-block; margin-top: 6px; padding: 4px 8px; border-radius: 6px; background: var(--card); border: 1px solid var(--line); font-size: 12px; user-select: all; overflow-wrap: anywhere; }
   @keyframes vpulse { 50% { opacity: .35; } }
   @media (prefers-reduced-motion: reduce) { .vstat .led { animation: none !important; } }
+  @media (max-width: 600px) {
+    .hwrap { padding: 12px; gap: 10px; }
+    header h1 { min-width: 0; flex: 1; }
+    header label { width: 100%; }
+    header select { flex: 1; min-width: 0; }
+    main { padding: 12px; gap: 12px; }
+    section { padding: 14px; border-radius: 14px; }
+    .grid2 { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+    input[type=text], input[type=url], select { min-height: 44px; }
+    input[type=text], input[type=url], select, textarea { font-size: 16px; }
+    textarea { min-height: 88px; }
+    textarea.x { min-height: 64px; }
+    button { min-height: 44px; justify-content: center; }
+    button.icon { min-width: 44px; min-height: 44px; }
+    .toolbar { align-items: stretch; }
+    .toolbar > #filter { width: 100%; max-width: none !important; }
+    .toolbar > label { min-height: 44px; display: flex; align-items: center; }
+    .toolbar > span[style*="flex:1"] { display: none; }
+    section > .toolbar > button { width: 100%; }
+    .guide { padding: 12px; }
+    .tablewrap { max-height: none; }
+    .vstat { padding: 12px; }
+  }
+  @media (max-width: 360px) {
+    .hwrap, main { padding-inline: 10px; }
+    section { padding: 12px; }
+    .toolbar { gap: 7px; }
+  }
 </style>
 </head>
 <body>
@@ -145,13 +182,13 @@
           <option value="none">Désactivée (glossaire et résumé sûr)</option>
           <option value="openai">LLM local compatible OpenAI (Ollama, llama.cpp, LM Studio)</option>
           <option value="nllb">Serveur NLLB-200 local (server/nllb_server.py)</option>
-          <option value="cameroon">Serveur local Cameroonian MT (Lamnso’, brouillon)</option>
+          <option value="cameroon">Serveur local de traduction du Cameroun (Lamnso’, brouillon)</option>
         </select>
       </label>
       <label>Adresse<input type="url" id="mtEndpoint"></label>
       <label>Modèle (mode LLM)<input type="text" id="mtModel"></label>
     </div>
-    <p class="muted">Lamnso’ MT downloads only its English-to-French and French-to-Lamnso’ model files on first use. Automatic drafts are unvalidated. Model license: CC BY-NC 4.0 (non-commercial use).</p>
+    <p class="muted">La première traduction télécharge les seuls fichiers nécessaires (anglais → français et français → Lamnso’). Les résultats automatiques sont des brouillons non validés. Licence du modèle : CC BY-NC 4.0 (usage non commercial).</p>
 
     <h2 style="margin-top:18px"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg>Voix</h2>
     <p class="muted">Ordre de lecture : d'abord les <b>enregistrements du locuteur natif</b> (voix humaine), puis la <b>voix locale</b> si elle est activée, sinon la voix du navigateur. Les montants, noms et numéros sont toujours lus exactement. Africa TTS (open source) tourne sur cet ordinateur, hors ligne, après un téléchargement unique de 440 Mo : entraîné pour l'ewondo, le duala, le basaá et le pidgin, expérimental pour les autres langues. Licence du modèle : CC-BY-NC-4.0.</p>
@@ -161,7 +198,7 @@
           <option value="auto">Automatique : la voix locale si elle tourne, sinon le navigateur (recommandé)</option>
           <option value="none">Désactivée (voix humaines et navigateur seulement)</option>
           <option value="africa">Africa TTS local (server/africa_tts_server.py), multilingue</option>
-          <option value="mms">MMS-TTS local (server/tts_server.py), Fulfulde and Lamnso'</option>
+          <option value="mms">MMS-TTS local (server/tts_server.py), Fulfulde et Lamnso’</option>
         </select>
       </label>
       <label>Timbre de la voix locale

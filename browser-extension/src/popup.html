@@ -10,7 +10,7 @@
     --kente: repeating-linear-gradient(90deg, #e3a21a 0 18px, #1e7a4c 18px 24px, #c2502e 24px 36px, #1d1712 36px 40px, #e3a21a 40px 46px, #3d4a8a 46px 52px); }
   @media (prefers-color-scheme: dark) { :root { --card: #1f1913; --fg: #f6efe4; --muted: #b7a690; --line: #3a3027; --soft: #2a221b; } }
   * { box-sizing: border-box; }
-  body { margin: 0; width: 320px; font: 14px/1.4 "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif; color: var(--fg); background: var(--card); }
+  body { margin: 0; width: min(360px, 100vw); max-width: 100vw; font: 14px/1.4 "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif; color: var(--fg); background: var(--card); }
   svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
   .band { height: 6px; background: var(--kente); }
   header { display: flex; align-items: center; gap: 10px; padding: 14px 16px; background: var(--ebony); color: var(--ivory); }
@@ -63,10 +63,10 @@
   .ask b { font-size: 17px; }
   .ask small { color: var(--muted); }
   .langs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .lang-btn { position: relative; display: grid; gap: 2px; text-align: left; padding: 12px; border-radius: 14px; border: 1px solid var(--line); background: var(--soft); color: var(--fg); cursor: pointer; font-family: inherit; }
+  .lang-btn { position: relative; display: grid; min-width: 0; gap: 4px; text-align: left; padding: 12px; border-radius: 14px; border: 1px solid var(--line); background: var(--soft); color: var(--fg); cursor: pointer; font-family: inherit; }
   .lang-btn:hover { border-color: var(--gold); }
-  .lang-btn b { font-size: 16px; }
-  .lang-btn small { font-size: 11.5px; color: var(--muted); line-height: 1.3; }
+  .lang-btn b { min-width: 0; font-size: 15.5px; overflow-wrap: anywhere; }
+  .lang-btn small { min-width: 0; font-size: 11.5px; color: var(--muted); line-height: 1.35; overflow-wrap: anywhere; }
   .lang-btn.empty b, .lang-btn.empty small { opacity: .55; }
   .btn.big { width: 100%; padding: 13px 14px; font-size: 15px; }
   .btn.big kbd { margin-left: auto; font: 700 10.5px ui-monospace, Consolas, monospace; padding: 2px 6px; border-radius: 6px; background: rgba(251,246,238,.12); color: var(--sand); }
@@ -75,7 +75,11 @@
   .keys span { display: inline-flex; align-items: center; gap: 4px; }
   .keys svg { width: 13px; height: 13px; }
   .keys kbd { font: 700 10.5px ui-monospace, Consolas, monospace; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 0 4px; background: var(--card); color: var(--fg); }
-  .lang-btn .soon { position: absolute; top: 7px; right: 8px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; color: #8a5a00; }
+  .lang-btn .soon { position: static; justify-self: start; max-width: 100%; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .035em; line-height: 1.35; color: #8a5a00; overflow-wrap: anywhere; }
+  button, select, .switch-row { touch-action: manipulation; }
+  .lang-btn { min-height: 64px; }
+  :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+  @media (prefers-color-scheme: dark) { .lang-btn .soon { color: var(--gold); } }
 </style>
 </head>
 <body>
