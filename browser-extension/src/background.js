@@ -277,6 +277,23 @@ async function mtCameroon(settings, code, texts) {
   return (j.translations || []).map(t => (t ? { text: t, confidence: 'low' } : null));
 }
 
+/**
+ * Small open models sometimes "hallucinate" (e.g. a Bible-trained model turning "Frais" into a
+ * verse) or loop. Such output is rejected so the page shows the safe summary instead.
+ */
+function looksBroken(src, out) {
+  const t = String(out || '').trim();
+  if (!t) return true;
+  if (t.length > Math.max(24, src.length * 2.5)) return true;
+  const w = t.toLowerCase().split(/\s+/);
+  const grams = new Map();
+  for (let i = 0; i < w.length; i++) {
+    if (i >= 2 && w[i] === w[i - 1] && w[i] === w[i - 2]) return true;
+    if (i >= 2) { const g = w.slice(i - 2, i + 1).join(' '); grams.set(g, (grams.get(g) || 0) + 1); if (grams.get(g) > 2) return true; }
+  }
+  return false;
+}
+
 async function translateBatch(code, items) {
   const settings = await getSettings();
   const cache = await cacheGet(code);
@@ -308,6 +325,9 @@ async function translateBatch(code, items) {
     }
   } catch (e) {
     error = e.message;
+  }
+  for (const i of missing) {
+    if (out[i] && looksBroken(items[i].masked, out[i].text)) { delete add[items[i].masked]; out[i] = null; }
   }
   if (error) console.warn('[Langwa] local MT unavailable:', error);
   if (Object.keys(add).length) await cachePut(code, add);

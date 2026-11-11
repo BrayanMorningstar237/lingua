@@ -10,7 +10,9 @@
     --kente: repeating-linear-gradient(90deg, #e3a21a 0 18px, #1e7a4c 18px 24px, #c2502e 24px 36px, #1d1712 36px 40px, #e3a21a 40px 46px, #3d4a8a 46px 52px); }
   @media (prefers-color-scheme: dark) { :root { --card: #1f1913; --fg: #f6efe4; --muted: #b7a690; --line: #3a3027; --soft: #2a221b; } }
   * { box-sizing: border-box; }
-  body { margin: 0; width: min(360px, 100vw); max-width: 100vw; font: 14px/1.4 "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif; color: var(--fg); background: var(--card); }
+  /* Chrome sizes a toolbar popup to its content and starts with a near-zero viewport, so the
+     width must be fixed (vw units would collapse it). Touch phones get the full screen. */
+  body { margin: 0; width: 360px; font: 14px/1.4 "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif; color: var(--fg); background: var(--card); }
   svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
   .band { height: 6px; background: var(--kente); }
   header { display: flex; align-items: center; gap: 10px; padding: 14px 16px; background: var(--ebony); color: var(--ivory); }
@@ -80,6 +82,7 @@
   .lang-btn { min-height: 64px; }
   :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
   @media (prefers-color-scheme: dark) { .lang-btn .soon { color: var(--gold); } }
+  @media (pointer: coarse) and (hover: none) { body { width: auto; } }
 </style>
 </head>
 <body>

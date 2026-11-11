@@ -170,9 +170,15 @@ def load_model(folder: Path) -> None:
         set_state("error", str(exc))
 
 
-def voice_path(voice: str):
+# Languages whose own recorded speaker is already female: "female" keeps it, because a voice
+# trained on the language's own speech sounds more natural than a borrowed one. English (used
+# for Pidgin) is a native Ghanaian English speaker.
+OWN_FEMALE = {"eng"}
+
+
+def voice_path(voice: str, lang: str = ""):
     """None = the language's default speaker; else a bundled reference voice file."""
-    if not voice or voice == "default" or VOICE_DIR is None:
+    if not voice or voice == "default" or VOICE_DIR is None or (voice == "female" and lang in OWN_FEMALE):
         return None
     vid = FEMALE if voice == "female" else voice
     path = VOICE_DIR / f"{vid}.wav"
@@ -184,7 +190,7 @@ def voice_path(voice: str):
 def synthesize(text: str, lang: str, voice: str = "") -> bytes:
     if lang not in LANGS:
         raise ValueError(f"unsupported language code: {lang}")
-    vpath = voice_path(voice)
+    vpath = voice_path(voice, lang)
     key = (lang, voice or 'default', text)
     if key in CACHE:
         CACHE.move_to_end(key)
