@@ -18,7 +18,8 @@ const DEFAULT_SETTINGS = {
   hover: 'ctrl', // 'ctrl' = Ctrl/Cmd + hover shows the translation below the element; 'always'; 'off'
   autoSpeak: true, // read new important messages aloud when a recording exists
   mt: { mode: 'none', endpoint: 'http://localhost:11434/v1/chat/completions', model: 'qwen2.5:7b-instruct' },
-  tts: { mode: 'none', endpoint: 'http://127.0.0.1:8766/tts', africaEndpoint: 'http://127.0.0.1:8770/tts' },
+  // 'auto': the local voice (Africa TTS) whenever its server runs on this computer, else the browser voice
+  tts: { mode: 'auto', endpoint: 'http://127.0.0.1:8766/tts', africaEndpoint: 'http://127.0.0.1:8770/tts' },
   asr: { mode: 'browser', endpoint: 'http://127.0.0.1:8767/asr' }, // voice questions: 'browser' (with consent), 'local' (MMS server), 'none'
 };
 
@@ -28,7 +29,8 @@ async function getSettings() {
   return {
     ...DEFAULT_SETTINGS, ...s,
     mt: { ...DEFAULT_SETTINGS.mt, ...(s.mt || {}) },
-    tts: { ...DEFAULT_SETTINGS.tts, ...(s.tts || {}) },
+    // 'none' saved before anyone chose a voice (older versions) becomes 'auto'; an explicit choice is kept.
+    tts: { ...DEFAULT_SETTINGS.tts, ...(s.tts || {}), ...(s.tts && s.tts.mode === 'none' && !s.tts.chosen ? { mode: 'auto' } : {}) },
     asr: { ...DEFAULT_SETTINGS.asr, ...(s.asr || {}) },
   };
 }
@@ -43,10 +45,31 @@ let ttsDownWhy = 'offline';
  * voice is used instead ('offline', 'loading', 'slow', 'error'), so the card can say why.
  */
 
+/** Is the local voice server running and ready? Asked at most every 10 s, 1 s time limit. */
+const voiceHealth = { at: 0, ready: false };
+async function localVoiceReady(endpoint) {
+  if (Date.now() - voiceHealth.at < 10000) return voiceHealth.ready;
+  voiceHealth.at = Date.now();
+  try {
+    const r = await fetch(endpoint.replace(/\/tts\/?$/, '/health'), { signal: AbortSignal.timeout(1000) });
+    const j = r.ok ? await r.json() : {};
+    voiceHealth.ready = j.status === 'ready';
+  } catch {
+    voiceHealth.ready = false;
+  }
+  return voiceHealth.ready;
+}
+async function voiceStatus() {
+  const { tts } = await getSettings();
+  if (tts.mode === 'none') return { mode: 'none', ready: false };
+  if (tts.mode === 'mms') return { mode: 'mms', ready: true };
+  return { mode: tts.mode, ready: await localVoiceReady(tts.africaEndpoint) };
+}
+
 async function synthesize(code, text) {
   const settings = await getSettings();
   const lang = LANGS[code] || {};
-  const isAfrica = settings.tts.mode === 'africa';
+  const isAfrica = settings.tts.mode === 'africa' || settings.tts.mode === 'auto';
   const modelLang = isAfrica ? lang.africaTts : settings.tts.mode === 'mms' ? lang.mms : null;
   const endpoint = isAfrica ? settings.tts.africaEndpoint : settings.tts.endpoint;
   if (!modelLang || !text || !endpoint) return null;
@@ -61,6 +84,7 @@ async function synthesize(code, text) {
       body: JSON.stringify({ text, lang: modelLang }),
     });
     if (!r.ok) {
+      voiceHealth.ready = false;
       if (r.status === 503) { ttsDownUntil = Date.now() + 8000; ttsDownWhy = 'loading'; return { fail: 'loading' }; }
       return { fail: 'error' };
     }
@@ -70,10 +94,11 @@ async function synthesize(code, text) {
     const url = `data:audio/wav;base64,${btoa(bin)}`;
     if (ttsCache.size > 200) ttsCache.delete(ttsCache.keys().next().value);
     ttsCache.set(key, url);
+    voiceHealth.ready = true;
     return url;
   } catch (e) {
     if (e && e.name === 'TimeoutError') return { fail: 'slow' };
-    ttsDownUntil = Date.now() + 10000; ttsDownWhy = 'offline';
+    ttsDownUntil = Date.now() + 10000; ttsDownWhy = 'offline'; voiceHealth.ready = false;
     return { fail: 'offline' };
   }
 }
@@ -274,6 +299,7 @@ api.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       case 'getPack': return loadPack(msg.lang || (await getSettings()).lang);
       case 'translateBatch': return translateBatch(msg.lang, msg.items || []);
       case 'tts': return synthesize(msg.lang, msg.text);
+      case 'voiceStatus': return voiceStatus();
       case 'chat': return chatAnswer(msg.lang, msg.question, msg.context || []).catch(() => null);
       case 'asr': return transcribe(msg.audio, msg.hint);
       case 'clearCache': await api.storage.local.remove(cacheKey(msg.lang)); return true;

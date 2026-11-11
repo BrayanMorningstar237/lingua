@@ -7,6 +7,7 @@ let langs = {};
 let code = 'ewo';
 let pack = null;
 let overrides = {};
+let ttsChosen = false; // the user picked a voice mode themselves (kept even if it is 'none')
 let ttsEndpoints = {
   mms: 'http://127.0.0.1:8766/tts',
   africa: 'http://127.0.0.1:8770/tts',
@@ -60,7 +61,8 @@ async function loadAll() {
   $('ttsMode').value = settings.tts.mode;
   ttsEndpoints.mms = settings.tts.endpoint || ttsEndpoints.mms;
   ttsEndpoints.africa = settings.tts.africaEndpoint || ttsEndpoints.africa;
-  $('ttsEndpoint').value = ttsEndpoints[settings.tts.mode] || ttsEndpoints.mms;
+  ttsChosen = !!settings.tts.chosen;
+  $('ttsEndpoint').value = ttsEndpoints[settings.tts.mode === 'auto' ? 'africa' : settings.tts.mode] || ttsEndpoints.mms;
   checkVoice();
   $('autoSpeak').checked = settings.autoSpeak !== false;
   $('onlineVoice').checked = onlineVoice = !!settings.onlineVoice;
@@ -413,7 +415,7 @@ $('run').onclick = async () => {
 
   // Listen: exactly what the 🔊 button on the page will play.
   const ttsOn = (settings.tts.mode === 'mms' && !!(langs[code] || {}).mms)
-    || (settings.tts.mode === 'africa' && !!(langs[code] || {}).africaTts);
+    || (['africa', 'auto'].includes(settings.tts.mode) && !!(langs[code] || {}).africaTts);
   const steps = local && player.prepare(local.speech, ttsOn);
   $('listen').disabled = !steps;
   $('listenMsg').textContent = steps ? ''
@@ -437,7 +439,8 @@ $('saveMt').onclick = async () => {
       tts: {
         mode: $('ttsMode').value,
         endpoint: $('ttsMode').value === 'mms' ? $('ttsEndpoint').value.trim() : ttsEndpoints.mms,
-        africaEndpoint: $('ttsMode').value === 'africa' ? $('ttsEndpoint').value.trim() : ttsEndpoints.africa,
+        africaEndpoint: ['africa', 'auto'].includes($('ttsMode').value) ? $('ttsEndpoint').value.trim() : ttsEndpoints.africa,
+        chosen: ttsChosen,
       },
       autoSpeak: $('autoSpeak').checked,
       onlineVoice: (onlineVoice = $('onlineVoice').checked),
@@ -454,7 +457,8 @@ $('clearCache').onclick = async () => { await api.runtime.sendMessage({ type: 'c
 $('validator').onchange = () => api.storage.local.set({ validatorName: $('validator').value.trim() });
 $('ttsMode').onchange = () => {
   const mode = $('ttsMode').value;
-  if (mode === 'africa' || mode === 'mms') $('ttsEndpoint').value = ttsEndpoints[mode];
+  ttsChosen = true;
+  if (mode === 'africa' || mode === 'mms' || mode === 'auto') $('ttsEndpoint').value = ttsEndpoints[mode === 'auto' ? 'africa' : mode];
   checkVoice();
 };
 $('ttsEndpoint').onchange = checkVoice;
@@ -463,7 +467,7 @@ $('ttsEndpoint').onchange = checkVoice;
  * Live status of the local voice server, so it is obvious whether Langwa reads with the model
  * or with the browser's voice. Checked every 3 s while this page is visible.
  */
-const START = { africa: '.venv\\Scripts\\python.exe server\\africa_tts_server.py', mms: '.venv\\Scripts\\python.exe server\\tts_server.py' };
+const START = { auto: '.venv\\Scripts\\python.exe server\\africa_tts_server.py', africa: '.venv\\Scripts\\python.exe server\\africa_tts_server.py', mms: '.venv\\Scripts\\python.exe server\\tts_server.py' };
 let voiceTimer = 0;
 async function checkVoice() {
   clearTimeout(voiceTimer);

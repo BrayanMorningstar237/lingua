@@ -1692,13 +1692,22 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
   });
   const ttsOn = () => {
     const mode = state.settings && state.settings.tts && state.settings.tts.mode;
-    return !!(state.pack && ((mode === 'mms' && state.pack.mms) || (mode === 'africa' && state.pack.africaTts)));
+    return !!(state.pack && ((mode === 'mms' && state.pack.mms) || (mode === 'africa' && state.pack.africaTts)
+      || (mode === 'auto' && state.localVoice && state.pack.africaTts)));
   };
+  /** Automatic voice: learn whether the local voice server runs (cheap, cached by the background). */
+  async function refreshVoice() {
+    if (!state.active || document.hidden) return;
+    const v = await send({ type: 'voiceStatus' }).catch(() => null);
+    state.localVoice = !!(v && v.ready);
+  }
+  setInterval(refreshVoice, 20000);
+  document.addEventListener('visibilitychange', refreshVoice);
 
   const bars = () => h('span', { class: 'bars', 'aria-hidden': 'true' }, h('i'), h('i'), h('i'));
   const voiceName = v => (v === 'human' ? ui('ui_voice_human', 'Voix humaine') : v === 'neural' ? ui('ui_voice_local', 'Voix locale') : ui('ui_voice_browser', 'Voix du navigateur'));
   /** Name of the local model in use, shown next to "Voix locale". */
-  const modelName = () => { const m = state.settings && state.settings.tts && state.settings.tts.mode; return m === 'africa' ? 'Africa TTS' : m === 'mms' ? 'MMS' : ''; };
+  const modelName = () => { const m = state.settings && state.settings.tts && state.settings.tts.mode; return m === 'africa' || m === 'auto' ? 'Africa TTS' : m === 'mms' ? 'MMS' : ''; };
   const WHY = {
     offline: ['ui_voice_why_offline', 'voix locale éteinte'],
     loading: ['ui_voice_why_loading', 'voix locale en chargement'],
@@ -1781,7 +1790,10 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
     const chip = chipFor(b);
     player.play(steps,
       () => { if (b) { b.classList.remove('on'); b.replaceChildren(...idle()); } if (chip) chip.classList.remove('live'); },
-      (src, why) => { if (chip) setChip(chip, src, why, true); if (b) b.title = `${listenLabel()} · ${(SRC[src] || SRC.browser)[1]()}`; });
+      (src, why) => {
+        if (src === 'local') state.localVoice = true;
+        if (why === 'offline' || why === 'loading') state.localVoice = false;
+        if (chip) setChip(chip, src, why, true); if (b) b.title = `${listenLabel()} · ${(SRC[src] || SRC.browser)[1]()}`; });
   }
   const compact = b => !b.classList.contains('wide');
   const listenLabel = () => ui('ui_listen', 'Écouter');
@@ -2531,6 +2543,7 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
     if (state.panelOpen) togglePanel(true);
     state.active = true;
     state.startedAt = Date.now();
+    refreshVoice(); // automatic voice: is the local model running? (answer arrives in ~ms)
     listen(true);
     scan();
     if (settings.pageMode) setSubtitles(true); // page translation stays on between pages

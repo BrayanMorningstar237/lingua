@@ -154,9 +154,10 @@
     <h2 style="margin-top:18px"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg>Voix</h2>
     <p class="muted">Ordre de lecture : d'abord les <b>enregistrements du locuteur natif</b> (voix humaine), puis la <b>voix locale</b> si elle est activée, sinon la voix du navigateur. Les montants, noms et numéros sont toujours lus exactement. Africa TTS (open source) tourne sur cet ordinateur, hors ligne, après un téléchargement unique de 440 Mo : entraîné pour l'ewondo, le duala, le basaá et le pidgin, expérimental pour les autres langues. Licence du modèle : CC-BY-NC-4.0.</p>
     <div class="grid2">
-      <label>Voix neuronale locale
+      <label>Voix locale
         <select id="ttsMode">
-          <option value="none">Désactivée (voix humaines seulement)</option>
+          <option value="auto">Automatique : la voix locale si elle tourne, sinon le navigateur (recommandé)</option>
+          <option value="none">Désactivée (voix humaines et navigateur seulement)</option>
           <option value="africa">Africa TTS local (server/africa_tts_server.py), multilingue</option>
           <option value="mms">MMS-TTS local (server/tts_server.py), fulfulde</option>
         </select>
