@@ -62,6 +62,21 @@ def threads() -> int:
     return max(1, min(4, (os.cpu_count() or 2) // 2))
 
 
+def use_bundled_espeak() -> None:
+    """English (and Pidgin) pronunciation needs eSpeak NG. espeakng-loader ships it for
+    Windows, macOS and Linux, so nothing has to be installed system-wide."""
+    try:
+        import espeakng_loader
+        from phonemizer.backend.espeak.wrapper import EspeakWrapper
+    except ImportError:
+        return
+    os.environ.setdefault("PHONEMIZER_ESPEAK_LIBRARY", espeakng_loader.get_library_path())
+    os.environ.setdefault("ESPEAK_DATA_PATH", espeakng_loader.get_data_path())
+    EspeakWrapper.set_library(os.environ["PHONEMIZER_ESPEAK_LIBRARY"])
+    if hasattr(EspeakWrapper, "set_data_path"):
+        EspeakWrapper.set_data_path(os.environ["ESPEAK_DATA_PATH"])
+
+
 def model_ready(folder: Path) -> bool:
     return all((folder / f).is_file() for f in NEEDED) and any((folder / "voices").glob("*.wav"))
 
@@ -74,10 +89,12 @@ def download(folder: Path = MODEL_DIR) -> None:
     def get(url, headers=None):
         return urllib.request.urlopen(urllib.request.Request(url, headers=headers or {}), timeout=60)
 
-    with get(f"https://huggingface.co/api/models/{REPO}/tree/main?recursive=true") as r:
-        tree = json.loads(r.read())
+    tree = []
+    for sub in ("", "/voices"):  # only the two folders needed (the repo holds 1000+ other files)
+        with get(f"https://huggingface.co/api/models/{REPO}/tree/main{sub}") as r:
+            tree += json.loads(r.read())
     files = [f for f in tree if f.get("type") == "file" and (
-        f["path"] in NEEDED or (f["path"].startswith("voices/") and f["path"].endswith(".wav")))]
+        f["path"] in NEEDED or (f["path"].startswith("voices/") and f["path"].endswith((".wav", ".json"))))]
     total = sum(f["size"] for f in files)
     log(f"{len(files)} files, {total / 1e6:.0f} MB -> {folder}")
     done_bytes = 0
@@ -125,6 +142,7 @@ def load_model(folder: Path) -> None:
         torch.set_num_threads(threads())
         torch.set_grad_enabled(False)
         warnings.filterwarnings("ignore", message=".*experimental.*")
+        use_bundled_espeak()
         from africa_tts import AfricaTTS
 
         if not model_ready(folder):
@@ -133,11 +151,12 @@ def load_model(folder: Path) -> None:
         set_state("loading", f"loading the model on CPU ({threads()} threads)")
         t0 = time.time()
         model = AfricaTTS.load(name=str(folder), download=False, threads=threads())
-        for lang in WARM:  # encode each voice prompt once, so first requests are quick
+        set_state("loading", "preparing the voices")
+        for lang in WARM:  # one short phrase per voice: the first real request is then quick
             try:
-                model.engine._state(str(model.default_voice(lang)))
-            except Exception:  # noqa: BLE001
-                pass
+                model.generate("Ok.", lang=lang)
+            except Exception as exc:  # noqa: BLE001
+                log(f"voice {lang} not ready: {exc}")
         MODEL = model
         set_state("ready", f"model loaded in {time.time() - t0:.0f}s")
     except Exception as exc:  # noqa: BLE001
@@ -223,7 +242,14 @@ def main() -> None:
         download(args.model)
         return
 
-    server = ThreadingHTTPServer((HOST, args.port), Handler)
+    # Windows lets two processes share a port with SO_REUSEADDR: refuse instead, so a second
+    # copy fails clearly rather than answering half of the requests.
+    ThreadingHTTPServer.allow_reuse_address = os.name != "nt"
+    try:
+        server = ThreadingHTTPServer((HOST, args.port), Handler)
+    except OSError:
+        log(f"port {args.port} is already in use: Langwa's voice is probably already running")
+        sys.exit(1)
     threading.Thread(target=load_model, args=(args.model,), daemon=True).start()
     log(f"listening on http://{HOST}:{args.port}/tts  (status: GET /health)")
     try:

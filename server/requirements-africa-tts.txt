@@ -1,1 +1,2 @@
 africa-tts==0.5.2
+espeakng-loader==0.2.4
