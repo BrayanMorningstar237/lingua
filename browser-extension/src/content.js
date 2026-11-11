@@ -23,6 +23,8 @@
   const SKIP = 'script,style,noscript,textarea,code,pre,svg,template,iframe,canvas,[contenteditable=""],[contenteditable="true"],langwa-root';
   const ATTRS = ['placeholder', 'aria-label', 'title'];
   const NEW_AFTER_MS = 1500;
+  /** Texts already seen on this site during this session (survives language changes and restarts). */
+  const seenTexts = new Set();
   const ALERT_KINDS = new Set(['error', 'warning', 'success']);
 
   const state = {
@@ -58,6 +60,17 @@
   // UI layer
   // ======================================================================================
   let pageBtn = null;
+  let assistant = null;
+  let tabsBar = null;
+  let tabCount = null;
+  let views = {};
+  /** Assistant first; the choice is remembered for the session. */
+  function setTab(id) {
+    state.tab = id;
+    for (const [k, v] of Object.entries(views)) v.hidden = k !== id;
+    if (tabsBar) for (const b of tabsBar.children) { const on = b.dataset.tab === id; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); }
+    if (id === 'list') renderPanel();
+  }
   let host, shadow, tip, tipBody, tipArrow, panel, panelList, panelStatus, toastBox, hl, subLayer, fab, fabDot, fabCount;
 
   function h(tag, attrs = {}, ...kids) {
@@ -151,6 +164,42 @@
   .cbtns button { border: 0; border-radius: 9px; padding: 7px 12px; font-weight: 700; font-size: 13px; }
   .cyes { background: var(--gold); color: var(--ebony); } .cno { background: transparent; color: var(--sand); box-shadow: inset 0 0 0 1px var(--ebony-3) !important; }
   .item .consent { background: var(--soft); border-color: var(--line); color: var(--card-muted); } .item .consent b { color: var(--card-fg); }
+  /* ---------- tabs ---------- */
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 8px 12px; background: var(--card); border-bottom: 1px solid var(--line); }
+  .tab { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 9px 10px; border: 0; border-radius: 12px; background: transparent; color: var(--card-muted); font-weight: 700; font-size: 14px; }
+  .tab .i { font-size: 17px; }
+  .tab.on { background: var(--ebony); color: var(--ivory); } .tab.on .i { color: var(--gold); }
+  .tcount { display: none; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 99px; background: var(--terracotta); color: #fff; font-size: 11.5px; font-weight: 800; place-items: center; }
+  .tcount.show { display: inline-grid; }
+
+  /* ---------- assistant chat ---------- */
+  .chat { display: flex; flex-direction: column; min-height: 0; flex: 1; }
+  .chat[hidden], .list[hidden] { display: none; }
+  .log { flex: 1; min-height: 160px; overflow-y: auto; padding: 14px 14px 6px; display: flex; flex-direction: column; gap: 10px; overscroll-behavior: contain; }
+  .msg { max-width: 86%; padding: 10px 13px; border-radius: 16px; font-size: 15px; line-height: 1.45; overflow-wrap: anywhere; }
+  .msg.me { align-self: flex-end; background: var(--ebony); color: var(--ivory); border-bottom-right-radius: 5px; }
+  .msg.bot { align-self: flex-start; background: var(--soft); color: var(--card-fg); border: 1px solid var(--line); border-bottom-left-radius: 5px; }
+  .mrow { display: flex; gap: 10px; align-items: flex-start; }
+  .mtext { flex: 1; }
+  .msg .say { width: 32px; height: 32px; font-size: 15px; box-shadow: none; }
+  .mnote { margin-top: 6px; font-size: 11.5px; color: var(--card-muted); }
+  .maction { margin-top: 8px; border: 0; border-radius: 10px; padding: 7px 12px; background: var(--gold); color: var(--ebony); font-weight: 800; font-size: 13px; }
+  .dots { display: inline-flex; gap: 4px; } .dots i { width: 6px; height: 6px; border-radius: 99px; background: var(--card-muted); animation: pulse 1s infinite; }
+  .dots i:nth-child(2) { animation-delay: .2s; } .dots i:nth-child(3) { animation-delay: .4s; }
+  .qchips { display: flex; gap: 8px; overflow-x: auto; padding: 8px 14px; scrollbar-width: none; }
+  .qchips::-webkit-scrollbar { display: none; }
+  .qchip { flex: none; border: 1px solid var(--line); background: var(--card); color: var(--card-fg); border-radius: 99px; padding: 8px 13px; font-size: 13.5px; font-weight: 600; }
+  .qchip:hover { border-color: var(--gold); }
+  .askrow { display: flex; gap: 8px; align-items: center; padding: 8px 12px 12px; }
+  .askin { flex: 1; min-width: 0; height: 44px; border: 1px solid var(--line); border-radius: 22px; padding: 0 16px; font: inherit; font-size: 15px; background: var(--card); color: var(--card-fg); }
+  .askin:focus { outline: 2px solid var(--gold); border-color: transparent; }
+  .mic, .sendq { flex: none; width: 44px; height: 44px; border-radius: 99px; border: 0; display: grid; place-items: center; font-size: 19px; }
+  .mic { background: var(--forest); color: #fff; }
+  .mic.on { background: var(--terracotta); animation: ring 1.2s ease-out infinite; }
+  .sendq { background: var(--ebony); color: var(--gold); }
+  .item .say.wide { width: auto; height: 36px; padding: 0 12px 0 10px; }
+  .list { overflow-x: hidden; }
+
   .words { margin-top: 10px; }
   .words .wl { display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; letter-spacing: .03em; color: var(--sand); margin-bottom: 6px; }
   .wchips { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -177,6 +226,7 @@
     display: flex; flex-direction: column; overflow: hidden; visibility: hidden; opacity: 0; transform: translateY(10px) scale(.98); transform-origin: bottom right;
     transition: opacity .16s ease, transform .16s ease, visibility 0s .16s; }
   .panel.show { visibility: visible; opacity: 1; transform: none; transition: opacity .16s ease, transform .16s ease; }
+  .panel { height: min(72vh, 680px); }
   .band { height: 6px; background: var(--kente); flex: none; }
   .ph { display: flex; align-items: center; gap: 10px; padding: 14px 14px 12px 16px; background: var(--ebony); color: var(--ivory); }
   .ph .logo { width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; background: var(--gold); color: var(--ebony); font-size: 19px; flex: none; }
@@ -281,6 +331,8 @@
     .panel .band { border-radius: 22px 22px 0 0; }
     .fab { right: 12px; bottom: 12px; padding: 8px 16px 8px 8px; }
     .fab.hidden-under-sheet { opacity: 0; pointer-events: none; }
+    .panel.show ~ .fab { display: none; } /* the sheet has its own close button */
+    .ph .lang, .lang-select { font-size: 16px; }
     .tip { max-width: calc(100vw - 16px); }
     .tr { font-size: 18px; }
     .icon-btn { width: 44px; height: 44px; }
@@ -314,6 +366,9 @@
     bubble: '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 10.5h7M8.5 13.5h4"/>',
     ok: '<path d="M20 6 9 17l-5-5"/>',
     book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/>',
+    mic: '<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><path d="M12 18v4"/>',
+    send: '<path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/>',
+    list: '<path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/>',
   };
   function icon(name, extra = '') {
     const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -354,6 +409,15 @@
     const readBtn = h('button', { class: 'icon-btn', title: `${ui('ui_read_all', 'Tout lire')} (Alt+Shift+L)`, 'aria-label': ui('ui_read_all', 'Tout lire') }, icon('volume'));
     readBtn.addEventListener('click', () => readAll(readBtn));
     const ccBtn = h('span', { style: 'display:flex;gap:8px' }, pageBtn, readBtn);
+    // Two tabs: Assistant (ask about the page, by text or voice) and Messages (translated page).
+    assistant = globalThis.LangwaAssistant.create({ h, icon, ui, state, send, player, voiceOpts, shownText, setLight, api, sayButton });
+    const chatView = assistant.mount();
+    tabCount = h('span', { class: 'tcount' });
+    const tabBtn = (id, ic, label, extra) => h('button', { class: 'tab', role: 'tab', 'data-tab': id, onclick: () => setTab(id) }, icon(ic), h('span', {}, label), extra || null);
+    tabsBar = h('div', { class: 'tabs', role: 'tablist' },
+      tabBtn('chat', 'bubble', ui('ui_tab_chat', 'Assistant')),
+      tabBtn('list', 'list', ui('ui_tab_msgs', 'Messages'), tabCount));
+    views = { chat: chatView, list: panelList };
     panel = h('div', { class: 'panel', role: 'dialog', 'aria-label': `Langwa, ${state.pack.name}` },
       h('div', { class: 'band' }),
       h('div', { class: 'ph' },
@@ -361,6 +425,8 @@
         h('div', { class: 'title' }, langPicker(), panelStatus),
         ccBtn,
         h('button', { class: 'icon-btn', title: ui('ui_close', 'Fermer'), 'aria-label': ui('ui_close', 'Fermer'), onclick: () => togglePanel(false) }, icon('x'))),
+      tabsBar,
+      chatView,
       panelList,
       h('div', { class: 'pf' }, ...(isTouch
         ? [icon('pointer'), ui('ui_hint_touch_short', 'appui long = traduction')]
@@ -460,6 +526,7 @@
   // ---------------- listening (human recordings + exact values) ----------------
   const player = globalThis.LangwaSpeech.createPlayer({
     online: () => !!(state.settings && state.settings.onlineVoice),
+    language: () => (state.pack ? { voices: state.pack.voices, reading: state.pack.reading } : {}),
     tts: text => send({ type: 'tts', lang: state.pack.code, text }).catch(() => null),
   });
   const ttsOn = () => !!(state.settings && state.settings.tts && state.settings.tts.mode === 'mms' && state.pack && state.pack.mms);
@@ -488,8 +555,10 @@
   function askOnlineVoice(b, then) {
     if (askedOnline || (state.settings && state.settings.onlineVoice)) return false;
     const L = globalThis.LangwaSpeech;
-    if (L.pickVoice(['sw', 'ha', 'fr'], false)) return false; // a decent local voice exists
-    if (!L.pickVoice(['sw', 'fr'], true)) return false;        // no online voice either
+    const prefs = [...((state.pack && state.pack.voices) || []).map(x => x.toLowerCase()), 'sw', 'fr'];
+    const local = L.pickVoice(prefs, false);
+    if (local && /natural|neural|premium|enhanced/i.test(local.name)) return false; // already a natural voice on the device
+    if (!L.pickVoice(prefs, true)) return false;                                       // no online voice either
     askedOnline = true;
     const card = b.closest('.block') || b.parentElement;
     const bar = h('div', { class: 'consent' },
@@ -770,7 +839,7 @@
     state.panelOpen = force ?? !state.panelOpen;
     panel.classList.toggle('show', state.panelOpen);
     fab.classList.toggle('hidden-under-sheet', state.panelOpen && innerWidth <= 640);
-    if (state.panelOpen) { renderPanel(); hideHint(); }
+    if (state.panelOpen) { setTab(state.tab || 'chat'); hideHint(); }
   }
 
   let panelTimer = null;
@@ -829,6 +898,7 @@
     state.pending = pending;
     fabDot.className = `dot${pending ? ' busy' : state.mtError ? ' warn' : ''}`;
     fabCount.textContent = alerts;
+    if (tabCount) { tabCount.textContent = alerts ? String(alerts) : ''; tabCount.classList.toggle('show', alerts > 0); }
     fabCount.classList.toggle('show', alerts > 0);
     const bits = [];
     if (pending) bits.push(h('span', {}, icon('loader', 'spin'), ui('ui_translating', 'Traduction en cours…')));
@@ -1112,7 +1182,11 @@
         const known = state.known.get(f.el) || [];
         let u = known.find(k => k.attr === f.attr && k.text === f.text);
         if (!u) {
-          u = { ...f, firstSeen: now, isNew: now - state.startedAt > NEW_AFTER_MS, result: null };
+          // "New" = a text never seen on this site in this session (a box the page simply re-draws
+          // when changing step is not new).
+          const fresh = !seenTexts.has(f.text);
+          seenTexts.add(f.text);
+          u = { ...f, firstSeen: now, isNew: fresh && now - state.startedAt > NEW_AFTER_MS, result: null };
           state.known.set(f.el, [...known.filter(k => k.attr !== f.attr), u]);
           resultFor(u.text).then(r => {
             if (gen !== state.gen) return; // a restart happened meanwhile
@@ -1138,7 +1212,9 @@
     const r = u.result;
     renderPanelSoon();
     if (tipUnits && tipUnits.includes(u) && tip.classList.contains('show')) showTip(tipUnits, tipAnchor);
-    if (u.isNew && r && !r.value && ALERT_KINDS.has(r.kind)) toast(u);
+    // Alert only when Langwa has something useful to show (translation, safe summary or dictionary words).
+    const helpful = r && (r.status === 'ok' || r.status === 'gist' || (r.words && r.words.length));
+    if (u.isNew && r && !r.value && helpful && ALERT_KINDS.has(r.kind)) toast(u);
   }
 
   // ======================================================================================

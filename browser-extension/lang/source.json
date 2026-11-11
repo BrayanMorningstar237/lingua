@@ -1169,6 +1169,180 @@
    "group": "ui",
    "fr": "Nom propre, non traduit",
    "en": "Proper name, not translated"
+  },
+  {
+   "id": "ui_tab_chat",
+   "group": "ui",
+   "fr": "Assistant",
+   "en": "Ask"
+  },
+  {
+   "id": "ui_tab_msgs",
+   "group": "ui",
+   "fr": "Messages",
+   "en": "Messages"
+  },
+  {
+   "id": "ui_ask_placeholder",
+   "group": "ui",
+   "fr": "Posez votre question…",
+   "en": "Ask your question…"
+  },
+  {
+   "id": "ui_mic",
+   "group": "ui",
+   "fr": "Parler",
+   "en": "Speak"
+  },
+  {
+   "id": "ui_send",
+   "group": "ui",
+   "fr": "Envoyer",
+   "en": "Send"
+  },
+  {
+   "id": "ui_listening",
+   "group": "ui",
+   "fr": "J’écoute…",
+   "en": "Listening…"
+  },
+  {
+   "id": "ui_switch_to",
+   "group": "ui",
+   "fr": "Passer en {lang}",
+   "en": "Switch to {lang}"
+  },
+  {
+   "id": "q_page",
+   "group": "ui",
+   "fr": "C’est quoi cette page ?",
+   "en": "What is this page?"
+  },
+  {
+   "id": "q_amount",
+   "group": "ui",
+   "fr": "Combien je vais payer ?",
+   "en": "How much will I pay?"
+  },
+  {
+   "id": "q_receiver",
+   "group": "ui",
+   "fr": "Qui reçoit l’argent ?",
+   "en": "Who receives the money?"
+  },
+  {
+   "id": "q_warning",
+   "group": "ui",
+   "fr": "Y a-t-il un danger ?",
+   "en": "Is there any danger?"
+  },
+  {
+   "id": "q_next",
+   "group": "ui",
+   "fr": "Je fais quoi maintenant ?",
+   "en": "What do I do now?"
+  },
+  {
+   "id": "ans_welcome",
+   "group": "ui",
+   "fr": "Bonjour ! Posez-moi une question sur cette page, en écrivant ou à voix haute.",
+   "en": "Hello! Ask me a question about this page, by typing or out loud."
+  },
+  {
+   "id": "ans_page",
+   "group": "ui",
+   "fr": "Cette page : {title}.",
+   "en": "This page: {title}."
+  },
+  {
+   "id": "ans_amount",
+   "group": "ui",
+   "fr": "Montant total : {total}.",
+   "en": "Total amount: {total}."
+  },
+  {
+   "id": "ans_fees",
+   "group": "ui",
+   "fr": "Frais : {fees}.",
+   "en": "Fees: {fees}."
+  },
+  {
+   "id": "ans_no_amount",
+   "group": "ui",
+   "fr": "Je ne vois pas de montant sur cette page.",
+   "en": "I do not see an amount on this page."
+  },
+  {
+   "id": "ans_receiver",
+   "group": "ui",
+   "fr": "L’argent va à {name}.",
+   "en": "The money goes to {name}."
+  },
+  {
+   "id": "ans_no_receiver",
+   "group": "ui",
+   "fr": "Je ne vois pas encore de bénéficiaire sur cette page.",
+   "en": "I do not see a beneficiary on this page yet."
+  },
+  {
+   "id": "ans_warning",
+   "group": "ui",
+   "fr": "Attention : {message}",
+   "en": "Warning: {message}"
+  },
+  {
+   "id": "ans_no_warning",
+   "group": "ui",
+   "fr": "Pas d’alerte sur cette page.",
+   "en": "No warning on this page."
+  },
+  {
+   "id": "ans_next",
+   "group": "ui",
+   "fr": "Ensuite, appuyez sur {button}.",
+   "en": "Next, press {button}."
+  },
+  {
+   "id": "ans_no_next",
+   "group": "ui",
+   "fr": "Je ne vois pas de bouton à appuyer.",
+   "en": "I do not see a button to press."
+  },
+  {
+   "id": "ans_balance",
+   "group": "ui",
+   "fr": "Argent disponible : {balance}.",
+   "en": "Money available: {balance}."
+  },
+  {
+   "id": "ans_unknown",
+   "group": "ui",
+   "fr": "Je peux répondre à ces questions :",
+   "en": "I can answer these questions:"
+  },
+  {
+   "id": "ans_type_instead",
+   "group": "ui",
+   "fr": "Écrivez votre question ou touchez une question ci-dessous.",
+   "en": "Type your question or tap a question below."
+  },
+  {
+   "id": "ans_lang_detected",
+   "group": "ui",
+   "fr": "Vous parlez {lang} ?",
+   "en": "Are you speaking {lang}?"
+  },
+  {
+   "id": "ans_speech_consent",
+   "group": "ui",
+   "fr": "Pour comprendre votre voix, le navigateur envoie l’enregistrement au service de reconnaissance de Google (français, anglais, pidgin).",
+   "en": "To understand your voice, the browser sends the recording to Google’s speech service (French, English, Pidgin)."
+  },
+  {
+   "id": "ans_model_note",
+   "group": "ui",
+   "fr": "Réponse d’un modèle local, à vérifier.",
+   "en": "Answer from a local model: please check."
   }
  ]
 }

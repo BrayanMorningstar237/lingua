@@ -49,6 +49,7 @@ add others in the userscript manager (User matches).
 - **Panel:** the round button at the bottom right, or `Alt+Shift+M`. The whole page, important messages first. The language can be switched at the top.
 - **Translate the whole page:** `Alt+Shift+T`, or the big button in the popup. Each text is covered by its translation in the page's own font and colours; the bank's buttons keep working.
 - **Listen:** the **Écouter** button on every translation. Human recordings first; otherwise the device voice, coached to read the language (labelled "Voix de synthèse"). `Alt+Shift+L` reads the whole page aloud, important messages first. While pointing with Ctrl, press **Space** to hear that text (`Ctrl+Space`, again to stop). Turn on **Lecture automatique** in the popup to hear each card as soon as it opens.
+- **Assistant tab:** ask about the page in your language ("How much I go pay?", "Moye jaɓata ceede ɗee?"). Built-in answers are instant, offline and use the page's own amounts. Free questions use a local open-source model (Ollama) if set up. Voice questions: the browser's speech recognition with consent (French, English, Pidgin), or `python server/asr_server.py` (Meta MMS, detects the language, all languages).
 - **New messages:** any new error, warning or confirmation pops up translated, and is read aloud when a recording exists.
 - On first use, a short visual hint shows the gesture.
 

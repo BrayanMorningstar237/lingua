@@ -253,6 +253,8 @@
       });
       return {
         speech,
+        ids: trOuts.map(o => o.id).filter(Boolean),
+        id: trOuts.length === 1 ? trOuts[0].id : undefined,
         explain: trOuts.map(o => o.explain).filter(Boolean).join(' '),
         ...base,
         status: 'ok',

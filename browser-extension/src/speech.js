@@ -124,7 +124,17 @@
   }
 
   /** Voice for national-language text: an African voice if available, else French with coaching. */
-  function nationalVoice(allowOnline) {
+  /**
+   * Voice for the national-language text. Each language can name its preferred voices
+   * (lang/languages.json "voices"): Pidgin uses Nigerian/Ghanaian English voices and reads as
+   * written ("reading": "none"); other languages use an African voice (Swahili) with light
+   * adaptation, or a coached French voice as a last resort.
+   */
+  function nationalVoice(allowOnline, lang = {}) {
+    if (lang.voices && lang.voices.length) {
+      const v = pickVoice(lang.voices.map(x => x.toLowerCase()), allowOnline);
+      if (v) return { voice: v, adapt: lang.reading === 'none' ? (t => t) : adaptForSwahili, sameForValues: lang.reading === 'none' };
+    }
     const african = pickVoice(['sw', 'ha', 'ln', 'yo'], allowOnline);
     if (african) return { voice: african, adapt: adaptForSwahili };
     return { voice: bestFrenchVoice(allowOnline), adapt: adaptReading };
@@ -134,7 +144,7 @@
     if (root.speechSynthesis.addEventListener) root.speechSynthesis.addEventListener('voiceschanged', () => root.speechSynthesis.getVoices());
   }
 
-  function createPlayer({ tts, online = () => false } = {}) {
+  function createPlayer({ tts, online = () => false, language = () => ({}) } = {}) {
     let session = null;
 
     function stop() {
@@ -194,14 +204,15 @@
       // instead of being spoken word group by word group.
       const allow = !!online();
       const fr = bestFrenchVoice(allow);
-      const nat = nationalVoice(allow);
+      const nat = nationalVoice(allow, language() || {});
       const runs = [];
       for (const step of steps) {
         let piece = null;
         // Numbers and amounts are read in French (exact figures). Names stay with the national
         // voice so the sentence does not jump between voices ("e Jean-Paul Mbarga" in one go).
         const isName = step.value && (step.type === 'name' || step.type === 'user-value' || (!step.type && !/\d/.test(step.value)));
-        if (step.value && isName && nat.voice && nat.voice !== fr) piece = { voice: nat.voice, text: step.value };
+        if (step.value && nat.sameForValues && nat.voice) piece = { voice: nat.voice, text: step.type ? speakValue(step.value, step.type).replace(/francs CFA/g, 'CFA francs') : speakable(step.value) };
+        else if (step.value && isName && nat.voice && nat.voice !== fr) piece = { voice: nat.voice, text: step.value };
         else if (step.value) piece = { voice: fr, text: step.type ? speakValue(step.value, step.type) : speakable(step.value) };
         else if (step.nat) piece = { voice: nat.voice, text: nat.adapt(step.nat) };
         const last = runs[runs.length - 1];
@@ -222,7 +233,7 @@
     return { play, stop, prepare, isPlaying: () => !!session };
   }
 
-  const api = { speakValue, speakable, spokenNumber, createPlayer, bestFrenchVoice, adaptReading, adaptForSwahili, pickVoice };
+  const api = { speakValue, speakable, spokenNumber, createPlayer, bestFrenchVoice, adaptReading, adaptForSwahili, pickVoice, nationalVoice };
   root.LangwaSpeech = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

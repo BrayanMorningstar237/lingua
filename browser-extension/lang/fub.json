@@ -305,6 +305,122 @@
     "warning": {
       "t": "Reentino",
       "by": "Brouillon IA, à valider"
+    },
+    "ui_tab_chat": {
+      "t": "Naamno",
+      "by": "Brouillon IA, à valider"
+    },
+    "ui_tab_msgs": {
+      "t": "Kabaruuji",
+      "by": "Brouillon IA, à valider"
+    },
+    "ui_ask_placeholder": {
+      "t": "Naamno naamne maa…",
+      "by": "Brouillon IA, à valider"
+    },
+    "ui_mic": {
+      "t": "Haal",
+      "by": "Brouillon IA, à valider"
+    },
+    "ui_send": {
+      "t": "Nelda",
+      "by": "Brouillon IA, à valider"
+    },
+    "ui_listening": {
+      "t": "Mi heɗii…",
+      "by": "Brouillon IA, à valider"
+    },
+    "ui_switch_to": {
+      "t": "Waylu e {lang}",
+      "by": "Brouillon IA, à valider"
+    },
+    "q_page": {
+      "t": "Ɗoo ko honɗum?",
+      "by": "Brouillon IA, à valider"
+    },
+    "q_amount": {
+      "t": "Ceede no foti mi yoɓata?",
+      "by": "Brouillon IA, à valider"
+    },
+    "q_receiver": {
+      "t": "Moye jaɓata ceede ɗee?",
+      "by": "Brouillon IA, à valider"
+    },
+    "q_warning": {
+      "t": "Reentino woodi na?",
+      "by": "Brouillon IA, à valider"
+    },
+    "q_next": {
+      "t": "Ko mi waɗata jooni?",
+      "by": "Brouillon IA, à valider"
+    },
+    "ans_welcome": {
+      "t": "Jam waali! Naamno mi ko faati e ngol hello, winndu maa haal.",
+      "by": "Brouillon IA, à valider"
+    },
+    "ans_page": {
+      "t": "Ɗoo ko: {title}.",
+      "by": "Brouillon IA, à valider"
+    },
+    "ans_amount": {
+      "t": "Ceede fuu ɗe njaltata: {total}.",
+      "by": "Brouillon IA, à valider"
+    },
+    "ans_fees": {
+      "t": "Njoɓdi: {fees}.",
+      "by": "Brouillon IA, à valider"
+    },
+    "ans_no_amount": {
+      "t": "Mi yi’aali ceede e ngol hello.",
+      "by": "Brouillon IA, à valider"
+    },
+    "ans_receiver": {
+      "t": "Ceede ɗee njahan to {name}.",
+      "by": "Brouillon IA, à valider"
+    },
+    "ans_no_receiver": {
+      "t": "Mi yi’aali jaɓoowo e ngol hello taho.",
+      "by": "Brouillon IA, à valider"
+    },
+    "ans_warning": {
+      "t": "Reentino: {message}",
+      "by": "Brouillon IA, à valider"
+    },
+    "ans_no_warning": {
+      "t": "Reentino walaa e ngol hello.",
+      "by": "Brouillon IA, à valider"
+    },
+    "ans_next": {
+      "t": "Jooni, ñoƴƴu {button}.",
+      "by": "Brouillon IA, à valider"
+    },
+    "ans_no_next": {
+      "t": "Mi yi’aali butoŋ.",
+      "by": "Brouillon IA, à valider"
+    },
+    "ans_balance": {
+      "t": "Ceede ɗe a waawi huutorgo: {balance}.",
+      "by": "Brouillon IA, à valider"
+    },
+    "ans_unknown": {
+      "t": "Mi waawi jaabaade ɗee naamne:",
+      "by": "Brouillon IA, à valider"
+    },
+    "ans_type_instead": {
+      "t": "Winndu naamne maa maa suɓo naamne les.",
+      "by": "Brouillon IA, à valider"
+    },
+    "ans_lang_detected": {
+      "t": "A haalata {lang}?",
+      "by": "Brouillon IA, à valider"
+    },
+    "ans_speech_consent": {
+      "t": "Ngam faamde hoolo maa, browser oo nelday ɗum to Google (Farayse, Engeleere, Pidgin).",
+      "by": "Brouillon IA, à valider"
+    },
+    "ans_model_note": {
+      "t": "Jaabawol ordinater: ndaar ɗum.",
+      "by": "Brouillon IA, à valider"
     }
   }
 }

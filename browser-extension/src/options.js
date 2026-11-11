@@ -57,6 +57,8 @@ async function loadAll() {
   $('ttsEndpoint').value = settings.tts.endpoint;
   $('autoSpeak').checked = settings.autoSpeak !== false;
   $('onlineVoice').checked = onlineVoice = !!settings.onlineVoice;
+  $('asrMode').value = settings.asr.mode;
+  $('asrEndpoint').value = settings.asr.endpoint;
   render();
   dictCount();
 }
@@ -427,6 +429,7 @@ $('saveMt').onclick = async () => {
       tts: { mode: $('ttsMode').value, endpoint: $('ttsEndpoint').value.trim() },
       autoSpeak: $('autoSpeak').checked,
       onlineVoice: (onlineVoice = $('onlineVoice').checked),
+      asr: { mode: $('asrMode').value, endpoint: $('asrEndpoint').value.trim() },
     },
   });
   $('mtMsg').textContent = 'Enregistré.';

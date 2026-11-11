@@ -30,6 +30,7 @@
         "src/protect.js",
         "src/engine.js",
         "src/speech.js",
+        "src/assistant.js",
         "src/content.js"
       ],
       "run_at": "document_idle",

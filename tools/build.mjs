@@ -118,7 +118,7 @@ const header = `// ==UserScript==
 const userscript = [
   header,
   `globalThis.LANGWA_DATA = ${JSON.stringify(data)};`,
-  read('src/protect.js'), read('src/engine.js'), read('src/speech.js'), read('src/standalone.js'), read('src/content.js'),
+  read('src/protect.js'), read('src/engine.js'), read('src/speech.js'), read('src/assistant.js'), read('src/standalone.js'), read('src/content.js'),
 ].join('\n');
 writeFileSync(join(DIST, 'langwa.user.js'), userscript);
 

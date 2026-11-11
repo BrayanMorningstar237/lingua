@@ -31,6 +31,26 @@
       }
     ]
   },
+  "wes": {
+    "name": "Pidgin (Kamtok)",
+    "region": "Nord-Ouest, Sud-Ouest, Littoral, grandes villes",
+    "nllb": null,
+    "mms": null,
+    "voices": [
+      "en-NG",
+      "en-GH",
+      "en-KE",
+      "en-ZA",
+      "en"
+    ],
+    "reading": "none",
+    "refs": [
+      {
+        "name": "Wikipedia: Cameroonian Pidgin",
+        "url": "https://en.wikipedia.org/wiki/Cameroonian_Pidgin_English"
+      }
+    ]
+  },
   "dua": {
     "name": "Duala",
     "region": "Littoral",

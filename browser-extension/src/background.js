@@ -19,6 +19,7 @@ const DEFAULT_SETTINGS = {
   autoSpeak: true, // read new important messages aloud when a recording exists
   mt: { mode: 'none', endpoint: 'http://localhost:11434/v1/chat/completions', model: 'qwen2.5:7b-instruct' },
   tts: { mode: 'none', endpoint: 'http://127.0.0.1:8766/tts' },
+  asr: { mode: 'browser', endpoint: 'http://127.0.0.1:8767/asr' }, // voice questions: 'browser' (with consent), 'local' (MMS server), 'none'
 };
 
 async function getSettings() {
@@ -28,6 +29,7 @@ async function getSettings() {
     ...DEFAULT_SETTINGS, ...s,
     mt: { ...DEFAULT_SETTINGS.mt, ...(s.mt || {}) },
     tts: { ...DEFAULT_SETTINGS.tts, ...(s.tts || {}) },
+    asr: { ...DEFAULT_SETTINGS.asr, ...(s.asr || {}) },
   };
 }
 
@@ -86,7 +88,7 @@ async function loadPack(code) {
   const own = code ? ((await api.storage.local.get(`lexicon:${code}`))[`lexicon:${code}`] || {}) : {};
   const merge = (a = {}, b = {}) => { const o = { ...a }; for (const [w, t] of Object.entries(b)) o[w] = [...new Set([...(t || []), ...(o[w] || [])])]; return o; };
   const lexicon = code ? { fr: merge((lex.fr || {})[code], own.fr), en: merge((lex.en || {})[code], own.en) } : null;
-  return { code, name: l.name || code || '', mms: l.mms || null, entries, lexicon };
+  return { code, name: l.name || code || '', mms: l.mms || null, voices: l.voices || null, reading: l.reading || null, entries, lexicon };
 }
 
 /** Languages with the number of translated phrases (the chooser marks empty ones "Soon"). */
@@ -130,6 +132,49 @@ function systemPrompt(langName, glossary) {
     ...glossary.slice(0, 120).map(g => `  ${g.src} => ${g.t}`),
     '- Answer with the translation only, no explanation.',
   ].join('\n');
+}
+
+// ---------- assistant: free questions to a LOCAL open-source model ----------
+async function chatAnswer(code, question, context) {
+  const settings = await getSettings();
+  if (settings.mt.mode !== 'openai') return null;
+  const name = (LANGS[code] || {}).name || code;
+  const r = await fetch(settings.mt.endpoint, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
+      model: settings.mt.model,
+      temperature: 0.2,
+      messages: [
+        { role: 'system', content: [
+          `You are Langwa, a patient helper for a Cameroonian user who reads ${name} more easily than French or English.`,
+          'The user is on a banking page. Answer their question about this page only, in 2 or 3 short sentences, in the language of their question (if unsure, in ' + name + ').',
+          'Use only the facts in the page content below. Never invent an amount, a name or a number. If the page does not say, say you do not know.',
+          'Never ask for or repeat a PIN or secret code.',
+          'Page content (translation, then original):',
+          ...context.slice(0, 80).map(c => '- ' + c),
+        ].join('\n') },
+        { role: 'user', content: question },
+      ],
+    }),
+  });
+  if (!r.ok) return null;
+  const j = await r.json();
+  const text = j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content;
+  return text ? { text: text.trim() } : null;
+}
+
+// ---------- assistant: voice questions to the LOCAL open-source speech server (MMS) ----------
+async function transcribe(audio, hint) {
+  const settings = await getSettings();
+  if (settings.asr.mode !== 'local') return null;
+  try {
+    const r = await fetch(settings.asr.endpoint, {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ audio, hint, languages: Object.keys(LANGS) }),
+    });
+    return r.ok ? await r.json() : null;
+  } catch { return null; }
 }
 
 async function mtOpenAICompatible(settings, langName, glossary, masked) {
@@ -208,6 +253,8 @@ api.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       case 'getPack': return loadPack(msg.lang || (await getSettings()).lang);
       case 'translateBatch': return translateBatch(msg.lang, msg.items || []);
       case 'tts': return synthesize(msg.lang, msg.text);
+      case 'chat': return chatAnswer(msg.lang, msg.question, msg.context || []).catch(() => null);
+      case 'asr': return transcribe(msg.audio, msg.hint);
       case 'clearCache': await api.storage.local.remove(cacheKey(msg.lang)); return true;
       default: return null;
     }
