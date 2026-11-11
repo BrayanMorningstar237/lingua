@@ -205,9 +205,20 @@
       return out;
     }
 
-    async function play(steps, onStop) {
+    /**
+     * Plays the steps. onSource(source, why) reports, live, who speaks the national-language
+     * text: 'human' (recording), 'wait' (local model preparing), 'local' (local model) or
+     * 'browser' (device or online voice; why = 'offline' | 'loading' | 'slow' | 'error' when the
+     * local model was wanted but could not answer). Amounts read in French are not reported.
+     */
+    async function play(steps, onStop, onSource) {
       stop();
       const s = { stopped: false, onStop };
+      let last = '';
+      const report = (src, why) => {
+        const k = src + (why || '');
+        if (k !== last && onSource && !s.stopped) { last = k; try { onSource(src, why); } catch { /* UI gone */ } }
+      };
       session = s;
       // Consecutive pieces read by the same voice become ONE utterance: the sentence flows
       // instead of being spoken word group by word group.
@@ -223,18 +234,26 @@
         if (step.value && nat.sameForValues && nat.voice) piece = { voice: nat.voice, text: step.type ? speakValue(step.value, step.type).replace(/francs CFA/g, 'CFA francs') : speakable(step.value) };
         else if (step.value && isName && nat.voice && nat.voice !== fr) piece = { voice: nat.voice, text: step.value };
         else if (step.value) piece = { voice: fr, text: step.type ? speakValue(step.value, step.type) : speakable(step.value) };
-        else if (step.nat) piece = { voice: nat.voice, text: nat.adapt(step.nat) };
-        const last = runs[runs.length - 1];
-        if (piece && last && last.voice === piece.voice && !last.audio && !last.tts) last.text += ` ${piece.text}`;
+        else if (step.nat) piece = { voice: nat.voice, text: nat.adapt(step.nat), national: true };
+        const prev = runs[runs.length - 1];
+        if (piece && prev && prev.voice === piece.voice && !prev.audio && !prev.tts) { prev.text += ` ${piece.text}`; prev.national = prev.national || piece.national; }
         else runs.push(piece || step);
       }
-      for (const r of runs) {
+      // Ask the local model for every piece at once: the next one is ready while one plays.
+      const pending = runs.map(r => (r.tts && tts ? Promise.resolve(tts(r.tts)).catch(() => null) : null));
+      for (const [i, r] of runs.entries()) {
         if (s.stopped) break;
-        if (r.audio) await playUrl(r.audio, s);
+        if (r.audio) { report('human'); await playUrl(r.audio, s); }
         else if (r.tts && tts) {
-          const url = await tts(r.tts);
-          if (url && !s.stopped) await playUrl(url, s);
-        } else if (r.text !== undefined) await say(r.text, r.voice, s);
+          report('wait');
+          const got = await pending[i];
+          if (s.stopped) break;
+          if (typeof got === 'string') { report('local'); await playUrl(got, s); }
+          else { report('browser', (got && got.fail) || 'offline'); await say(nat.adapt(r.tts), nat.voice, s); }
+        } else if (r.text !== undefined) {
+          if (r.national) report('browser');
+          await say(r.text, r.voice, s);
+        }
       }
       if (session === s) { session = null; if (onStop) onStop(); }
     }

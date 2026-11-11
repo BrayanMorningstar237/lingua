@@ -7,6 +7,7 @@
 <style>
   :root { --ebony: #1d1712; --ebony-2: #2a221b; --ivory: #fbf6ee; --sand: #d9c9b4; --gold: #e3a21a; --gold-soft: #f6dfa6; --forest: #1e7a4c; --terracotta: #c2502e; --indigo: #3d4a8a;
     --bg: #f8f2e8; --card: #fffcf7; --fg: #241d16; --muted: #76675a; --line: #ebdfcd; --soft: #f6eee2;
+    --ok: #1e7a4c; --warn: #b07a0a; --err: #c2502e;
     --kente: repeating-linear-gradient(90deg, #e3a21a 0 18px, #1e7a4c 18px 24px, #c2502e 24px 36px, #1d1712 36px 40px, #e3a21a 40px 46px, #3d4a8a 46px 52px); }
   @media (prefers-color-scheme: dark) { :root { --bg: #16110d; --card: #1f1913; --fg: #f6efe4; --muted: #b7a690; --line: #3a3027; --soft: #2a221b; } }
   * { box-sizing: border-box; }
@@ -60,6 +61,16 @@
   pre { background: var(--ebony); color: var(--ivory); padding: 14px; border-radius: 12px; white-space: pre-wrap; word-break: break-word; font-size: 12.5px; margin: 10px 0 0; }
   .tablewrap { max-height: 70vh; overflow: auto; }
   @media (max-width: 760px) { thead { display: none; } tr, td { display: block; } td { border: 0; padding: 4px 0; } tr { border-bottom: 1px solid var(--line); padding: 10px 0; } }
+  .vstat { grid-column: 1 / -1; display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--soft); }
+  .vstat .led { flex: none; width: 10px; height: 10px; margin-top: 5px; border-radius: 50%; background: var(--muted); box-shadow: 0 0 0 4px color-mix(in srgb, var(--muted) 18%, transparent); }
+  .vstat[data-s="ready"] .led { background: var(--ok); box-shadow: 0 0 0 4px color-mix(in srgb, var(--ok) 20%, transparent); }
+  .vstat[data-s="loading"] .led { background: var(--warn); box-shadow: 0 0 0 4px color-mix(in srgb, var(--warn) 22%, transparent); animation: vpulse 1.1s ease-in-out infinite; }
+  .vstat[data-s="error"] .led, .vstat[data-s="offline"] .led { background: var(--err); box-shadow: 0 0 0 4px color-mix(in srgb, var(--err) 18%, transparent); }
+  .vstat b { display: block; font-size: 14px; }
+  .vstat small { display: block; color: var(--muted); margin-top: 2px; }
+  .vstat code { display: inline-block; margin-top: 6px; padding: 4px 8px; border-radius: 6px; background: var(--card); border: 1px solid var(--line); font-size: 12px; user-select: all; overflow-wrap: anywhere; }
+  @keyframes vpulse { 50% { opacity: .35; } }
+  @media (prefers-reduced-motion: reduce) { .vstat .led { animation: none !important; } }
 </style>
 </head>
 <body>
@@ -141,8 +152,7 @@
     </div>
 
     <h2 style="margin-top:18px"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg>Voix</h2>
-<p>Africa TTS runs locally and offline after its first 440 MB download; it runs on CPU. Model and default voices are CC-BY-NC-4.0. Native-speaker recordings stay first choice.</p>
-    <p class="muted">Le texte en langue nationale est lu avec les <b>enregistrements du locuteur natif</b> (voix humaine). Les montants, noms et numéros sont lus exactement par la voix française la plus naturelle du navigateur. Pour le fulfulde seulement, une voix neuronale locale (Meta MMS-TTS, open source) peut lire les phrases non enregistrées.</p>
+    <p class="muted">Ordre de lecture : d'abord les <b>enregistrements du locuteur natif</b> (voix humaine), puis la <b>voix locale</b> si elle est activée, sinon la voix du navigateur. Les montants, noms et numéros sont toujours lus exactement. Africa TTS (open source) tourne sur cet ordinateur, hors ligne, après un téléchargement unique de 440 Mo : entraîné pour l'ewondo, le duala, le basaá et le pidgin, expérimental pour les autres langues. Licence du modèle : CC-BY-NC-4.0.</p>
     <div class="grid2">
       <label>Voix neuronale locale
         <select id="ttsMode">
@@ -152,6 +162,7 @@
         </select>
       </label>
       <label>Adresse<input type="url" id="ttsEndpoint"></label>
+      <div id="ttsStatus" class="vstat" role="status" aria-live="polite" hidden></div>
       <label style="font-weight:500;display:flex;gap:8px;align-items:center"><input type="checkbox" id="autoSpeak"> Lire à voix haute les nouveaux messages importants</label>
       <label>Questions vocales (assistant)
         <select id="asrMode">

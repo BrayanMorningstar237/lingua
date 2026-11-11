@@ -45,3 +45,35 @@ test('label : value -> recorded label then the value read exactly', () => {
   assert.deepEqual(r.speech, [{ audio: AUDIO }, { value: 'CM 001 2345 6789 01' }]);
   assert.equal(S.speakable('CM 001 2345 6789 01'), 'C M, 0 0 1, 2 3 4 5, 6 7 8 9, 0 1');
 });
+
+// ---- who speaks: the card is told live, and the browser voice takes over instead of silence ----
+function stubVoices() {
+  const spoken = [];
+  globalThis.SpeechSynthesisUtterance = class { constructor(t) { this.text = t; } };
+  globalThis.speechSynthesis = { getVoices: () => [], speak: u => { spoken.push(u.text); u.onend(); }, cancel() {} };
+  globalThis.Audio = class { constructor(u) { this.src = u; } play() { setTimeout(() => this.onended(), 0); return Promise.resolve(); } pause() {} };
+  return spoken;
+}
+
+test('local voice off: browser voice reads the sentence and the reason is reported', async () => {
+  const spoken = stubVoices();
+  const S = require('../src/speech.js');
+  const player = S.createPlayer({ tts: async () => ({ fail: 'offline' }), online: () => false, language: () => ({}) });
+  const steps = player.prepare([{ missing: true, text: 'Mbolo' }], { tts: true, approx: true });
+  assert.equal(steps.voice, 'neural');
+  const seen = [];
+  await new Promise(res => player.play(steps, res, (src, why) => seen.push(why ? `${src}:${why}` : src)));
+  assert.deepEqual(seen, ['wait', 'browser:offline']);
+  assert.equal(spoken.length, 1, 'the sentence is still read');
+});
+
+test('local voice on: the model audio plays and "local" is reported', async () => {
+  const spoken = stubVoices();
+  const S = require('../src/speech.js');
+  const player = S.createPlayer({ tts: async () => 'data:audio/wav;base64,AA', online: () => false, language: () => ({}) });
+  const steps = player.prepare([{ missing: true, text: 'Mbolo' }], { tts: true, approx: true });
+  const seen = [];
+  await new Promise(res => player.play(steps, res, src => seen.push(src)));
+  assert.deepEqual(seen, ['wait', 'local']);
+  assert.equal(spoken.length, 0, 'no browser voice needed');
+});

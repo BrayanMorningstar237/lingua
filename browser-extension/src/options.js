@@ -61,6 +61,7 @@ async function loadAll() {
   ttsEndpoints.mms = settings.tts.endpoint || ttsEndpoints.mms;
   ttsEndpoints.africa = settings.tts.africaEndpoint || ttsEndpoints.africa;
   $('ttsEndpoint').value = ttsEndpoints[settings.tts.mode] || ttsEndpoints.mms;
+  checkVoice();
   $('autoSpeak').checked = settings.autoSpeak !== false;
   $('onlineVoice').checked = onlineVoice = !!settings.onlineVoice;
   $('asrMode').value = settings.asr.mode;
@@ -454,7 +455,43 @@ $('validator').onchange = () => api.storage.local.set({ validatorName: $('valida
 $('ttsMode').onchange = () => {
   const mode = $('ttsMode').value;
   if (mode === 'africa' || mode === 'mms') $('ttsEndpoint').value = ttsEndpoints[mode];
+  checkVoice();
 };
+$('ttsEndpoint').onchange = checkVoice;
+
+/**
+ * Live status of the local voice server, so it is obvious whether Langwa reads with the model
+ * or with the browser's voice. Checked every 3 s while this page is visible.
+ */
+const START = { africa: '.venv\\Scripts\\python.exe server\\africa_tts_server.py', mms: '.venv\\Scripts\\python.exe server\\tts_server.py' };
+let voiceTimer = 0;
+async function checkVoice() {
+  clearTimeout(voiceTimer);
+  const box = $('ttsStatus'), mode = $('ttsMode').value;
+  if (mode === 'none') { box.hidden = true; return; }
+  box.hidden = false;
+  const show = (st, title, sub, cmd) => {
+    box.dataset.s = st;
+    const parts = [Object.assign(document.createElement('b'), { textContent: title })];
+    if (sub) parts.push(Object.assign(document.createElement('small'), { textContent: sub }));
+    if (cmd) parts.push(Object.assign(document.createElement('code'), { textContent: cmd }));
+    const text = document.createElement('div'); text.append(...parts);
+    box.replaceChildren(Object.assign(document.createElement('span'), { className: 'led' }), text);
+  };
+  const health = $('ttsEndpoint').value.trim().replace(/\/tts\/?$/, '/health');
+  try {
+    const r = await fetch(health, { signal: AbortSignal.timeout(2500) });
+    const j = r.ok ? await r.json().catch(() => ({})) : {};
+    if (!r.ok || !j.status) show('ready', 'Voix locale joignable', 'Le serveur répond. Langwa lit avec le modèle local.');
+    else if (j.status === 'ready') show('ready', 'Voix locale prête', `Langwa lit avec le modèle sur cet ordinateur (${j.threads || '?'} cœurs, ${j.cached || 0} phrases en mémoire).`);
+    else if (j.status === 'error') show('error', 'Voix locale en erreur', `${j.detail || ''} En attendant, la voix du navigateur est utilisée.`);
+    else show('loading', 'Voix locale en chargement…', `${j.detail || 'Préparation du modèle'}. En attendant, la voix du navigateur est utilisée.`);
+  } catch {
+    show('offline', 'Voix locale éteinte', 'La voix du navigateur est utilisée. Pour la voix locale, lancez dans le dossier du projet :', START[mode]);
+  }
+  if (!document.hidden) voiceTimer = setTimeout(checkVoice, 3000);
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) checkVoice(); });
 $('lang').onchange = () => { code = $('lang').value; loadAll(); };
 $('filter').oninput = render;
 $('onlyMissing').onchange = render;

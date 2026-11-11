@@ -36,6 +36,12 @@ async function getSettings() {
 // ---------- local neural voices (Meta MMS-TTS or Africa TTS) ----------
 const ttsCache = new Map();
 let ttsDownUntil = 0; // local voice unavailable or loading: use the browser voice for a while
+let ttsDownWhy = 'offline';
+
+/**
+ * Local neural voice. Returns a playable data: URL, or { fail } with the reason the browser
+ * voice is used instead ('offline', 'loading', 'slow', 'error'), so the card can say why.
+ */
 
 async function synthesize(code, text) {
   const settings = await getSettings();
@@ -46,7 +52,7 @@ async function synthesize(code, text) {
   if (!modelLang || !text || !endpoint) return null;
   const key = `${settings.tts.mode}\u0001${code}\u0001${text}`;
   if (ttsCache.has(key)) return ttsCache.get(key);
-  if (Date.now() < ttsDownUntil) return null;
+  if (Date.now() < ttsDownUntil) return { fail: ttsDownWhy };
   try {
     const r = await fetch(endpoint, {
       signal: AbortSignal.timeout(Math.min(20000, 4000 + text.length * 60)),
@@ -55,8 +61,8 @@ async function synthesize(code, text) {
       body: JSON.stringify({ text, lang: modelLang }),
     });
     if (!r.ok) {
-      if (r.status === 503) ttsDownUntil = Date.now() + 15000;
-      return null;
+      if (r.status === 503) { ttsDownUntil = Date.now() + 8000; ttsDownWhy = 'loading'; return { fail: 'loading' }; }
+      return { fail: 'error' };
     }
     const bytes = new Uint8Array(await r.arrayBuffer());
     let bin = '';
@@ -65,9 +71,10 @@ async function synthesize(code, text) {
     if (ttsCache.size > 200) ttsCache.delete(ttsCache.keys().next().value);
     ttsCache.set(key, url);
     return url;
-  } catch {
-    ttsDownUntil = Date.now() + 15000;
-    return null;
+  } catch (e) {
+    if (e && e.name === 'TimeoutError') return { fail: 'slow' };
+    ttsDownUntil = Date.now() + 10000; ttsDownWhy = 'offline';
+    return { fail: 'offline' };
   }
 }
 

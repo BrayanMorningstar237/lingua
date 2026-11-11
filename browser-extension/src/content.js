@@ -148,6 +148,24 @@
   .bars i:nth-child(2) { animation-delay: .15s; } .bars i:nth-child(3) { animation-delay: .3s; }
   @keyframes eq { 50% { height: 16px; } }
   .voice { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 12px; color: var(--sand); opacity: .85; }
+  /* Voice chip: who is speaking, live (local model, browser voice, human recording). */
+  .vchip { --c: var(--sand); display: inline-flex; align-items: center; gap: 7px; max-width: 100%; margin-top: 9px; padding: 4px 11px 4px 9px;
+    border-radius: 999px; font-size: 12px; font-weight: 600; line-height: 1.3; color: var(--c);
+    background: color-mix(in srgb, var(--c) 13%, transparent); border: 1px solid color-mix(in srgb, var(--c) 30%, transparent);
+    transition: color .2s ease, background .2s ease, border-color .2s ease; }
+  .vchip .i { font-size: 14px; flex: none; }
+  .vchip .vt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .vchip .why { font-weight: 500; opacity: .8; }
+  .vchip .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex: none; display: none; }
+  .vchip.live .dot { display: block; animation: pulse 1.1s ease-in-out infinite; }
+  .vchip[data-src="local"], .vchip[data-src="wait"] { --c: #7fe0ad; }
+  .vchip[data-src="browser"] { --c: var(--indigo-2); }
+  .vchip[data-src="human"] { --c: var(--gold); }
+  .vchip[data-src="wait"] .i { animation: spin 1s linear infinite; }
+  .item .vchip { --c: var(--card-muted); }
+  .item .vchip[data-src="local"], .item .vchip[data-src="wait"] { --c: color-mix(in srgb, var(--forest) 75%, var(--card-fg)); }
+  .item .vchip[data-src="browser"] { --c: color-mix(in srgb, var(--indigo) 70%, var(--card-fg)); }
+  .item .vchip[data-src="human"] { --c: color-mix(in srgb, #b07a0a 80%, var(--card-fg)); }
   .voice .i { font-size: 13px; }
   .item .voice { color: var(--card-muted); }
   .say { flex: none; width: 42px; height: 42px; border-radius: 999px; border: 0; display: grid; place-items: center; font-size: 20px;
@@ -363,6 +381,9 @@
     pointer: '<path d="M4 4l7 17 2.5-7.5L21 11 4 4z"/>',
     bulb: '<path d="M9 18h6"/><path d="M10 22h4"/><path d="M15 14c.2-1 .7-1.7 1.5-2.5A6 6 0 1 0 7.5 11.5c.8.8 1.3 1.5 1.5 2.5"/>',
     loader: '<path d="M21 12a9 9 0 1 1-6.2-8.6"/>',
+    cpu: '<rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/>',
+    monitor: '<rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/>',
+    user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
     bubble: '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 10.5h7M8.5 13.5h4"/>',
     ok: '<path d="M20 6 9 17l-5-5"/>',
     book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/>',
@@ -535,7 +556,40 @@
   };
 
   const bars = () => h('span', { class: 'bars', 'aria-hidden': 'true' }, h('i'), h('i'), h('i'));
-  const voiceName = v => (v === 'human' ? ui('ui_voice_human', 'Voix humaine') : v === 'neural' ? ui('ui_voice_neural', 'Voix neuronale') : ui('ui_voice_synth', 'Voix de synthèse'));
+  const voiceName = v => (v === 'human' ? ui('ui_voice_human', 'Voix humaine') : v === 'neural' ? ui('ui_voice_local', 'Voix locale') : ui('ui_voice_browser', 'Voix du navigateur'));
+  /** Name of the local model in use, shown next to "Voix locale". */
+  const modelName = () => { const m = state.settings && state.settings.tts && state.settings.tts.mode; return m === 'africa' ? 'Africa TTS' : m === 'mms' ? 'MMS' : ''; };
+  const WHY = {
+    offline: ['ui_voice_why_offline', 'voix locale éteinte'],
+    loading: ['ui_voice_why_loading', 'voix locale en chargement'],
+    slow: ['ui_voice_why_slow', 'voix locale trop lente'],
+    error: ['ui_voice_why_error', 'voix locale indisponible'],
+  };
+  const SRC = {
+    local: ['cpu', () => [voiceName('neural'), modelName()].filter(Boolean).join(' · ')],
+    wait: ['loader', () => ui('ui_voice_preparing', 'Voix locale, préparation…')],
+    browser: ['monitor', () => voiceName('synthetic')],
+    human: ['user', () => voiceName('human')],
+  };
+  /**
+   * The voice chip under a translation. Before playing it says which voice is planned; while
+   * playing it shows, live, who really speaks, and why the browser voice took over if it did.
+   */
+  function voiceChip(steps) {
+    if (!steps) return null;
+    const chip = h('div', { class: 'vchip', role: 'status', 'aria-live': 'polite' });
+    setChip(chip, steps.voice === 'neural' ? 'local' : steps.voice === 'human' ? 'human' : 'browser');
+    return chip;
+  }
+  function setChip(chip, src, why, live = false) {
+    const [ic, text] = SRC[src] || SRC.browser;
+    chip.dataset.src = src;
+    chip.classList.toggle('live', live && src !== 'wait');
+    const w = why && WHY[why];
+    chip.replaceChildren(h('span', { class: 'dot' }), icon(ic), h('span', { class: 'vt' }, text(), w ? h('span', { class: 'why' }, ` · ${ui(w[0], w[1])}`) : null));
+    chip.title = chip.textContent;
+  }
+  const chipFor = b => { const host = b && (b.closest('.block') || b.closest('.item') || b.closest('.tip')); return host && host.querySelector('.vchip'); };
 
   /** One tap to listen, tap again to stop. Shows which voice will speak (human or synthetic). */
   function sayButton(steps, label, { compact = false } = {}) {
@@ -584,7 +638,10 @@
   function speak(steps, b, idle) {
     if (!steps) return;
     if (b) { b.classList.add('on'); b.replaceChildren(bars(), compact(b) ? null : h('span', { class: 'lbl' }, ui('ui_stop', 'Arrêter'))); }
-    player.play(steps, () => { if (b) { b.classList.remove('on'); b.replaceChildren(...idle()); } });
+    const chip = chipFor(b);
+    player.play(steps,
+      () => { if (b) { b.classList.remove('on'); b.replaceChildren(...idle()); } if (chip) chip.classList.remove('live'); },
+      (src, why) => { if (chip) setChip(chip, src, why, true); if (b) b.title = `${listenLabel()} · ${(SRC[src] || SRC.browser)[1]()}`; });
   }
   const compact = b => !b.classList.contains('wide');
   const listenLabel = () => ui('ui_listen', 'Écouter');
@@ -639,7 +696,7 @@
           : h('div', { class: 'tr missing' }, isNew ? h('span', { class: 'new' }, ui('ui_new', 'NOUVEAU')) : null, kindIcon, missing),
         (r.status === 'ok' || r.status === 'gist') ? sayButton(stepsFor(r), listenLabel()) : null),
       r.explain ? h('div', { class: 'explain' }, icon('bulb'), h('span', {}, r.explain)) : null,
-      shown && stepsFor(r) && stepsFor(r).voice !== 'human' ? h('div', { class: 'voice' }, icon('volume'), voiceName(stepsFor(r).voice)) : null,
+      shown ? voiceChip(stepsFor(r)) : null,
       h('div', { class: 'orig' }, h('b', {}, ui('ui_original', 'Original')), u.text),
       shown ? null : wordsRow(r),
       h('div', { class: 'meta' }, chipsFor(u.text), shown || r.status === 'blocked' ? pillFor(r) : null));

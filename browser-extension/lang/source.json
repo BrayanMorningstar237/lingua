@@ -1087,6 +1087,48 @@
    "en": "Synthetic voice"
   },
   {
+   "id": "ui_voice_local",
+   "group": "ui",
+   "fr": "Voix locale",
+   "en": "Local voice"
+  },
+  {
+   "id": "ui_voice_browser",
+   "group": "ui",
+   "fr": "Voix du navigateur",
+   "en": "Browser voice"
+  },
+  {
+   "id": "ui_voice_preparing",
+   "group": "ui",
+   "fr": "Voix locale, préparation…",
+   "en": "Local voice, preparing…"
+  },
+  {
+   "id": "ui_voice_why_offline",
+   "group": "ui",
+   "fr": "voix locale éteinte",
+   "en": "local voice is off"
+  },
+  {
+   "id": "ui_voice_why_loading",
+   "group": "ui",
+   "fr": "voix locale en chargement",
+   "en": "local voice is loading"
+  },
+  {
+   "id": "ui_voice_why_slow",
+   "group": "ui",
+   "fr": "voix locale trop lente",
+   "en": "local voice too slow"
+  },
+  {
+   "id": "ui_voice_why_error",
+   "group": "ui",
+   "fr": "voix locale indisponible",
+   "en": "local voice unavailable"
+  },
+  {
    "id": "ui_stop",
    "group": "ui",
    "fr": "Arrêter",
