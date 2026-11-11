@@ -143,18 +143,21 @@ Validation method:
 | Optional: Ollama + an open model (e.g. Qwen2.5) | Local MT fallback | MIT / Apache-2.0 |
 | Optional: Meta NLLB-200 distilled 600M, Transformers, PyTorch | Local MT for Fulfulde | Weights CC-BY-NC-4.0; libraries Apache-2.0 / BSD |
 | Optional: Meta MMS-TTS (`facebook/mms-tts-ful`) | Local voice for Fulfulde | Weights CC-BY-NC-4.0 |
+| Optional: Africa TTS 0.5 (AfriSpeech, built on Kyutai Pocket TTS, ~100M parameters) | Local natural voice for Ewondo, Duala, Basaá, Pidgin; experimental for the others | Weights CC-BY-NC-4.0; code MIT |
 
 ## 10. Known limitations
 
 - Translation quality depends on the glossary. Open machine translation for Ewondo, Duala,
   Ghomálá' and Basaá is weak or does not exist, which is why the safe summary exists. NLLB covers
   Nigerian Fulfulde, which differs from Adamawa Fulfulde.
-- No open synthetic voice exists for Ewondo, Duala, Ghomálá' or Basaá. Unrecorded phrases have
-  no audio in those languages.
 - Detection rules cover common Cameroonian formats (FCFA, +237 numbers, CM account numbers).
   Other formats can be added as rules.
 - Pages drawn on `<canvas>`, inside cross-origin iframes, or in closed Shadow DOM cannot be read.
   Text inside images is not handled.
 - The phone version has no glossary editor: translations are prepared on a computer and built
   into the userscript.
-- The model weights of NLLB-200 and MMS-TTS are non-commercial (CC-BY-NC-4.0).
+- The optional Africa TTS voice is trained for Ewondo, Duala, Basaá and English (used for Pidgin).
+  Fulfulde, Ghomálá', Ngemba and Kom are experimental and borrow the closest trained voice, so
+  pronunciation varies. It needs a one-time 440 MB download. Until the server is ready, or if a
+  phrase takes too long, Langwa reads with the browser's voice instead, so the user never waits.
+- The model weights of NLLB-200, MMS-TTS and Africa TTS are non-commercial (CC-BY-NC-4.0).

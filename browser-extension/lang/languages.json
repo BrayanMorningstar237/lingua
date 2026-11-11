@@ -13,7 +13,8 @@
         "name": "Wiktionary (Ewondo)",
         "url": "https://en.wiktionary.org/wiki/Category:Ewondo_lemmas"
       }
-    ]
+    ],
+    "africaTts": "ewo"
   },
   "fub": {
     "name": "Fulfulde",
@@ -29,7 +30,8 @@
         "name": "Wiktionary (Fula)",
         "url": "https://en.wiktionary.org/wiki/Category:Fula_lemmas"
       }
-    ]
+    ],
+    "africaTts": "fub"
   },
   "wes": {
     "name": "Pidgin (Kamtok)",
@@ -38,8 +40,8 @@
     "mms": null,
     "voices": [
       "en-NG",
+      "en-CM",
       "en-GH",
-      "en-KE",
       "en-ZA",
       "en"
     ],
@@ -49,7 +51,8 @@
         "name": "Wikipedia: Cameroonian Pidgin",
         "url": "https://en.wikipedia.org/wiki/Cameroonian_Pidgin_English"
       }
-    ]
+    ],
+    "africaTts": "eng"
   },
   "dua": {
     "name": "Duala",
@@ -65,7 +68,8 @@
         "name": "Wiktionary (Duala)",
         "url": "https://en.wiktionary.org/wiki/Category:Duala_lemmas"
       }
-    ]
+    ],
+    "africaTts": "dua"
   },
   "bbj": {
     "name": "Ghomálá'",
@@ -77,7 +81,8 @@
         "name": "Wiktionary (Ghomala')",
         "url": "https://en.wiktionary.org/wiki/Category:Ghomala%27_lemmas"
       }
-    ]
+    ],
+    "africaTts": "bbj"
   },
   "bas": {
     "name": "Basaá",
@@ -93,7 +98,8 @@
         "name": "Wiktionary (Basaa)",
         "url": "https://en.wiktionary.org/wiki/Category:Basaa_lemmas"
       }
-    ]
+    ],
+    "africaTts": "bas"
   },
   "nge": {
     "name": "Mankon (Ngemba)",
@@ -105,7 +111,8 @@
         "name": "Mankon Dictionary",
         "url": "https://mankon-dictionary.vercel.app/"
       }
-    ]
+    ],
+    "africaTts": "nge"
   },
   "bkm": {
     "name": "Kom",
@@ -121,6 +128,7 @@
         "name": "Wiktionary (Kom)",
         "url": "https://en.wiktionary.org/wiki/Category:Kom_(Cameroon)_lemmas"
       }
-    ]
+    ],
+    "africaTts": "bkm"
   }
 }

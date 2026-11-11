@@ -7,6 +7,10 @@ let langs = {};
 let code = 'ewo';
 let pack = null;
 let overrides = {};
+let ttsEndpoints = {
+  mms: 'http://127.0.0.1:8766/tts',
+  africa: 'http://127.0.0.1:8770/tts',
+};
 
 const placeholders = s => (String(s || '').match(/\{\w+\}/g) || []).sort().join(',');
 
@@ -54,7 +58,9 @@ async function loadAll() {
   $('mtEndpoint').value = settings.mt.endpoint;
   $('mtModel').value = settings.mt.model;
   $('ttsMode').value = settings.tts.mode;
-  $('ttsEndpoint').value = settings.tts.endpoint;
+  ttsEndpoints.mms = settings.tts.endpoint || ttsEndpoints.mms;
+  ttsEndpoints.africa = settings.tts.africaEndpoint || ttsEndpoints.africa;
+  $('ttsEndpoint').value = ttsEndpoints[settings.tts.mode] || ttsEndpoints.mms;
   $('autoSpeak').checked = settings.autoSpeak !== false;
   $('onlineVoice').checked = onlineVoice = !!settings.onlineVoice;
   $('asrMode').value = settings.asr.mode;
@@ -405,7 +411,8 @@ $('run').onclick = async () => {
   $('out').textContent = lines.filter(Boolean).join('\n\n');
 
   // Listen: exactly what the 🔊 button on the page will play.
-  const ttsOn = settings.tts.mode === 'mms' && !!(langs[code] || {}).mms;
+  const ttsOn = (settings.tts.mode === 'mms' && !!(langs[code] || {}).mms)
+    || (settings.tts.mode === 'africa' && !!(langs[code] || {}).africaTts);
   const steps = local && player.prepare(local.speech, ttsOn);
   $('listen').disabled = !steps;
   $('listenMsg').textContent = steps ? ''
@@ -426,7 +433,11 @@ $('saveMt').onclick = async () => {
     settings: {
       ...cur,
       mt: { mode: $('mtMode').value, endpoint: $('mtEndpoint').value.trim(), model: $('mtModel').value.trim() },
-      tts: { mode: $('ttsMode').value, endpoint: $('ttsEndpoint').value.trim() },
+      tts: {
+        mode: $('ttsMode').value,
+        endpoint: $('ttsMode').value === 'mms' ? $('ttsEndpoint').value.trim() : ttsEndpoints.mms,
+        africaEndpoint: $('ttsMode').value === 'africa' ? $('ttsEndpoint').value.trim() : ttsEndpoints.africa,
+      },
       autoSpeak: $('autoSpeak').checked,
       onlineVoice: (onlineVoice = $('onlineVoice').checked),
       asr: { mode: $('asrMode').value, endpoint: $('asrEndpoint').value.trim() },
@@ -440,6 +451,10 @@ $('mtMode').onchange = () => {
 };
 $('clearCache').onclick = async () => { await api.runtime.sendMessage({ type: 'clearCache', lang: code }); $('mtMsg').textContent = 'Cache vidé.'; };
 $('validator').onchange = () => api.storage.local.set({ validatorName: $('validator').value.trim() });
+$('ttsMode').onchange = () => {
+  const mode = $('ttsMode').value;
+  if (mode === 'africa' || mode === 'mms') $('ttsEndpoint').value = ttsEndpoints[mode];
+};
 $('lang').onchange = () => { code = $('lang').value; loadAll(); };
 $('filter').oninput = render;
 $('onlyMissing').onchange = render;

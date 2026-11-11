@@ -40,7 +40,7 @@
     const over = (code && store.get(`overrides:${code}`)) || {};
     const l = D.langs[code] || {};
     return {
-      code, name: l.name || code || '', mms: null, voices: l.voices || null, reading: l.reading || null,
+      code, name: l.name || code || '', mms: null, africaTts: null, voices: l.voices || null, reading: l.reading || null,
       lexicon: code && D.lexicon ? { fr: (D.lexicon.fr || {})[code] || {}, en: (D.lexicon.en || {})[code] || {} } : null,
       entries: D.source.entries.map(e => {
         const tr = { ...file[e.id], ...over[e.id] };

@@ -98,13 +98,22 @@
   function pickVoice(prefixes, allowOnline) {
     if (!root.speechSynthesis) return null;
     const all = root.speechSynthesis.getVoices().filter(v => allowOnline || v.localService);
-    const score = v => (/natural|neural|premium|enhanced/i.test(v.name) ? 20 : 0) + (/online|google/i.test(v.name) ? 6 : 0)
-      + (/^fr[-_](CM|FR)/i.test(v.lang) ? 2 : 0);
-    for (const p of prefixes) {
-      const c = all.filter(v => v.lang.toLowerCase().startsWith(p));
-      if (c.length) return c.sort((a, b) => score(b) - score(a))[0];
-    }
-    return null;
+    const score = v => {
+      const name = v.name || '';
+      // SpeechSynthesisVoice has no gender field; use common natural-voice name hints.
+      const feminine = /female|woman|aria|jenny|sonia|natasha|ava|zira|sara|sarah|hazel|ezinne|adaeze|chioma/i.test(name);
+      const masculine = /\b(male|man|david|mark|guy|james|ab\w+o)\b/i.test(name);
+      return (/natural|neural|premium|enhanced/i.test(name) ? 30 : 0)
+        + (/online|google/i.test(name) ? 8 : 0)
+        + (feminine ? 14 : 0) - (masculine ? 8 : 0)
+        + (/^fr[-_](CM|FR)/i.test(v.lang) ? 2 : 0);
+    };
+    const candidates = all.map(v => ({
+      voice: v,
+      locale: prefixes.findIndex(p => v.lang.toLowerCase().startsWith(p)),
+    })).filter(x => x.locale >= 0);
+    candidates.sort((a, b) => (score(b.voice) - b.locale * 3) - (score(a.voice) - a.locale * 3));
+    return candidates.length ? candidates[0].voice : null;
   }
   const bestFrenchVoice = (allowOnline = false) => pickVoice(['fr'], allowOnline);
 
@@ -126,8 +135,8 @@
   /** Voice for national-language text: an African voice if available, else French with coaching. */
   /**
    * Voice for the national-language text. Each language can name its preferred voices
-   * (lang/languages.json "voices"): Pidgin uses Nigerian/Ghanaian English voices and reads as
-   * written ("reading": "none"); other languages use an African voice (Swahili) with light
+   * (lang/languages.json "voices"): Pidgin uses Nigerian/Cameroonian/Ghanaian English voices and
+   * reads as written ("reading": "none"); other languages use an African voice (Swahili) with light
    * adaptation, or a coached French voice as a last resort.
    */
   function nationalVoice(allowOnline, lang = {}) {

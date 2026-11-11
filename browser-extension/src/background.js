@@ -18,7 +18,7 @@ const DEFAULT_SETTINGS = {
   hover: 'ctrl', // 'ctrl' = Ctrl/Cmd + hover shows the translation below the element; 'always'; 'off'
   autoSpeak: true, // read new important messages aloud when a recording exists
   mt: { mode: 'none', endpoint: 'http://localhost:11434/v1/chat/completions', model: 'qwen2.5:7b-instruct' },
-  tts: { mode: 'none', endpoint: 'http://127.0.0.1:8766/tts' },
+  tts: { mode: 'none', endpoint: 'http://127.0.0.1:8766/tts', africaEndpoint: 'http://127.0.0.1:8770/tts' },
   asr: { mode: 'browser', endpoint: 'http://127.0.0.1:8767/asr' }, // voice questions: 'browser' (with consent), 'local' (MMS server), 'none'
 };
 
@@ -33,21 +33,31 @@ async function getSettings() {
   };
 }
 
-// ---------- local neural voice (Meta MMS-TTS, Fulfulde) ----------
+// ---------- local neural voices (Meta MMS-TTS or Africa TTS) ----------
 const ttsCache = new Map();
+let ttsDownUntil = 0; // local voice unavailable or loading: use the browser voice for a while
+
 async function synthesize(code, text) {
   const settings = await getSettings();
-  const mms = (LANGS[code] || {}).mms;
-  if (settings.tts.mode !== 'mms' || !mms || !text) return null;
-  const key = `${code}\u0001${text}`;
+  const lang = LANGS[code] || {};
+  const isAfrica = settings.tts.mode === 'africa';
+  const modelLang = isAfrica ? lang.africaTts : settings.tts.mode === 'mms' ? lang.mms : null;
+  const endpoint = isAfrica ? settings.tts.africaEndpoint : settings.tts.endpoint;
+  if (!modelLang || !text || !endpoint) return null;
+  const key = `${settings.tts.mode}\u0001${code}\u0001${text}`;
   if (ttsCache.has(key)) return ttsCache.get(key);
+  if (Date.now() < ttsDownUntil) return null;
   try {
-    const r = await fetch(settings.tts.endpoint, {
+    const r = await fetch(endpoint, {
+      signal: AbortSignal.timeout(Math.min(20000, 4000 + text.length * 60)),
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ text, lang: mms }),
+      body: JSON.stringify({ text, lang: modelLang }),
     });
-    if (!r.ok) return null;
+    if (!r.ok) {
+      if (r.status === 503) ttsDownUntil = Date.now() + 15000;
+      return null;
+    }
     const bytes = new Uint8Array(await r.arrayBuffer());
     let bin = '';
     for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
@@ -56,6 +66,7 @@ async function synthesize(code, text) {
     ttsCache.set(key, url);
     return url;
   } catch {
+    ttsDownUntil = Date.now() + 15000;
     return null;
   }
 }
@@ -88,7 +99,10 @@ async function loadPack(code) {
   const own = code ? ((await api.storage.local.get(`lexicon:${code}`))[`lexicon:${code}`] || {}) : {};
   const merge = (a = {}, b = {}) => { const o = { ...a }; for (const [w, t] of Object.entries(b)) o[w] = [...new Set([...(t || []), ...(o[w] || [])])]; return o; };
   const lexicon = code ? { fr: merge((lex.fr || {})[code], own.fr), en: merge((lex.en || {})[code], own.en) } : null;
-  return { code, name: l.name || code || '', mms: l.mms || null, voices: l.voices || null, reading: l.reading || null, entries, lexicon };
+  return {
+    code, name: l.name || code || '', mms: l.mms || null, africaTts: l.africaTts || null,
+    voices: l.voices || null, reading: l.reading || null, entries, lexicon,
+  };
 }
 
 /** Languages with the number of translated phrases (the chooser marks empty ones "Soon"). */
@@ -128,8 +142,8 @@ function systemPrompt(langName, glossary) {
     '- Tokens like ⟦A⟧, ⟦B⟧ stand for amounts, names, phone or account numbers. Copy every token exactly once, unchanged. Never write digits yourself.',
     '- Keep the exact meaning: who pays, who receives, debit or credit, conditions, deadlines, warnings and negations ("never", "do not").',
     `- Use the standard orthography of ${langName} (General Alphabet of Cameroon Languages).`,
-    '- Use these validated terms when they apply:',
-    ...glossary.slice(0, 120).map(g => `  ${g.src} => ${g.t}`),
+    '- Use these glossary drafts when they apply. They may be unvalidated; preserve their intended meaning and do not treat them as authoritative:',
+    ...glossary.slice(0, 120).map(g => `  ${g.src} => ${g.t}${g.note ? ` (meaning: ${g.note})` : ''}`),
     '- Answer with the translation only, no explanation.',
   ].join('\n');
 }
@@ -218,8 +232,8 @@ async function translateBatch(code, items) {
   let error = null;
 
   const pack = await loadPack(code);
-  const glossary = pack.entries.filter(e => e.t && e.verified && !e.id.startsWith('gist_'))
-    .map(e => ({ src: e.fr, t: e.t }));
+  const glossary = pack.entries.filter(e => e.t && !e.id.startsWith('gist_'))
+    .map(e => ({ src: [e.fr, e.en].filter(Boolean).join(' / '), t: e.t, note: e.note || '' }));
   const add = {};
   try {
     if (settings.mt.mode === 'nllb') {

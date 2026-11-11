@@ -22,7 +22,7 @@ browser-extension/        the extension (no build step, no dependencies)
   icons/                  extension icons
   tests/                  node --test tests/
 tools/build.mjs           builds dist/ (zip, xpi, userscript)
-server/                   optional local NLLB-200 translation and MMS-TTS voice (Python)
+server/                   optional local NLLB-200 translation, MMS-TTS and Africa TTS voices
 docs/TECHNICAL.md         technical document for the jury
 ```
 
@@ -86,8 +86,8 @@ Teams that prefer a spreadsheet can use **Tableur (CSV)** to get every phrase in
 Without them, sentences that are not in the glossary get a **safe summary**: a validated
 sentence for the message type, validated key words, and the exact amounts.
 
-- **Translation:** Ollama with an open model (e.g. `qwen2.5:7b-instruct`, Apache-2.0), started with `OLLAMA_ORIGINS=* ollama serve`; or `python server/nllb_server.py` (NLLB-200, Fulfulde only). Choose it in the options.
-- **Voice:** `python server/tts_server.py` (Meta MMS-TTS, Fulfulde only). Other languages use human recordings.
+- **Translation:** Ollama with an open model (e.g. `qwen2.5:7b-instruct`, Apache-2.0), started with `OLLAMA_ORIGINS=* ollama serve`; or `python server/nllb_server.py` (NLLB-200 supports Fulfulde, Ewondo, Duala, and Basaá in this project). Choose it in the options. The local model gets French and English source text plus glossary meaning notes, while protected values stay masked.
+- **Voice:** `python -m pip install -r server/requirements-africa-tts.txt`, then `python server/africa_tts_server.py --download` once (440 MB, shows progress), then `python server/africa_tts_server.py`. The port opens at once and the model loads in the background (check `http://127.0.0.1:8770/health`); until it is ready Langwa uses the browser's voice. Select **Africa TTS local** in the options. Trained for Ewondo, Duala, Basaá and Pidgin (English voice); experimental for Fulfulde, Ghomálá', Ngemba and Kom. It uses at most half the CPU cores and caches recent phrases. Model and voices are CC-BY-NC-4.0 (non-commercial). Meta MMS-TTS remains available for Fulfulde.
 
 ## Tests
 

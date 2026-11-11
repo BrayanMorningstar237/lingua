@@ -141,11 +141,13 @@
     </div>
 
     <h2 style="margin-top:18px"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg>Voix</h2>
+<p>Africa TTS runs locally and offline after its first 440 MB download; it runs on CPU. Model and default voices are CC-BY-NC-4.0. Native-speaker recordings stay first choice.</p>
     <p class="muted">Le texte en langue nationale est lu avec les <b>enregistrements du locuteur natif</b> (voix humaine). Les montants, noms et numéros sont lus exactement par la voix française la plus naturelle du navigateur. Pour le fulfulde seulement, une voix neuronale locale (Meta MMS-TTS, open source) peut lire les phrases non enregistrées.</p>
     <div class="grid2">
       <label>Voix neuronale locale
         <select id="ttsMode">
           <option value="none">Désactivée (voix humaines seulement)</option>
+          <option value="africa">Africa TTS local (server/africa_tts_server.py), multilingue</option>
           <option value="mms">MMS-TTS local (server/tts_server.py), fulfulde</option>
         </select>
       </label>

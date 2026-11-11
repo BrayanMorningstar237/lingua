@@ -529,7 +529,10 @@
     language: () => (state.pack ? { voices: state.pack.voices, reading: state.pack.reading } : {}),
     tts: text => send({ type: 'tts', lang: state.pack.code, text }).catch(() => null),
   });
-  const ttsOn = () => !!(state.settings && state.settings.tts && state.settings.tts.mode === 'mms' && state.pack && state.pack.mms);
+  const ttsOn = () => {
+    const mode = state.settings && state.settings.tts && state.settings.tts.mode;
+    return !!(state.pack && ((mode === 'mms' && state.pack.mms) || (mode === 'africa' && state.pack.africaTts)));
+  };
 
   const bars = () => h('span', { class: 'bars', 'aria-hidden': 'true' }, h('i'), h('i'), h('i'));
   const voiceName = v => (v === 'human' ? ui('ui_voice_human', 'Voix humaine') : v === 'neural' ? ui('ui_voice_neural', 'Voix neuronale') : ui('ui_voice_synth', 'Voix de synthèse'));
