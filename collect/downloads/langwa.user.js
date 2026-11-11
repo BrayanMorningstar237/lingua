@@ -808,6 +808,7 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
   const INTENTS = [
     ['balance', /\b(solde|balance|il me reste|combien j.?ai|how much (money )?(i get|i have|i remain)|money wey i get|money wey dey|ceede am|ceede maa)\b/],
     ['receiver', /\b(qui|who|benefici\w*|receive|recoit|recevra|pesin|person|jaboowo|moye|nom|name|innde)\b/],
+    ['steps', /\b(steps?|stages?|process|etapes?|how (?:does|do) (?:the )?(?:transfer|payment) work|what happens next)\b/],
     ['next', /\b(next|ensuite|apres|faire|fais|maintenant|now|do now|go do|continue[rz]?|bouton|button|click|cliquer|press|jokku|wad\w*|jooni)\b/],
     ['warning', /\b(danger|attention|warning|alerte?|risk|risque|safe|secur\w*|reentino|kisal|probleme?|problem|erreur|error|wahala)\b/],
     ['amount', /\b(combien|how much|montant|amount|payer|pay|moni|money|ceede|total|frais|fees|charges?|cost|cout|debit|yob\w*|no foti)\b/],
@@ -825,6 +826,7 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
     function facts() {
       const units = state.units;
       const idx = id => units.findIndex(u => u.result && ((u.result.ids || []).includes(id) || u.result.id === id));
+      const hasId = ids => units.some(u => u.result && ids.some(id => (u.result.ids || []).includes(id) || u.result.id === id));
       const valueAfter = i => {
         const u = units[i];
         if (/:\s*\S/.test(u.text) && u.result && u.result.status === 'ok') return u.text.split(/:\s*/).slice(1).join(': ');
@@ -867,7 +869,27 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
         }
         return null;
       };
-      const heading = units.find(u => /^H[1-3]$/.test(u.el.tagName) && u.result && !u.result.value);
+      const stepDefs = [
+        ['step_pay', 'Pay'], ['step_costs', 'Costs'], ['step_beneficiary', 'Beneficiary'],
+        ['step_summary', 'Summary'], ['step_confirmation', 'Confirmation'],
+      ];
+      const heading = units.find(u => /^H[1-3]$/.test(u.el.tagName) && !(u.result && u.result.value)
+        && !/^(hello|bonjour)\b/i.test(u.text) && !u.el.closest('nav, aside, [role="navigation"]'));
+      const headingText = heading ? heading.text.trim() : '';
+      const pageText = units.map(u => u.text).join(' ');
+      const activeStep = units.find(u => {
+        const isStep = stepDefs.some(([id]) => u.result && ((u.result.ids || []).includes(id) || u.result.id === id));
+        if (!isStep) return false;
+        return !!u.el.closest('[aria-current="step"], [aria-current="page"], [aria-selected="true"], [data-state="active"], [data-active="true"], .active, .current, .is-active, .step-active');
+      });
+      const activeDef = activeStep && stepDefs.find(([id]) => (activeStep.result.ids || []).includes(id) || activeStep.result.id === id);
+      let pageKind = 'account';
+      if (hasId(['transfer_completed', 'transfer_sent_success', 'transfer_success']) || /transfer completed|transfer has been sent successfully|virement termin[eé]|transfert effectu[eé]/i.test(pageText)) pageKind = 'complete';
+      else if (hasId(['transfer_summary']) || /^(transfer )?summary$|^r[eé]capitulatif( du virement)?$/i.test(headingText)) pageKind = 'summary';
+      else if (hasId(['enter_recipient_info', 'new_beneficiary_warning']) || /enter the recipient.?s information|always check the number before submitting|saisissez les informations du destinataire/i.test(pageText) || /^beneficiary|^b[eé]n[eé]ficiaire$/i.test(headingText)) pageKind = 'beneficiary';
+      else if (hasId(['transfer_fees', 'choose_type_amount']) || /choose the transfer type and amount|transfer fees|frais de virement/i.test(pageText) || /^(transfer )?(fees|costs)$|^frais( de virement)?$/i.test(headingText)) pageKind = 'costs';
+      else if (activeDef) pageKind = ({ step_pay: 'account', step_costs: 'costs', step_beneficiary: 'beneficiary', step_summary: 'summary', step_confirmation: 'confirmation' })[activeDef[0]];
+      else if (/^confirmation$/i.test(headingText)) pageKind = 'confirmation';
       const isButton = u => /^(BUTTON|A)$/.test(u.el.tagName) || u.el.getAttribute('role') === 'button' || (u.el.tagName === 'INPUT' && /submit|button/.test(u.el.type));
       const buttons = units.filter(u => isButton(u) && u.result && !u.result.value);
       const order = ['confirm_transfer', 'confirm', 'continue', 'perform_transfer', 'new_transfer'];
@@ -878,10 +900,15 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
         amount: moneyNear(['amount', 'amount_to_send']) || val(['amount', 'amount_to_send']),
         amountNumber: numberNear(['amount', 'amount_to_send']),
         fees: moneyNear(['fees', 'transfer_fees', 'transaction_fees']) || val(['fees', 'transfer_fees', 'transaction_fees']),
-        receiver: val(['beneficiary', 'beneficiary_name']),
+        receiver: (() => {
+          const candidate = val(['beneficiary_name', 'beneficiary']);
+          return candidate && /^[\p{Lu}][\p{L}'’.-]*(?:\s+[\p{Lu}][\p{L}'’.-]*){0,3}$/u.test(candidate.trim()) ? candidate.trim() : null;
+        })(),
         balance: moneyNear(['available_balance', 'balance']) || val(['available_balance', 'balance']),
         warnings: units.filter(u => u.result && (u.result.kind === 'warning' || u.result.kind === 'error') && !u.result.value).map(shownText),
         next: main ? `«${shownText(main)}»` : null,
+        pageKind,
+        activeStep: activeDef ? activeDef[1] : null,
       };
     }
 
@@ -891,14 +918,27 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
       const out = [];
       const say = (id, fr, vars = {}) => out.push(fill(ui(id, fr), vars));
       if (intent === 'page') {
-        say('ans_page', 'Cette page : {title}.', { title: f.title || '…' });
-        if (f.total || f.amount) say('ans_amount', 'Montant total : {total}.', { total: f.total || f.amount });
+        const en = /^en/i.test(navigator.language || '');
+        const descriptions = {
+          account: en ? 'This is your account overview. It shows your available balance and recent transactions.' : 'Voici le récapitulatif de votre compte : solde disponible et transactions récentes.',
+          costs: en ? 'This is the costs step. Choose the transfer type and amount; the fee and total are shown before you continue.' : 'Vous êtes à l’étape des frais. Choisissez le type de virement et le montant ; les frais et le total sont affichés avant de continuer.',
+          beneficiary: en ? 'This is the beneficiary step. Enter the recipient’s name and phone number, then check both before continuing.' : 'Vous êtes à l’étape du bénéficiaire. Saisissez son nom et son numéro de téléphone, puis vérifiez-les avant de continuer.',
+          summary: en ? 'This is the transfer summary. Check the amount, fees, recipient, and phone number before confirming.' : 'Voici le récapitulatif du virement. Vérifiez le montant, les frais, le bénéficiaire et son numéro avant de confirmer.',
+          confirmation: en ? 'This is the confirmation step. Review the transfer details, then confirm only if they are correct.' : 'Vous êtes à l’étape de confirmation. Relisez les détails et confirmez seulement s’ils sont corrects.',
+          complete: en ? 'The transfer is complete. This page shows its amount, recipient, and status.' : 'Le virement est terminé. Cette page indique son montant, son bénéficiaire et son statut.',
+        };
+        out.push(descriptions[f.pageKind] || descriptions.account);
+        if (f.pageKind !== 'complete') out.push(en
+          ? 'The five steps are Pay, Costs, Beneficiary, Summary, and Confirmation.'
+          : 'Les cinq étapes sont : payer, frais, bénéficiaire, récapitulatif et confirmation.');
+        const total = [f.total, f.amount].find(v => v && /(?:FCFA|CFA|XAF|XOF)/i.test(v));
+        if (total) say('ans_amount', 'Montant total : {total}.', { total });
         if (f.receiver) say('ans_receiver', "L'argent va à {name}.", { name: f.receiver });
-        if (f.balance && !f.total) say('ans_balance', 'Argent disponible : {balance}.', { balance: f.balance });
-        if (f.warnings.length) say('ans_warning', 'Attention : {message}', { message: f.warnings[0] });
       } else if (intent === 'amount') {
-        if (f.total || f.amount) say('ans_amount', 'Montant total : {total}.', { total: f.total || f.amount });
-        if (f.fees) say('ans_fees', 'Frais : {fees}.', { fees: f.fees });
+        const total = [f.total, f.amount].find(v => v && /(?:FCFA|CFA|XAF|XOF)/i.test(v));
+        const fees = f.fees && /(?:FCFA|CFA|XAF|XOF)/i.test(f.fees) ? f.fees : null;
+        if (total) say('ans_amount', 'Montant total : {total}.', { total });
+        if (fees) say('ans_fees', 'Frais : {fees}.', { fees });
         if (!out.length) say('ans_no_amount', 'Je ne vois pas de montant à payer sur cette page.');
       } else if (intent === 'receiver') {
         if (f.receiver) say('ans_receiver', "L'argent va à {name}.", { name: f.receiver });
@@ -912,6 +952,11 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
       } else if (intent === 'balance') {
         if (f.balance) say('ans_balance', 'Argent disponible : {balance}.', { balance: f.balance });
         else say('ans_no_amount', 'Je ne vois pas de montant à payer sur cette page.');
+      } else if (intent === 'steps') {
+        const en = /^en/i.test(navigator.language || '');
+        out.push(en
+          ? 'A transfer has five steps: 1) Pay: start the transfer. 2) Costs: choose the type and amount, then review the fee. 3) Beneficiary: enter and check the recipient’s name and number. 4) Summary: review all details. 5) Confirmation: confirm only when everything is correct.'
+          : 'Un virement comporte cinq étapes : 1) Payer : démarrer le virement. 2) Frais : choisir le type et le montant, puis vérifier les frais. 3) Bénéficiaire : saisir et vérifier son nom et son numéro. 4) Récapitulatif : relire les informations. 5) Confirmation : confirmer seulement si tout est correct.');
       }
       return out.join(' ');
     }
@@ -929,11 +974,21 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
       const balance = money(f.balance);
       const out = [];
       if (intent === 'page') {
-        out.push('Dis na the transfer page. E show the money wey you wan send, the charges, and the total wey go comot your account. Check the details before you continue.');
-        if (amount) out.push(`You wan send ${amount}.`);
-        if (fees) out.push(fees === '0 FCFA' ? 'The transfer charge na free.' : `The transfer charge na ${fees}.`);
-        if (total) out.push(`Altogether, ${total} go comot your account.`);
-        if (f.receiver) out.push(`Na ${f.receiver} go receive the money.`);
+        const page = {
+          account: 'Dis na your account page. E show the money wey dey your account and your recent transactions. To send money, follow the five transfer steps: Pay, Costs, Beneficiary, Summary, Confirmation.',
+          costs: 'You dey the Costs step. Choose the transfer type and amount here; check the charges and total before you continue. The full steps na Pay, Costs, Beneficiary, Summary, Confirmation.',
+          beneficiary: 'You dey the Beneficiary step. Put the receiver name and phone number, then check them well before you continue. The full steps na Pay, Costs, Beneficiary, Summary, Confirmation.',
+          summary: 'You dey the Summary step. Check the amount, charges, receiver name, and phone number before you confirm. The full steps na Pay, Costs, Beneficiary, Summary, Confirmation.',
+          confirmation: 'You dey the Confirmation step. Read the transfer details again and confirm only if everything correct.',
+          complete: 'The transfer don complete. Dis page show the amount, who receive am, and the status.',
+        };
+        out.push(page[f.pageKind] || page.account);
+        if (amount && f.pageKind !== 'costs') out.push(`You wan send ${amount}.`);
+        if (fees && f.pageKind === 'costs') out.push(fees === '0 FCFA' ? 'The transfer charge na free.' : `The transfer charge na ${fees}.`);
+        if (total && f.pageKind === 'summary') out.push(`The total wey go comot your account na ${total}.`);
+        if (f.receiver && ['beneficiary', 'summary', 'complete'].includes(f.pageKind)) out.push(`Na ${f.receiver} go receive the money.`);
+      } else if (intent === 'steps') {
+        out.push('Transfer get five steps: 1) Pay: start the transfer. 2) Costs: choose the type and amount, then check the charges. 3) Beneficiary: put and check the receiver name and number. 4) Summary: review everything. 5) Confirmation: confirm only when all the details correct.');
       } else if (intent === 'amount') {
         if (total || amount) out.push(`All the money wey go comot for your account na ${total || amount}.`);
         if (fees) out.push(`The charges na ${fees}.`);
@@ -1105,6 +1160,7 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
     // ---------------- view ----------------
     const QUESTIONS = [
       ['page', 'q_page', 'C’est quoi cette page ?'],
+      ['steps', 'q_steps', state.pack.code === 'wes' ? 'Wetin be the transfer steps?' : (/^en/i.test(navigator.language || '') ? 'What are the transfer steps?' : 'Quelles sont les étapes du virement ?')],
       ['amount', 'q_amount', 'Combien je vais payer ?'],
       ['receiver', 'q_receiver', 'Qui reçoit l’argent ?'],
       ['warning', 'q_warning', 'Y a-t-il un danger ?'],
