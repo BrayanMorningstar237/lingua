@@ -58,6 +58,7 @@ async function loadAll() {
   $('autoSpeak').checked = settings.autoSpeak !== false;
   $('onlineVoice').checked = onlineVoice = !!settings.onlineVoice;
   render();
+  dictCount();
 }
 
 async function saveOverride(id, patch) {
@@ -296,6 +297,71 @@ $('import').onchange = async () => {
 };
 
 /** Spreadsheet template (Google Sheets, Excel): one row per phrase, ready to fill. */
+// ---------- dictionary import (team-provided, kept on this computer) ----------
+const POS = /(?:noun|verb|adjective|adverb|preposition|pronoun|conjunction|interjection|expr(?:ession)?|numeral|grammatical entity|ideophone|particle|determiner|auxiliary|nom|verbe|adjectif|adverbe)$/i;
+const STOP = new Set(['the', 'and', 'for', 'with', 'from', 'that', 'this', 'its', 'his', 'her', 'les', 'des', 'une', 'pour', 'avec', 'dans', 'sur', 'qui', 'que', 'est', 'son', 'ses', 'aux', 'par', 'fig', 'etc', 'also', 'used', 'kind', 'type', 'sort']);
+const foldW = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
+/** Pairs [headword, meaning] from pasted text: dictionary pages, "word = meaning", tables. */
+function parseDictionary(text) {
+  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+  const pairs = [];
+  for (let i = 0; i < lines.length; i++) {
+    const l = lines[i];
+    const sep = l.match(/^(.{1,40}?)\s*(?:=|\t|\s:\s| - | – )\s*(.{2,})$/);
+    if (sep) { pairs.push([sep[1].trim(), sep[2].trim()]); continue; }
+    if (POS.test(l) && l.length <= 70) {
+      const word = l.replace(POS, '').trim();
+      const next = lines[i + 1];
+      if (word && next && !POS.test(next)) { pairs.push([word, next]); i++; }
+    }
+  }
+  return pairs;
+}
+
+/** Index by the meaning's main words, strictly: "pound sterling" -> pound; "agreement, entente" -> agreement, entente. */
+function indexPairs(pairs) {
+  const idx = {};
+  for (const [word, meaning] of pairs) {
+    if (meaning.length > 80) continue; // an encyclopedic explanation, not a word meaning
+    for (const g of foldW(meaning.replace(/\([^)]*\)/g, ' ')).split(/[,;.:/]| or | ou /)) {
+      const parts = g.replace(/^\s*(to|a|an|the|le|la|les|l'|un|une|se)\s+/, '').trim().split(/\s+/);
+      if (!parts[0] || parts.length > 2) continue;
+      const key = parts[0].replace(/[^a-z]/g, '');
+      if (key.length < 3 || STOP.has(key)) continue;
+      (idx[key] ||= []);
+      if (!idx[key].includes(word)) idx[key].push(word);
+    }
+  }
+  return idx;
+}
+
+async function dictCount() {
+  const k = `lexicon:${code}`;
+  const own = (await api.storage.local.get(k))[k];
+  $('dictCount').textContent = own ? `${Object.keys(own.en || {}).length} sens importés pour ${pack.name}${own.source ? ' · ' + own.source : ''}` : `Aucun dictionnaire importé pour ${pack.name}`;
+}
+
+$('dictImport').onclick = async () => {
+  const pairs = parseDictionary($('dictText').value);
+  if (!pairs.length) { $('dictMsg').textContent = 'Aucune paire mot / sens trouvée.'; return; }
+  const k = `lexicon:${code}`;
+  const own = (await api.storage.local.get(k))[k] || { en: {} };
+  const idx = indexPairs(pairs);
+  for (const [w, terms] of Object.entries(idx)) own.en[w] = [...new Set([...(own.en[w] || []), ...terms])];
+  own.source = $('dictSource').value.trim() || own.source || '';
+  await api.storage.local.set({ [k]: own });
+  $('dictMsg').textContent = `${pairs.length} mots lus, ${Object.keys(idx).length} sens ajoutés. Exemples : ${pairs.slice(0, 3).map(p => p[0] + ' = ' + p[1]).join(' · ')}`;
+  $('dictText').value = '';
+  dictCount();
+};
+$('dictClear').onclick = async () => {
+  if (!confirm(`Effacer les mots importés pour ${pack.name} ?`)) return;
+  await api.storage.local.remove(`lexicon:${code}`);
+  $('dictMsg').textContent = 'Mots importés effacés.';
+  dictCount();
+};
+
 $('exportCsv').onclick = () => {
   const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
   const lines = [['id', 'group', 'fr', 'en', 'note', 'translation', 'explanation', 'by'].join(',')];

@@ -104,6 +104,17 @@
   </section>
 
   <section>
+    <h2><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M8 7h8M8 11h6"/></svg>Importer un dictionnaire</h2>
+    <p class="muted">Collez le texte d’un dictionnaire de la langue choisie (une page web copiée, une liste « mot = sens », un tableau mot / traduction). Langwa en tire les paires mot / sens en anglais ou en français et s’en sert comme <b>mots du dictionnaire</b> (indices, jamais présentés comme traduction validée). Utilisez seulement des dictionnaires que vous avez le droit d’utiliser, et indiquez la source.</p>
+    <div class="grid2">
+      <label>Source (crédit)<input type="text" id="dictSource" placeholder="Ex. : Mankon Dictionary (MALACA), avec autorisation"></label>
+      <div class="muted" id="dictCount"></div>
+    </div>
+    <textarea id="dictText" rows="6" placeholder="àbóŋ   noun&#10;pound sterling&#10;&#10;ou : ceede = argent"></textarea>
+    <div class="toolbar" style="margin-top:10px"><button id="dictImport" class="primary">Extraire les mots</button><button id="dictClear">Effacer les mots importés</button><span class="muted" id="dictMsg"></span></div>
+  </section>
+
+  <section>
     <h2><svg viewBox="0 0 24 24"><path d="M9 3h6"/><path d="M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21h11.6a2 2 0 0 0 1.7-2.5L14 9V3"/></svg>Banc d'essai : tester un nouveau message</h2>
     <textarea id="probe" rows="3">Vous allez envoyer 25 000 FCFA à Jean-Paul Mbarga.</textarea>
     <div class="toolbar" style="margin-top:10px">

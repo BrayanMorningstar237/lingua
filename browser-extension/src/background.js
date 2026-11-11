@@ -82,7 +82,10 @@ async function loadPack(code) {
   });
   const l = LANGS[code] || {};
   const lex = (await fetchJson('lang/lexicon.json')) || {};
-  const lexicon = code ? { fr: (lex.fr || {})[code] || {}, en: (lex.en || {})[code] || {} } : null;
+  // Words shipped with Langwa + dictionaries the team imported in the editor (kept on this computer).
+  const own = code ? ((await api.storage.local.get(`lexicon:${code}`))[`lexicon:${code}`] || {}) : {};
+  const merge = (a = {}, b = {}) => { const o = { ...a }; for (const [w, t] of Object.entries(b)) o[w] = [...new Set([...(t || []), ...(o[w] || [])])]; return o; };
+  const lexicon = code ? { fr: merge((lex.fr || {})[code], own.fr), en: merge((lex.en || {})[code], own.en) } : null;
   return { code, name: l.name || code || '', mms: l.mms || null, entries, lexicon };
 }
 
