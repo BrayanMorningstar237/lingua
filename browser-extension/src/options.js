@@ -63,7 +63,9 @@ async function loadAll() {
   ttsEndpoints.africa = settings.tts.africaEndpoint || ttsEndpoints.africa;
   ttsChosen = !!settings.tts.chosen;
   $('ttsVoice').value = settings.tts.voice || 'female';
-  $('ttsEndpoint').value = ttsEndpoints[settings.tts.mode === 'auto' ? 'africa' : settings.tts.mode] || ttsEndpoints.mms;
+  const langVoice = langs[code] || {};
+  const autoVoice = !langVoice.africaTts && langVoice.mms ? 'mms' : 'africa';
+  $('ttsEndpoint').value = ttsEndpoints[settings.tts.mode === 'auto' ? autoVoice : settings.tts.mode] || ttsEndpoints.mms;
   checkVoice();
   $('autoSpeak').checked = settings.autoSpeak !== false;
   $('onlineVoice').checked = onlineVoice = !!settings.onlineVoice;
@@ -439,8 +441,8 @@ $('saveMt').onclick = async () => {
       mt: { mode: $('mtMode').value, endpoint: $('mtEndpoint').value.trim(), model: $('mtModel').value.trim() },
       tts: {
         mode: $('ttsMode').value,
-        endpoint: $('ttsMode').value === 'mms' ? $('ttsEndpoint').value.trim() : ttsEndpoints.mms,
-        africaEndpoint: ['africa', 'auto'].includes($('ttsMode').value) ? $('ttsEndpoint').value.trim() : ttsEndpoints.africa,
+        endpoint: $('ttsMode').value === 'mms' || ($('ttsMode').value === 'auto' && !(langs[code] || {}).africaTts && (langs[code] || {}).mms) ? $('ttsEndpoint').value.trim() : ttsEndpoints.mms,
+        africaEndpoint: $('ttsMode').value === 'africa' || ($('ttsMode').value === 'auto' && (langs[code] || {}).africaTts) ? $('ttsEndpoint').value.trim() : ttsEndpoints.africa,
         chosen: ttsChosen,
         voice: $('ttsVoice').value,
       },
@@ -453,6 +455,7 @@ $('saveMt').onclick = async () => {
 };
 $('mtMode').onchange = () => {
   if ($('mtMode').value === 'nllb') $('mtEndpoint').value = 'http://127.0.0.1:8765/translate';
+  if ($('mtMode').value === 'cameroon') $('mtEndpoint').value = 'http://127.0.0.1:8768/translate';
   if ($('mtMode').value === 'openai') $('mtEndpoint').value = 'http://localhost:11434/v1/chat/completions';
 };
 $('clearCache').onclick = async () => { await api.runtime.sendMessage({ type: 'clearCache', lang: code }); $('mtMsg').textContent = 'Cache vidé.'; };
@@ -460,7 +463,9 @@ $('validator').onchange = () => api.storage.local.set({ validatorName: $('valida
 $('ttsMode').onchange = () => {
   const mode = $('ttsMode').value;
   ttsChosen = true;
-  if (mode === 'africa' || mode === 'mms' || mode === 'auto') $('ttsEndpoint').value = ttsEndpoints[mode === 'auto' ? 'africa' : mode];
+  const langVoice = langs[$('lang').value] || {};
+  const autoVoice = !langVoice.africaTts && langVoice.mms ? 'mms' : 'africa';
+  if (mode === 'africa' || mode === 'mms' || mode === 'auto') $('ttsEndpoint').value = ttsEndpoints[mode === 'auto' ? autoVoice : mode];
   checkVoice();
 };
 $('ttsEndpoint').onchange = checkVoice;
@@ -493,7 +498,9 @@ async function checkVoice() {
     else if (j.status === 'error') show('error', 'Voix locale en erreur', `${j.detail || ''} En attendant, la voix du navigateur est utilisée.`);
     else show('loading', 'Voix locale en chargement…', `${j.detail || 'Préparation du modèle'}. En attendant, la voix du navigateur est utilisée.`);
   } catch {
-    show('offline', 'Voix locale éteinte', 'La voix du navigateur est utilisée. Pour la voix locale, lancez dans le dossier du projet :', START[mode]);
+    const langVoice = langs[$('lang').value] || {};
+    const useMms = mode === 'mms' || (mode === 'auto' && !langVoice.africaTts && langVoice.mms);
+    show('offline', 'Voix locale éteinte', 'La voix du navigateur est utilisée. Pour la voix locale, lancez dans le dossier du projet :', useMms ? START.mms : START[mode]);
   }
   if (!document.hidden) voiceTimer = setTimeout(checkVoice, 3000);
 }

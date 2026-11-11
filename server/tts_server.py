@@ -2,8 +2,8 @@
 Langwa: optional local neural voice (Meta MMS-TTS, open source).
 
 Used only to read national-language sentences that the native speaker has not recorded.
-Of the extension's languages, only Fulfulde has an MMS voice (facebook/mms-tts-ful).
-Ewondo, Duala, Ghomala' and Basaa have none: those rely on human recordings only.
+Fulfulde and Lamnso' have MMS voices (facebook/mms-tts-ful and facebook/mms-tts-lns).
+Other languages rely on human recordings or a configured fallback voice.
 
     pip install -r requirements.txt
     python tts_server.py          # http://127.0.0.1:8766/tts  (POST {"text": "...", "lang": "ful"})
@@ -19,7 +19,7 @@ import torch
 from transformers import AutoTokenizer, VitsModel
 
 HOST, PORT = "127.0.0.1", 8766
-VOICES = {"ful": "facebook/mms-tts-ful"}
+VOICES = {"ful": "facebook/mms-tts-ful", "lns": "facebook/mms-tts-lns"}
 _loaded = {}
 
 
@@ -57,6 +57,13 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_OPTIONS(self):
         self._headers(204, "text/plain")
+
+    def do_GET(self):
+        if self.path == "/health":
+            self._headers(200, "application/json")
+            return self.wfile.write(b'{"status":"ready"}')
+        self._headers(404, "application/json")
+        self.wfile.write(b'{"error":"not found"}')
 
     def do_POST(self):
         if self.path != "/tts":

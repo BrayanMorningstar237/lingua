@@ -1,0 +1,9 @@
+{
+  "code": "lns",
+  "validation": {
+    "validators": [],
+    "status": "Automatic machine translation draft. Not validated by Lamnso' speakers. Review financial and safety wording before relying on it.",
+    "method": "Local Flagship AI Cameroon French-pivot MarianMT model; native-speaker validation is still required."
+  },
+  "entries": {}
+}

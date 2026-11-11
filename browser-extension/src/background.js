@@ -6,7 +6,7 @@
  */
 const api = globalThis.browser ?? globalThis.chrome;
 
-// Languages: lang/languages.json (nllb = NLLB-200 code for local MT, mms = Meta MMS-TTS voice).
+// Languages: lang/languages.json (nllb = NLLB-200 code, mms = Meta MMS-TTS voice).
 let LANGS = {};
 const langsReady = fetch(api.runtime.getURL('lang/languages.json'))
   .then(r => r.json()).then(j => { LANGS = j; return j; }).catch(() => LANGS);
@@ -47,10 +47,11 @@ let ttsDownWhy = 'offline';
  */
 
 /** Is the local voice server running and ready? Asked at most every 10 s, 1 s time limit. */
-const voiceHealth = { at: 0, ready: false };
+const voiceHealth = { at: 0, ready: false, endpoint: '' };
 async function localVoiceReady(endpoint) {
-  if (Date.now() - voiceHealth.at < 10000) return voiceHealth.ready;
+  if (voiceHealth.endpoint === endpoint && Date.now() - voiceHealth.at < 10000) return voiceHealth.ready;
   voiceHealth.at = Date.now();
+  voiceHealth.endpoint = endpoint;
   try {
     const r = await fetch(endpoint.replace(/\/tts\/?$/, '/health'), { signal: AbortSignal.timeout(1000) });
     const j = r.ok ? await r.json() : {};
@@ -61,17 +62,24 @@ async function localVoiceReady(endpoint) {
   return voiceHealth.ready;
 }
 async function voiceStatus() {
-  const { tts } = await getSettings();
+  const settings = await getSettings();
+  const { tts } = settings;
   if (tts.mode === 'none') return { mode: 'none', ready: false };
   if (tts.mode === 'mms') return { mode: 'mms', ready: true };
+  const activeLang = LANGS[settings.lang] || {};
+  if (tts.mode === 'auto' && !activeLang.africaTts && activeLang.mms) {
+    return { mode: 'mms', ready: await localVoiceReady(tts.endpoint) };
+  }
   return { mode: tts.mode, ready: await localVoiceReady(tts.africaEndpoint) };
 }
 
 async function synthesize(code, text) {
   const settings = await getSettings();
   const lang = LANGS[code] || {};
-  const isAfrica = settings.tts.mode === 'africa' || settings.tts.mode === 'auto';
-  const modelLang = isAfrica ? lang.africaTts : settings.tts.mode === 'mms' ? lang.mms : null;
+  const isAutoMms = settings.tts.mode === 'auto' && !lang.africaTts && !!lang.mms;
+  const isAfrica = settings.tts.mode === 'africa' || (settings.tts.mode === 'auto' && !isAutoMms);
+  const useMms = settings.tts.mode === 'mms' || isAutoMms;
+  const modelLang = isAfrica ? lang.africaTts : useMms ? lang.mms : null;
   const endpoint = isAfrica ? settings.tts.africaEndpoint : settings.tts.endpoint;
   if (!modelLang || !text || !endpoint) return null;
   const voice = isAfrica ? settings.tts.voice || 'female' : '';
@@ -257,6 +265,18 @@ async function mtNllb(settings, code, texts) {
   return (j.translations || []).map(t => (t ? { text: t, confidence: 'low' } : null));
 }
 
+async function mtCameroon(settings, code, texts) {
+  if (code !== 'lns') return texts.map(() => null);
+  const r = await fetch(settings.mt.endpoint, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ texts, target: 'lamnso' }),
+  });
+  if (!r.ok) throw new Error(`MT HTTP ${r.status}`);
+  const j = await r.json();
+  return (j.translations || []).map(t => (t ? { text: t, confidence: 'low' } : null));
+}
+
 async function translateBatch(code, items) {
   const settings = await getSettings();
   const cache = await cacheGet(code);
@@ -272,6 +292,9 @@ async function translateBatch(code, items) {
   try {
     if (settings.mt.mode === 'nllb') {
       const res = await mtNllb(settings, code, missing.map(i => items[i].masked));
+      missing.forEach((i, k) => { out[i] = res[k]; if (res[k]) add[items[i].masked] = res[k]; });
+    } else if (settings.mt.mode === 'cameroon') {
+      const res = await mtCameroon(settings, code, missing.map(i => items[i].masked));
       missing.forEach((i, k) => { out[i] = res[k]; if (res[k]) add[items[i].masked] = res[k]; });
     } else {
       // 3 requests at a time: small local models are faster on short single strings.

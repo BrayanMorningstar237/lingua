@@ -54,6 +54,29 @@
     ],
     "africaTts": "eng"
   },
+  "lns": {
+    "name": "Nso (Lamnso')",
+    "region": "Northwest Region",
+    "nllb": null,
+    "mms": "lns",
+    "refs": [
+      {
+        "name": "Flagship AI Cameroon translation models (draft MT, CC BY-NC 4.0)",
+        "url": "https://huggingface.co/flagship-ai/cameroon-int8"
+      },
+      {
+        "name": "Cameroon Bibles parallel text dataset (CC BY 4.0; religious text, not banking vocabulary)",
+        "url": "https://huggingface.co/datasets/flagship-ai/cameroon_bibles"
+      },
+      {
+        "name": "Lamnso' text-to-speech model (CC BY-NC 4.0)",
+        "url": "https://huggingface.co/facebook/mms-tts-lns"
+      }
+    ],
+    "africaTts": null,
+    "machineTranslation": true,
+    "translationStatus": "Automatic draft; not reviewed by Lamnso' speakers"
+  },
   "dua": {
     "name": "Duala",
     "region": "Littoral",

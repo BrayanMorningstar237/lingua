@@ -468,7 +468,8 @@
     if (langs.length < 2) return h('div', { class: 'lang' }, state.pack.name);
     const sel = h('select', { class: 'lang lang-select', 'aria-label': ui('ui_language', 'Langue') },
       langs.map(([code, l]) => {
-        const o = h('option', { value: code }, l.count || code === state.pack.code ? l.name : `${l.name} (${ui('ui_soon', 'Bientôt')})`);
+        const suffix = l.machineTranslation ? ' (MT draft, unvalidated)' : ` (${ui('ui_soon', 'Soon')})`;
+        const o = h('option', { value: code }, l.count || code === state.pack.code ? l.name : `${l.name}${suffix}`);
         o.selected = code === state.pack.code;
         return o;
       }));
@@ -495,16 +496,16 @@
       const cur = await send({ type: 'getSettings' });
       await api.storage.local.set({ settings: { ...cur, lang: code } }); // storage change restarts Langwa
     };
-    const langs = Object.entries(state.langs || {}).sort((a, b) => (b[1].count > 0) - (a[1].count > 0));
+    const langs = Object.entries(state.langs || {}).sort((a, b) => ((b[1].count > 0 || b[1].machineTranslation) - (a[1].count > 0 || a[1].machineTranslation)));
     const card = h('div', { class: 'chooser', role: 'dialog', 'aria-label': ui('ui_choose', 'Quelle langue parlez-vous ?') },
       h('div', { class: 'head' },
         h('div', { class: 'logo' }, icon('languages')),
         h('div', {}, h('h3', {}, ui('ui_choose', 'Quelle langue parlez-vous ?')), h('p', {}, ui('ui_choose_sub', 'Langwa affichera la banque dans cette langue.')))),
       h('div', { class: 'langs' }, langs.map(([code, l]) =>
-        h('button', { class: `lang-btn${l.count ? '' : ' empty'}`, onclick: () => choose(code) },
+        h('button', { class: `lang-btn${l.count || l.machineTranslation ? '' : ' empty'}`, onclick: () => choose(code) },
           h('b', {}, l.name),
           h('small', {}, l.region || ''),
-          l.count ? null : h('span', { class: 'soon' }, ui('ui_soon', 'Bientôt'))))),
+          l.count ? null : h('span', { class: 'soon' }, l.machineTranslation ? 'MT draft - unvalidated' : 'Soon')))),
       h('button', { class: 'later', onclick: () => { card.hidden = true; fab.hidden = false; } }, ui('ui_later', 'Plus tard')));
     const fab = h('button', { class: 'fab', hidden: true, 'aria-label': ui('ui_choose', 'Quelle langue parlez-vous ?'), onclick: () => { card.hidden = false; fab.hidden = true; } },
       h('span', { class: 'logo' }, icon('languages')), 'Langwa');

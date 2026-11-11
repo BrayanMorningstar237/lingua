@@ -25,7 +25,7 @@
     ['next', /\b(next|ensuite|apres|faire|fais|maintenant|now|do now|go do|continue[rz]?|bouton|button|click|cliquer|press|jokku|wad\w*|jooni)\b/],
     ['warning', /\b(danger|attention|warning|alerte?|risk|risque|safe|secur\w*|reentino|kisal|probleme?|problem|erreur|error|wahala)\b/],
     ['amount', /\b(combien|how much|montant|amount|payer|pay|moni|money|ceede|total|frais|fees|charges?|cost|cout|debit|yob\w*|no foti)\b/],
-    ['page', /\b(page|what|quoi|wetin|happen\w*|passe|about|sujet|expliqu\w*|explain|hondum|ki be|ndoo|doo|hello ngol)\b/],
+    ['page', /\b(page|what|quoi|wetin|wtin|happen\w*|passe|about|sujet|expliqu\w*|explain|hondum|ki be|ndoo|doo|hello ngol)\b/],
   ];
   const detectIntent = q => (INTENTS.find(([, re]) => re.test(foldQ(q))) || [null])[0];
 
@@ -51,6 +51,20 @@
         return null;
       };
       const val = ids => { for (const id of ids) { const i = idx(id); if (i >= 0) { const v = valueAfter(i); if (v) return v; } } return null; };
+      const numberNear = ids => {
+        for (const id of ids) {
+          const i = idx(id);
+          if (i < 0) continue;
+          for (let k = i; k < Math.min(units.length, i + 10); k++) {
+            const u = units[k];
+            const idsHere = u.result ? [...(u.result.ids || []), u.result.id || ''] : [];
+            if (!u.result || !u.result.value || idsHere.some(x => /step/i.test(x))) continue;
+            const candidate = u.text.trim();
+            if (/^\d(?:[\d\s,.'’]*\d)?$/.test(candidate)) return candidate;
+          }
+        }
+        return null;
+      };
       const currencyValue = u => u && u.result && u.result.value && /(?:FCFA|CFA|XAF|XOF)/i.test(u.text) ? u.text.trim() : null;
       // Financial labels and values are often separate, deeply nested DOM blocks. Search
       // nearby protected values instead of assuming the amount is one of the next three units.
@@ -76,6 +90,7 @@
         title: heading ? shownText(heading) : (document.title || '').split(/\s+[|·•–—-]\s+/)[0],
         total: moneyNear(['total_debited']) || val(['total_debited']),
         amount: moneyNear(['amount', 'amount_to_send']) || val(['amount', 'amount_to_send']),
+        amountNumber: numberNear(['amount', 'amount_to_send']),
         fees: moneyNear(['fees', 'transfer_fees', 'transaction_fees']) || val(['fees', 'transfer_fees', 'transaction_fees']),
         receiver: val(['beneficiary', 'beneficiary_name']),
         balance: moneyNear(['available_balance', 'balance']) || val(['available_balance', 'balance']),
@@ -122,13 +137,16 @@
       // A bare step number can be mistaken for the transfer amount when a page
       // has several stages. Only report values that visibly carry the currency.
       const money = value => value && /(?:FCFA|CFA|XAF|F\s*CFA)/i.test(value) ? value : null;
-      const amount = money(f.amount);
+      const amount = money(f.amount) || (f.amountNumber ? `${f.amountNumber} FCFA` : null);
       const total = money(f.total);
       const fees = money(f.fees);
       const balance = money(f.balance);
       const out = [];
       if (intent === 'page') {
-        out.push('Dis page na for check the transfer before you send am. Check the amount and the person wey go receive am.');
+        out.push('Dis na the transfer page. E show the money wey you wan send, the charges, and the total wey go comot your account. Check the details before you continue.');
+        if (amount) out.push(`You wan send ${amount}.`);
+        if (fees) out.push(fees === '0 FCFA' ? 'The transfer charge na free.' : `The transfer charge na ${fees}.`);
+        if (total) out.push(`Altogether, ${total} go comot your account.`);
         if (f.receiver) out.push(`Na ${f.receiver} go receive the money.`);
       } else if (intent === 'amount') {
         if (total || amount) out.push(`All the money wey go comot for your account na ${total || amount}.`);
@@ -155,12 +173,12 @@
       for (const t of m.tokens) {
         const [before, after] = rest.split(t.key);
         if (/\p{L}/u.test(before)) steps.push({ missing: true, text: before.trim() });
-        if (state.pack.code === 'wes' && t.type === 'money') {
-          // Keep the exact amount, but send its spoken form through the selected Kamtok
-          // voice (Africa TTS or an English Nigerian/Cameroonian browser voice), not French.
+        if (['wes', 'lns'].includes(state.pack.code) && t.type === 'money') {
+          // Keep the exact numeric value, but send it through the selected language voice.
+          // Lamnso' uses its local MMS voice; CFA is a familiar French loanword in the region.
           const rawNumber = (t.value.match(/\d[\d\s.,]*\d|\d/) || [''])[0];
           const number = root.LangwaSpeech ? root.LangwaSpeech.spokenNumber(rawNumber) : rawNumber.replace(/[\s.,]/g, '');
-          steps.push({ missing: true, text: `${number} CFA francs` });
+          steps.push({ missing: true, text: state.pack.code === 'lns' ? `${number} francs CFA` : `${number} CFA francs` });
         } else steps.push({ value: t.value, type: t.type });
         rest = after || '';
       }

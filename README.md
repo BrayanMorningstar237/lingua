@@ -22,7 +22,7 @@ browser-extension/        the extension (no build step, no dependencies)
   icons/                  extension icons
   tests/                  node --test tests/
 tools/build.mjs           builds dist/ (zip, xpi, userscript)
-server/                   optional local NLLB-200 translation, MMS-TTS and Africa TTS voices
+server/                   optional local translation, MMS-TTS and Africa TTS voices
 docs/TECHNICAL.md         technical document for the jury
 ```
 
@@ -75,6 +75,10 @@ the page, the result, the integrity check, and lets you hear it.
 3. The speaker opens it on a phone, chooses the language, and translates one sentence per screen, starting with the test journey. They can record their voice, tap dictionary suggestions, and stop and continue later (everything is saved on the phone).
 4. **Envoyer mes traductions** shares a small file directly to WhatsApp (or downloads it).
 5. The team opens the glossary editor → **Importer (JSON, CSV)** and selects one or several received files. New translations are added as "Non validé"; validated ones are never overwritten.
+
+### Lamnso' (Nso) local translation draft
+
+The optional `server/cameroon_mt_server.py` uses Flagship AI's int8 French-pivot MarianMT routes for English/French to Lamnso'. Start it with the packages in `server/requirements-cameroon-mt.txt`; it downloads just the English→French and French→Lamnso' model folders on first use. In Options, select the Cameroon MT mode and translate the page. Drafts remain unvalidated and values stay protected. The model is CC BY-NC 4.0, so this route is for non-commercial use unless separate permission is obtained. The available Lamnso' Bible corpus is a parallel-text research resource, not a source of banking terminology or validated financial translations.
 6. A second speaker (or the same one, re-reading) ticks **Validé** with their name.
 
 Teams that prefer a spreadsheet can use **Tableur (CSV)** to get every phrase in Google Sheets or Excel, fill the `translation` column, and import the CSV back.
