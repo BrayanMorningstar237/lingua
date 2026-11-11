@@ -90,7 +90,7 @@
    * is the signature. All colours meet WCAG AA contrast on their surfaces.
    */
   const CSS = `
-  :host { all: initial; }
+  :host { all: initial; display: block; position: fixed; inset: 0; z-index: 2147483644; width: 100vw; height: 100vh; height: 100dvh; pointer-events: none; }
   * { box-sizing: border-box; margin: 0; font-family: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, Roboto, "Noto Sans", sans-serif; }
   button { cursor: pointer; font: inherit; color: inherit; }
   :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
@@ -98,6 +98,7 @@
   svg.i.fill { fill: currentColor; stroke: none; }
 
   .layer {
+    position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;
     --ebony: #1d1712; --ebony-2: #2a221b; --ebony-3: #3d3229; --ivory: #fbf6ee; --sand: #d9c9b4;
     --gold: #e3a21a; --gold-soft: #f6dfa6; --forest: #1e7a4c; --forest-2: #2f9e66; --terracotta: #c2502e; --indigo: #3d4a8a; --indigo-2: #8fa0e6;
     --card: #fffcf7; --card-fg: #241d16; --card-muted: #76675a; --line: #ebdfcd; --soft: #f6eee2;
@@ -108,7 +109,7 @@
   }
 
   /* ---------- hover card ---------- */
-  .tip { position: fixed; z-index: 2147483647; width: max-content; max-width: min(440px, calc(100vw - 16px));
+  .tip { position: fixed; z-index: 2147483647; width: max-content; max-width: min(440px, calc(100vw - 16px)); pointer-events: auto;
     background: var(--ebony); color: var(--ivory); border-radius: 16px; padding: 14px 16px;
     box-shadow: 0 20px 50px rgba(20,12,4,.45), 0 0 0 1px rgba(255,240,220,.07);
     font-size: 15px; line-height: 1.42; visibility: hidden; opacity: 0; transform: translateY(4px);
@@ -227,7 +228,7 @@
   .item .wchip { background: var(--soft); border-color: var(--line); } .item .wchip b { color: var(--card-fg); } .item .wchip i { color: var(--card-muted); }
 
   /* ---------- floating button ---------- */
-  .fab { position: fixed; right: 18px; bottom: 18px; z-index: 2147483646; display: flex; align-items: center; gap: 10px;
+  .fab { position: fixed; right: 18px; bottom: 18px; z-index: 2147483646; display: flex; align-items: center; gap: 10px; pointer-events: auto;
     border: 0; border-radius: 999px; padding: 8px 18px 8px 8px; background: var(--ebony); color: var(--ivory); font-weight: 700; font-size: 15px;
     box-shadow: 0 12px 30px rgba(20,12,4,.38), 0 0 0 1px rgba(255,240,220,.08); transition: transform .12s ease, box-shadow .12s ease; }
   .fab:hover { transform: translateY(-2px); box-shadow: 0 16px 34px rgba(20,12,4,.42), 0 0 0 2px var(--gold); }
@@ -241,7 +242,7 @@
   /* ---------- panel ---------- */
   .panel { position: fixed; right: 18px; bottom: 82px; z-index: 2147483646; width: min(420px, calc(100vw - 36px)); max-height: min(72vh, 680px); max-height: min(72dvh, 680px);
     background: var(--card); color: var(--card-fg); border-radius: 20px; box-shadow: 0 24px 60px rgba(20,12,4,.32), 0 0 0 1px var(--line);
-    display: flex; flex-direction: column; overflow: hidden; visibility: hidden; opacity: 0; transform: translateY(10px) scale(.98); transform-origin: bottom right;
+    display: flex; flex-direction: column; overflow: hidden; visibility: hidden; opacity: 0; transform: translateY(10px) scale(.98); transform-origin: bottom right; pointer-events: auto;
     transition: opacity .16s ease, transform .16s ease, visibility 0s .16s; }
   .panel.show { visibility: visible; opacity: 1; transform: none; transition: opacity .16s ease, transform .16s ease; }
   .panel { height: min(72vh, 680px); height: min(72dvh, 680px); }
@@ -290,7 +291,7 @@
   kbd { font: 700 11.5px "Cascadia Mono", ui-monospace, Consolas, monospace; border: 1px solid var(--line); border-bottom-width: 3px; border-radius: 7px; padding: 2px 7px; background: var(--soft); color: var(--card-fg); }
 
   /* ---------- alerts ---------- */
-  .toasts { position: fixed; left: 50%; transform: translateX(-50%); top: 16px; z-index: 2147483647; display: grid; gap: 10px; width: min(540px, calc(100vw - 24px)); }
+  .toasts { position: fixed; left: 50%; transform: translateX(-50%); top: 16px; z-index: 2147483647; display: grid; gap: 10px; width: min(540px, calc(100vw - 24px)); pointer-events: auto; }
   .toast { position: relative; overflow: hidden; background: var(--ebony); color: var(--ivory); border-radius: 16px; padding: 18px 16px 18px;
     box-shadow: 0 20px 50px rgba(20,12,4,.45); animation: drop .22s cubic-bezier(.2,.9,.3,1.2); }
   .toast::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 5px; background: var(--kente); }
@@ -312,7 +313,7 @@
   .sub { position: fixed; padding: 0 2px; border-radius: 4px; box-sizing: border-box; overflow-wrap: anywhere;
     text-decoration: underline dotted rgba(227,162,26,.75); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
 
-  .hint { position: fixed; right: 18px; bottom: 86px; z-index: 2147483647; width: min(330px, calc(100vw - 36px)); background: var(--ebony); color: var(--ivory);
+  .hint { position: fixed; right: 18px; bottom: 86px; z-index: 2147483647; width: min(330px, calc(100vw - 36px)); background: var(--ebony); color: var(--ivory); pointer-events: auto;
     border-radius: 18px; padding: 22px 18px 16px; box-shadow: 0 20px 50px rgba(20,12,4,.45); animation: drop .3s ease; overflow: visible; }
   .hint::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px; border-radius: 18px 18px 0 0; background: var(--kente); }
   .hint::after { content: ""; position: absolute; right: 44px; bottom: -7px; width: 14px; height: 14px; background: var(--ebony); transform: rotate(45deg); border-radius: 3px; }
@@ -325,7 +326,7 @@
   .hint .ok { margin-top: 16px; width: 100%; border: 0; border-radius: 12px; padding: 11px; background: var(--gold); color: var(--ebony); font-weight: 800; font-size: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; }
   .hint .ok:hover { filter: brightness(1.06); }
   /* ---------- first-use language chooser ---------- */
-  .chooser { position: fixed; right: 18px; bottom: 18px; z-index: 2147483647; width: min(400px, calc(100vw - 24px)); max-height: calc(100vh - 36px); overflow: auto;
+  .chooser { position: fixed; right: 18px; bottom: 18px; z-index: 2147483647; width: min(400px, calc(100vw - 24px)); max-height: calc(100vh - 36px); overflow: auto; pointer-events: auto;
     background: var(--ebony); color: var(--ivory); border-radius: 20px; padding: 24px 16px 12px; box-shadow: 0 24px 60px rgba(20,12,4,.45); animation: drop .3s ease; }
   .chooser::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px; border-radius: 20px 20px 0 0; background: var(--kente); }
   .chooser[hidden], .fab[hidden] { display: none; }
@@ -345,7 +346,7 @@
 
   /* ---------- phones: bottom sheet, larger touch targets ---------- */
   @media (max-width: 640px) {
-    .panel { left: 0; right: 0; bottom: 0; width: 100%; height: min(82vh, 760px); height: min(82dvh, 760px); max-height: calc(100vh - env(safe-area-inset-top) - 8px); max-height: calc(100dvh - env(safe-area-inset-top) - 8px); border-radius: 22px 22px 0 0; transform-origin: bottom center; }
+    .panel { left: 0; right: auto; bottom: 0; width: 100vw; min-width: 100vw; max-width: 100vw; height: min(82vh, 760px); height: min(82dvh, 760px); max-height: calc(100vh - env(safe-area-inset-top) - 8px); max-height: calc(100dvh - env(safe-area-inset-top) - 8px); border-radius: 22px 22px 0 0; transform-origin: bottom center; }
     .panel .band { border-radius: 22px 22px 0 0; }
     .fab { right: 12px; bottom: 12px; padding: 8px 16px 8px 8px; }
     .fab.hidden-under-sheet { opacity: 0; pointer-events: none; }
@@ -368,7 +369,7 @@
     .say { width: 46px; height: 46px; }
     .toasts { top: 8px; width: calc(100vw - 16px); }
     .hint { right: 12px; bottom: 76px; }
-    .chooser { left: 0; right: 0; bottom: 0; width: 100%; max-height: calc(100vh - env(safe-area-inset-top)); max-height: calc(100dvh - env(safe-area-inset-top)); border-radius: 22px 22px 0 0; padding: 22px 14px max(18px, env(safe-area-inset-bottom)); overscroll-behavior: contain; }
+    .chooser { left: 0; right: auto; bottom: 0; width: 100vw; max-width: 100vw; max-height: calc(100vh - env(safe-area-inset-top)); max-height: calc(100dvh - env(safe-area-inset-top)); border-radius: 22px 22px 0 0; padding: 22px 14px max(18px, env(safe-area-inset-bottom)); overscroll-behavior: contain; }
     .lang-btn { min-height: 68px; padding: 12px; }
     .chooser .later { min-height: 44px; }
   }
