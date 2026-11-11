@@ -292,15 +292,19 @@
 
   /* ---------- alerts ---------- */
   .toasts { position: fixed; left: 50%; transform: translateX(-50%); top: 16px; z-index: 2147483647; display: grid; gap: 10px; width: min(540px, calc(100vw - 24px)); pointer-events: auto; }
-  .toast { position: relative; overflow: hidden; background: var(--ebony); color: var(--ivory); border-radius: 16px; padding: 18px 16px 18px;
+  .toast { position: relative; overflow: hidden; max-height: min(200px, 32dvh); background: var(--ebony); color: var(--ivory); border-radius: 16px; padding: 13px 14px 12px;
     box-shadow: 0 20px 50px rgba(20,12,4,.45); animation: drop .22s cubic-bezier(.2,.9,.3,1.2); }
   .toast::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 5px; background: var(--kente); }
-  .toast .x { position: absolute; top: 12px; right: 8px; width: 30px; height: 30px; border: 0; border-radius: 8px; background: transparent; color: var(--sand); font-size: 17px; display: grid; place-items: center; }
+  .toast .toast-head { display: flex; align-items: center; gap: 8px; padding-right: 42px; font-size: 14px; }
+  .toast .toast-head strong { overflow-wrap: anywhere; }
+  .toast .toast-copy { margin-top: 7px; max-height: 4.4em; overflow: auto; font-size: 14px; line-height: 1.4; overflow-wrap: anywhere; }
+  .toast .toast-state { margin-top: 7px; color: var(--sand); font-size: 11.5px; line-height: 1.35; }
+  .toast .toast-open { margin-top: 7px; min-height: 36px; padding: 6px 10px; border: 1px solid var(--ebony-3); border-radius: 9px; background: var(--ebony-2); color: var(--ivory); font-size: 12px; font-weight: 700; }
+  .toast .x { position: absolute; top: 8px; right: 8px; width: 40px; height: 40px; border: 0; border-radius: 8px; background: transparent; color: var(--sand); font-size: 17px; display: grid; place-items: center; }
   .toast .x:hover { background: var(--ebony-3); color: #fff; }
   .toast .bar { position: absolute; left: 0; bottom: 0; height: 4px; background: var(--indigo-2); animation: shrink 10s linear forwards; }
   .toast.k-error .bar { background: var(--terracotta); } .toast.k-warning .bar { background: var(--gold); } .toast.k-success .bar { background: var(--forest-2); }
   .toast:hover .bar { animation-play-state: paused; }
-  .toast .block { margin-right: 30px; }
   @keyframes drop { from { opacity: 0; transform: translateY(-12px) scale(.98); } }
   @keyframes shrink { from { width: 100%; } to { width: 0; } }
 
@@ -367,7 +371,7 @@
     .tr { font-size: 18px; }
     .icon-btn { width: 44px; height: 44px; }
     .say { width: 46px; height: 46px; }
-    .toasts { top: 8px; width: calc(100vw - 16px); }
+    .toasts { top: max(8px, env(safe-area-inset-top)); width: calc(100vw - 16px); }
     .hint { right: 12px; bottom: 76px; }
     .chooser { left: 0; right: auto; bottom: 0; width: 100vw; max-width: 100vw; max-height: calc(100vh - env(safe-area-inset-top)); max-height: calc(100dvh - env(safe-area-inset-top)); border-radius: 22px 22px 0 0; padding: 22px 14px max(18px, env(safe-area-inset-bottom)); overscroll-behavior: contain; }
     .lang-btn { min-height: 68px; padding: 12px; }
@@ -564,11 +568,14 @@
   };
   function statusKey(r) {
     if (r.status === 'ok') return r.verified ? 'ok' : 'mt';
-    if (r.status === 'gist') return 'gist';
+    if (r.status === 'gist') return r.verified ? 'gist' : 'mt';
     if (r.status === 'blocked') return 'block';
     return 'none';
   }
   function pillFor(r) {
+    if (r.status === 'gist' && !r.verified) {
+      return h('span', { class: 'pill mt' }, icon('alert'), ui('ui_draft_summary', BASE === 'en' ? 'Unvalidated summary' : 'R\u00e9sum\u00e9 non valid\u00e9'));
+    }
     const [cls, ic, id, fr] = STATUS[statusKey(r)];
     return h('span', { class: `pill ${cls}` }, icon(ic), ui(id, fr));
   }
@@ -943,6 +950,7 @@
   // ======================================================================================
   function togglePanel(force) {
     state.panelOpen = force ?? !state.panelOpen;
+    if (state.panelOpen) clearToasts();
     panel.classList.toggle('show', state.panelOpen);
     fab.classList.toggle('hidden-under-sheet', state.panelOpen && innerWidth <= 640);
     if (state.panelOpen) { setTab(state.tab || 'chat'); hideHint(); }
@@ -1102,20 +1110,64 @@
     });
   }
 
-  function toast(u) {
-    if (!state.settings.toasts || !toastBox) return;
-    const close = () => t.remove();
-    const t = h('div', { class: `toast k-${u.result.kind || 'info'}`, role: 'alert' },
-      block(u, { isNew: true }),
-      h('button', { class: 'x', 'aria-label': ui('ui_close', 'Fermer'), onclick: close }, icon('x')),
+  const toastQueue = [];
+  let activeToast = null;
+  let toastTimer = null;
+  function clearToasts() {
+    toastQueue.length = 0;
+    clearTimeout(toastTimer);
+    toastTimer = null;
+    activeToast?.remove();
+    activeToast = null;
+    if (toastBox) toastBox.replaceChildren();
+  }
+  function showNextToast() {
+    if (activeToast || !toastBox || state.panelOpen || !toastQueue.length) return;
+    const u = toastQueue.shift();
+    const r = u.result;
+    const trusted = r.verified === true && (r.status === 'ok' || r.status === 'gist');
+    const kind = r.kind || 'warning';
+    const title = kind === 'error'
+      ? (BASE === 'en' ? 'Error message' : 'Message d\u2019erreur')
+      : kind === 'success'
+        ? (BASE === 'en' ? 'Success message' : 'Confirmation')
+        : (BASE === 'en' ? 'Security warning' : 'Avertissement de s\u00e9curit\u00e9');
+    const message = trusted ? shownText(u) : u.text;
+    const stateText = trusted
+      ? (r.status === 'gist'
+        ? (BASE === 'en' ? 'Validated safe summary' : 'R\u00e9sum\u00e9 valid\u00e9')
+        : (BASE === 'en' ? 'Validated by a speaker' : 'Valid\u00e9 par un locuteur'))
+      : (BASE === 'en'
+        ? 'Unvalidated translation; showing the original message.'
+        : 'Traduction non valid\u00e9e ; texte original affich\u00e9.');
+    const t = h('div', { class: `toast k-${kind}`, role: 'alert' });
+    const dismiss = () => {
+      if (activeToast !== t) return;
+      activeToast = null;
+      t.remove();
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(showNextToast, 180);
+    };
+    t.append(
+      h('div', { class: 'toast-head' }, icon(kind === 'success' ? 'check' : 'alert'), h('strong', {}, title)),
+      h('div', { class: 'toast-copy' }, message),
+      h('div', { class: 'toast-state' }, stateText),
+      h('button', { class: 'toast-open', onclick: () => { clearToasts(); togglePanel(true); setTab('list'); } }, BASE === 'en' ? 'View full message' : 'Voir le message complet'),
+      h('button', { class: 'x', 'aria-label': ui('ui_close', 'Fermer'), onclick: dismiss }, icon('x')),
       h('div', { class: 'bar' }));
-    t.querySelector('.bar').addEventListener('animationend', close);
-    toastBox.append(t);
-    while (toastBox.children.length > 3) toastBox.firstChild.remove();
-    if (state.settings.autoSpeak !== false) {
-      const steps = stepsFor(u.result);
+    activeToast = t;
+    toastBox.replaceChildren(t);
+    t.querySelector('.bar').addEventListener('animationend', dismiss, { once: true });
+    if (state.settings.autoSpeak !== false && trusted) {
+      const steps = stepsFor(r);
       if (steps) player.play(steps);
     }
+  }
+  function toast(u) {
+    if (!state.settings.toasts || !toastBox || state.panelOpen) return;
+    toastQueue.push(u);
+    if (toastQueue.length > 3) toastQueue.shift();
+    showNextToast();
   }
 
   let hintEl = null;
