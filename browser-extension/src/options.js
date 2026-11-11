@@ -62,6 +62,7 @@ async function loadAll() {
   ttsEndpoints.mms = settings.tts.endpoint || ttsEndpoints.mms;
   ttsEndpoints.africa = settings.tts.africaEndpoint || ttsEndpoints.africa;
   ttsChosen = !!settings.tts.chosen;
+  $('ttsVoice').value = settings.tts.voice || 'female';
   $('ttsEndpoint').value = ttsEndpoints[settings.tts.mode === 'auto' ? 'africa' : settings.tts.mode] || ttsEndpoints.mms;
   checkVoice();
   $('autoSpeak').checked = settings.autoSpeak !== false;
@@ -441,6 +442,7 @@ $('saveMt').onclick = async () => {
         endpoint: $('ttsMode').value === 'mms' ? $('ttsEndpoint').value.trim() : ttsEndpoints.mms,
         africaEndpoint: ['africa', 'auto'].includes($('ttsMode').value) ? $('ttsEndpoint').value.trim() : ttsEndpoints.africa,
         chosen: ttsChosen,
+        voice: $('ttsVoice').value,
       },
       autoSpeak: $('autoSpeak').checked,
       onlineVoice: (onlineVoice = $('onlineVoice').checked),

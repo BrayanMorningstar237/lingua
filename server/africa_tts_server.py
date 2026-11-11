@@ -39,6 +39,11 @@ CACHE_MAX = 300           # recent phrases kept in memory
 # Africa TTS language codes Langwa uses (Pidgin is sent as "eng").
 LANGS = {"ewo", "dua", "bas", "eng", "fub", "bbj", "nge", "bkm"}
 WARM = ["eng", "ewo", "dua", "bas", "fub"]  # voices prepared ahead
+# Voice timbre. "default" = the language's own recorded speaker. "female" = a clear female
+# speaker from the model's voices (pronunciation still follows the language). Any voice id
+# from models/africa-tts/voices (e.g. "hau", "yor") can also be asked for.
+FEMALE = os.environ.get("LANGWA_FEMALE_VOICE", "hau")
+VOICE_DIR = None  # set when the model loads
 REPO = "AfriSpeech/africa-tts"
 MODEL_DIR = Path(__file__).resolve().parent / "models" / "africa-tts"
 NEEDED = ("config.yaml", "model.safetensors", "tokenizer.json")
@@ -135,7 +140,7 @@ def download(folder: Path = MODEL_DIR) -> None:
 
 def load_model(folder: Path) -> None:
     """Runs in the background: the HTTP port is already open while this works."""
-    global MODEL
+    global MODEL, VOICE_DIR
     try:
         set_state("loading", "importing PyTorch")
         import torch
@@ -155,18 +160,32 @@ def load_model(folder: Path) -> None:
         for lang in WARM:  # one short phrase per voice: the first real request is then quick
             try:
                 model.generate("Ok.", lang=lang)
+                model.generate("Ok.", lang=lang, voice=str(folder / "voices" / f"{FEMALE}.wav"))
             except Exception as exc:  # noqa: BLE001
                 log(f"voice {lang} not ready: {exc}")
+        VOICE_DIR = folder / "voices"
         MODEL = model
         set_state("ready", f"model loaded in {time.time() - t0:.0f}s")
     except Exception as exc:  # noqa: BLE001
         set_state("error", str(exc))
 
 
-def synthesize(text: str, lang: str) -> bytes:
+def voice_path(voice: str):
+    """None = the language's default speaker; else a bundled reference voice file."""
+    if not voice or voice == "default" or VOICE_DIR is None:
+        return None
+    vid = FEMALE if voice == "female" else voice
+    path = VOICE_DIR / f"{vid}.wav"
+    if not (len(vid) <= 8 and vid.isalnum() and path.is_file()):
+        raise ValueError(f"unknown voice: {voice}")
+    return str(path)
+
+
+def synthesize(text: str, lang: str, voice: str = "") -> bytes:
     if lang not in LANGS:
         raise ValueError(f"unsupported language code: {lang}")
-    key = (lang, text)
+    vpath = voice_path(voice)
+    key = (lang, voice or 'default', text)
     if key in CACHE:
         CACHE.move_to_end(key)
         return CACHE[key]
@@ -174,7 +193,7 @@ def synthesize(text: str, lang: str) -> bytes:
     import soundfile as sf
 
     with LOCK:  # one synthesis at a time: predictable CPU use
-        audio = MODEL.generate(text[:MAX_TEXT], lang=lang)
+        audio = MODEL.generate(text[:MAX_TEXT], lang=lang, voice=vpath)
     buf = io.BytesIO()
     sf.write(buf, np.clip(audio, -1.0, 1.0), MODEL.sample_rate, format="WAV", subtype="PCM_16")
     wav = buf.getvalue()
@@ -216,10 +235,11 @@ class Handler(BaseHTTPRequestHandler):
                 raise ValueError("request body must be between 1 and 32000 bytes")
             body = json.loads(self.rfile.read(size))
             text, lang = body.get("text", ""), body.get("lang", "")
+            voice = str(body.get("voice") or "")
             if not isinstance(text, str) or not text.strip():
                 raise ValueError("text is required")
             t0 = time.time()
-            wav = synthesize(text.strip(), lang)
+            wav = synthesize(text.strip(), lang, voice)
             self._headers(200, "audio/wav")
             self.wfile.write(wav)
             log(f"spoke {len(text)} chars in {lang} ({time.time() - t0:.1f}s)")

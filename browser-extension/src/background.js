@@ -19,7 +19,8 @@ const DEFAULT_SETTINGS = {
   autoSpeak: true, // read new important messages aloud when a recording exists
   mt: { mode: 'none', endpoint: 'http://localhost:11434/v1/chat/completions', model: 'qwen2.5:7b-instruct' },
   // 'auto': the local voice (Africa TTS) whenever its server runs on this computer, else the browser voice
-  tts: { mode: 'auto', endpoint: 'http://127.0.0.1:8766/tts', africaEndpoint: 'http://127.0.0.1:8770/tts' },
+  // voice: 'female' (a clear female speaker) or 'default' (the language's own recorded speaker)
+  tts: { mode: 'auto', voice: 'female', endpoint: 'http://127.0.0.1:8766/tts', africaEndpoint: 'http://127.0.0.1:8770/tts' },
   asr: { mode: 'browser', endpoint: 'http://127.0.0.1:8767/asr' }, // voice questions: 'browser' (with consent), 'local' (MMS server), 'none'
 };
 
@@ -73,7 +74,8 @@ async function synthesize(code, text) {
   const modelLang = isAfrica ? lang.africaTts : settings.tts.mode === 'mms' ? lang.mms : null;
   const endpoint = isAfrica ? settings.tts.africaEndpoint : settings.tts.endpoint;
   if (!modelLang || !text || !endpoint) return null;
-  const key = `${settings.tts.mode}\u0001${code}\u0001${text}`;
+  const voice = isAfrica ? settings.tts.voice || 'female' : '';
+  const key = `${settings.tts.mode}\u0001${voice}\u0001${code}\u0001${text}`;
   if (ttsCache.has(key)) return ttsCache.get(key);
   if (Date.now() < ttsDownUntil) return { fail: ttsDownWhy };
   try {
@@ -81,7 +83,7 @@ async function synthesize(code, text) {
       signal: AbortSignal.timeout(Math.min(20000, 4000 + text.length * 60)),
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ text, lang: modelLang }),
+      body: JSON.stringify({ text, lang: modelLang, voice }),
     });
     if (!r.ok) {
       voiceHealth.ready = false;

@@ -162,6 +162,12 @@
           <option value="mms">MMS-TTS local (server/tts_server.py), fulfulde</option>
         </select>
       </label>
+      <label>Timbre de la voix locale
+        <select id="ttsVoice">
+          <option value="female">Féminine</option>
+          <option value="default">Voix d'origine de chaque langue (masculine pour l'ewondo et le duala)</option>
+        </select>
+      </label>
       <label>Adresse<input type="url" id="ttsEndpoint"></label>
       <div id="ttsStatus" class="vstat" role="status" aria-live="polite" hidden></div>
       <label style="font-weight:500;display:flex;gap:8px;align-items:center"><input type="checkbox" id="autoSpeak"> Lire à voix haute les nouveaux messages importants</label>

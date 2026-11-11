@@ -42,10 +42,31 @@
       const valueAfter = i => {
         const u = units[i];
         if (/:\s*\S/.test(u.text) && u.result && u.result.status === 'ok') return u.text.split(/:\s*/).slice(1).join(': ');
-        for (let k = i + 1; k < Math.min(units.length, i + 4); k++) if (units[k].result && units[k].result.value) return units[k].text;
+        for (let k = i + 1; k < Math.min(units.length, i + 4); k++) {
+          const next = units[k];
+          // Stepper badges are protected values too. A nearby bare "4" is a step
+          // number, never an amount or beneficiary value.
+          if (next.result && next.result.value && /\p{L}/u.test(next.text)) return next.text;
+        }
         return null;
       };
       const val = ids => { for (const id of ids) { const i = idx(id); if (i >= 0) { const v = valueAfter(i); if (v) return v; } } return null; };
+      const currencyValue = u => u && u.result && u.result.value && /(?:FCFA|CFA|XAF|XOF)/i.test(u.text) ? u.text.trim() : null;
+      // Financial labels and values are often separate, deeply nested DOM blocks. Search
+      // nearby protected values instead of assuming the amount is one of the next three units.
+      const moneyNear = ids => {
+        for (const id of ids) {
+          const i = idx(id);
+          if (i < 0) continue;
+          const direct = currencyValue(units[i]);
+          if (direct) return direct;
+          for (let k = i + 1; k < Math.min(units.length, i + 16); k++) {
+            const v = currencyValue(units[k]);
+            if (v) return v;
+          }
+        }
+        return null;
+      };
       const heading = units.find(u => /^H[1-3]$/.test(u.el.tagName) && u.result && !u.result.value);
       const isButton = u => /^(BUTTON|A)$/.test(u.el.tagName) || u.el.getAttribute('role') === 'button' || (u.el.tagName === 'INPUT' && /submit|button/.test(u.el.type));
       const buttons = units.filter(u => isButton(u) && u.result && !u.result.value);
@@ -53,11 +74,11 @@
       const main = order.map(id => buttons.find(b => (b.result.ids || []).includes(id) || b.result.id === id)).find(Boolean) || buttons[buttons.length - 1];
       return {
         title: heading ? shownText(heading) : (document.title || '').split(/\s+[|·•–—-]\s+/)[0],
-        total: val(['total_debited']),
-        amount: val(['amount', 'amount_to_send']),
-        fees: val(['step_costs', 'fees', 'transfer_fees', 'transaction_fees']),
-        receiver: val(['beneficiary', 'step_beneficiary', 'beneficiary_name']),
-        balance: val(['available_balance', 'balance']),
+        total: moneyNear(['total_debited']) || val(['total_debited']),
+        amount: moneyNear(['amount', 'amount_to_send']) || val(['amount', 'amount_to_send']),
+        fees: moneyNear(['fees', 'transfer_fees', 'transaction_fees']) || val(['fees', 'transfer_fees', 'transaction_fees']),
+        receiver: val(['beneficiary', 'beneficiary_name']),
+        balance: moneyNear(['available_balance', 'balance']) || val(['available_balance', 'balance']),
         warnings: units.filter(u => u.result && (u.result.kind === 'warning' || u.result.kind === 'error') && !u.result.value).map(shownText),
         next: main ? `«${shownText(main)}»` : null,
       };
@@ -94,6 +115,38 @@
       return out.join(' ');
     }
 
+    /** Kamtok replies use the same page facts as the built-in answers, with short natural wording. */
+    function answerKamtok(intent) {
+      if (state.pack.code !== 'wes') return null;
+      const f = facts();
+      // A bare step number can be mistaken for the transfer amount when a page
+      // has several stages. Only report values that visibly carry the currency.
+      const money = value => value && /(?:FCFA|CFA|XAF|F\s*CFA)/i.test(value) ? value : null;
+      const amount = money(f.amount);
+      const total = money(f.total);
+      const fees = money(f.fees);
+      const balance = money(f.balance);
+      const out = [];
+      if (intent === 'page') {
+        out.push('Dis page na for check the transfer before you send am. Check the amount and the person wey go receive am.');
+        if (f.receiver) out.push(`Na ${f.receiver} go receive the money.`);
+      } else if (intent === 'amount') {
+        if (total || amount) out.push(`All the money wey go comot for your account na ${total || amount}.`);
+        if (fees) out.push(`The charges na ${fees}.`);
+        if (!out.length && balance) out.push(`You never choose how much to send yet. The money wey you fit use na ${balance}.`);
+        if (!out.length) out.push('I no see the amount for this page.');
+      } else if (intent === 'receiver') {
+        out.push(f.receiver ? `Na ${f.receiver} go receive the money.` : 'The person wey go receive the money never show for this page.');
+      } else if (intent === 'warning') {
+        out.push(f.warnings.length ? 'Before you confirm, check the receiver name and number well.' : 'I no see any warning for this page.');
+      } else if (intent === 'next') {
+        out.push(f.next ? `If you don check everything, press ${f.next}.` : 'I no see the next button for this page.');
+      } else if (intent === 'balance') {
+        out.push(balance ? `The money wey you fit use now na ${balance}.` : 'I no see your available balance for this page.');
+      }
+      return out.length ? out.join(' ') : null;
+    }
+
     /** Answer text -> speech steps: words in the national voice, amounts/names read exactly. */
     function stepsOf(text) {
       const m = P.mask(text, { brands: state.brands || [] });
@@ -102,7 +155,13 @@
       for (const t of m.tokens) {
         const [before, after] = rest.split(t.key);
         if (/\p{L}/u.test(before)) steps.push({ missing: true, text: before.trim() });
-        steps.push({ value: t.value, type: t.type });
+        if (state.pack.code === 'wes' && t.type === 'money') {
+          // Keep the exact amount, but send its spoken form through the selected Kamtok
+          // voice (Africa TTS or an English Nigerian/Cameroonian browser voice), not French.
+          const rawNumber = (t.value.match(/\d[\d\s.,]*\d|\d/) || [''])[0];
+          const number = root.LangwaSpeech ? root.LangwaSpeech.spokenNumber(rawNumber) : rawNumber.replace(/[\s.,]/g, '');
+          steps.push({ missing: true, text: `${number} CFA francs` });
+        } else steps.push({ value: t.value, type: t.type });
         rest = after || '';
       }
       if (/\p{L}/u.test(rest)) steps.push({ missing: true, text: rest.trim() });
@@ -120,7 +179,7 @@
       if (!q) return;
       push({ role: 'me', text: q });
       const intent = intentHint || detectIntent(q);
-      if (intent) return reply(answer(intent));
+      if (intent) return reply(answerKamtok(intent) || answer(intent));
       // Free question: local open-source model, if set up.
       if (state.settings.mt && state.settings.mt.mode === 'openai') {
         const thinking = push({ role: 'bot', text: '…', pending: true });
@@ -128,7 +187,11 @@
         let res = null;
         try { res = await send({ type: 'chat', lang: state.pack.code, question: q, context }); } catch { res = null; }
         chat.splice(chat.indexOf(thinking), 1);
-        if (res && res.text && numbersAreFromPage(res.text)) return reply(res.text, { model: true });
+        if (res && res.text && numbersAreFromPage(res.text)) {
+          // Do not show unconstrained model prose as Kamtok: many local models only know
+          // Nigerian Pidgin or produce literal English word order. Keep the grounded path.
+          if (state.pack.code !== 'wes') return reply(res.text, { model: true });
+        }
       }
       reply(ui('ans_unknown', 'Je peux répondre à ces questions :'), { chips: true });
     }
