@@ -43,13 +43,24 @@
   /* hero */
   .hero { background: var(--ebony); color: var(--ivory); padding: 72px 0 88px; overflow: hidden; }
   .hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center; }
-  .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+  .hero .wrap > * { min-width: 0; } /* the scrolling language row must not widen the column */
+  .eyebrow { display: inline-flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 700; letter-spacing: .02em; color: var(--gold-soft);
+    margin-bottom: 22px; padding: 7px 14px 7px 11px; border-radius: 99px; background: rgba(227,162,26,.1); box-shadow: inset 0 0 0 1px rgba(227,162,26,.35); }
+  .eyebrow .pulse { width: 8px; height: 8px; border-radius: 99px; background: var(--gold); box-shadow: 0 0 0 0 rgba(227,162,26,.6); animation: hpulse 2.2s ease-out infinite; }
+  @keyframes hpulse { 70% { box-shadow: 0 0 0 8px rgba(227,162,26,0); } 100% { box-shadow: 0 0 0 0 rgba(227,162,26,0); } }
+  .langstrip { margin: -6px 0 30px; }
+  .ls-label { display: block; font-size: 13px; font-weight: 700; letter-spacing: .04em; color: var(--sand); opacity: .8; margin-bottom: 10px; }
+  .ls-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ls-row span { display: inline-flex; align-items: center; gap: 7px; padding: 7px 13px; border-radius: 99px; font-size: 14px; font-weight: 600; color: var(--ivory);
+    background: rgba(251,246,238,.06); box-shadow: inset 0 0 0 1px rgba(251,246,238,.14); white-space: nowrap; }
+  .ls-row span.ready::before { content: ""; width: 7px; height: 7px; border-radius: 99px; background: #7fd9a8; }
+  @media (prefers-reduced-motion: reduce) { .eyebrow .pulse { animation: none; } }
   h1 { font-size: clamp(36px, 5.4vw, 60px); line-height: 1.06; letter-spacing: -.02em; margin: 0 0 20px; }
   h1 em { font-style: normal; color: var(--gold); }
   .hero p.lead { font-size: 19px; color: var(--sand); max-width: 540px; margin: 0 0 32px; }
   .cta { display: flex; flex-wrap: wrap; gap: 12px; }
-  .hero .meta { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 14px; color: var(--sand); }
-  .hero .meta span { display: inline-flex; align-items: center; gap: 7px; }
+  .hero .meta { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 8px; font-size: 13.5px; color: var(--sand); }
+  .hero .meta > span { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px 6px 9px; border-radius: 99px; background: rgba(251,246,238,.05); }
   .hero .meta svg { width: 17px; height: 17px; color: var(--forest-2); }
 
   /* product preview (pure HTML, no screenshot) */
@@ -190,9 +201,22 @@
   @media (max-width: 640px) {
     body { font-size: 16px; }
     .wrap { padding: 0 18px; }
-    .hero { padding: 36px 0 48px; }
-    .hero p.lead { font-size: 17px; margin-bottom: 24px; }
-    .cta .btn { flex: 1 1 100%; }
+    .hero { padding: 30px 0 44px; }
+    .hero .wrap > div:first-child { text-align: center; }
+    .hero h1 { font-size: 36px; line-height: 1.08; margin-bottom: 16px; }
+    .hero p.lead { font-size: 16.5px; line-height: 1.55; margin: 0 auto 22px; }
+    .eyebrow { font-size: 12px; margin-bottom: 18px; }
+    .langstrip { margin: 0 -18px 24px; }
+    .ls-label { margin-bottom: 8px; }
+    .ls-row { flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x proximity; padding: 2px 18px 4px; scrollbar-width: none;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 28px), transparent); }
+    .ls-row::-webkit-scrollbar { display: none; }
+    .ls-row { scroll-padding-inline: 18px; }
+    .ls-row span { scroll-snap-align: start; }
+    .cta { gap: 10px; }
+    .cta .btn { flex: 1 1 100%; padding: 16px 20px; font-size: 16.5px; border-radius: 16px; }
+    .cta .btn.light { background: transparent; padding: 13px 20px; }
+    .hero .meta { justify-content: center; margin-top: 20px; gap: 6px; font-size: 12.5px; }
     section.block { padding: 48px 0; }
     .sub { font-size: 16px; margin-bottom: 24px; }
     .grid3, .grid2 { gap: 10px; }
@@ -275,9 +299,13 @@
 <header class="hero">
   <div class="wrap">
     <div>
-      <div class="eyebrow" data-en="SAFINUM Innovate Challenge prototype">Prototype · SAFINUM Innovate Challenge</div>
+      <div class="eyebrow"><span class="pulse" aria-hidden="true"></span><span data-en="SAFINUM Innovate Challenge · Prototype">SAFINUM Innovate Challenge · Prototype</span></div>
       <h1><span data-en="Online banking,">La banque en ligne,</span> <em data-en="in your language.">dans votre langue.</em></h1>
       <p class="lead" data-en="Langwa shows banking and mobile-money sites in Cameroon's national languages, in text and by voice. Amounts stay exact. The bank's site stays untouched.">Langwa affiche les sites de banque et de mobile money dans les langues nationales du Cameroun, à l’écrit et à l’oral. Les montants restent exacts. Le site de la banque reste inchangé.</p>
+      <div class="langstrip">
+        <span class="ls-label" data-en="In your language:">Dans votre langue :</span>
+        <div class="ls-row" id="heroLangs"></div>
+      </div>
       <div class="cta">
         <a class="btn gold" href="#install"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Install Langwa, free">Installer Langwa, gratuit</span></a>
         <a class="btn light" href="contribute/"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span data-en="Help translate">Aider à traduire</span></a>
@@ -530,6 +558,9 @@
     d.append(el('span', 'help', EN ? 'Help translate →' : 'Aider à traduire →'));
     return d;
   }));
+
+  // Hero: the languages people recognise, the ones already usable marked with a green dot.
+  document.getElementById('heroLangs').replaceChildren(...ranked.map(([, l]) => el('span', l.count ? 'ready' : '', l.name.split(' (')[0])));
 
   // Install: highlight the option that matches this device and browser.
   const ua = navigator.userAgent;

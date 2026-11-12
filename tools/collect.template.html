@@ -52,6 +52,16 @@
   .langbar b { color: var(--fg); }
   .langbar .chg { margin-left: auto; border: 1.5px solid var(--line); background: transparent; color: var(--fg); font: 700 13.5px inherit; font-family: inherit; padding: 6px 12px; border-radius: 10px; cursor: pointer; }
   .langbar .chg:hover { border-color: #e3a21a; }
+  .langbar .sendnow { display: inline-flex; align-items: center; gap: 6px; border: 0; background: #1fa855; color: #fff; font: 700 13.5px inherit; font-family: inherit; padding: 7px 12px; border-radius: 10px; cursor: pointer; }
+  .langbar .sendnow svg { width: 15px; height: 15px; }
+  .langbar .sendnow:disabled { opacity: .45; cursor: default; }
+  .stepno { font-size: 12.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #9a6a00; margin: 4px 0 6px; }
+  .backlink { display: inline-flex; align-items: center; gap: 6px; border: 0; background: none; color: var(--muted); font: 600 14px inherit; font-family: inherit; padding: 6px 0; margin-bottom: 6px; cursor: pointer; }
+  .backlink svg { width: 16px; height: 16px; }
+  .chosen { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 18px; padding: 12px 14px; border-radius: 14px; background: color-mix(in srgb, #e3a21a 12%, var(--card)); border: 1.5px solid #e3a21a; color: var(--muted); font-size: 14.5px; }
+  .chosen b { color: var(--fg); font-size: 16px; }
+  .field small:empty { display: none; }
+  .noneyet { margin: 6px 0 0; color: var(--muted); }
   .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 14px; padding: 14px 18px; font-weight: 700; }
   .btn.primary { background: var(--ebony); color: var(--ivory); } .btn.primary svg { color: var(--gold); }
   .btn.gold { background: var(--gold); color: var(--ebony); }
@@ -110,20 +120,31 @@
 <main>
   <!-- 1. Who and which language -->
   <section id="start">
+    <div class="stepno" data-t="obStep1"></div>
     <h1 data-t="title"></h1>
     <p class="lead" data-t="lead"></p>
     <div class="field" data-t="chooseLang"></div>
     <label class="lsearch"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" id="lq" autocomplete="off" spellcheck="false"></label>
     <div class="langs" id="langs"></div>
     <p class="nolang" id="nolang" hidden></p>
-    <label class="field"><span data-t="yourName"></span><input type="text" id="name" autocomplete="name"></label>
-    <label class="field"><span data-t="yourPlace"></span><input type="text" id="place"><small data-t="placeHelp"></small></label>
-    <button class="btn primary wide" id="go" disabled><span data-t="start"></span><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></button>
+  </section>
+
+  <!-- 1b. About you (after choosing the language) -->
+  <section id="about" hidden>
+    <button type="button" class="backlink" id="toLangs"><svg viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg><span data-t="change"></span></button>
+    <div class="stepno" data-t="obStep2"></div>
+    <h1 data-t="aboutTitle"></h1>
+    <div class="chosen"><span data-t="translatingInto"></span><b id="chosenLang"></b></div>
+    <label class="field"><span data-t="yourName"></span><input type="text" id="name" autocomplete="name" enterkeyhint="next"></label>
+    <label class="field"><span data-t="yourTribe"></span><input type="text" id="tribe" enterkeyhint="next"><small data-t="tribeHelp"></small></label>
+    <label class="field"><span data-t="yourPlace"></span><input type="text" id="place" enterkeyhint="go"><small data-t="placeHelp"></small></label>
+    <button class="btn primary wide" id="go" disabled><span data-t="startTr"></span><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></button>
   </section>
 
   <!-- 2. One phrase per screen -->
   <section id="phrase" hidden>
-    <div class="langbar"><span data-t="translatingInto"></span><b id="curLang"></b><button type="button" class="chg" id="changeLang"><span data-t="change"></span></button></div>
+    <div class="langbar"><span data-t="translatingInto"></span><b id="curLang"></b><button type="button" class="chg" id="changeLang"><span data-t="change"></span></button>
+      <button type="button" class="sendnow" id="sendNow"><svg viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg><span id="sendNowTxt"></span></button></div>
     <div class="card">
       <span class="tag" id="group"></span>
       <div class="lg"><span class="flag">FR</span><span data-t="frLabel"></span></div>
@@ -174,7 +195,7 @@ const EN = /^en/i.test(navigator.language || '');
 const T = EN ? {
   subtitle: 'Help translate banking into your language', title: 'Translate Langwa into your language',
   lead: 'You will see short banking sentences. Write what they mean in your language, as you would explain it to a relative. About 2 hours for everything; you can stop and continue later.',
-  chooseLang: 'Which language do you want to translate into?', translatingInto: 'You are translating into', change: 'Change language', searchLang: 'Search: Pidgin, Fulani, Bamiléké, Kumbo…', noLang: 'No language found. Try another name or a town.', needs: 'Needs translators', autoDraft: 'Automatic draft, to check', yours: '{n} translated by you', yourName: 'Your name', yourPlace: 'Village, town or region (optional)', placeHelp: 'Helps us know which variety of the language you speak.',
+  chooseLang: 'Which language do you want to translate into?', translatingInto: 'You are translating into', change: 'Change language', searchLang: 'Search: Pidgin, Fulani, Bamiléké, Kumbo…', noLang: 'No language found. Try another name or a town.', needs: 'Needs translators', autoDraft: 'Automatic draft, to check', yours: '{n} translated by you', yourName: 'Your name', yourPlace: 'Village or town (optional)', placeHelp: '', yourTribe: 'Your tribe or people (optional)', tribeHelp: 'For example Bamoun, Bassa, Fulani, Nso. It helps us know which variety of the language you speak.', obStep1: 'Step 1 of 2', obStep2: 'Step 2 of 2', aboutTitle: 'Tell us about you', startTr: 'Start translating', sendNow: 'Send ({n})', noneYet: 'Translate at least one sentence, then send it. You can send at any time, even a few sentences.',
   start: 'Start', suggestions: 'Dictionary words (tap to insert, check them):', addExplain: 'Add a short explanation (optional)',
   skip: 'Skip', next: 'Next', translationIn: 'Your translation in', frLabel: 'French', enLabel: 'English, same sentence', keep: 'Keep these markers exactly:', record: 'Record', again: 'Record again', stop: 'Stop', play: 'Play',
   recordWhole: 'Record the whole sentence', recordPiece: 'Record this piece', valueAuto: 'read automatically',
@@ -183,7 +204,7 @@ const T = EN ? {
 } : {
   subtitle: 'Aidez à traduire la banque dans votre langue', title: 'Traduisez Langwa dans votre langue',
   lead: 'Vous verrez de courtes phrases de banque. Écrivez leur sens dans votre langue, comme vous l’expliqueriez à un parent. Environ 2 heures pour tout ; vous pouvez arrêter et reprendre plus tard.',
-  chooseLang: 'Dans quelle langue voulez-vous traduire ?', translatingInto: 'Vous traduisez en', change: 'Changer de langue', searchLang: 'Rechercher : pidgin, peul, bamiléké, Kumbo…', noLang: 'Aucune langue trouvée. Essayez un autre nom ou une ville.', needs: 'Besoin de traducteurs', autoDraft: 'Brouillon automatique, à vérifier', yours: '{n} traduites par vous', yourName: 'Votre nom', yourPlace: 'Village, ville ou région (facultatif)', placeHelp: 'Pour savoir quelle variété de la langue vous parlez.',
+  chooseLang: 'Dans quelle langue voulez-vous traduire ?', translatingInto: 'Vous traduisez en', change: 'Changer de langue', searchLang: 'Rechercher : pidgin, peul, bamiléké, Kumbo…', noLang: 'Aucune langue trouvée. Essayez un autre nom ou une ville.', needs: 'Besoin de traducteurs', autoDraft: 'Brouillon automatique, à vérifier', yours: '{n} traduites par vous', yourName: 'Votre nom', yourPlace: 'Village ou ville (facultatif)', placeHelp: '', yourTribe: 'Votre ethnie ou peuple (facultatif)', tribeHelp: 'Par exemple bamoun, bassa, peul, nso. Cela nous aide à savoir quelle variété de la langue vous parlez.', obStep1: 'Étape 1 sur 2', obStep2: 'Étape 2 sur 2', aboutTitle: 'Parlez-nous de vous', startTr: 'Commencer à traduire', sendNow: 'Envoyer ({n})', noneYet: 'Traduisez au moins une phrase, puis envoyez-la. Vous pouvez envoyer à tout moment, même quelques phrases.',
   start: 'Commencer', suggestions: 'Mots du dictionnaire (touchez pour insérer, vérifiez-les) :', addExplain: 'Ajouter une courte explication (facultatif)',
   skip: 'Passer', next: 'Suivant', translationIn: 'Votre traduction en', frLabel: 'Français', enLabel: 'Anglais, même phrase', keep: 'Gardez exactement ces marqueurs :', record: 'Enregistrer', again: 'Réenregistrer', stop: 'Arrêter', play: 'Écouter',
   recordWhole: 'Enregistrez toute la phrase', recordPiece: 'Enregistrez ce morceau', valueAuto: 'lu automatiquement',
@@ -208,13 +229,13 @@ const idb = async (mode, fn) => { const d = await db; return new Promise((res, r
 const load = k => idb('readonly', s => s.get(k)).catch(() => null);
 const save = (k, v) => idb('readwrite', s => s.put(v, k)).catch(() => {});
 
-let st = { lang: '', name: '', place: '', i: 0, entries: {}, other: {} }; // other: progress in other languages, kept apart
+let st = { lang: '', name: '', place: '', tribe: '', i: 0, entries: {}, other: {} }; // other: progress in other languages, kept apart
 const placeholders = s => (String(s || '').match(/\{\w+\}/g) || []).sort().join(',');
 const split = t => { const segs = [], names = []; let last = 0; String(t).replace(/\{(\w+)\}/g, (m, n, i) => { segs.push(t.slice(last, i)); names.push(n); last = i + m.length; return m; }); segs.push(String(t).slice(last)); return { segs, names }; };
 const fold = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 const persist = () => save('state', st);
 function toast(msg) { const t = el('div', { class: 'toast' }, msg); document.body.append(t); setTimeout(() => t.remove(), 1400); }
-function counts() { const done = PHRASES.filter(p => (st.entries[p.id] || {}).t).length; $('count').textContent = st.lang ? `${done} / ${PHRASES.length}` : ''; $('prog').style.width = `${(100 * done) / PHRASES.length}%`; return done; }
+function counts() { const done = PHRASES.filter(p => (st.entries[p.id] || {}).t).length; if ($('sendNowTxt')) { $('sendNowTxt').textContent = T.sendNow.replace('{n}', done); $('sendNow').disabled = !done; } $('count').textContent = st.lang ? `${done} / ${PHRASES.length}` : ''; $('prog').style.width = `${(100 * done) / PHRASES.length}%`; return done; }
 
 // ---------- 1. start ----------
 // The language being chosen on the start screen (confirmed with "Start").
@@ -242,7 +263,7 @@ function renderStart() {
     const b = el('button', { class: `lang${pick === code ? ' on' : ''}`, type: 'button', 'aria-pressed': String(pick === code) },
       el('b', {}, l.name), el('small', {}, l.region || ''), status, n ? el('span', { class: 'mine' }, `✓ ${T.yours.replace('{n}', n)}`) : null);
     b.dataset.q = qfold(`${code} ${l.name} ${l.region || ''} ${l.search || ''}`);
-    b.onclick = () => { pick = code; for (const x of btns) { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', String(x === b)); } check(); };
+    b.onclick = () => { pick = code; show('about'); renderAbout(); };
     return b;
   });
   $('langs').replaceChildren(...btns);
@@ -257,10 +278,24 @@ function renderStart() {
     for (const b of btns) { const ok = words.every(w => b.dataset.q.includes(w)); b.hidden = !ok; shown += ok; }
     $('nolang').hidden = shown > 0;
   };
-  $('name').value = st.name; $('place').value = st.place;
+}
+// Step 2: name (required), tribe and town (optional), then translating.
+function renderAbout() {
+  $('chosenLang').textContent = (DATA.langs[pick] || {}).name || pick;
+  $('name').value = st.name; $('tribe').value = st.tribe || ''; $('place').value = st.place;
   const check = () => { $('go').disabled = !(pick && $('name').value.trim()); };
+  const start = () => {
+    if ($('go').disabled) { $('name').focus(); return; }
+    st.name = $('name').value.trim(); st.tribe = $('tribe').value.trim(); st.place = $('place').value.trim();
+    switchLang(pick); persist(); show('phrase'); renderPhrase();
+  };
   $('name').oninput = check; check();
-  $('go').onclick = () => { st.name = $('name').value.trim(); st.place = $('place').value.trim(); switchLang(pick); persist(); show('phrase'); renderPhrase(); };
+  $('go').onclick = start;
+  // Enter moves to the next field, and starts from the last one.
+  $('name').onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); $('tribe').focus(); } };
+  $('tribe').onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); $('place').focus(); } };
+  $('place').onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); start(); } };
+  if (!st.name) setTimeout(() => $('name').focus(), 50);
 }
 
 // ---------- 2. phrases ----------
@@ -358,8 +393,8 @@ $('prev').onclick = () => go(-1);
 function payload() {
   const entries = {};
   const date = new Date().toISOString().slice(0, 10);
-  for (const [id, e] of Object.entries(st.entries)) if (e.t) entries[id] = { t: e.t, x: e.x || '', audio: e.audio || '', audioParts: e.audioParts || [], by: st.name, place: st.place, date };
-  return { format: 'langwa-contribution-1', code: st.lang, contributor: { name: st.name, place: st.place }, createdAt: new Date().toISOString(), entries };
+  for (const [id, e] of Object.entries(st.entries)) if (e.t) entries[id] = { t: e.t, x: e.x || '', audio: e.audio || '', audioParts: e.audioParts || [], by: st.name, place: st.place, tribe: st.tribe || '', date };
+  return { format: 'langwa-contribution-1', code: st.lang, contributor: { name: st.name, place: st.place, tribe: st.tribe || '' }, createdAt: new Date().toISOString(), entries };
 }
 // Translations reach the team on WhatsApp. Contributors rarely have the team saved as a contact,
 // and the share menu only offers existing chats: step 1 opens the chat (with a greeting), step 2
@@ -368,6 +403,11 @@ const TEAM_WHATSAPP = '237679637794';
 function renderFinish() {
   const n = counts();
   $('doneCount').textContent = n;
+  // Any amount can be sent; with nothing translated yet, say what to do instead.
+  document.querySelector('.sendsteps').hidden = !n;
+  let none = document.getElementById('noneYet');
+  if (!none) { none = el('p', { class: 'noneyet', id: 'noneYet' }, T.noneYet); document.querySelector('.sendsteps').after(none); }
+  none.hidden = !!n;
   const lang = (DATA.langs[st.lang] || {}).name || st.lang;
   const who = `${st.name || ''}${st.place ? ` (${st.place})` : ''}`;
   const hello = EN
@@ -391,11 +431,13 @@ $('send').onclick = async () => {
   const a = el('a', { href: URL.createObjectURL(file), download: file.name }); document.body.append(a); a.click(); a.remove();
 };
 $('back').onclick = () => { show('phrase'); renderPhrase(); };
-$('changeLang').onclick = () => { pick = st.lang; show('start'); renderStart(); scrollTo({ top: 0 }); };
+$('changeLang').onclick = () => { pick = st.lang; show('start'); renderStart(); };
+$('toLangs').onclick = () => { show('start'); renderStart(); };
+$('sendNow').onclick = () => { persist(); show('finish'); renderFinish(); };
 // A language link opened while the page is already open (#fub): offer that language on the start screen.
-addEventListener('hashchange', () => { const l = location.hash.slice(1); if (DATA.langs[l] && l !== st.lang) { pick = l; show('start'); renderStart(); scrollTo({ top: 0 }); } });
+addEventListener('hashchange', () => { const l = location.hash.slice(1); if (DATA.langs[l] && l !== st.lang) { pick = l; show('about'); renderAbout(); } });
 
-function show(id) { for (const s of ['start', 'phrase', 'finish']) $(s).hidden = s !== id; $('nav').hidden = id !== 'phrase'; }
+function show(id) { for (const s of ['start', 'about', 'phrase', 'finish']) $(s).hidden = s !== id; $('nav').hidden = id !== 'phrase'; scrollTo({ top: 0 }); }
 
 (async () => {
   const saved = await load('state');
@@ -403,7 +445,8 @@ function show(id) { for (const s of ['start', 'phrase', 'finish']) $(s).hidden =
   if (saved) { st = { ...st, ...saved }; st.other = st.other || {}; }
   const link = DATA.langs[fromLink] ? fromLink : '';
   if (st.lang && st.name && (!link || link === st.lang)) { show('phrase'); renderPhrase(); }
-  else { pick = link || st.lang; show('start'); renderStart(); } // a link only preselects: the contributor confirms
+  else if (link) { pick = link; show('about'); renderAbout(); } // a language link: straight to step 2, to confirm
+  else { pick = st.lang; show('start'); renderStart(); }
   counts();
 })();
 </script>
