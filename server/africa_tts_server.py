@@ -104,7 +104,7 @@ def pidgin_respell(text: str) -> str:
     return _WORD.sub(sub, text)
 if os.environ.get("LANGWA_PIDGIN") == "eng":
     PIDGIN_LANG = "eng"
-WARM = ["eng", PIDGIN_LANG, "ewo", "dua", "bas", "fub"]  # voices prepared ahead
+WARM = [PIDGIN_LANG, "eng", "fub", "ewo", "dua", "bas"]  # warmed after "ready", most complete language first
 # Voice timbre. "default" = the language's own recorded speaker. "female" = a clear female
 # speaker from the model's voices (pronunciation still follows the language). Any voice id
 # from models/africa-tts/voices (e.g. "hau", "yor") can also be asked for.
@@ -256,15 +256,22 @@ def worker_main(conn, folder: str, nthreads: int, quantize: bool) -> None:
             except Exception as exc:  # noqa: BLE001  full precision still works
                 quantize = False
                 conn.send(("log", f"int8 not applied ({exc}); using full precision"))
-        conn.send(("status", "loading", "preparing the voices"))
-        voices = Path(folder) / "voices"
-        for lang in WARM:  # one short phrase per voice: the first real request is then quick
-            try:
-                model.generate("Ok.", lang=lang)
-                model.generate("Ok.", lang=lang, voice=str(voices / f"{FEMALE}.wav"))
-            except Exception:  # noqa: BLE001
-                pass
+        # Ready as soon as the model is loaded (about half the start-up time). The voices are then
+        # warmed one short phrase at a time, only while nothing is waiting: a real request stops
+        # the warm-up and is served at once (a voice not warmed yet is just a little slower once).
         conn.send(("status", "ready", "int8" if quantize else "full precision"))
+        voices = Path(folder) / "voices"
+        for lang in WARM:
+            for vp in (None, str(voices / f"{FEMALE}.wav")):
+                if conn.poll():
+                    break
+                try:
+                    model.generate("Ok.", lang=lang, voice=vp)
+                except Exception:  # noqa: BLE001
+                    pass
+            else:
+                continue
+            break
         while True:
             req = conn.recv()
             if req is None:
