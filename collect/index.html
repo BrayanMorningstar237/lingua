@@ -278,38 +278,75 @@
   footer .brand { color: var(--ivory); }
   footer .sp { margin-left: auto; }
 
-  /* ===== Hero: bright sky, highlighted words, a phone with the real card, greeting bubbles ===== */
+  /* ===== Hero: centred promise, then an interactive showcase (bank language, your language,
+     a phone with Langwa's real card, photos in shapes, greeting bubbles), sky and hills ===== */
   nav { background: rgba(251,246,238,.82); color: var(--fg); box-shadow: 0 1px 0 rgba(36,29,22,.06); }
   nav .links a { color: #5b4c3e; } nav .links a:hover { color: var(--fg); }
   @media (prefers-color-scheme: dark) { nav { background: rgba(22,17,13,.85); } nav .links a { color: var(--sand); } nav .links a:hover { color: #fff; } }
   .band { position: relative; z-index: 11; }
-  .hero { position: relative; overflow: hidden; color: var(--ebony); padding: 64px 0 190px;
-    background: radial-gradient(520px 360px at 84% 8%, rgba(255,214,120,.85), rgba(255,214,120,0) 70%),
-      linear-gradient(180deg, #bfe6e4 0%, #dff1e6 42%, #f8efd9 78%, #fbf3e4 100%); }
-  .hero .wrap { position: relative; z-index: 2; grid-template-columns: 1.12fr .88fr; gap: 36px; }
+  .hero { position: relative; overflow: hidden; color: var(--ebony); padding: 56px 0 170px;
+    background: radial-gradient(560px 380px at 86% 6%, rgba(255,214,120,.8), rgba(255,214,120,0) 70%),
+      radial-gradient(460px 340px at 8% 30%, rgba(167,213,182,.55), rgba(167,213,182,0) 70%),
+      linear-gradient(180deg, #c7ebe6 0%, #e4f3e8 40%, #f8efd9 80%, #fbf3e4 100%); }
+  .hero .wrap { display: block; position: relative; z-index: 2; }
   .sky { position: absolute; inset: 0; pointer-events: none; }
-  .birds { position: absolute; top: 70px; left: 46%; width: 120px; height: 40px; fill: none; stroke: #3d3229; stroke-width: 2; stroke-linecap: round; opacity: .35; }
-  .hero h1 { color: var(--ebony); font-size: clamp(36px, 4.6vw, 56px); line-height: 1.12; letter-spacing: -.025em; margin: 0 0 20px; }
+  .birds { position: absolute; top: 64px; left: 18%; width: 120px; height: 40px; fill: none; stroke: #3d3229; stroke-width: 2; stroke-linecap: round; opacity: .3; }
+  .hero-copy { text-align: center; }
+  .eyebrow { color: #7a4f00; background: rgba(255,255,255,.72); box-shadow: inset 0 0 0 1px rgba(227,162,26,.5), 0 4px 14px rgba(36,29,22,.06); }
+  .hero h1 { color: var(--ebony); font-size: clamp(36px, 5vw, 64px); line-height: 1.12; letter-spacing: -.025em; margin: 0 auto 18px; }
   .hero h1 .l1, .hero h1 .l2 { display: block; }
   .hlw { display: inline-block; padding: .02em .28em .08em; margin: .06em 0; border-radius: .26em; color: #fff; line-height: 1.05; }
   .hlw.g { background: linear-gradient(180deg, #2f9e66, #1e7a4c); box-shadow: 0 6px 0 #17603c, 0 14px 26px rgba(30,122,76,.28); transform: rotate(-1.2deg); }
   .hlw.o { background: linear-gradient(180deg, #f0b43a, #e3a21a); color: var(--ebony); box-shadow: 0 6px 0 #b7800f, 0 14px 26px rgba(227,162,26,.3); transform: rotate(.8deg); }
-  .hero p.lead { color: #4a3f35; font-size: 18.5px; max-width: 540px; }
-  .eyebrow { color: #7a4f00; background: rgba(255,255,255,.7); box-shadow: inset 0 0 0 1px rgba(227,162,26,.5), 0 4px 14px rgba(36,29,22,.06); }
-  .ls-label { color: #5b4c3e; opacity: 1; }
-  .ls-row span { color: var(--ebony); background: #fff; box-shadow: 0 1px 0 rgba(36,29,22,.06), 0 4px 12px rgba(36,29,22,.07), inset 0 0 0 1px rgba(36,29,22,.06); }
-  .ls-row span.ready::before { background: #2f9e66; }
-  .hero .meta { color: #5b4c3e; }
-  .hero .meta > span { background: rgba(255,255,255,.6); }
-  .hero .meta svg { color: #1e7a4c; }
+  .hero p.lead { color: #4a3f35; font-size: 18.5px; max-width: 640px; margin: 0 auto 28px; }
+  .hero .cta { justify-content: center; }
+  .btn { border-radius: 999px; }
   .btn.gold { box-shadow: 0 6px 0 #b7800f, 0 16px 30px rgba(227,162,26,.35); }
   .btn.gold:active { transform: translateY(3px); box-shadow: 0 3px 0 #b7800f, 0 10px 20px rgba(227,162,26,.3); }
-  .btn.watch { background: rgba(255,255,255,.75); color: var(--ebony); box-shadow: inset 0 0 0 1.5px rgba(36,29,22,.14); }
+  .btn.watch { background: rgba(255,255,255,.8); color: var(--ebony); box-shadow: inset 0 0 0 1.5px rgba(36,29,22,.14); }
   .btn.watch svg { color: #1e7a4c; }
+  .hero .meta { justify-content: center; margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px; font-size: 13.5px; color: #5b4c3e; }
+  .hero .meta > span { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px 6px 9px; border-radius: 99px; background: rgba(255,255,255,.6); }
+  .hero .meta svg { width: 16px; height: 16px; color: #1e7a4c; }
 
-  /* the stage: phone, bubbles, floating cards */
-  .stage { position: relative; min-height: 520px; display: grid; place-items: center; }
-  .phone { position: relative; width: 300px; padding: 12px; border-radius: 42px; background: #1d1712; box-shadow: 0 40px 80px rgba(36,29,22,.35), inset 0 0 0 2px #3d3229; transform: rotate(-3deg); animation: floaty 7s ease-in-out infinite; }
+  /* showcase: two pickers around the stage */
+  .hero .showcase { display: grid; grid-template-columns: 230px minmax(0, 1fr) 250px; gap: 22px; align-items: start; margin-top: 52px; }
+  .picker { position: relative; z-index: 3; background: rgba(255,255,255,.88); backdrop-filter: blur(6px); border-radius: 24px; padding: 16px;
+    box-shadow: 0 20px 50px rgba(36,29,22,.12), inset 0 0 0 1px rgba(36,29,22,.05); text-align: left; }
+  #pickSrc { margin-top: 70px; } #pickLang { margin-top: 10px; }
+  .ph-title { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .ph-title b { display: block; font-size: 16.5px; line-height: 1.25; } .ph-title small { font-size: 12.5px; color: #6f6152; }
+  .pi { flex: none; width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; }
+  .pi svg { width: 19px; height: 19px; } .pi.g { background: #e1f2e8; color: #1e7a4c; } .pi.o { background: #fbefd0; color: #9a6a00; }
+  .psearch { display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 12px; margin-bottom: 8px; border-radius: 99px; background: #f4eee4; color: #6f6152; }
+  .psearch svg { width: 16px; height: 16px; }
+  .psearch input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font: inherit; font-size: 14px; color: var(--ebony); }
+  .psearch:focus-within { box-shadow: 0 0 0 2px #e3a21a; }
+  .plist { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .plist.scroll { max-height: 296px; overflow-y: auto; padding-right: 2px; scrollbar-width: thin; }
+  .popt { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; border: 0; background: transparent; padding: 9px 10px; border-radius: 14px; cursor: pointer; font: inherit; color: var(--ebony); transition: background .15s ease; }
+  .popt:hover { background: #f6f0e6; }
+  .popt.on { background: #fdf3da; box-shadow: inset 0 0 0 1.5px #e3a21a; }
+  .popt .tag { flex: none; width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; font: 800 11.5px ui-monospace, Consolas, monospace; color: #fff; }
+  .popt .nm { flex: 1; min-width: 0; } .popt .nm b { display: block; font-size: 14.5px; } .popt .nm small { display: block; font-size: 11.5px; color: #7a6c5e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .popt .pct { flex: none; font-size: 12px; font-weight: 800; color: #1e7a4c; font-variant-numeric: tabular-nums; }
+  .popt .pct.soon { color: #9a6a00; font-weight: 700; }
+  .popt[hidden] { display: none; }
+  .phelp { display: block; margin-top: 10px; font-size: 13px; font-weight: 700; color: #1e7a4c; text-decoration: none; }
+  .phelp:hover { text-decoration: underline; }
+  .noresult { padding: 12px; font-size: 13px; color: #7a6c5e; text-align: center; }
+
+  /* stage: photos in shapes, the phone, bubbles, floating cards */
+  .stage { position: relative; min-height: 560px; display: grid; place-items: center; }
+  .shape { position: absolute; overflow: hidden; z-index: 1; box-shadow: 0 18px 40px rgba(36,29,22,.16); }
+  .shape img { width: 100%; height: 100%; object-fit: cover; }
+  .shape.arch { left: 0; top: 30px; width: 190px; height: 250px; border-radius: 120px 120px 26px 26px; background: #3d4a8a; padding: 8px 8px 0; }
+  .shape.arch img { border-radius: 112px 112px 20px 20px; }
+  .shape.circle { right: 2%; top: 0; width: 170px; height: 170px; border-radius: 50%; background: #e3a21a; padding: 8px; }
+  .shape.circle img { border-radius: 50%; object-position: center 30%; }
+  .shape.pill { right: 0; bottom: 30px; width: 200px; height: 130px; border-radius: 70px; background: #2f9e66; padding: 7px; }
+  .shape.pill img { border-radius: 64px; }
+  .phone { position: relative; z-index: 2; width: 290px; padding: 12px; border-radius: 42px; background: #1d1712; box-shadow: 0 40px 80px rgba(36,29,22,.35), inset 0 0 0 2px #3d3229; transform: rotate(-2deg); animation: floaty 7s ease-in-out infinite; }
   .notch { position: absolute; top: 14px; left: 50%; width: 92px; height: 22px; margin-left: -46px; border-radius: 0 0 14px 14px; background: #1d1712; z-index: 3; }
   .screen { position: relative; border-radius: 32px; overflow: hidden; background: #f3f6fa; padding: 40px 12px 14px; }
   .apptop { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font: 700 13px system-ui, sans-serif; color: #1b2430; }
@@ -318,50 +355,59 @@
   .stage .bank { margin: 0; padding: 14px; border-radius: 16px; box-shadow: 0 6px 18px rgba(27,36,48,.08); font-size: 13px; }
   .stage .bank .top { font-size: 13px; margin-bottom: 8px; } .stage .bank .top i { width: 20px; height: 20px; }
   .stage .bank .row { font-size: 12.5px; padding: 7px 0; }
-  .stage .card { margin: 12px 0 0; width: 100%; padding: 13px 14px; border-radius: 16px; }
+  .stage .card { margin: 12px 0 0; width: 100%; padding: 13px 14px; border-radius: 16px; transition: opacity .3s ease; }
   .stage .card .slot { font-size: 15px; } .stage .card .slot small { font-size: 10.5px; }
+  .stage .card .slot span { display: block; color: #fff; line-height: 1.3; transition: opacity .3s ease, transform .3s ease; }
+  .stage .card .slot span.todo { color: var(--gold-soft); font-size: 13.5px; font-weight: 700; }
+  .card.swap .slot span, .card.swap .slot small { opacity: 0; transform: translateY(4px); }
   .stage .card .say { width: 36px; height: 36px; } .stage .card .say svg { width: 17px; height: 17px; }
   .stage .card .orig { font-size: 11.5px; margin-top: 8px; }
   .stage .chips { margin-top: 10px; } .stage .chip { font-size: 11px; } .stage .pill { font-size: 11px; }
-  .bubble { position: absolute; z-index: 3; padding: 9px 15px; border-radius: 18px; font-weight: 800; font-size: 16px; color: var(--ebony); background: #fff;
+  .bubble { position: absolute; z-index: 3; padding: 9px 15px; border-radius: 18px; font-weight: 800; font-size: 15.5px; color: var(--ebony); background: #fff;
     box-shadow: 0 10px 24px rgba(36,29,22,.14); animation: bob 5s ease-in-out infinite; white-space: nowrap; }
   .bubble::after { content: ""; position: absolute; bottom: -7px; left: 20px; width: 14px; height: 14px; background: inherit; transform: rotate(45deg); border-radius: 0 0 4px 0; }
-  .b1 { top: 4%; left: -2%; background: #2f9e66; color: #fff; } .b2 { top: 0; right: 4%; background: #e3a21a; animation-delay: -1.2s; }
-  .b3 { top: 38%; right: -4%; background: #3d4a8a; color: #fff; animation-delay: -2.4s; } .b4 { bottom: 26%; left: -8%; animation-delay: -3.1s; }
-  .b5 { bottom: -2%; left: 28%; background: #c2502e; color: #fff; animation-delay: -1.8s; }
+  .b1 { top: 6px; left: 22%; background: #2f9e66; color: #fff; } .b2 { top: 200px; right: 4%; background: #e3a21a; animation-delay: -1.2s; }
+  .b3 { bottom: 120px; left: 4%; background: #3d4a8a; color: #fff; animation-delay: -2.4s; } .b4 { bottom: 4px; left: 30%; animation-delay: -3.1s; }
   .fcard { position: absolute; z-index: 4; display: flex; align-items: center; gap: 12px; padding: 12px 16px 12px 12px; border-radius: 18px; background: #fff;
-    box-shadow: 0 18px 40px rgba(36,29,22,.16); animation: bob 6s ease-in-out infinite; }
+    box-shadow: 0 18px 40px rgba(36,29,22,.16); animation: bob 6s ease-in-out infinite; text-align: left; }
   .fcard b { display: block; font-size: 14.5px; color: var(--ebony); } .fcard small { font-size: 12.5px; color: #6f6152; }
-  .fc-voice { top: 20%; left: -10%; animation-delay: -2s; }
-  .fc-stat { bottom: 12%; right: -8%; animation-delay: -4s; }
+  .fc-voice { top: 300px; left: -3%; animation-delay: -2s; }
+  .fc-stat { top: 330px; right: -3%; animation-delay: -4s; }
   .eqb { width: 40px; height: 40px; border-radius: 12px; background: #1e7a4c; display: inline-flex; align-items: center; justify-content: center; gap: 3px; }
   .eqb i { width: 4px; height: 10px; border-radius: 2px; background: #fff; animation: eqh 1s ease-in-out infinite; }
   .eqb i:nth-child(2) { animation-delay: .15s; } .eqb i:nth-child(3) { animation-delay: .3s; } .eqb i:nth-child(4) { animation-delay: .45s; }
-  .ring { width: 46px; height: 46px; border-radius: 99px; display: grid; place-items: center; background: conic-gradient(#2f9e66 calc(var(--p, 77) * 1%), #e8efe9 0); position: relative; }
+  .fc-voice.browser .eqb { background: #3d4a8a; }
+  .ring { width: 46px; height: 46px; border-radius: 99px; display: grid; place-items: center; background: conic-gradient(#2f9e66 calc(var(--p, 0) * 1%), #e8efe9 0); position: relative; }
   .ring::before { content: ""; position: absolute; inset: 5px; border-radius: inherit; background: #fff; }
   .ring b { position: relative; font-size: 12px; font-weight: 800; color: #1e7a4c; }
-  @keyframes floaty { 50% { transform: rotate(-3deg) translateY(-10px); } }
+  @keyframes floaty { 50% { transform: rotate(-2deg) translateY(-10px); } }
   @keyframes bob { 50% { transform: translateY(-8px); } }
   @keyframes eqh { 50% { height: 22px; } }
   .hills { position: absolute; left: 0; right: 0; bottom: -1px; width: 100%; height: 220px; z-index: 1; }
   .hills, .hills path { stroke: none; } /* scenery, not an outlined icon */
   .hills .mt { fill: #a7d5b6; opacity: .75; } .hills .h1 { fill: #7cc493; } .hills .h2 { fill: #2f9e66; } .hills .h3 { fill: var(--bg); }
   @media (prefers-reduced-motion: reduce) { .phone, .bubble, .fcard, .eqb i { animation: none !important; } }
-  @media (max-width: 900px) {
-    .hero .wrap { grid-template-columns: 1fr; gap: 28px; }
-    .stage { min-height: 470px; }
+  @media (max-width: 1080px) {
+    .hero .showcase { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .stage { grid-column: 1 / -1; order: -1; }
+    #pickSrc, #pickLang { margin-top: 0; }
   }
   @media (max-width: 640px) {
-    .hero { padding: 26px 0 150px; }
+    .hero { padding: 26px 0 120px; }
     .hero h1 { font-size: 38px; }
+    .hero p.lead { font-size: 16.5px; margin-bottom: 22px; }
     .hlw.g, .hlw.o { box-shadow: 0 4px 0 rgba(0,0,0,.18); }
-    .stage { min-height: 430px; transform: scale(.88); margin: -20px 0 -30px; }
-    .phone { width: 270px; }
-    .b4, .b5 { display: none; }
-    .fc-voice { left: -2%; top: 16%; } .fc-stat { right: -2%; bottom: 8%; }
-    .birds { left: 62%; top: 34px; width: 90px; }
-    .hills { height: 150px; }
-    .cta .btn.watch { background: rgba(255,255,255,.75); }
+    .cta .btn { flex: 1 1 100%; }
+    .hero .meta { gap: 6px; font-size: 12.5px; margin-top: 18px; }
+    .hero .showcase { grid-template-columns: minmax(0, 1fr); gap: 14px; margin-top: 26px; }
+    #pickLang { order: 1; } #pickSrc { order: 2; } /* your own language first */
+    .stage { min-height: 500px; transform: scale(.86); margin: -30px -18px -50px; }
+    .shape.arch { width: 140px; height: 190px; left: -4%; } .shape.circle { width: 120px; height: 120px; right: -2%; } .shape.pill { width: 150px; height: 96px; right: -4%; bottom: 40px; }
+    .b4 { display: none; }
+    .fc-voice { left: -6%; top: 330px; } .fc-stat { right: -6%; top: 250px; }
+    .plist.scroll { max-height: 238px; }
+    .birds { left: 64%; top: 30px; width: 90px; }
+    .hills { height: 130px; }
   }
 </style>
 </head>
@@ -383,58 +429,60 @@
 </nav>
 
 <header class="hero">
-  <!-- Sky, sun and hills: pure CSS/SVG, no images. -->
   <div class="sky" aria-hidden="true">
     <svg class="birds" viewBox="0 0 120 40"><path d="M8 18q6-6 12 0q6-6 12 0"/><path d="M52 8q4-4 8 0q4-4 8 0"/><path d="M88 24q5-5 10 0q5-5 10 0"/></svg>
   </div>
-  <div class="wrap">
-    <div class="hero-copy">
-      <div class="eyebrow"><span class="pulse" aria-hidden="true"></span><span data-en="SAFINUM Innovate Challenge · Prototype">SAFINUM Innovate Challenge · Prototype</span></div>
-      <h1>
-        <span class="l1"><span data-en="Online ">La </span><mark class="hlw g" data-en="banking">banque</mark><span data-en=",">&nbsp;en&nbsp;ligne,</span></span>
-        <span class="l2"><span data-en="in ">dans </span><mark class="hlw o" data-en="your language.">votre langue.</mark></span>
-      </h1>
-      <p class="lead" data-en="Langwa shows banking and mobile-money sites in Cameroon's national languages, in text and by voice. Amounts stay exact. The bank's site stays untouched.">Langwa affiche les sites de banque et de mobile money dans les langues nationales du Cameroun, à l’écrit et à l’oral. Les montants restent exacts. Le site de la banque reste inchangé.</p>
-      <div class="langstrip">
-        <span class="ls-label" data-en="In your language:">Dans votre langue :</span>
-        <div class="ls-row" id="heroLangs"></div>
-      </div>
-      <div class="cta">
-        <a class="btn gold" href="#install"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Install Langwa, free">Installer Langwa, gratuit</span></a>
-        <a class="btn watch" href="#how"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4z" fill="currentColor"/></svg><span data-en="See how it works">Voir comment ça marche</span></a>
-      </div>
-      <div class="meta">
-        <span><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-en="Free and open source">Gratuit et open source</span></span>
-        <span><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-en="Computer and phone">Ordinateur et téléphone</span></span>
-        <span><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-en="No account, no data collected">Sans compte, sans collecte de données</span></span>
-      </div>
+  <!-- 1. The promise, centred -->
+  <div class="wrap hero-copy">
+    <div class="eyebrow"><span class="pulse" aria-hidden="true"></span><span data-en="SAFINUM Innovate Challenge · Prototype">SAFINUM Innovate Challenge · Prototype</span></div>
+    <h1>
+      <span class="l1"><span data-en="Online ">La </span><mark class="hlw g" data-en="banking">banque</mark><span data-en=",">&nbsp;en&nbsp;ligne,</span></span>
+      <span class="l2"><span data-en="in ">dans </span><mark class="hlw o" data-en="your language.">votre langue.</mark></span>
+    </h1>
+    <p class="lead" data-en="Langwa shows banking and mobile-money sites in Cameroon's national languages, in text and by voice. Amounts stay exact. The bank's site stays untouched.">Langwa affiche les sites de banque et de mobile money dans les langues nationales du Cameroun, à l’écrit et à l’oral. Les montants restent exacts. Le site de la banque reste inchangé.</p>
+    <div class="cta">
+      <a class="btn gold" href="#install"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Install Langwa, free">Installer Langwa, gratuit</span></a>
+      <a class="btn watch" href="#how"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4z" fill="currentColor"/></svg><span data-en="See how it works">Voir comment ça marche</span></a>
     </div>
+    <div class="meta">
+      <span><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-en="Free and open source">Gratuit et open source</span></span>
+      <span><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-en="Computer and phone">Ordinateur et téléphone</span></span>
+      <span><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-en="No account, no data collected">Sans compte, sans collecte de données</span></span>
+    </div>
+  </div>
 
-    <!-- The product, drawn in HTML: a phone with a bank screen and Langwa's real card. -->
+  <!-- 2. Try it: pick the bank page's language and yours; the phone shows Langwa's real translation -->
+  <div class="wrap showcase">
+    <aside class="picker" id="pickSrc">
+      <div class="ph-title"><span class="pi g"><svg viewBox="0 0 24 24"><path d="M3 10 12 4l9 6"/><path d="M5 10v8M9 10v8M15 10v8M19 10v8"/><path d="M3 20h18"/></svg></span><div><b data-en="Your bank page is in">La page de votre banque est en</b><small data-en="Langwa reads it as it is">Langwa la lit telle quelle</small></div></div>
+      <div class="plist" id="srcList" role="radiogroup"></div>
+    </aside>
+
     <div class="stage" aria-hidden="true">
+      <div class="shape arch"><img src="img/photo-hand.jpg" alt="" loading="eager"></div>
+      <div class="shape circle"><img src="img/photo-reaction.jpg" alt="" loading="lazy"></div>
+      <div class="shape pill"><img src="img/photo-community.jpg" alt="" loading="lazy"></div>
       <span class="bubble b1" lang="pcm">How you dey?</span>
       <span class="bubble b2" lang="fub">Jam waali</span>
       <span class="bubble b3" lang="ewo">Mbolo</span>
       <span class="bubble b4" lang="fr">Bonjour</span>
-      <span class="bubble b5" lang="en">Hello</span>
       <div class="phone">
         <div class="notch"></div>
         <div class="screen">
-          <div class="apptop"><i></i><b data-en="My bank">Ma banque</b><span>9:41</span></div>
+          <div class="apptop"><i></i><b data-k="bank">Ma banque</b><span>9:41</span></div>
           <div class="bank">
-            <div class="top"><i></i><span data-en="Transfer summary">Récapitulatif du virement</span></div>
-            <div class="row"><span data-en="Amount">Montant</span><b>25 000 FCFA</b></div>
-            <div class="row"><span data-en="Fees">Frais</span><b>0 FCFA</b></div>
-            <div class="row hl"><span data-en="Total to be debited">Total à débiter</span><b>25 000 FCFA</b></div>
-            <div class="row"><span data-en="Beneficiary">Bénéficiaire</span><b>Jean-Paul Mbarga</b></div>
+            <div class="top"><i></i><span data-k="summary">Récapitulatif du virement</span></div>
+            <div class="row"><span data-k="amount">Montant</span><b>25 000 FCFA</b></div>
+            <div class="row"><span data-k="fees">Frais</span><b>0 FCFA</b></div>
+            <div class="row hl"><span data-k="total">Total à débiter</span><b>25 000 FCFA</b></div>
+            <div class="row"><span data-k="receiver">Bénéficiaire</span><b>Jean-Paul Mbarga</b></div>
           </div>
-          <!-- Real Langwa translations of the highlighted line (from the language packs), alternating. -->
           <div class="card">
             <div class="line">
               <div class="slot"><small id="demoLang">Pidgin (Kamtok)</small><span id="demoText">All the money wey go comot for your account</span></div>
               <div class="say"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg></div>
             </div>
-            <div class="orig"><b>Original</b><span data-en="Total to be debited">Total à débiter</span></div>
+            <div class="orig"><b>Original</b><span data-k="total">Total à débiter</span></div>
             <div class="chips">
               <span class="chip"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>25 000 FCFA</span>
               <span class="pill"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><span data-en="Amount checked">Montant vérifié</span></span>
@@ -442,9 +490,16 @@
           </div>
         </div>
       </div>
-      <div class="fcard fc-voice"><span class="eqb"><i></i><i></i><i></i><i></i></span><div><b data-en="Natural voice">Voix naturelle</b><small data-en="Reading in Pidgin">Lit en pidgin</small></div></div>
-      <div class="fcard fc-stat"><span class="ring" id="heroRing"><b id="heroPct">77%</b></span><div><b id="heroStatLang">Pidgin</b><small data-en="phrases ready">phrases prêtes</small></div></div>
+      <div class="fcard fc-voice"><span class="eqb"><i></i><i></i><i></i><i></i></span><div><b id="voiceTitle" data-en="Natural voice">Voix naturelle</b><small id="voiceSub">Lit en pidgin</small></div></div>
+      <div class="fcard fc-stat"><span class="ring" id="heroRing"><b id="heroPct">76%</b></span><div><b id="heroStatLang">Pidgin</b><small id="heroStatSub" data-en="phrases ready">phrases prêtes</small></div></div>
     </div>
+
+    <aside class="picker" id="pickLang">
+      <div class="ph-title"><span class="pi o"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><div><b data-en="You speak">Vous parlez</b><small data-en="Most complete languages first">Les plus complètes d’abord</small></div></div>
+      <label class="psearch"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" id="langQ" autocomplete="off" spellcheck="false"></label>
+      <div class="plist scroll" id="langList" role="radiogroup"></div>
+      <a class="phelp" href="contribute/" data-en="Your language is missing or incomplete? Help translate →">Votre langue manque ou est incomplète ? Aidez à traduire →</a>
+    </aside>
   </div>
   <svg class="hills" viewBox="0 0 1440 240" preserveAspectRatio="none" aria-hidden="true">
     <path class="mt" d="M760 150 L930 52 Q950 42 970 52 L1150 150 Z"/>
@@ -637,7 +692,7 @@
 </footer>
 
 <script>
-  const LANGS = {"ewo":{"name":"Ewondo (Beti)","region":"Centre · Yaoundé, Mbalmayo","nllb":null,"mms":null,"refs":[{"name":"Wiktionnaire (éwondo)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:%C3%A9wondo"},{"name":"Wiktionary (Ewondo)","url":"https://en.wiktionary.org/wiki/Category:Ewondo_lemmas"}],"africaTts":"ewo","search":"ewondo beti yaounde yaoundé mbalmayo centre","count":0,"total":265,"pct":0},"fub":{"name":"Fulfulde (Peul / Fulani)","region":"Nord, Adamaoua, Extrême-Nord · Garoua, Ngaoundéré, Maroua","nllb":"fuv_Latn","mms":"ful","refs":[{"name":"Wiktionnaire (peul)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:peul"},{"name":"Wiktionary (Fula)","url":"https://en.wiktionary.org/wiki/Category:Fula_lemmas"}],"africaTts":"fub","search":"fulfulde foulfoulde foulfouldé peul peuhl fula fulani pulaar mbororo bororo garoua ngaoundere maroua nord adamaoua","count":111,"total":265,"pct":42},"wes":{"name":"Pidgin (Kamtok)","region":"Nord-Ouest, Sud-Ouest, Littoral · Bamenda, Buea, Douala, et dans tout le pays","nllb":null,"mms":null,"voices":["en-NG","en-CM","en-GH","en-ZA","en"],"reading":"none","refs":[{"name":"Wikipedia: Cameroonian Pidgin","url":"https://en.wikipedia.org/wiki/Cameroonian_Pidgin_English"}],"africaTts":"pcm","search":"pidgin pidgin english kamtok broken english bamenda buea limbe douala anglophone","count":202,"total":265,"pct":76},"lns":{"name":"Lamnso' (Nso / Banso)","region":"Nord-Ouest · Kumbo, Bui","nllb":null,"mms":null,"voices":["ln","sw"],"reading":"none","refs":[{"name":"Flagship AI Cameroon translation models (draft MT, CC BY-NC 4.0)","url":"https://huggingface.co/flagship-ai/cameroon-int8"},{"name":"Cameroon Bibles parallel text dataset (CC BY 4.0; religious text, not banking vocabulary)","url":"https://huggingface.co/datasets/flagship-ai/cameroon_bibles"},{"name":"Lamnso' text-to-speech model (CC BY-NC 4.0; pronunciation model, not translation)","url":"https://huggingface.co/facebook/mms-tts-lns"}],"africaTts":null,"machineTranslation":true,"translationStatus":"Local LLM + corpus service required; unvalidated.","search":"lamnso lamso nso banso bansoa kumbo bui","count":0,"total":265,"pct":0},"dua":{"name":"Duala (Douala)","region":"Littoral · Douala","nllb":null,"mms":null,"refs":[{"name":"Wiktionnaire (douala)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:douala"},{"name":"Wiktionary (Duala)","url":"https://en.wiktionary.org/wiki/Category:Duala_lemmas"}],"africaTts":"dua","search":"duala douala sawa littoral","count":0,"total":265,"pct":0},"bbj":{"name":"Ghomálá' (Bamiléké)","region":"Ouest · Bafoussam, Bandjoun, Baham","nllb":null,"mms":null,"refs":[{"name":"Wiktionary (Ghomala')","url":"https://en.wiktionary.org/wiki/Category:Ghomala%27_lemmas"}],"africaTts":"bbj","search":"ghomala ghomálá bamileke bamiléké bandjoun bafoussam baham ouest","count":0,"total":265,"pct":0},"bas":{"name":"Basaá (Bassa)","region":"Centre, Littoral · Édéa, Eséka","nllb":null,"mms":null,"refs":[{"name":"Wiktionnaire (bassa)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:bassa_(Cameroun)"},{"name":"Wiktionary (Basaa)","url":"https://en.wiktionary.org/wiki/Category:Basaa_lemmas"}],"africaTts":"bas","search":"basaa bassa basa edea édéa eseka eséka","count":0,"total":265,"pct":0},"nge":{"name":"Mankon (Ngemba)","region":"Nord-Ouest · Bamenda, Mankon","nllb":null,"mms":null,"refs":[{"name":"Mankon Dictionary","url":"https://mankon-dictionary.vercel.app/"}],"africaTts":"nge","search":"mankon ngemba bamenda nord-ouest","count":0,"total":265,"pct":0},"bkm":{"name":"Kom","region":"Nord-Ouest · Fundong, Njinikom, Belo","nllb":null,"mms":null,"refs":[{"name":"Kom writing system (Omniglot)","url":"https://omniglot.com/writing/kom.htm"},{"name":"Wiktionary (Kom)","url":"https://en.wiktionary.org/wiki/Category:Kom_(Cameroon)_lemmas"}],"africaTts":"bkm","search":"kom itanghi fundong njinikom belo boyo","count":0,"total":265,"pct":0}};
+  const LANGS = {"ewo":{"name":"Ewondo (Beti)","region":"Centre · Yaoundé, Mbalmayo","nllb":null,"mms":null,"refs":[{"name":"Wiktionnaire (éwondo)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:%C3%A9wondo"},{"name":"Wiktionary (Ewondo)","url":"https://en.wiktionary.org/wiki/Category:Ewondo_lemmas"}],"africaTts":"ewo","search":"ewondo beti yaounde yaoundé mbalmayo centre","count":0,"total":265,"pct":0,"demo":""},"fub":{"name":"Fulfulde (Peul / Fulani)","region":"Nord, Adamaoua, Extrême-Nord · Garoua, Ngaoundéré, Maroua","nllb":"fuv_Latn","mms":"ful","refs":[{"name":"Wiktionnaire (peul)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:peul"},{"name":"Wiktionary (Fula)","url":"https://en.wiktionary.org/wiki/Category:Fula_lemmas"}],"africaTts":"fub","search":"fulfulde foulfoulde foulfouldé peul peuhl fula fulani pulaar mbororo bororo garoua ngaoundere maroua nord adamaoua","count":111,"total":265,"pct":42,"demo":"Ceede fuu ɗe njaltata e konte maa"},"wes":{"name":"Pidgin (Kamtok)","region":"Nord-Ouest, Sud-Ouest, Littoral · Bamenda, Buea, Douala, et dans tout le pays","nllb":null,"mms":null,"voices":["en-NG","en-CM","en-GH","en-ZA","en"],"reading":"none","refs":[{"name":"Wikipedia: Cameroonian Pidgin","url":"https://en.wikipedia.org/wiki/Cameroonian_Pidgin_English"}],"africaTts":"pcm","search":"pidgin pidgin english kamtok broken english bamenda buea limbe douala anglophone","count":202,"total":265,"pct":76,"demo":"All the money wey go comot for your account"},"lns":{"name":"Lamnso' (Nso / Banso)","region":"Nord-Ouest · Kumbo, Bui","nllb":null,"mms":null,"voices":["ln","sw"],"reading":"none","refs":[{"name":"Flagship AI Cameroon translation models (draft MT, CC BY-NC 4.0)","url":"https://huggingface.co/flagship-ai/cameroon-int8"},{"name":"Cameroon Bibles parallel text dataset (CC BY 4.0; religious text, not banking vocabulary)","url":"https://huggingface.co/datasets/flagship-ai/cameroon_bibles"},{"name":"Lamnso' text-to-speech model (CC BY-NC 4.0; pronunciation model, not translation)","url":"https://huggingface.co/facebook/mms-tts-lns"}],"africaTts":null,"machineTranslation":true,"translationStatus":"Local LLM + corpus service required; unvalidated.","search":"lamnso lamso nso banso bansoa kumbo bui","count":0,"total":265,"pct":0,"demo":""},"dua":{"name":"Duala (Douala)","region":"Littoral · Douala","nllb":null,"mms":null,"refs":[{"name":"Wiktionnaire (douala)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:douala"},{"name":"Wiktionary (Duala)","url":"https://en.wiktionary.org/wiki/Category:Duala_lemmas"}],"africaTts":"dua","search":"duala douala sawa littoral","count":0,"total":265,"pct":0,"demo":""},"bbj":{"name":"Ghomálá' (Bamiléké)","region":"Ouest · Bafoussam, Bandjoun, Baham","nllb":null,"mms":null,"refs":[{"name":"Wiktionary (Ghomala')","url":"https://en.wiktionary.org/wiki/Category:Ghomala%27_lemmas"}],"africaTts":"bbj","search":"ghomala ghomálá bamileke bamiléké bandjoun bafoussam baham ouest","count":0,"total":265,"pct":0,"demo":""},"bas":{"name":"Basaá (Bassa)","region":"Centre, Littoral · Édéa, Eséka","nllb":null,"mms":null,"refs":[{"name":"Wiktionnaire (bassa)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:bassa_(Cameroun)"},{"name":"Wiktionary (Basaa)","url":"https://en.wiktionary.org/wiki/Category:Basaa_lemmas"}],"africaTts":"bas","search":"basaa bassa basa edea édéa eseka eséka","count":0,"total":265,"pct":0,"demo":""},"nge":{"name":"Mankon (Ngemba)","region":"Nord-Ouest · Bamenda, Mankon","nllb":null,"mms":null,"refs":[{"name":"Mankon Dictionary","url":"https://mankon-dictionary.vercel.app/"}],"africaTts":"nge","search":"mankon ngemba bamenda nord-ouest","count":0,"total":265,"pct":0,"demo":""},"bkm":{"name":"Kom","region":"Nord-Ouest · Fundong, Njinikom, Belo","nllb":null,"mms":null,"refs":[{"name":"Kom writing system (Omniglot)","url":"https://omniglot.com/writing/kom.htm"},{"name":"Wiktionary (Kom)","url":"https://en.wiktionary.org/wiki/Category:Kom_(Cameroon)_lemmas"}],"africaTts":"bkm","search":"kom itanghi fundong njinikom belo boyo","count":0,"total":265,"pct":0,"demo":""}};
   const EN = /^en/i.test(navigator.language || '');
   if (EN) {
     document.documentElement.lang = 'en';
@@ -671,13 +726,77 @@
   }));
 
   // Hero: the languages people recognise, the ones already usable marked with a green dot.
-  if (ranked.length && ranked[0][1].count) {
-    const [, top] = ranked[0];
-    document.getElementById('heroRing').style.setProperty('--p', top.pct);
-    document.getElementById('heroPct').textContent = `${top.pct}%`;
-    document.getElementById('heroStatLang').textContent = top.name.split(' (')[0];
+  // ----- Hero showcase: choose the bank page's language and yours; the phone shows Langwa's real
+  // translation of the highlighted line (from the language packs), or says honestly that it is
+  // not translated yet. Both lists are built once; search only shows or hides rows.
+  const SRC = {
+    fr: { name: 'Français', sub: EN ? 'French' : 'Langue de la plupart des banques', bank: 'Ma banque', summary: 'Récapitulatif du virement', amount: 'Montant', fees: 'Frais', total: 'Total à débiter', receiver: 'Bénéficiaire', color: '#3d4a8a' },
+    en: { name: 'English', sub: EN ? 'Banks in the North-West and South-West' : 'Anglais', bank: 'My bank', summary: 'Transfer summary', amount: 'Amount', fees: 'Fees', total: 'Total to be debited', receiver: 'Beneficiary', color: '#c2502e' },
+  };
+  const PALETTE = ['#2f9e66', '#e3a21a', '#3d4a8a', '#c2502e', '#1e7a4c', '#9a6a00', '#5b6bb5', '#b04a2c', '#2b8a74'];
+  const qfold = s => (s || '').normalize('NFD').replace(/[̀-ͯ'’ʼ]/g, '').toLowerCase();
+  const short = l => l.name.split(' (')[0];
+  const demo = { src: EN ? 'en' : 'fr', lang: (ranked.find(([, l]) => l.demo) || ranked[0] || [''])[0], auto: true };
+  const card = document.querySelector('.stage .card');
+  function paint() {
+    const s = SRC[demo.src];
+    document.querySelectorAll('.stage [data-k]').forEach(n => { n.textContent = s[n.dataset.k]; });
+    const l = LANGS[demo.lang] || {};
+    document.getElementById('demoLang').textContent = l.name || '';
+    const txt = document.getElementById('demoText');
+    txt.textContent = l.demo || (EN ? 'Not translated yet. Speakers can add it in 10 minutes.' : 'Pas encore traduit. Les locuteurs peuvent l’ajouter en 10 minutes.');
+    txt.classList.toggle('todo', !l.demo);
+    const ring = document.getElementById('heroRing');
+    ring.style.setProperty('--p', l.pct || 0);
+    document.getElementById('heroPct').textContent = l.count ? `${l.pct}%` : (EN ? 'Soon' : 'Bientôt');
+    document.getElementById('heroStatLang').textContent = short(l);
+    const natural = !!l.africaTts;
+    document.querySelector('.fc-voice').classList.toggle('browser', !natural);
+    document.getElementById('voiceTitle').textContent = natural ? (EN ? 'Natural voice' : 'Voix naturelle') : (EN ? 'Phone voice' : 'Voix du téléphone');
+    document.getElementById('voiceSub').textContent = EN ? `Reading in ${short(l)}` : `Lit en ${short(l)}`;
+    for (const b of document.querySelectorAll('#srcList .popt')) { const on = b.dataset.v === demo.src; b.classList.toggle('on', on); b.setAttribute('aria-checked', String(on)); }
+    for (const b of document.querySelectorAll('#langList .popt')) { const on = b.dataset.v === demo.lang; b.classList.toggle('on', on); b.setAttribute('aria-checked', String(on)); }
   }
-  document.getElementById('heroLangs').replaceChildren(...ranked.map(([, l]) => el('span', l.count ? 'ready' : '', l.name.split(' (')[0])));
+  const swap = fn => { card.classList.add('swap'); setTimeout(() => { fn(); paint(); card.classList.remove('swap'); }, 220); };
+  const opt = (v, tag, color, name, sub, right, rightClass) => {
+    const b = el('button', 'popt');
+    b.type = 'button'; b.dataset.v = v; b.setAttribute('role', 'radio');
+    const tg = el('span', 'tag', tag); tg.style.background = color;
+    const nm = el('span', 'nm'); nm.append(el('b', '', name), el('small', '', sub));
+    b.append(tg, nm);
+    if (right) b.append(el('span', `pct ${rightClass || ''}`, right));
+    return b;
+  };
+  document.getElementById('srcList').replaceChildren(...Object.entries(SRC).map(([k, s]) => {
+    const b = opt(k, k.toUpperCase(), s.color, s.name, s.sub);
+    b.onclick = () => { demo.auto = false; swap(() => { demo.src = k; }); };
+    return b;
+  }));
+  const langBtns = ranked.map(([code, l], k) => {
+    const b = opt(code, code.toUpperCase(), PALETTE[k % PALETTE.length], short(l), (l.region || '').split(' · ')[1] || l.region || '',
+      l.count ? `${l.pct}%` : (EN ? 'Soon' : 'Bientôt'), l.count ? '' : 'soon');
+    b.dataset.q = qfold(`${code} ${l.name} ${l.region || ''} ${l.search || ''}`);
+    b.onclick = () => { demo.auto = false; swap(() => { demo.lang = code; }); };
+    return b;
+  });
+  const noRes = el('div', 'noresult', EN ? 'No language found. Try another name or a town.' : 'Aucune langue trouvée. Essayez un autre nom ou une ville.');
+  noRes.hidden = true;
+  document.getElementById('langList').replaceChildren(...langBtns, noRes);
+  const lq = document.getElementById('langQ');
+  lq.placeholder = EN ? 'Search: Pidgin, Fulani, Kumbo…' : 'Rechercher : pidgin, peul, Kumbo…';
+  lq.setAttribute('aria-label', lq.placeholder);
+  lq.oninput = () => {
+    const words = qfold(lq.value).split(/\s+/).filter(Boolean);
+    let shown = 0;
+    for (const b of langBtns) { const ok = words.every(w => b.dataset.q.includes(w)); b.hidden = !ok; shown += ok; }
+    noRes.hidden = shown > 0;
+  };
+  paint();
+  // Until the visitor picks, the phone alternates between the languages that already have a translation.
+  const withDemo = ranked.filter(([, l]) => l.demo).map(([c]) => c);
+  if (withDemo.length > 1 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    setInterval(() => { if (!demo.auto || document.hidden) return; swap(() => { demo.lang = withDemo[(withDemo.indexOf(demo.lang) + 1) % withDemo.length]; }); }, 4200);
+  }
 
   // Install: highlight the option that matches this device and browser.
   const ua = navigator.userAgent;
@@ -687,25 +806,7 @@
   // Chrome on Android cannot run add-ons: say so plainly, and point to Firefox.
   if (/Android/i.test(ua) && /Chrome\//.test(ua) && !/Firefox|SamsungBrowser|EdgA|OPR|Opera/i.test(ua)) document.getElementById('chromeNote').hidden = false;
 
-  // Hero card: real Langwa translations of the highlighted line, one language after another.
-  const DEMO = [
-    ['Pidgin (Kamtok)', 'All the money wey go comot for your account'],
-    ['Fulfulde (Peul / Fulani)', 'Ceede fuu ɗe njaltata e konte maa'],
-  ];
-  const card = document.querySelector('.hero .card');
-  if (card && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    let i = 0;
-    setInterval(() => {
-      if (document.hidden) return;
-      card.classList.add('swap');
-      setTimeout(() => {
-        i = (i + 1) % DEMO.length;
-        document.getElementById('demoLang').textContent = DEMO[i][0];
-        document.getElementById('demoText').textContent = DEMO[i][1];
-        card.classList.remove('swap');
-      }, 350);
-    }, 4200);
-  }
+
 </script>
 </body>
 </html>

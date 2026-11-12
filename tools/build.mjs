@@ -157,7 +157,8 @@ const data = { source: JSON.parse(read('lang/source.json')), langs, packs, lexic
 const TOTAL = Math.max(1, (data.source.entries || []).length);
 const langsCov = Object.fromEntries(Object.entries(langs).map(([c, l]) => {
   const count = Object.values((packs[c] && packs[c].entries) || {}).filter(e => e && e.t).length;
-  return [c, { ...l, count, total: TOTAL, pct: Math.min(100, Math.round((100 * count) / TOTAL)) }];
+  const demo = ((packs[c] && packs[c].entries) || {}).total_debited;
+  return [c, { ...l, count, total: TOTAL, pct: Math.min(100, Math.round((100 * count) / TOTAL)), demo: (demo && demo.t) || '' }];
 }));
 const header = `// ==UserScript==
 // @name         Langwa
