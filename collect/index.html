@@ -171,6 +171,10 @@
   .rec { display: none; position: absolute; top: -12px; left: 22px; font-size: 12px; font-weight: 800; letter-spacing: .02em; padding: 4px 11px; border-radius: 99px; background: var(--gold); color: var(--ebony); }
   .tile.mine .rec { display: inline-block; }
   .plat { margin-top: -4px; font-size: 13px; color: var(--muted); }
+  .apps { display: grid; gap: 6px; margin: 8px 0 4px; }
+  .apps a { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--soft); color: var(--fg); font-size: 14px; font-weight: 700; text-decoration: none; }
+  .apps a::after { content: "↗"; margin-left: auto; color: var(--muted); }
+  .apps a:hover { border-color: var(--gold); }
   .after { margin-top: 22px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 18px; background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 20px 22px; }
   .after .ico { flex: none; width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center; }
   .after > div { flex: 1 1 320px; }
@@ -445,11 +449,16 @@
         <div class="ico g"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg></div>
         <h3 data-en="Phone">Téléphone</h3>
         <ol>
-          <li data-en="Android: install Tampermonkey. iPhone: install the free Userscripts app.">Android : installez Tampermonkey. iPhone : installez l’app gratuite Userscripts.</li>
-          <li data-en="Open the Langwa script below and confirm.">Ouvrez le script Langwa ci-dessous et confirmez.</li>
+          <li><span data-en="First, the free helper app (once):">D’abord, l’app d’aide gratuite (une fois) :</span>
+            <span class="apps">
+              <a href="https://addons.mozilla.org/firefox/addon/tampermonkey/" target="_blank" rel="noopener" data-en="Android: Tampermonkey in Firefox">Android : Tampermonkey dans Firefox</a>
+              <a href="https://apps.apple.com/app/userscripts/id1463298887" target="_blank" rel="noopener" data-en="iPhone: Userscripts app (Safari)">iPhone : app Userscripts (Safari)</a>
+            </span></li>
+          <li data-en="Then tap Install Langwa below: the app asks you to confirm.">Puis touchez « Installer Langwa » ci-dessous : l’app vous demande de confirmer.</li>
           <li data-en="On your bank's page, press and hold any text.">Sur la page de votre banque, appuyez longuement sur un texte.</li>
         </ol>
-        <a class="btn soft" href="downloads/langwa.user.js"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Phone version">Version téléphone</span></a>
+        <a class="btn soft" href="downloads/langwa.user.js"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Install Langwa">Installer Langwa</span></a>
+        <small class="plat" style="margin-top:10px" data-en="Seeing code instead? The helper app from step 1 is not installed yet in this browser.">Vous voyez du code ? L’app d’aide de l’étape 1 n’est pas encore installée dans ce navigateur.</small>
       </div>
       <div class="tile voice-tile">
         <div class="ico o"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg></div>
