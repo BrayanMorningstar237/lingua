@@ -171,6 +171,9 @@
   .rec { display: none; position: absolute; top: -12px; left: 22px; font-size: 12px; font-weight: 800; letter-spacing: .02em; padding: 4px 11px; border-radius: 99px; background: var(--gold); color: var(--ebony); }
   .tile.mine .rec { display: inline-block; }
   .plat { margin-top: -4px; font-size: 13px; color: var(--muted); }
+  .chromenote { display: grid; gap: 8px; margin: 12px 0 4px; padding: 14px; border-radius: 14px; background: color-mix(in srgb, var(--gold) 14%, var(--card)); border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent); }
+  .chromenote > b { font-size: 15.5px; } .chromenote > span { font-size: 14.5px; color: var(--fg); }
+  .chromenote .btn { justify-self: start; padding: 10px 16px; font-size: 15px; }
   .apps { display: grid; gap: 6px; margin: 8px 0 4px; }
   .apps a { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--soft); color: var(--fg); font-size: 14px; font-weight: 700; text-decoration: none; }
   .apps a::after { content: "↗"; margin-left: auto; color: var(--muted); }
@@ -448,6 +451,11 @@
         <span class="rec" data-en="Recommended for you">Recommandé pour vous</span>
         <div class="ico g"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg></div>
         <h3 data-en="Phone">Téléphone</h3>
+        <div class="chromenote" id="chromeNote" hidden>
+          <b data-en="You are using Chrome on Android">Vous utilisez Chrome sur Android</b>
+          <span data-en="Chrome on phones cannot add Langwa (Google does not allow add-ons there). Install the free Firefox browser, open this page in Firefox, then follow the steps below.">Chrome sur téléphone ne peut pas ajouter Langwa (Google n’y autorise pas les modules). Installez le navigateur gratuit Firefox, ouvrez cette page dans Firefox, puis suivez les étapes ci-dessous.</span>
+          <a class="btn dark" href="https://play.google.com/store/apps/details?id=org.mozilla.firefox" target="_blank" rel="noopener"><span data-en="Get Firefox (free)">Installer Firefox (gratuit)</span></a>
+        </div>
         <ol>
           <li><span data-en="First, the free helper app (once):">D’abord, l’app d’aide gratuite (une fois) :</span>
             <span class="apps">
@@ -528,6 +536,8 @@
   const kind = /Android|iPhone|iPad|iPod|Mobile/i.test(ua) ? 'phone' : /Firefox\//.test(ua) ? 'firefox' : /Chrome\/|Chromium\/|Edg\//.test(ua) ? 'chromium' : '';
   const mine = kind && document.querySelector(`.install .tile[data-for="${kind}"]`);
   if (mine) { mine.classList.add('mine'); mine.parentElement.prepend(mine); }
+  // Chrome on Android cannot run add-ons: say so plainly, and point to Firefox.
+  if (/Android/i.test(ua) && /Chrome\//.test(ua) && !/Firefox|SamsungBrowser|EdgA|OPR|Opera/i.test(ua)) document.getElementById('chromeNote').hidden = false;
 
   // Hero card: real Langwa translations of the highlighted line, one language after another.
   const DEMO = [
