@@ -315,7 +315,7 @@
     box-shadow: 0 20px 50px rgba(36,29,22,.12), inset 0 0 0 1px rgba(36,29,22,.05); text-align: left; }
   #pickSrc { margin-top: 70px; } #pickLang { margin-top: 10px; }
   .ph-title { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-  .ph-title b { display: block; font-size: 16.5px; line-height: 1.25; } .ph-title small { font-size: 12.5px; color: #6f6152; }
+  .ph-title b { display: block; font-size: 15.5px; line-height: 1.25; } .ph-title small { font-size: 12.5px; color: #6f6152; }
   .pi { flex: none; width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; }
   .pi svg { width: 19px; height: 19px; } .pi.g { background: #e1f2e8; color: #1e7a4c; } .pi.o { background: #fbefd0; color: #9a6a00; }
   .psearch { display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 12px; margin-bottom: 8px; border-radius: 99px; background: #f4eee4; color: #6f6152; }
@@ -409,6 +409,68 @@
     .birds { left: 64%; top: 30px; width: 90px; }
     .hills { height: 130px; }
   }
+
+  /* ===== Page sections in the hero's language: fewer words, shapes, examples ===== */
+  .kicker { display: none; }
+  h2.center { text-align: center; }
+  section.block h2 { margin-bottom: 10px; }
+  section.block .sub { margin-bottom: 36px; }
+  .facts { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 0; margin: 22px 0 0; font-size: 14px; color: #5b4c3e; }
+  .facts span + span::before { content: "·"; margin: 0 10px; color: #b9a68e; }
+  .cred { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 26px auto 0; max-width: 460px; font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; color: #7a6c5e; }
+  .cred::before, .cred::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(36,29,22,.22)); }
+  .cred::after { background: linear-gradient(90deg, rgba(36,29,22,.22), transparent); }
+  .cred b { color: var(--ebony); letter-spacing: .04em; font-weight: 800; }
+
+  /* why: the photo in an arch, three real word examples */
+  .why2 { display: grid; grid-template-columns: .8fr 1.2fr; gap: 56px; align-items: center; }
+  .shape-arch { background: #3d4a8a; padding: 10px 10px 0; border-radius: 240px 240px 30px 30px; box-shadow: 0 24px 50px rgba(36,29,22,.14); max-width: 380px; }
+  .shape-arch img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 230px 230px 22px 22px; }
+  .words { display: grid; gap: 12px; }
+  .wc { display: grid; grid-template-columns: auto 20px 1fr auto; align-items: center; gap: 14px; padding: 16px 18px; border-radius: 20px; background: var(--card); box-shadow: 0 10px 26px rgba(36,29,22,.07), inset 0 0 0 1px var(--line); }
+  .wc .src { font-weight: 700; color: var(--muted); }
+  .wc svg { width: 18px; height: 18px; color: #e3a21a; }
+  .wc .dst { font-weight: 800; font-size: 18px; color: var(--fg); line-height: 1.3; }
+  .wc small { font-size: 11.5px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: #1e7a4c; background: #e1f2e8; padding: 4px 9px; border-radius: 99px; }
+
+  /* how: shorter captions sit tighter */
+  #how h2 { margin-bottom: 28px; }
+  .shot figcaption { padding: 14px 16px 18px; }
+  .shot span { font-size: 14.5px; }
+
+  /* listen and ask: compact list */
+  #voice h2 { margin-bottom: 26px; }
+  .feats b { font-size: 18px; }
+
+  /* safety: one row of four */
+  .safe4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 28px; }
+  .sf { display: grid; justify-items: center; text-align: center; gap: 6px; padding: 26px 18px; border-radius: 24px; background: var(--card); box-shadow: 0 10px 26px rgba(36,29,22,.06), inset 0 0 0 1px var(--line); }
+  .sf .ico { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; margin-bottom: 6px; }
+  .sf b { font-size: 17px; } .sf span:last-child { color: var(--muted); font-size: 15px; }
+
+  /* contribute: fewer words, the photo in a pill */
+  .contribute h2 { margin-bottom: 8px; }
+  .csteps { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 26px; }
+  .csteps > span { display: inline-flex; align-items: center; gap: 9px; padding: 8px 14px 8px 8px; border-radius: 99px; background: var(--ebony-2); color: var(--ivory); font-weight: 600; font-size: 15px; }
+  .csteps i { font-style: normal; width: 26px; height: 26px; border-radius: 99px; display: grid; place-items: center; background: var(--gold); color: var(--ebony); font-weight: 800; font-size: 13px; }
+  .shape-pill { background: #2f9e66; padding: 10px; border-radius: 200px; box-shadow: 0 24px 50px rgba(0,0,0,.3); }
+  .shape-pill img { width: 100%; height: auto; aspect-ratio: 16 / 11; object-fit: cover; border-radius: 190px; }
+
+  @media (max-width: 900px) {
+    .why2 { grid-template-columns: 1fr; gap: 28px; }
+    .shape-arch { max-width: 300px; margin: 0 auto; }
+    .safe4 { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .wc { grid-template-columns: 1fr auto; gap: 4px 10px; padding: 14px 16px; }
+    .wc svg { display: none; }
+    .wc .src { grid-column: 1 / -1; font-size: 13px; }
+    .wc .dst { font-size: 16.5px; }
+    .safe4 { gap: 10px; } .sf { padding: 18px 12px; border-radius: 20px; } .sf b { font-size: 15.5px; } .sf span:last-child { font-size: 13.5px; }
+    .facts { font-size: 13px; }
+    .cred { font-size: 11px; margin-top: 20px; }
+    .shape-pill { border-radius: 120px; } .shape-pill img { border-radius: 112px; }
+  }
 </style>
 </head>
 <body>
@@ -434,21 +496,17 @@
   </div>
   <!-- 1. The promise, centred -->
   <div class="wrap hero-copy">
-    <div class="eyebrow"><span class="pulse" aria-hidden="true"></span><span data-en="SAFINUM Innovate Challenge · Prototype">SAFINUM Innovate Challenge · Prototype</span></div>
     <h1>
       <span class="l1"><span data-en="Online ">La </span><mark class="hlw g" data-en="banking">banque</mark><span data-en=",">&nbsp;en&nbsp;ligne,</span></span>
       <span class="l2"><span data-en="in ">dans </span><mark class="hlw o" data-en="your language.">votre langue.</mark></span>
     </h1>
-    <p class="lead" data-en="Langwa shows banking and mobile-money sites in Cameroon's national languages, in text and by voice. Amounts stay exact. The bank's site stays untouched.">Langwa affiche les sites de banque et de mobile money dans les langues nationales du Cameroun, à l’écrit et à l’oral. Les montants restent exacts. Le site de la banque reste inchangé.</p>
+    <p class="lead" data-en="Read and hear your bank in Pidgin, Fulfulde, Ewondo and more. Amounts never change.">Lisez et écoutez votre banque en pidgin, fulfulde, ewondo et plus. Les montants ne changent jamais.</p>
     <div class="cta">
       <a class="btn gold" href="#install"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Install Langwa, free">Installer Langwa, gratuit</span></a>
       <a class="btn watch" href="#how"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4z" fill="currentColor"/></svg><span data-en="See how it works">Voir comment ça marche</span></a>
     </div>
-    <div class="meta">
-      <span><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-en="Free and open source">Gratuit et open source</span></span>
-      <span><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-en="Computer and phone">Ordinateur et téléphone</span></span>
-      <span><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-en="No account, no data collected">Sans compte, sans collecte de données</span></span>
-    </div>
+    <p class="facts"><span data-en="Free">Gratuit</span><span data-en="Open source">Open source</span><span data-en="No account">Sans compte</span><span data-en="Computer and phone">Ordinateur et téléphone</span></p>
+    <p class="cred"><span data-en="Built for the">Conçu pour le</span> <b>SAFINUM Innovate Challenge</b></p>
   </div>
 
   <!-- 2. Try it: pick the bank page's language and yours; the phone shows Langwa's real translation -->
@@ -509,48 +567,42 @@
   </svg>
 </header>
 
-<section class="block why">
-  <div class="wrap why-grid">
-    <img class="why-photo" src="img/photo-reaction.jpg" width="900" height="762" loading="lazy" alt="Un homme regarde son téléphone avec surprise" data-en-alt="A man looking at his phone in surprise">
+<section class="block why" id="why">
+  <div class="wrap why2">
+    <div class="shape-arch"><img src="img/photo-reaction.jpg" width="900" height="762" loading="lazy" alt="Un homme regarde son téléphone avec surprise" data-en-alt="A man looking at his phone in surprise"></div>
     <div>
-      <div class="kicker" data-en="Why Langwa">Pourquoi Langwa</div>
       <h2 data-en="Understand before you confirm.">Comprendre avant de confirmer.</h2>
-      <p data-en="Many Cameroonians read or speak their own language more easily than French or English. In a banking app, one misunderstood word can cost money: a fee, a beneficiary, a security warning.">Beaucoup de Camerounais lisent ou parlent plus facilement leur langue que le français ou l’anglais. Dans une application bancaire, un mot mal compris peut coûter cher : un frais, un bénéficiaire, une alerte de sécurité.</p>
-      <p data-en="Langwa puts these words in everyone's language, without touching the bank's application.">Langwa met ces mots dans la langue de chacun, sans toucher à l’application de la banque.</p>
+      <p class="sub" data-en="One misread word can cost money.">Un mot mal compris peut coûter cher.</p>
+      <div class="words">
+        <div class="wc"><span class="src" data-en="Fees">Frais</span><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg><span class="dst">Charges</span><small>Pidgin</small></div>
+        <div class="wc"><span class="src" data-en="Beneficiary">Bénéficiaire</span><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg><span class="dst">Jaɓoowo</span><small>Fulfulde</small></div>
+        <div class="wc"><span class="src" data-en="Total to be debited">Total à débiter</span><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg><span class="dst">All the money wey go comot for your account</span><small>Pidgin</small></div>
+      </div>
     </div>
   </div>
 </section>
 
 <section class="block alt" id="how">
   <div class="wrap">
-    <div class="kicker" data-en="How to use it">Mode d’emploi</div>
-    <h2 data-en="Four steps, nothing to learn.">Quatre étapes, rien à apprendre.</h2>
-    <p class="sub" data-en="Langwa works on top of the bank's site. Nothing to learn: one gesture shows the translation right under what you are reading.">Langwa fonctionne par-dessus le site de la banque. Rien à apprendre : un seul geste affiche la traduction juste sous ce que vous lisez.</p>
+    <h2 data-en="Four gestures. Nothing to learn.">Quatre gestes. Rien à apprendre.</h2>
     <div class="shots">
-      <figure class="shot"><div class="frame"><img src="img/howto-1-choose.png" loading="lazy" alt="Fenêtre Langwa : Quelle langue parlez-vous ?" data-en-alt="Langwa window: Which language do you speak?"></div><figcaption><i>1</i><b data-en="Choose your language">Choisissez votre langue</b><span data-en="The first time, Langwa asks which language you speak.">La première fois, Langwa vous demande quelle langue vous parlez.</span></figcaption></figure>
-      <figure class="shot"><div class="frame"><img src="img/howto-2-hover.jpg" loading="lazy" alt="Carte Langwa sous un montant verrouillé" data-en-alt="Langwa card under a locked amount"></div><figcaption><i>2</i><b data-en="Point at the text">Pointez le texte</b><span data-en="Hold Ctrl and point, or press and hold on a phone. The card opens below, amounts locked.">Maintenez Ctrl et pointez, ou appuyez longuement sur téléphone. La carte s’ouvre dessous, montants verrouillés.</span></figcaption></figure>
-      <figure class="shot"><div class="frame"><img src="img/howto-3-panel.jpg" loading="lazy" alt="Panneau de lecture Langwa avec messages importants" data-en-alt="Langwa reading panel with important messages"></div><figcaption><i>3</i><b data-en="Read the whole page">Lisez toute la page</b><span data-en="The round button opens the panel: important messages first, then the rest of the page.">Le bouton rond ouvre le panneau : messages importants d’abord, puis le reste de la page.</span></figcaption></figure>
-      <figure class="shot"><div class="frame"><img src="img/howto-4-contribute.jpg" loading="lazy" alt="Page de contribution sur téléphone" data-en-alt="Contribution page on a phone"></div><figcaption><i>4</i><b data-en="Add your language">Ajoutez votre langue</b><span data-en="Speakers translate on their phone and send it on WhatsApp.">Les locuteurs traduisent sur leur téléphone et envoient sur WhatsApp.</span></figcaption></figure>
+      <figure class="shot"><div class="frame"><img src="img/howto-1-choose.png" loading="lazy" alt="Fenêtre Langwa : Quelle langue parlez-vous ?" data-en-alt="Langwa window: Which language do you speak?"></div><figcaption><i>1</i><b data-en="Choose your language">Choisissez votre langue</b><span data-en="Once, the first time.">Une fois, la première fois.</span></figcaption></figure>
+      <figure class="shot"><div class="frame"><img src="img/howto-2-hover.jpg" loading="lazy" alt="Carte Langwa sous un montant verrouillé" data-en-alt="Langwa card under a locked amount"></div><figcaption><i>2</i><b data-en="Point at a text">Pointez un texte</b><span data-en="Ctrl + point, or press and hold.">Ctrl + pointer, ou appui long.</span></figcaption></figure>
+      <figure class="shot"><div class="frame"><img src="img/howto-3-panel.jpg" loading="lazy" alt="Panneau de lecture Langwa avec messages importants" data-en-alt="Langwa reading panel with important messages"></div><figcaption><i>3</i><b data-en="Read the whole page">Lisez toute la page</b><span data-en="Important messages first.">Les messages importants d’abord.</span></figcaption></figure>
+      <figure class="shot"><div class="frame"><img src="img/howto-4-contribute.jpg" loading="lazy" alt="Page de contribution sur téléphone" data-en-alt="Contribution page on a phone"></div><figcaption><i>4</i><b data-en="Add your language">Ajoutez votre langue</b><span data-en="Speakers translate on their phone.">Les locuteurs traduisent sur téléphone.</span></figcaption></figure>
     </div>
-    <div class="swipe"><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg><span data-en="Swipe to see the steps">Faites glisser pour voir les étapes</span></div>
-    <div class="grid3" hidden>
-      <div class="tile"><div class="num">01</div><div class="ico o"><svg viewBox="0 0 24 24"><path d="M4 4l7 17 2.5-7.5L21 11 4 4z"/></svg></div><h3 data-en="Point">Pointez</h3><p data-en="Hold Ctrl and point at any text or button on a computer, or press and hold on a phone.">Maintenez Ctrl et pointez un texte ou un bouton sur ordinateur, ou appuyez longuement sur téléphone.</p></div>
-      <div class="tile"><div class="num">02</div><div class="ico g"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></div><h3 data-en="Understand">Comprenez</h3><p data-en="The translation appears below it, written by native speakers, with amounts and names locked exactly as on the page.">La traduction apparaît dessous, écrite par des locuteurs natifs, avec les montants et les noms verrouillés comme sur la page.</p></div>
-      <div class="tile"><div class="num">03</div><div class="ico i"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg></div><h3 data-en="Listen">Écoutez</h3><p data-en="Press the speaker to hear it in a real human voice. New error or warning messages are read out automatically.">Touchez le haut-parleur pour l’entendre avec une vraie voix humaine. Les nouveaux messages d’erreur ou d’alerte sont lus automatiquement.</p></div>
-    </div>
+    <div class="swipe"><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg><span data-en="Swipe">Faites glisser</span></div>
   </div>
 </section>
 
 <section class="block" id="voice">
   <div class="wrap voice-grid">
     <div>
-      <div class="kicker" data-en="Listen and ask">Écouter et demander</div>
       <h2 data-en="Hear it. Ask it. In your language.">L’entendre. Le demander. Dans votre langue.</h2>
-      <p class="sub" data-en="Not everyone reads easily, and that is fine. Langwa reads the page aloud and answers questions about it, spoken or typed.">Tout le monde ne lit pas facilement, et ce n’est pas grave. Langwa lit la page à voix haute et répond aux questions, à l’oral ou à l’écrit.</p>
       <ul class="feats">
-        <li><span class="ico g"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg></span><div><b data-en="Listen to every message">Écoutez chaque message</b><span data-en="One tap reads the translation aloud. On a computer, an optional natural voice runs offline; otherwise the phone or browser voice reads.">Un geste lit la traduction à voix haute. Sur ordinateur, une voix naturelle en option fonctionne hors ligne ; sinon, la voix du téléphone ou du navigateur lit.</span></div></li>
-        <li><span class="ico o"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><div><b data-en="Ask about the page">Posez vos questions</b><span data-en="“Wetin dis page be?”, “How much I go pay?”. Langwa answers from the page itself, with its exact amounts.">« Wetin dis page be? », « How much I go pay? ». Langwa répond à partir de la page elle-même, avec ses montants exacts.</span></div></li>
-        <li><span class="ico i"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg></span><div><b data-en="Speak instead of typing">Parlez au lieu d’écrire</b><span data-en="Tap the microphone and ask out loud, in French, English or Pidgin.">Touchez le micro et posez votre question à voix haute, en français, en anglais ou en pidgin.</span></div></li>
+        <li><span class="ico g"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg></span><div><b data-en="Listen">Écoutez</b><span data-en="One tap reads it aloud.">Un geste, et c’est lu à voix haute.</span></div></li>
+        <li><span class="ico o"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><div><b data-en="Ask">Demandez</b><span data-en="Answers come from the page, with its exact amounts.">Les réponses viennent de la page, avec ses montants exacts.</span></div></li>
+        <li><span class="ico i"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg></span><div><b data-en="Speak">Parlez</b><span data-en="Ask out loud instead of typing.">Posez la question à voix haute.</span></div></li>
       </ul>
     </div>
     <div class="chatmock" aria-hidden="true">
@@ -561,7 +613,7 @@
       <div class="cm-log">
         <div class="cm-me">Wetin dis page be?</div>
         <div class="cm-bot">
-          <p>You dey the step for see the charges. Choose the transfer type and amount here; check the charges and total before you continue. The transfer charge na free (0 FCFA).</p>
+          <p>You dey the step for see the charges. The transfer charge na free (0 FCFA).</p>
           <span class="cm-say"><i></i><i></i><i></i></span>
         </div>
       </div>
@@ -573,23 +625,20 @@
 
 <section class="block alt" id="safety">
   <div class="wrap">
-    <div class="kicker" data-en="Safety first">La sécurité d’abord</div>
-    <h2 data-en="In finance, a wrong translation is worse than none.">En finance, une mauvaise traduction est pire qu’aucune.</h2>
-    <p class="sub" data-en="Langwa is built so that a translation can never change what you are about to pay.">Langwa est conçu pour qu’une traduction ne puisse jamais changer ce que vous allez payer.</p>
-    <div class="grid2">
-      <div class="tile"><div class="ico o"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><h3 data-en="Amounts locked">Montants verrouillés</h3><p data-en="Amounts, signs, fees, phone and account numbers, references and names are locked before translation and checked after. Any difference blocks the translation.">Montants, signes, frais, numéros de téléphone et de compte, références et noms sont verrouillés avant la traduction et vérifiés après. Toute différence bloque la traduction.</p></div>
-      <div class="tile"><div class="ico g"><svg viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></div><h3 data-en="The bank stays untouched">La banque reste intacte</h3><p data-en="Langwa only reads the page. It never changes the bank's site, its forms or its requests, and never presses a button for you.">Langwa ne fait que lire la page. Il ne modifie jamais le site de la banque, ses formulaires ni ses échanges, et n’appuie jamais sur un bouton à votre place.</p></div>
-      <div class="tile"><div class="ico r"><svg viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div><h3 data-en="Warnings keep their force">Les alertes gardent leur force</h3><p data-en="Errors and security warnings are shown first. A new message is never guessed: Langwa says what kind of message it is and shows the exact amounts.">Erreurs et alertes de sécurité passent en premier. Un nouveau message n’est jamais deviné : Langwa dit de quel type de message il s’agit et montre les montants exacts.</p></div>
-      <div class="tile"><div class="ico i"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg></div><h3 data-en="Nothing leaves your device">Rien ne quitte votre appareil</h3><p data-en="No account, no tracking. Translations live inside Langwa on your device; your balance and your beneficiaries are never sent anywhere.">Pas de compte, pas de suivi. Les traductions sont dans Langwa, sur votre appareil ; votre solde et vos bénéficiaires ne sont envoyés nulle part.</p></div>
+    <h2 class="center" data-en="A translation never changes what you pay.">Une traduction ne change jamais ce que vous payez.</h2>
+    <div class="safe4">
+      <div class="sf"><span class="ico o"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><b data-en="Amounts locked">Montants verrouillés</b><span data-en="Checked before and after.">Vérifiés avant et après.</span></div>
+      <div class="sf"><span class="ico g"><svg viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span><b data-en="Bank untouched">Banque intacte</b><span data-en="Langwa only reads.">Langwa ne fait que lire.</span></div>
+      <div class="sf"><span class="ico r"><svg viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></span><b data-en="Warnings first">Alertes d’abord</b><span data-en="Never guessed.">Jamais devinées.</span></div>
+      <div class="sf"><span class="ico i"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg></span><b data-en="Private">Privé</b><span data-en="Nothing leaves your device.">Rien ne quitte votre appareil.</span></div>
     </div>
   </div>
 </section>
 
 <section class="block" id="languages">
   <div class="wrap">
-    <div class="kicker" data-en="Languages">Langues</div>
     <h2 data-en="Nine languages, built with their speakers.">Neuf langues, construites avec leurs locuteurs.</h2>
-    <p class="sub" data-en="Translations are written and checked by native speakers, and collected now. The most complete languages come first; tap a language to help finish it.">Les traductions sont écrites et vérifiées par des locuteurs natifs, et la collecte est en cours. Les langues les plus avancées viennent en premier ; touchez une langue pour aider à la terminer.</p>
+    <p class="sub" data-en="Tap a language to help finish it.">Touchez une langue pour aider à la terminer.</p>
     <div class="langs" id="langs"></div>
   </div>
 </section>
@@ -598,26 +647,24 @@
   <div class="wrap">
     <div class="contribute">
       <div>
-        <div class="kicker" style="color:var(--gold)" data-en="Contribute your knowledge">Partagez votre savoir</div>
-        <h2 data-en="Do you speak one of these languages? Help us translate.">Vous parlez une de ces langues ? Aidez-nous à traduire.</h2>
-        <p class="sub" data-en="Short, everyday banking sentences, on your phone. Even ten minutes helps someone in your community use their bank with confidence.">De courtes phrases de banque de tous les jours, sur votre téléphone. Même dix minutes aident quelqu’un de votre communauté à utiliser sa banque en confiance.</p>
+        <h2 data-en="Do you speak one of these languages?">Vous parlez une de ces langues ?</h2>
+        <p class="sub" data-en="Ten minutes on your phone helps your whole community.">Dix minutes sur votre téléphone aident toute votre communauté.</p>
+        <div class="csteps">
+          <span><i>1</i><span data-en="Choose your language">Choisissez votre langue</span></span>
+          <span><i>2</i><span data-en="Translate the meaning">Traduisez le sens</span></span>
+          <span><i>3</i><span data-en="Send on WhatsApp">Envoyez sur WhatsApp</span></span>
+        </div>
         <a class="btn gold" href="contribute/"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span data-en="Start translating">Commencer à traduire</span></a>
       </div>
-      <div class="steps">
-        <img class="contrib-photo" src="img/photo-community.jpg" width="900" height="675" loading="lazy" alt="Deux jeunes regardent leurs téléphones ensemble dans la rue" data-en-alt="Two young people looking at their phones together in the street">
-        <div class="step"><i>1</i><div><b data-en="Choose your language">Choisissez votre langue</b><span data-en="Ewondo, Fulfulde (Fulani), Pidgin, Duala, Ghomálá' (Bamiléké), Basaá (Bassa), Lamnso' (Nso), Mankon (Ngemba) or Kom.">Ewondo, fulfulde (peul), pidgin, duala, ghomálá' (bamiléké), basaá (bassa), lamnso' (nso), mankon (ngemba) ou kom.</span></div></div>
-        <div class="step"><i>2</i><div><b data-en="Translate the meaning">Traduisez le sens</b><span data-en="One sentence at a time, as you would explain it to a relative. Record your voice if you like.">Une phrase à la fois, comme vous l’expliqueriez à un parent. Enregistrez votre voix si vous le voulez.</span></div></div>
-        <div class="step"><i>3</i><div><b data-en="Send it on WhatsApp">Envoyez sur WhatsApp</b><span data-en="One tap shares your translations with the team. Your name is credited.">Un seul geste partage vos traductions avec l’équipe. Votre nom est crédité.</span></div></div>
-      </div>
+      <div class="shape-pill"><img src="img/photo-community.jpg" width="900" height="675" loading="lazy" alt="Deux jeunes regardent leurs téléphones ensemble dans la rue" data-en-alt="Two young people looking at their phones together in the street"></div>
     </div>
   </div>
 </section>
 
 <section class="block alt" id="install">
   <div class="wrap">
-    <div class="kicker" data-en="Install">Installer</div>
     <h2 data-en="Ready in two minutes.">Prêt en deux minutes.</h2>
-    <p class="sub" data-en="Langwa is a prototype for the SAFINUM Innovate Challenge. It is installed by hand while it awaits publication on browser stores. Free, no account.">Langwa est un prototype pour le SAFINUM Innovate Challenge. Il s’installe à la main en attendant sa publication sur les boutiques des navigateurs. Gratuit, sans compte.</p>
+    <p class="sub" data-en="Free, no account. Installed by hand until it reaches the browser stores.">Gratuit, sans compte. S’installe à la main en attendant les boutiques des navigateurs.</p>
     <div class="install">
       <div class="tile" data-for="chromium">
         <span class="rec" data-en="Recommended for you">Recommandé pour vous</span>
@@ -675,9 +722,9 @@
     </div>
     <div class="after">
       <span class="ico g"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
-      <div><b data-en="Then: open your bank's page and choose your language.">Ensuite : ouvrez la page de votre banque et choisissez votre langue.</b>
-      <span data-en="Langwa asks once which language you speak. Hold Ctrl and point at any text, or open the round Langwa button.">Langwa vous demande une seule fois quelle langue vous parlez. Maintenez Ctrl et pointez un texte, ou ouvrez le bouton rond Langwa.</span></div>
-      <a class="btn gold" href="https://safinum.cm/hackathon-test" target="_blank" rel="noopener"><span data-en="Try it on the SAFINUM test page">Essayer sur la page de test SAFINUM</span><svg viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
+      <div><b data-en="Then open your bank's page and choose your language.">Ensuite, ouvrez la page de votre banque et choisissez votre langue.</b>
+      <span data-en="A short guide shows you around.">Un court guide vous fait le tour.</span></div>
+      <a class="btn gold" href="https://safinum.cm/hackathon-test" target="_blank" rel="noopener"><span data-en="Try it on the test page">Essayer sur la page de test</span><svg viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
     </div>
   </div>
 </section>
@@ -685,7 +732,7 @@
 <footer>
   <div class="wrap">
     <a class="brand" href="./"><span class="logo"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></span>Langwa</a>
-    <span data-en="Prototype for the SAFINUM Innovate Challenge. Simulated operations only.">Prototype pour le SAFINUM Innovate Challenge. Opérations simulées uniquement.</span>
+    <span data-en="Prototype built for the SAFINUM Innovate Challenge 2026. Simulated operations only.">Prototype conçu pour le SAFINUM Innovate Challenge 2026. Opérations simulées uniquement.</span>
     <a class="sp" href="contribute/" data-en="Contribute translations">Contribuer des traductions</a>
     <span class="credits"><span data-en="Photos:">Photos :</span> <a href="https://unsplash.com/photos/shallow-focus-photo-of-person-holding-black-android-smartphone-Ciba8rvHYng">Unsplash</a>, <a href="https://unsplash.com/photos/a-man-looking-at-his-cell-phone-and-laughing-N9fGkZBXNvY">Unsplash</a>, <a href="https://unsplash.com/photos/a-man-and-a-woman-looking-at-a-cell-phone-O8SpYxOFnK8">Francis Odeyemi / Unsplash</a></span>
   </div>
