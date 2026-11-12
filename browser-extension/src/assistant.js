@@ -133,6 +133,9 @@
       const out = [];
       const say = (id, fr, vars = {}) => out.push(fill(ui(id, fr), vars));
       const isLns = state.pack.code === 'lns';
+      // The five steps in this language, from the page's own step labels (never an English list
+      // inside a national-language answer).
+      const stepsList = STEP_IDS.map(([id, en], k) => `${k + 1}) ${packText(id) || en}`).join(' · ');
       if (intent === 'page') {
         const pages = {
           account: ['ans_page_account', 'This is your account overview. It shows your available balance and recent transactions.'],
@@ -145,7 +148,7 @@
         const [id, en] = pages[f.pageKind] || pages.account;
         if (isLns) out.push(en);
         else say(id, en);
-        if (f.pageKind !== 'complete') out.push('Steps: Pay, Costs, Beneficiary, Summary, Confirmation. Check each detail before confirming.');
+        if (f.pageKind !== 'complete') out.push(isLns ? 'Steps: Pay, Costs, Beneficiary, Summary, Confirmation. Check each detail before confirming.' : `${stepsList}.`);
         const total = [f.total, f.amount].find(v => v && /(?:FCFA|CFA|XAF|XOF)/i.test(v));
         if (total) isLns ? out.push(`Total amount: ${total}.`) : say('ans_amount', 'Total amount: {total}.', { total });
         if (f.receiver) isLns ? out.push(`Recipient: ${f.receiver}.`) : say('ans_receiver', 'The money goes to {name}.', { name: f.receiver });
@@ -155,23 +158,26 @@
         const fees = f.fees && /(?:FCFA|CFA|XAF|XOF)/i.test(f.fees) && /\d/.test(f.fees) ? f.fees : null;
         if (total) isLns ? out.push(`Total amount: ${total}.`) : say('ans_amount', 'Total amount: {total}.', { total });
         if (fees) isLns ? out.push(`Transfer fee: ${fees}.`) : say('ans_fees', 'Fees: {fees}.', { fees });
-        if (!out.length) out.push(isLns ? 'No amount to pay is shown on this page.' : 'I do not see an amount to pay on this page.');
+        if (!out.length) isLns ? out.push('No amount to pay is shown on this page.') : say('ans_no_amount', 'I do not see an amount to pay on this page.');
       } else if (intent === 'receiver') {
         if (f.receiver) isLns ? out.push(`Recipient: ${f.receiver}.`) : say('ans_receiver', 'The money goes to {name}.', { name: f.receiver });
-        else out.push(isLns ? 'No beneficiary is shown on this page yet.' : 'I do not see a beneficiary on this page yet.');
+        else isLns ? out.push('No beneficiary is shown on this page yet.') : say('ans_no_receiver', 'I do not see a beneficiary on this page yet.');
       } else if (intent === 'warning') {
         if (isLns) out.push('Before confirming, check the beneficiary name and phone number carefully.');
         else if (f.warnings.length) f.warnings.slice(0, 2).forEach(m => say('ans_warning', 'Warning: {message}', { message: m }));
-        else out.push('No warning is shown on this page.');
+        else say('ans_no_warning', 'No warning is shown on this page.');
       } else if (intent === 'next') {
         if (f.next) isLns ? out.push(`After checking the details, press ${f.next}.`) : say('ans_next', 'Next, press {button}.', { button: f.next });
-        else out.push(isLns ? 'No next-step button is visible on this page.' : 'I do not see a button to press.');
+        else isLns ? out.push('No next-step button is visible on this page.') : say('ans_no_button', 'I do not see a button to press.');
       } else if (intent === 'balance') {
         if (f.balance) isLns ? out.push(`Available account balance: ${f.balance}.`) : say('ans_balance', 'Available balance: {balance}.', { balance: f.balance });
-        else out.push(isLns ? 'No available balance is shown on this page.' : 'I do not see an available balance on this page.');
+        else isLns ? out.push('No available balance is shown on this page.') : say('ans_no_balance', 'I do not see an available balance on this page.');
       } else if (intent === 'steps') {
-        const steps = 'A transfer has five steps. Pay starts the transfer. Costs lets you choose the type and amount and check the fee. Beneficiary asks for the recipient name and phone number. Summary lets you review the details. Confirmation sends it only after you confirm.';
-        out.push(steps);
+        const full = 'A transfer has five steps. Pay starts the transfer. Costs lets you choose the type and amount and check the fee. Beneficiary asks for the recipient name and phone number. Summary lets you review the details. Confirmation sends it only after you confirm.';
+        // A speaker's full explanation when it exists; otherwise the steps by name, in this language.
+        if (isLns) out.push(full);
+        else if (packText('ans_steps')) say('ans_steps', full);
+        else out.push(`${stepsList}.`);
       }
       return out.join(' ');
     }
@@ -442,6 +448,9 @@
     }
 
     // ---------------- view ----------------
+    /** This language's own translation of a phrase (page labels and interface), or ''. */
+    const packText = id => { const e = (state.pack.entries || []).find(x => x.id === id); return (e && e.t) || ''; };
+    const STEP_IDS = [['step_pay', 'Pay'], ['step_costs', 'Costs'], ['step_beneficiary', 'Beneficiary'], ['step_summary', 'Summary'], ['step_confirmation', 'Confirmation']];
     const QUESTIONS = [
       ['page', 'q_page', 'C’est quoi cette page ?'],
       ['steps', 'q_steps', state.pack.code === 'wes' ? 'Wetin be the transfer steps?' : (/^en/i.test(navigator.language || '') ? 'What are the transfer steps?' : 'Quelles sont les étapes du virement ?')],
@@ -468,7 +477,11 @@
         });
         api.storage.local.get('coverageHidden').then(r => { if (r && r.coverageHidden) { state.coverageHidden = true; pidginCoverage.remove(); } }).catch(() => {});
       }
-      const chips = h('div', { class: 'qchips' }, QUESTIONS.map(([intent, id, fr]) => h('button', { type: 'button', class: 'qchip', onclick: () => ask(ui(id, fr), intent) }, ui(id, fr))));
+      // In a language that already has most questions translated, untranslated ones are left out
+      // (no English chip among Fulfulde ones); a language with few translations shows them all.
+      const translatedQs = QUESTIONS.filter(([, id]) => packText(id));
+      const shownQs = translatedQs.length >= 3 && state.pack.code !== 'wes' ? translatedQs : QUESTIONS;
+      const chips = h('div', { class: 'qchips' }, shownQs.map(([intent, id, fr]) => h('button', { type: 'button', class: 'qchip', onclick: () => ask(ui(id, fr), intent) }, ui(id, fr))));
       const input = h('input', { type: 'text', class: 'askin', placeholder: ui('ui_ask_placeholder', 'Posez votre question…'), 'aria-label': ui('ui_ask_placeholder', 'Posez votre question…'), enterkeyhint: 'send' });
       const mic = h('button', { type: 'button', class: 'mic', title: ui('ui_mic', 'Parler'), 'aria-label': ui('ui_mic', 'Parler'), onclick: listen }, icon('mic'));
       const sendBtn = h('button', { type: 'submit', class: 'sendq', 'aria-label': ui('ui_send', 'Envoyer') }, icon('send'));

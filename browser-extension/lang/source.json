@@ -1714,6 +1714,30 @@
    "group": "ui",
    "fr": "Guide",
    "en": "Guide"
+  },
+  {
+   "id": "q_steps",
+   "group": "ui",
+   "fr": "Quelles sont les étapes du virement ?",
+   "en": "What are the transfer steps?"
+  },
+  {
+   "id": "ans_steps",
+   "group": "ui",
+   "fr": "Un virement a cinq étapes. Payer lance le virement. Frais : choisissez le type et le montant, et vérifiez les frais. Bénéficiaire : le nom et le numéro de téléphone de la personne qui reçoit. Récapitulatif : vérifiez tout. Confirmation : le virement part seulement quand vous confirmez.",
+   "en": "A transfer has five steps. Pay starts the transfer. Costs lets you choose the type and amount and check the fee. Beneficiary asks for the recipient name and phone number. Summary lets you review the details. Confirmation sends it only after you confirm."
+  },
+  {
+   "id": "ans_no_button",
+   "group": "ui",
+   "fr": "Je ne vois pas de bouton à appuyer.",
+   "en": "I do not see a button to press."
+  },
+  {
+   "id": "ans_no_balance",
+   "group": "ui",
+   "fr": "Je ne vois pas de solde disponible sur cette page.",
+   "en": "I do not see an available balance on this page."
   }
  ]
 }

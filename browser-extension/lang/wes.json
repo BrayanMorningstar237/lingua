@@ -812,6 +812,10 @@
     "ans_model_note": {
       "t": "Na computer answer: check am well.",
       "by": "Brouillon IA, à valider"
+    },
+    "q_steps": {
+      "t": "Wetin be the transfer steps?",
+      "by": "Brouillon IA, à valider"
     }
   }
 }
