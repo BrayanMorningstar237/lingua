@@ -1738,6 +1738,18 @@
    "group": "ui",
    "fr": "Je ne vois pas de solde disponible sur cette page.",
    "en": "I do not see an available balance on this page."
+  },
+  {
+   "id": "ui_voice_not_ready",
+   "group": "ui",
+   "fr": "Voix pas prête",
+   "en": "Voice not ready"
+  },
+  {
+   "id": "ui_voice_setup",
+   "group": "ui",
+   "fr": "Installer",
+   "en": "Set up"
   }
  ]
 }

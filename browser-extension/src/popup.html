@@ -42,6 +42,9 @@
   .vline .vbar { flex: 1; min-width: 40px; height: 6px; border-radius: 99px; background: var(--line); overflow: hidden; }
   .vline .vbar i { display: block; height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, var(--forest), var(--gold)); transition: width 3s linear; }
   .vline:not([data-s="installing"]) .vbar { display: none; }
+  .vline[data-s="notready"] .dot { background: #9c8b78; animation: none; }
+  .vset { margin-left: auto; border: 0; background: color-mix(in srgb, var(--gold) 20%, var(--card)); color: #8a5a00; font: 700 12px inherit; font-family: inherit; padding: 3px 10px; border-radius: 99px; cursor: pointer; }
+  @media (prefers-color-scheme: dark) { .vset { color: var(--gold); } }
   @keyframes vp { 50% { opacity: .35; } }
   @media (prefers-reduced-motion: reduce) { .vline .dot { animation: none; } .vline .vbar i { transition: none; } }
   label.field { display: grid; gap: 6px; font-weight: 650; font-size: 13px; color: var(--muted); }
@@ -159,7 +162,7 @@
     <span class="txt"><b data-ui="ui_online_voice">Voix naturelles en ligne</b><small data-ui="ui_online_voice_sub">Plus fluide. Le texte lu est envoyé à Microsoft ou Google.</small></span>
     <span class="switch"><input type="checkbox" id="onlineVoice"><span></span></span>
   </label>
-  <div class="vline" id="vline" role="status" hidden><span class="dot"></span><span id="vlineText"></span><span class="vbar"><i id="vlineBar"></i></span></div>
+  <div class="vline" id="vline" role="status" hidden><span class="dot"></span><span id="vlineText"></span><span class="vbar"><i id="vlineBar"></i></span><button class="vset" id="vlineSet" type="button" hidden></button></div>
 
   <div class="keys"><span><kbd>Ctrl</kbd> + <svg viewBox="0 0 24 24"><path d="M4 4l7 17 2.5-7.5L21 11 4 4z"/></svg></span><span><kbd>Ctrl+Espace</kbd> <span data-ui="ui_space_listen">écouter</span></span><span><kbd>Alt+Shift+L</kbd> <span data-ui="ui_read_all">Tout lire</span></span></div>
 

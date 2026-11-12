@@ -178,6 +178,9 @@
   .pvoice .vt { display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; }
   .pvoice .vt::first-letter { text-transform: uppercase; }
   .pvoice[data-s="ready"] { color: #7fd9a8; }
+  .pvoice[data-s="notready"] { color: #f3c460; }
+  .pv-setup { flex: none; border: 0; background: rgba(243,196,96,.16); color: #f3c460; font: 700 11.5px inherit; font-family: inherit; padding: 2px 8px; border-radius: 99px; cursor: pointer; }
+  .pv-setup:hover { background: rgba(243,196,96,.3); }
   .pvoice[data-s="installing"], .pvoice[data-s="loading"] { color: var(--gold); }
   .vprog { flex: none; width: 48px; height: 5px; border-radius: 99px; overflow: hidden; background: color-mix(in srgb, currentColor 22%, transparent); }
   .vprog i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #7fe0ad, var(--gold)); transition: width 3s linear; }
@@ -821,21 +824,26 @@
     const v = natural && !state.localVoice ? state.voice : null;
     const s = natural && state.localVoice ? 'ready' : v ? v.status : 'browser';
     const pct = v ? Math.max(1, Math.round((v.progress || 0) * 100)) : 0;
+    // The natural voice is the default; when it is not running yet, say so (and how to get it)
+    // rather than silently reading with another voice.
+    const notReady = s === 'browser' && natural;
     const label = s === 'ready' ? `✓ ${ui('ui_voice_natural', 'Voix naturelle')}`
       : s === 'installing' ? `${ui('ui_voice_natural', 'Voix naturelle')} · ${pct} %`
-        : s === 'loading' ? ui('ui_voice_starting', 'voix naturelle, démarrage…') : voiceName('synthetic');
+        : s === 'loading' ? ui('ui_voice_starting', 'voix naturelle, démarrage…')
+          : notReady ? ui('ui_voice_not_ready', 'Voix pas prête') : voiceName('synthetic');
     const eta = v && v.etaSec != null ? (v.etaSec < 60 ? ' · <1 min' : ` · ~${Math.round(v.etaSec / 60)} min`) : '';
     if (s === 'installing' && panelVoice.dataset.s === 'installing') {
       panelVoice.querySelector('.vt').textContent = label + eta;
       panelVoice.querySelector('.vprog i').style.width = `${pct}%`;
       return;
     }
-    panelVoice.dataset.s = s;
+    panelVoice.dataset.s = notReady ? 'notready' : s;
     panelVoice.setAttribute('aria-live', s === 'installing' ? 'off' : 'polite');
     let prog = null;
     if (s === 'installing') { const i = h('i'); i.style.width = `${pct}%`; prog = h('span', { class: 'vprog', 'aria-hidden': 'true' }, i); }
     const ic = s === 'ready' ? icon('cpu') : s === 'loading' ? icon('loader', 'spin') : s === 'installing' ? icon('loader', 'spin') : icon('monitor');
-    panelVoice.replaceChildren(ic, h('span', { class: 'vt' }, label + eta), ...(prog ? [prog] : []));
+    const setup = notReady ? h('button', { class: 'pv-setup', type: 'button', onclick: () => send({ type: 'openOptions' }) }, ui('ui_voice_setup', 'Installer')) : null;
+    panelVoice.replaceChildren(ic, h('span', { class: 'vt' }, label + eta), ...(prog ? [prog] : []), ...(setup ? [setup] : []));
     panelVoice.title = s === 'browser' && natural
       ? ui('ui_voice_hint', 'Voix du navigateur. Pour une voix plus naturelle, lancez « Start Langwa voice » sur cet ordinateur.')
       : panelVoice.textContent;

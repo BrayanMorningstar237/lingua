@@ -139,8 +139,8 @@ async function save(patch) {
 
   // ---------- local natural voice: live status while the popup is open (hidden when not running) ----------
   const V = BASE === 'en'
-    ? { inst: (p, m) => `Natural voice: installing ${p}%${m}`, min: n => ` · ~${n} min`, soon: ' · <1 min', start: 'Natural voice: starting…', ready: '✓ Natural voice ready', sleep: 'Natural voice: resting, wakes on use' }
-    : { inst: (p, m) => `Voix naturelle : installation ${p} %${m}`, min: n => ` · ~${n} min`, soon: ' · <1 min', start: 'Voix naturelle : démarrage…', ready: '✓ Voix naturelle prête', sleep: 'Voix naturelle en veille, se réveille à l’usage' };
+    ? { inst: (p, m) => `Natural voice: installing ${p}%${m}`, min: n => ` · ~${n} min`, soon: ' · <1 min', start: 'Natural voice: starting…', ready: '✓ Natural voice ready', sleep: 'Natural voice: resting, wakes on use', notReady: 'Natural voice: not ready', setup: 'Set up' }
+    : { inst: (p, m) => `Voix naturelle : installation ${p} %${m}`, min: n => ` · ~${n} min`, soon: ' · <1 min', start: 'Voix naturelle : démarrage…', ready: '✓ Voix naturelle prête', sleep: 'Voix naturelle en veille, se réveille à l’usage', notReady: 'Voix naturelle : pas prête', setup: 'Installer' };
   async function voiceLine() {
     const tts = settings.tts || {};
     if (tts.mode === 'none' || document.hidden) return;
@@ -150,6 +150,20 @@ async function save(patch) {
       j = r.ok ? await r.json() : null;
     } catch { /* not running: the browser voice is used, nothing to show */ }
     const line = $('vline');
+    // Not running: the natural voice is the default, so say it is not ready and how to set it up
+    // (only for languages it can read).
+    const natural = !!((langs[settings.lang] || {}).africaTts);
+    $('vlineSet').hidden = true;
+    if (!j && natural) {
+      line.hidden = false;
+      line.dataset.s = 'notready';
+      $('vlineText').textContent = V.notReady;
+      $('vlineSet').hidden = false;
+      $('vlineSet').textContent = V.setup;
+      $('vlineSet').onclick = () => api.runtime.openOptionsPage();
+      setTimeout(voiceLine, 3000);
+      return;
+    }
     line.hidden = !j || j.status === 'error';
     if (!line.hidden) {
       const pct = Math.max(1, Math.round((j.progress || 0) * 100));

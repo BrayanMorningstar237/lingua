@@ -462,6 +462,7 @@ api.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       case 'translateBatch': return translateBatch(msg.lang, msg.items || []);
       case 'tts': return synthesize(msg.lang, msg.text);
       case 'voiceStatus': return voiceStatus();
+      case 'openOptions': api.runtime.openOptionsPage(); return true;
       case 'chat': return chatAnswer(msg.lang, msg.question, msg.context || []).catch(() => null);
       case 'asr': return transcribe(msg.audio, msg.hint);
       case 'clearCache': await api.storage.local.remove([
