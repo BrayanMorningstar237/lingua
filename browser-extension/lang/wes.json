@@ -330,6 +330,10 @@
       "t": "Dem don block your account for small time.",
       "by": "Brouillon IA, à valider"
     },
+    "service_apology": {
+      "t": "We sorry.",
+      "by": "Brouillon IA, à valider"
+    },
     "required_field": {
       "t": "You must fill this place.",
       "by": "Brouillon IA, à valider"

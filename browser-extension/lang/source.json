@@ -604,6 +604,17 @@
    "en": "Your account is temporarily locked."
   },
   {
+   "id": "service_apology",
+   "group": "messages",
+   "fr": "Nous sommes désolés.",
+   "en": "We're sorry.",
+   "variants": [
+    "We are sorry",
+    "We’re sorry"
+   ],
+   "note": "A brief apology from the service, usually after a failed action. Keep it as an apology, not a generic information label."
+  },
+  {
    "id": "required_field",
    "group": "messages",
    "fr": "Ce champ est obligatoire.",
