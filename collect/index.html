@@ -340,7 +340,7 @@
   .stage { position: relative; min-height: 560px; display: grid; place-items: center; }
   .shape { position: absolute; overflow: hidden; z-index: 1; box-shadow: 0 18px 40px rgba(36,29,22,.16); }
   .shape img { width: 100%; height: 100%; object-fit: cover; }
-  .shape.arch { left: 0; top: 30px; width: 190px; height: 250px; border-radius: 120px 120px 26px 26px; background: #3d4a8a; padding: 8px 8px 0; }
+  .shape.arch { left: 6%; top: 60px; width: 200px; height: 270px; border-radius: 120px 120px 26px 26px; background: #3d4a8a; padding: 8px 8px 0; }
   .shape.arch img { border-radius: 112px 112px 20px 20px; }
   .shape.circle { right: 2%; top: 0; width: 170px; height: 170px; border-radius: 50%; background: #e3a21a; padding: 8px; }
   .shape.circle img { border-radius: 50%; object-position: center 30%; }
@@ -366,12 +366,12 @@
   .bubble { position: absolute; z-index: 3; padding: 9px 15px; border-radius: 18px; font-weight: 800; font-size: 15.5px; color: var(--ebony); background: #fff;
     box-shadow: 0 10px 24px rgba(36,29,22,.14); animation: bob 5s ease-in-out infinite; white-space: nowrap; }
   .bubble::after { content: ""; position: absolute; bottom: -7px; left: 20px; width: 14px; height: 14px; background: inherit; transform: rotate(45deg); border-radius: 0 0 4px 0; }
-  .b1 { top: 6px; left: 22%; background: #2f9e66; color: #fff; } .b2 { top: 200px; right: 4%; background: #e3a21a; animation-delay: -1.2s; }
+  .b1 { top: 18px; left: 18%; background: #2f9e66; color: #fff; } .b2 { top: 150px; right: 8%; background: #e3a21a; animation-delay: -1.2s; }
   .b3 { bottom: 120px; left: 4%; background: #3d4a8a; color: #fff; animation-delay: -2.4s; } .b4 { bottom: 4px; left: 30%; animation-delay: -3.1s; }
   .fcard { position: absolute; z-index: 4; display: flex; align-items: center; gap: 12px; padding: 12px 16px 12px 12px; border-radius: 18px; background: #fff;
     box-shadow: 0 18px 40px rgba(36,29,22,.16); animation: bob 6s ease-in-out infinite; text-align: left; }
   .fcard b { display: block; font-size: 14.5px; color: var(--ebony); } .fcard small { font-size: 12.5px; color: #6f6152; }
-  .fc-voice { top: 300px; left: -3%; animation-delay: -2s; }
+  .fc-voice { top: 470px; right: 0; left: auto; animation-delay: -2s; }
   .fc-stat { top: 330px; right: -3%; animation-delay: -4s; }
   .eqb { width: 40px; height: 40px; border-radius: 12px; background: #1e7a4c; display: inline-flex; align-items: center; justify-content: center; gap: 3px; }
   .eqb i { width: 4px; height: 10px; border-radius: 2px; background: #fff; animation: eqh 1s ease-in-out infinite; }
@@ -402,9 +402,9 @@
     .hero .showcase { grid-template-columns: minmax(0, 1fr); gap: 14px; margin-top: 26px; }
     #pickLang { order: 1; } #pickSrc { order: 2; } /* your own language first */
     .stage { min-height: 500px; transform: scale(.86); margin: -30px -18px -50px; }
-    .shape.arch { width: 140px; height: 190px; left: -4%; } .shape.circle { width: 120px; height: 120px; right: -2%; } .shape.pill { width: 150px; height: 96px; right: -4%; bottom: 40px; }
+    .shape.arch { width: 150px; height: 200px; left: -2%; top: 40px; }
     .b4 { display: none; }
-    .fc-voice { left: -6%; top: 330px; } .fc-stat { right: -6%; top: 250px; }
+    .fc-voice { right: -4%; top: 455px; }
     .plist.scroll { max-height: 238px; }
     .birds { left: 64%; top: 30px; width: 90px; }
     .hills { height: 130px; }
@@ -471,6 +471,21 @@
     .cred { font-size: 11px; margin-top: 20px; }
     .shape-pill { border-radius: 120px; } .shape-pill img { border-radius: 112px; }
   }
+
+  /* ===== Footer: brand, three columns, credits ===== */
+  footer { padding: 0 0 26px; background: var(--ebony); color: var(--sand); }
+  footer .band { margin-bottom: 52px; }
+  footer .wrap.fgrid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.2fr; gap: 36px; align-items: start; }
+  .fbrand p { margin: 14px 0 20px; max-width: 300px; font-size: 15px; line-height: 1.55; color: var(--sand); }
+  .fbrand .btn { padding: 11px 18px; font-size: 15px; box-shadow: 0 4px 0 #b7800f; }
+  .fcol { display: grid; gap: 10px; font-size: 14.5px; }
+  .fcol b { color: var(--ivory); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 4px; }
+  .fcol a { color: var(--sand); text-decoration: none; } .fcol a:hover { color: #fff; }
+  .fcol span { color: var(--sand); opacity: .9; }
+  footer .wrap.fbottom { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; margin-top: 44px; padding-top: 20px; border-top: 1px solid var(--ebony-3); font-size: 13px; color: #9c8b78; }
+  footer .fbottom .credits a { color: #b7a690; }
+  @media (max-width: 860px) { footer .wrap.fgrid { grid-template-columns: 1fr 1fr; gap: 28px; } .fbrand { grid-column: 1 / -1; } }
+  @media (max-width: 520px) { footer .wrap.fgrid { grid-template-columns: 1fr; } footer .band { margin-bottom: 36px; } }
 </style>
 </head>
 <body>
@@ -518,12 +533,8 @@
 
     <div class="stage" aria-hidden="true">
       <div class="shape arch"><img src="img/photo-hand.jpg" alt="" loading="eager"></div>
-      <div class="shape circle"><img src="img/photo-reaction.jpg" alt="" loading="lazy"></div>
-      <div class="shape pill"><img src="img/photo-community.jpg" alt="" loading="lazy"></div>
       <span class="bubble b1" lang="pcm">How you dey?</span>
       <span class="bubble b2" lang="fub">Jam waali</span>
-      <span class="bubble b3" lang="ewo">Mbolo</span>
-      <span class="bubble b4" lang="fr">Bonjour</span>
       <div class="phone">
         <div class="notch"></div>
         <div class="screen">
@@ -549,7 +560,6 @@
         </div>
       </div>
       <div class="fcard fc-voice"><span class="eqb"><i></i><i></i><i></i><i></i></span><div><b id="voiceTitle" data-en="Natural voice">Voix naturelle</b><small id="voiceSub">Lit en pidgin</small></div></div>
-      <div class="fcard fc-stat"><span class="ring" id="heroRing"><b id="heroPct">76%</b></span><div><b id="heroStatLang">Pidgin</b><small id="heroStatSub" data-en="phrases ready">phrases prêtes</small></div></div>
     </div>
 
     <aside class="picker" id="pickLang">
@@ -730,10 +740,34 @@
 </section>
 
 <footer>
-  <div class="wrap">
-    <a class="brand" href="./"><span class="logo"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></span>Langwa</a>
-    <span data-en="Prototype built for the SAFINUM Innovate Challenge 2026. Simulated operations only.">Prototype conçu pour le SAFINUM Innovate Challenge 2026. Opérations simulées uniquement.</span>
-    <a class="sp" href="contribute/" data-en="Contribute translations">Contribuer des traductions</a>
+  <div class="band"></div>
+  <div class="wrap fgrid">
+    <div class="fbrand">
+      <a class="brand" href="./"><span class="logo"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></span>Langwa</a>
+      <p data-en="Online banking in Cameroon's languages. Amounts never change.">La banque en ligne dans les langues du Cameroun. Les montants ne changent jamais.</p>
+      <a class="btn gold" href="#install"><span data-en="Install Langwa">Installer Langwa</span></a>
+    </div>
+    <div class="fcol" role="navigation" aria-label="Langwa">
+      <b>Langwa</b>
+      <a href="#how" data-en="How it works">Comment ça marche</a>
+      <a href="#voice" data-en="Listen and ask">Écouter et demander</a>
+      <a href="#safety" data-en="Safety">Sécurité</a>
+      <a href="#languages" data-en="Languages">Langues</a>
+    </div>
+    <div class="fcol" role="navigation" aria-label="Contribute">
+      <b data-en="Contribute">Contribuer</b>
+      <a href="contribute/" data-en="Translate into your language">Traduire dans votre langue</a>
+      <a href="https://wa.me/237679637794" target="_blank" rel="noopener" data-en="Write to the team on WhatsApp">Écrire à l’équipe sur WhatsApp</a>
+    </div>
+    <div class="fcol">
+      <b data-en="Project">Projet</b>
+      <span data-en="Built for the SAFINUM Innovate Challenge 2026">Conçu pour le SAFINUM Innovate Challenge 2026</span>
+      <span data-en="Prototype: simulated operations only">Prototype : opérations simulées uniquement</span>
+      <span data-en="No account, no data collected">Sans compte, sans collecte de données</span>
+    </div>
+  </div>
+  <div class="wrap fbottom">
+    <span>© 2026 Langwa</span>
     <span class="credits"><span data-en="Photos:">Photos :</span> <a href="https://unsplash.com/photos/shallow-focus-photo-of-person-holding-black-android-smartphone-Ciba8rvHYng">Unsplash</a>, <a href="https://unsplash.com/photos/a-man-looking-at-his-cell-phone-and-laughing-N9fGkZBXNvY">Unsplash</a>, <a href="https://unsplash.com/photos/a-man-and-a-woman-looking-at-a-cell-phone-O8SpYxOFnK8">Francis Odeyemi / Unsplash</a></span>
   </div>
 </footer>
@@ -793,10 +827,7 @@
     const txt = document.getElementById('demoText');
     txt.textContent = l.demo || (EN ? 'Not translated yet. Speakers can add it in 10 minutes.' : 'Pas encore traduit. Les locuteurs peuvent l’ajouter en 10 minutes.');
     txt.classList.toggle('todo', !l.demo);
-    const ring = document.getElementById('heroRing');
-    ring.style.setProperty('--p', l.pct || 0);
-    document.getElementById('heroPct').textContent = l.count ? `${l.pct}%` : (EN ? 'Soon' : 'Bientôt');
-    document.getElementById('heroStatLang').textContent = short(l);
+    // (the language list already shows each language's coverage)
     const natural = !!l.africaTts;
     document.querySelector('.fc-voice').classList.toggle('browser', !natural);
     document.getElementById('voiceTitle').textContent = natural ? (EN ? 'Natural voice' : 'Voix naturelle') : (EN ? 'Phone voice' : 'Voix du téléphone');
