@@ -277,6 +277,92 @@
   footer .wrap { display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: center; }
   footer .brand { color: var(--ivory); }
   footer .sp { margin-left: auto; }
+
+  /* ===== Hero: bright sky, highlighted words, a phone with the real card, greeting bubbles ===== */
+  nav { background: rgba(251,246,238,.82); color: var(--fg); box-shadow: 0 1px 0 rgba(36,29,22,.06); }
+  nav .links a { color: #5b4c3e; } nav .links a:hover { color: var(--fg); }
+  @media (prefers-color-scheme: dark) { nav { background: rgba(22,17,13,.85); } nav .links a { color: var(--sand); } nav .links a:hover { color: #fff; } }
+  .band { position: relative; z-index: 11; }
+  .hero { position: relative; overflow: hidden; color: var(--ebony); padding: 64px 0 190px;
+    background: radial-gradient(520px 360px at 84% 8%, rgba(255,214,120,.85), rgba(255,214,120,0) 70%),
+      linear-gradient(180deg, #bfe6e4 0%, #dff1e6 42%, #f8efd9 78%, #fbf3e4 100%); }
+  .hero .wrap { position: relative; z-index: 2; grid-template-columns: 1.12fr .88fr; gap: 36px; }
+  .sky { position: absolute; inset: 0; pointer-events: none; }
+  .birds { position: absolute; top: 70px; left: 46%; width: 120px; height: 40px; fill: none; stroke: #3d3229; stroke-width: 2; stroke-linecap: round; opacity: .35; }
+  .hero h1 { color: var(--ebony); font-size: clamp(36px, 4.6vw, 56px); line-height: 1.12; letter-spacing: -.025em; margin: 0 0 20px; }
+  .hero h1 .l1, .hero h1 .l2 { display: block; }
+  .hlw { display: inline-block; padding: .02em .28em .08em; margin: .06em 0; border-radius: .26em; color: #fff; line-height: 1.05; }
+  .hlw.g { background: linear-gradient(180deg, #2f9e66, #1e7a4c); box-shadow: 0 6px 0 #17603c, 0 14px 26px rgba(30,122,76,.28); transform: rotate(-1.2deg); }
+  .hlw.o { background: linear-gradient(180deg, #f0b43a, #e3a21a); color: var(--ebony); box-shadow: 0 6px 0 #b7800f, 0 14px 26px rgba(227,162,26,.3); transform: rotate(.8deg); }
+  .hero p.lead { color: #4a3f35; font-size: 18.5px; max-width: 540px; }
+  .eyebrow { color: #7a4f00; background: rgba(255,255,255,.7); box-shadow: inset 0 0 0 1px rgba(227,162,26,.5), 0 4px 14px rgba(36,29,22,.06); }
+  .ls-label { color: #5b4c3e; opacity: 1; }
+  .ls-row span { color: var(--ebony); background: #fff; box-shadow: 0 1px 0 rgba(36,29,22,.06), 0 4px 12px rgba(36,29,22,.07), inset 0 0 0 1px rgba(36,29,22,.06); }
+  .ls-row span.ready::before { background: #2f9e66; }
+  .hero .meta { color: #5b4c3e; }
+  .hero .meta > span { background: rgba(255,255,255,.6); }
+  .hero .meta svg { color: #1e7a4c; }
+  .btn.gold { box-shadow: 0 6px 0 #b7800f, 0 16px 30px rgba(227,162,26,.35); }
+  .btn.gold:active { transform: translateY(3px); box-shadow: 0 3px 0 #b7800f, 0 10px 20px rgba(227,162,26,.3); }
+  .btn.watch { background: rgba(255,255,255,.75); color: var(--ebony); box-shadow: inset 0 0 0 1.5px rgba(36,29,22,.14); }
+  .btn.watch svg { color: #1e7a4c; }
+
+  /* the stage: phone, bubbles, floating cards */
+  .stage { position: relative; min-height: 520px; display: grid; place-items: center; }
+  .phone { position: relative; width: 300px; padding: 12px; border-radius: 42px; background: #1d1712; box-shadow: 0 40px 80px rgba(36,29,22,.35), inset 0 0 0 2px #3d3229; transform: rotate(-3deg); animation: floaty 7s ease-in-out infinite; }
+  .notch { position: absolute; top: 14px; left: 50%; width: 92px; height: 22px; margin-left: -46px; border-radius: 0 0 14px 14px; background: #1d1712; z-index: 3; }
+  .screen { position: relative; border-radius: 32px; overflow: hidden; background: #f3f6fa; padding: 40px 12px 14px; }
+  .apptop { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font: 700 13px system-ui, sans-serif; color: #1b2430; }
+  .apptop i { width: 22px; height: 22px; border-radius: 7px; background: linear-gradient(135deg, #38bdf8, #0284c7); }
+  .apptop span { margin-left: auto; font-weight: 600; color: #64748b; font-size: 12px; }
+  .stage .bank { margin: 0; padding: 14px; border-radius: 16px; box-shadow: 0 6px 18px rgba(27,36,48,.08); font-size: 13px; }
+  .stage .bank .top { font-size: 13px; margin-bottom: 8px; } .stage .bank .top i { width: 20px; height: 20px; }
+  .stage .bank .row { font-size: 12.5px; padding: 7px 0; }
+  .stage .card { margin: 12px 0 0; width: 100%; padding: 13px 14px; border-radius: 16px; }
+  .stage .card .slot { font-size: 15px; } .stage .card .slot small { font-size: 10.5px; }
+  .stage .card .say { width: 36px; height: 36px; } .stage .card .say svg { width: 17px; height: 17px; }
+  .stage .card .orig { font-size: 11.5px; margin-top: 8px; }
+  .stage .chips { margin-top: 10px; } .stage .chip { font-size: 11px; } .stage .pill { font-size: 11px; }
+  .bubble { position: absolute; z-index: 3; padding: 9px 15px; border-radius: 18px; font-weight: 800; font-size: 16px; color: var(--ebony); background: #fff;
+    box-shadow: 0 10px 24px rgba(36,29,22,.14); animation: bob 5s ease-in-out infinite; white-space: nowrap; }
+  .bubble::after { content: ""; position: absolute; bottom: -7px; left: 20px; width: 14px; height: 14px; background: inherit; transform: rotate(45deg); border-radius: 0 0 4px 0; }
+  .b1 { top: 4%; left: -2%; background: #2f9e66; color: #fff; } .b2 { top: 0; right: 4%; background: #e3a21a; animation-delay: -1.2s; }
+  .b3 { top: 38%; right: -4%; background: #3d4a8a; color: #fff; animation-delay: -2.4s; } .b4 { bottom: 26%; left: -8%; animation-delay: -3.1s; }
+  .b5 { bottom: -2%; left: 28%; background: #c2502e; color: #fff; animation-delay: -1.8s; }
+  .fcard { position: absolute; z-index: 4; display: flex; align-items: center; gap: 12px; padding: 12px 16px 12px 12px; border-radius: 18px; background: #fff;
+    box-shadow: 0 18px 40px rgba(36,29,22,.16); animation: bob 6s ease-in-out infinite; }
+  .fcard b { display: block; font-size: 14.5px; color: var(--ebony); } .fcard small { font-size: 12.5px; color: #6f6152; }
+  .fc-voice { top: 20%; left: -10%; animation-delay: -2s; }
+  .fc-stat { bottom: 12%; right: -8%; animation-delay: -4s; }
+  .eqb { width: 40px; height: 40px; border-radius: 12px; background: #1e7a4c; display: inline-flex; align-items: center; justify-content: center; gap: 3px; }
+  .eqb i { width: 4px; height: 10px; border-radius: 2px; background: #fff; animation: eqh 1s ease-in-out infinite; }
+  .eqb i:nth-child(2) { animation-delay: .15s; } .eqb i:nth-child(3) { animation-delay: .3s; } .eqb i:nth-child(4) { animation-delay: .45s; }
+  .ring { width: 46px; height: 46px; border-radius: 99px; display: grid; place-items: center; background: conic-gradient(#2f9e66 calc(var(--p, 77) * 1%), #e8efe9 0); position: relative; }
+  .ring::before { content: ""; position: absolute; inset: 5px; border-radius: inherit; background: #fff; }
+  .ring b { position: relative; font-size: 12px; font-weight: 800; color: #1e7a4c; }
+  @keyframes floaty { 50% { transform: rotate(-3deg) translateY(-10px); } }
+  @keyframes bob { 50% { transform: translateY(-8px); } }
+  @keyframes eqh { 50% { height: 22px; } }
+  .hills { position: absolute; left: 0; right: 0; bottom: -1px; width: 100%; height: 220px; z-index: 1; }
+  .hills, .hills path { stroke: none; } /* scenery, not an outlined icon */
+  .hills .mt { fill: #a7d5b6; opacity: .75; } .hills .h1 { fill: #7cc493; } .hills .h2 { fill: #2f9e66; } .hills .h3 { fill: var(--bg); }
+  @media (prefers-reduced-motion: reduce) { .phone, .bubble, .fcard, .eqb i { animation: none !important; } }
+  @media (max-width: 900px) {
+    .hero .wrap { grid-template-columns: 1fr; gap: 28px; }
+    .stage { min-height: 470px; }
+  }
+  @media (max-width: 640px) {
+    .hero { padding: 26px 0 150px; }
+    .hero h1 { font-size: 38px; }
+    .hlw.g, .hlw.o { box-shadow: 0 4px 0 rgba(0,0,0,.18); }
+    .stage { min-height: 430px; transform: scale(.88); margin: -20px 0 -30px; }
+    .phone { width: 270px; }
+    .b4, .b5 { display: none; }
+    .fc-voice { left: -2%; top: 16%; } .fc-stat { right: -2%; bottom: 8%; }
+    .birds { left: 62%; top: 34px; width: 90px; }
+    .hills { height: 150px; }
+    .cta .btn.watch { background: rgba(255,255,255,.75); }
+  }
 </style>
 </head>
 <body>
@@ -297,10 +383,17 @@
 </nav>
 
 <header class="hero">
+  <!-- Sky, sun and hills: pure CSS/SVG, no images. -->
+  <div class="sky" aria-hidden="true">
+    <svg class="birds" viewBox="0 0 120 40"><path d="M8 18q6-6 12 0q6-6 12 0"/><path d="M52 8q4-4 8 0q4-4 8 0"/><path d="M88 24q5-5 10 0q5-5 10 0"/></svg>
+  </div>
   <div class="wrap">
-    <div>
+    <div class="hero-copy">
       <div class="eyebrow"><span class="pulse" aria-hidden="true"></span><span data-en="SAFINUM Innovate Challenge · Prototype">SAFINUM Innovate Challenge · Prototype</span></div>
-      <h1><span data-en="Online banking,">La banque en ligne,</span> <em data-en="in your language.">dans votre langue.</em></h1>
+      <h1>
+        <span class="l1"><span data-en="Online ">La </span><mark class="hlw g" data-en="banking">banque</mark><span data-en=",">&nbsp;en&nbsp;ligne,</span></span>
+        <span class="l2"><span data-en="in ">dans </span><mark class="hlw o" data-en="your language.">votre langue.</mark></span>
+      </h1>
       <p class="lead" data-en="Langwa shows banking and mobile-money sites in Cameroon's national languages, in text and by voice. Amounts stay exact. The bank's site stays untouched.">Langwa affiche les sites de banque et de mobile money dans les langues nationales du Cameroun, à l’écrit et à l’oral. Les montants restent exacts. Le site de la banque reste inchangé.</p>
       <div class="langstrip">
         <span class="ls-label" data-en="In your language:">Dans votre langue :</span>
@@ -308,7 +401,7 @@
       </div>
       <div class="cta">
         <a class="btn gold" href="#install"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Install Langwa, free">Installer Langwa, gratuit</span></a>
-        <a class="btn light" href="contribute/"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span data-en="Help translate">Aider à traduire</span></a>
+        <a class="btn watch" href="#how"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4z" fill="currentColor"/></svg><span data-en="See how it works">Voir comment ça marche</span></a>
       </div>
       <div class="meta">
         <span><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-en="Free and open source">Gratuit et open source</span></span>
@@ -317,30 +410,48 @@
       </div>
     </div>
 
-    <div class="preview">
-      <img class="hero-photo" src="img/photo-hand.jpg" width="900" height="600" alt="Une main tient un téléphone devant un tissu en pagne coloré" data-en-alt="A hand holding a phone in front of colourful wax-print fabric">
-      <div class="bank" aria-hidden="true">
-        <div class="top"><i></i><span data-en="Transfer summary">Récapitulatif du virement</span></div>
-        <div class="row"><span data-en="Amount">Montant</span><b>25 000 FCFA</b></div>
-        <div class="row"><span data-en="Fees">Frais</span><b>0 FCFA</b></div>
-        <div class="row hl"><span data-en="Total to be debited">Total à débiter</span><b>25 000 FCFA</b></div>
-        <div class="row"><span data-en="Beneficiary">Bénéficiaire</span><b>Jean-Paul Mbarga</b></div>
-      </div>
-      <!-- Real Langwa translations of the highlighted line (from the language packs), alternating. -->
-      <div class="card" aria-hidden="true">
-        <div class="line">
-          <div class="slot"><small id="demoLang">Pidgin (Kamtok)</small><span id="demoText">All the money wey go comot for your account</span></div>
-          <div class="say"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg></div>
+    <!-- The product, drawn in HTML: a phone with a bank screen and Langwa's real card. -->
+    <div class="stage" aria-hidden="true">
+      <span class="bubble b1" lang="pcm">How you dey?</span>
+      <span class="bubble b2" lang="fub">Jam waali</span>
+      <span class="bubble b3" lang="ewo">Mbolo</span>
+      <span class="bubble b4" lang="fr">Bonjour</span>
+      <span class="bubble b5" lang="en">Hello</span>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+          <div class="apptop"><i></i><b data-en="My bank">Ma banque</b><span>9:41</span></div>
+          <div class="bank">
+            <div class="top"><i></i><span data-en="Transfer summary">Récapitulatif du virement</span></div>
+            <div class="row"><span data-en="Amount">Montant</span><b>25 000 FCFA</b></div>
+            <div class="row"><span data-en="Fees">Frais</span><b>0 FCFA</b></div>
+            <div class="row hl"><span data-en="Total to be debited">Total à débiter</span><b>25 000 FCFA</b></div>
+            <div class="row"><span data-en="Beneficiary">Bénéficiaire</span><b>Jean-Paul Mbarga</b></div>
+          </div>
+          <!-- Real Langwa translations of the highlighted line (from the language packs), alternating. -->
+          <div class="card">
+            <div class="line">
+              <div class="slot"><small id="demoLang">Pidgin (Kamtok)</small><span id="demoText">All the money wey go comot for your account</span></div>
+              <div class="say"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg></div>
+            </div>
+            <div class="orig"><b>Original</b><span data-en="Total to be debited">Total à débiter</span></div>
+            <div class="chips">
+              <span class="chip"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>25 000 FCFA</span>
+              <span class="pill"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><span data-en="Amount checked">Montant vérifié</span></span>
+            </div>
+          </div>
         </div>
-        <div class="orig"><b>Original</b><span data-en="Total to be debited">Total à débiter</span></div>
-        <div class="chips">
-          <span class="vpill"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6"/></svg><span data-en="Natural voice">Voix naturelle</span></span>
-          <span class="chip"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>25 000 FCFA</span>
-          <span class="pill"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><span data-en="Amount checked">Montant vérifié</span></span>
-        </div>
       </div>
+      <div class="fcard fc-voice"><span class="eqb"><i></i><i></i><i></i><i></i></span><div><b data-en="Natural voice">Voix naturelle</b><small data-en="Reading in Pidgin">Lit en pidgin</small></div></div>
+      <div class="fcard fc-stat"><span class="ring" id="heroRing"><b id="heroPct">77%</b></span><div><b id="heroStatLang">Pidgin</b><small data-en="phrases ready">phrases prêtes</small></div></div>
     </div>
   </div>
+  <svg class="hills" viewBox="0 0 1440 240" preserveAspectRatio="none" aria-hidden="true">
+    <path class="mt" d="M760 150 L930 52 Q950 42 970 52 L1150 150 Z"/>
+    <path class="h1" d="M0 150 C220 92 420 176 720 128 C1000 84 1210 166 1440 116 L1440 240 L0 240 Z"/>
+    <path class="h2" d="M0 190 C300 140 540 222 840 176 C1080 140 1270 200 1440 176 L1440 240 L0 240 Z"/>
+    <path class="h3" d="M0 222 C360 196 720 238 1080 214 C1260 202 1370 216 1440 212 L1440 240 L0 240 Z"/>
+  </svg>
 </header>
 
 <section class="block why">
@@ -560,6 +671,12 @@
   }));
 
   // Hero: the languages people recognise, the ones already usable marked with a green dot.
+  if (ranked.length && ranked[0][1].count) {
+    const [, top] = ranked[0];
+    document.getElementById('heroRing').style.setProperty('--p', top.pct);
+    document.getElementById('heroPct').textContent = `${top.pct}%`;
+    document.getElementById('heroStatLang').textContent = top.name.split(' (')[0];
+  }
   document.getElementById('heroLangs').replaceChildren(...ranked.map(([, l]) => el('span', l.count ? 'ready' : '', l.name.split(' (')[0])));
 
   // Install: highlight the option that matches this device and browser.
