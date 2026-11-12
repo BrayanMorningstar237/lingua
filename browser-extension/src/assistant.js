@@ -21,7 +21,7 @@
   // Keywords in French, English, Pidgin and Fulfulde (draft) for each built-in question.
   const INTENTS = [
     ['balance', /\b(solde|balance|il me reste|combien j.?ai|how much (money )?(i get|i have|i remain)|money wey i get|money wey dey|ceede am|ceede maa)\b/],
-    ['receiver', /\b(qui|who|benefici\w*|receive|recoit|recevra|pesin|person|jaboowo|moye|nom|name|innde)\b/],
+    ['receiver', /\b(qui|who|benefici\w*|receive|collect|recoit|recevra|pesin|person|jaboowo|moye|nom|name|innde)\b/],
     ['steps', /\b(steps?|stages?|process|etapes?|how (?:does|do) (?:the )?(?:transfer|payment) work|what happens next)\b/],
     ['next', /\b(next|ensuite|apres|faire|fais|maintenant|now|do now|go do|continue[rz]?|bouton|button|click|cliquer|press|jokku|wad\w*|jooni)\b/],
     ['warning', /\b(danger|attention|warning|alerte?|risk|risque|safe|secur\w*|reentino|kisal|probleme?|problem|erreur|error|wahala)\b/],
@@ -67,7 +67,8 @@
         }
         return null;
       };
-      const currencyValue = u => u && u.result && u.result.value && /(?:FCFA|CFA|XAF|XOF)/i.test(u.text) ? u.text.trim() : null;
+      // A money value has digits: the bare currency label next to an input ("FCFA") is not one.
+      const currencyValue = u => u && u.result && u.result.value && /(?:FCFA|CFA|XAF|XOF)/i.test(u.text) && /\d/.test(u.text) ? u.text.trim() : null;
       // Financial labels and values are often separate, deeply nested DOM blocks. Search
       // nearby protected values instead of assuming the amount is one of the next three units.
       const moneyNear = ids => {
@@ -131,46 +132,46 @@
       const f = facts();
       const out = [];
       const say = (id, fr, vars = {}) => out.push(fill(ui(id, fr), vars));
+      const isLns = state.pack.code === 'lns';
       if (intent === 'page') {
-        const en = /^en/i.test(navigator.language || '');
-        const descriptions = {
-          account: en ? 'This is your account overview. It shows your available balance and recent transactions.' : 'Voici le récapitulatif de votre compte : solde disponible et transactions récentes.',
-          costs: en ? 'This is the costs step. Choose the transfer type and amount; the fee and total are shown before you continue.' : 'Vous êtes à l’étape des frais. Choisissez le type de virement et le montant ; les frais et le total sont affichés avant de continuer.',
-          beneficiary: en ? 'This is the beneficiary step. Enter the recipient’s name and phone number, then check both before continuing.' : 'Vous êtes à l’étape du bénéficiaire. Saisissez son nom et son numéro de téléphone, puis vérifiez-les avant de continuer.',
-          summary: en ? 'This is the transfer summary. Check the amount, fees, recipient, and phone number before confirming.' : 'Voici le récapitulatif du virement. Vérifiez le montant, les frais, le bénéficiaire et son numéro avant de confirmer.',
-          confirmation: en ? 'This is the confirmation step. Review the transfer details, then confirm only if they are correct.' : 'Vous êtes à l’étape de confirmation. Relisez les détails et confirmez seulement s’ils sont corrects.',
-          complete: en ? 'The transfer is complete. This page shows its amount, recipient, and status.' : 'Le virement est terminé. Cette page indique son montant, son bénéficiaire et son statut.',
+        const pages = {
+          account: ['ans_page_account', 'This is your account overview. It shows your available balance and recent transactions.'],
+          costs: ['ans_page_costs', 'This is the costs step. Choose the transfer type and amount; check the fee and total before continuing.'],
+          beneficiary: ['ans_page_beneficiary', 'This is the beneficiary step. Enter the recipient name and phone number, then check both before continuing.'],
+          summary: ['ans_page_summary', 'This is the transfer summary. Check the amount, fees, recipient, and phone number before confirming.'],
+          confirmation: ['ans_page_confirmation', 'This is the confirmation step. Review the transfer details, then confirm only if they are correct.'],
+          complete: ['ans_page_complete', 'The transfer is complete. This page shows its amount, recipient, and status.'],
         };
-        out.push(descriptions[f.pageKind] || descriptions.account);
-        if (f.pageKind !== 'complete') out.push(en
-          ? 'The five steps are Pay, Costs, Beneficiary, Summary, and Confirmation.'
-          : 'Les cinq étapes sont : payer, frais, bénéficiaire, récapitulatif et confirmation.');
+        const [id, en] = pages[f.pageKind] || pages.account;
+        if (isLns) out.push(en);
+        else say(id, en);
+        if (f.pageKind !== 'complete') out.push('Steps: Pay, Costs, Beneficiary, Summary, Confirmation. Check each detail before confirming.');
         const total = [f.total, f.amount].find(v => v && /(?:FCFA|CFA|XAF|XOF)/i.test(v));
-        if (total) say('ans_amount', 'Montant total : {total}.', { total });
-        if (f.receiver) say('ans_receiver', "L'argent va à {name}.", { name: f.receiver });
+        if (total) isLns ? out.push(`Total amount: ${total}.`) : say('ans_amount', 'Total amount: {total}.', { total });
+        if (f.receiver) isLns ? out.push(`Recipient: ${f.receiver}.`) : say('ans_receiver', 'The money goes to {name}.', { name: f.receiver });
+        if (f.pageKind === 'account' && f.balance) isLns ? out.push(`Available account balance: ${f.balance}.`) : say('ans_balance', 'Money available: {balance}.', { balance: f.balance });
       } else if (intent === 'amount') {
-        const total = [f.total, f.amount].find(v => v && /(?:FCFA|CFA|XAF|XOF)/i.test(v));
-        const fees = f.fees && /(?:FCFA|CFA|XAF|XOF)/i.test(f.fees) ? f.fees : null;
-        if (total) say('ans_amount', 'Montant total : {total}.', { total });
-        if (fees) say('ans_fees', 'Frais : {fees}.', { fees });
-        if (!out.length) say('ans_no_amount', 'Je ne vois pas de montant à payer sur cette page.');
+        const total = [f.total, f.amount].find(v => v && /(?:FCFA|CFA|XAF|XOF)/i.test(v) && /\d/.test(v));
+        const fees = f.fees && /(?:FCFA|CFA|XAF|XOF)/i.test(f.fees) && /\d/.test(f.fees) ? f.fees : null;
+        if (total) isLns ? out.push(`Total amount: ${total}.`) : say('ans_amount', 'Total amount: {total}.', { total });
+        if (fees) isLns ? out.push(`Transfer fee: ${fees}.`) : say('ans_fees', 'Fees: {fees}.', { fees });
+        if (!out.length) out.push(isLns ? 'No amount to pay is shown on this page.' : 'I do not see an amount to pay on this page.');
       } else if (intent === 'receiver') {
-        if (f.receiver) say('ans_receiver', "L'argent va à {name}.", { name: f.receiver });
-        else say('ans_no_receiver', 'Je ne vois pas encore de bénéficiaire sur cette page.');
+        if (f.receiver) isLns ? out.push(`Recipient: ${f.receiver}.`) : say('ans_receiver', 'The money goes to {name}.', { name: f.receiver });
+        else out.push(isLns ? 'No beneficiary is shown on this page yet.' : 'I do not see a beneficiary on this page yet.');
       } else if (intent === 'warning') {
-        if (f.warnings.length) f.warnings.slice(0, 2).forEach(m => say('ans_warning', 'Attention : {message}', { message: m }));
-        else say('ans_no_warning', "Pas d'alerte sur cette page.");
+        if (isLns) out.push('Before confirming, check the beneficiary name and phone number carefully.');
+        else if (f.warnings.length) f.warnings.slice(0, 2).forEach(m => say('ans_warning', 'Warning: {message}', { message: m }));
+        else out.push('No warning is shown on this page.');
       } else if (intent === 'next') {
-        if (f.next) say('ans_next', 'Ensuite, appuyez sur {button}.', { button: f.next });
-        else say('ans_no_next', 'Je ne vois pas de bouton à appuyer.');
+        if (f.next) isLns ? out.push(`After checking the details, press ${f.next}.`) : say('ans_next', 'Next, press {button}.', { button: f.next });
+        else out.push(isLns ? 'No next-step button is visible on this page.' : 'I do not see a button to press.');
       } else if (intent === 'balance') {
-        if (f.balance) say('ans_balance', 'Argent disponible : {balance}.', { balance: f.balance });
-        else say('ans_no_amount', 'Je ne vois pas de montant à payer sur cette page.');
+        if (f.balance) isLns ? out.push(`Available account balance: ${f.balance}.`) : say('ans_balance', 'Available balance: {balance}.', { balance: f.balance });
+        else out.push(isLns ? 'No available balance is shown on this page.' : 'I do not see an available balance on this page.');
       } else if (intent === 'steps') {
-        const en = /^en/i.test(navigator.language || '');
-        out.push(en
-          ? 'A transfer has five steps: 1) Pay: start the transfer. 2) Costs: choose the type and amount, then review the fee. 3) Beneficiary: enter and check the recipient’s name and number. 4) Summary: review all details. 5) Confirmation: confirm only when everything is correct.'
-          : 'Un virement comporte cinq étapes : 1) Payer : démarrer le virement. 2) Frais : choisir le type et le montant, puis vérifier les frais. 3) Bénéficiaire : saisir et vérifier son nom et son numéro. 4) Récapitulatif : relire les informations. 5) Confirmation : confirmer seulement si tout est correct.');
+        const steps = 'A transfer has five steps. Pay starts the transfer. Costs lets you choose the type and amount and check the fee. Beneficiary asks for the recipient name and phone number. Summary lets you review the details. Confirmation sends it only after you confirm.';
+        out.push(steps);
       }
       return out.join(' ');
     }
@@ -181,7 +182,8 @@
       const f = facts();
       // A bare step number can be mistaken for the transfer amount when a page
       // has several stages. Only report values that visibly carry the currency.
-      const money = value => value && /(?:FCFA|CFA|XAF|F\s*CFA)/i.test(value) ? value : null;
+      const money = value => value && /(?:FCFA|CFA|XAF|F\s*CFA)/i.test(value) && /\d/.test(value) ? value : null;
+      const isFree = value => /^[0\s.,]+(?:F\s*)?(?:FCFA|CFA|XAF)$/i.test(value.trim());
       const amount = money(f.amount) || (f.amountNumber ? `${f.amountNumber} FCFA` : null);
       const total = money(f.total);
       const fees = money(f.fees);
@@ -189,20 +191,20 @@
       const out = [];
       if (intent === 'page') {
         const page = {
-          account: 'Dis na your account page. E show the money wey dey your account and your recent transactions. To send money, follow the five transfer steps: Pay, Costs, Beneficiary, Summary, Confirmation.',
-          costs: 'You dey the Costs step. Choose the transfer type and amount here; check the charges and total before you continue. The full steps na Pay, Costs, Beneficiary, Summary, Confirmation.',
-          beneficiary: 'You dey the Beneficiary step. Put the receiver name and phone number, then check them well before you continue. The full steps na Pay, Costs, Beneficiary, Summary, Confirmation.',
-          summary: 'You dey the Summary step. Check the amount, charges, receiver name, and phone number before you confirm. The full steps na Pay, Costs, Beneficiary, Summary, Confirmation.',
-          confirmation: 'You dey the Confirmation step. Read the transfer details again and confirm only if everything correct.',
+          account: 'Dis na your account page. E show the money wey dey your account and your recent transactions. To send the money, follow the five transfer steps: Pay, See charges, Person wey go receive am, Check all tindem, Confirm.',
+          costs: 'You dey the step for see the charges. Choose the transfer type and amount here; check the charges and total before you continue. The full steps na Pay, See charges, Person wey go receive am, Check all tindem, Confirm.',
+          beneficiary: 'You dey the step for the person wey go receive am. Put the receiver name and phone number, then check them well before you continue. The full steps na Pay, See charges, Person wey go receive am, Check all tindem, Confirm.',
+          summary: 'You dey the step wey show all tindem wey you don enter, so you fit confirm am. Check the amount, charges, receiver name, and phone number before you confirm. The full steps na Pay, See charges, Person wey go receive am, Check all tindem, Confirm.',
+          confirmation: 'You dey the Confirm step. Read the transfer details again and confirm only if everything correct.',
           complete: 'The transfer don complete. Dis page show the amount, who receive am, and the status.',
         };
         out.push(page[f.pageKind] || page.account);
         if (amount && f.pageKind !== 'costs') out.push(`You wan send ${amount}.`);
-        if (fees && f.pageKind === 'costs') out.push(fees === '0 FCFA' ? 'The transfer charge na free.' : `The transfer charge na ${fees}.`);
+        if (fees && f.pageKind === 'costs') out.push(isFree(fees) ? 'The transfer charge na free (0 FCFA).' : `The transfer charge na ${fees}.`);
         if (total && f.pageKind === 'summary') out.push(`The total wey go comot your account na ${total}.`);
         if (f.receiver && ['beneficiary', 'summary', 'complete'].includes(f.pageKind)) out.push(`Na ${f.receiver} go receive the money.`);
       } else if (intent === 'steps') {
-        out.push('Transfer get five steps: 1) Pay: start the transfer. 2) Costs: choose the type and amount, then check the charges. 3) Beneficiary: put and check the receiver name and number. 4) Summary: review everything. 5) Confirmation: confirm only when all the details correct.');
+        out.push('Transfer get five steps: 1) Pay: start the transfer. 2) See charges: choose the type and amount, then check the charges. 3) Person wey go receive am: put and check the receiver name and number. 4) Check all tindem: look all wetin you don enter one more time. 5) Confirm: confirm only when all the details correct.');
       } else if (intent === 'amount') {
         if (total || amount) out.push(`All the money wey go comot for your account na ${total || amount}.`);
         if (fees) out.push(`The charges na ${fees}.`);
@@ -228,12 +230,15 @@
       for (const t of m.tokens) {
         const [before, after] = rest.split(t.key);
         if (/\p{L}/u.test(before)) steps.push({ missing: true, text: before.trim() });
-        if (['wes', 'lns'].includes(state.pack.code) && t.type === 'money') {
+        if (t.type === 'money' && ['wes', 'lns'].includes(state.pack.code)) {
           // Keep the exact numeric value, but send it through the selected language voice.
-          // Lamnso' uses its local MMS voice; CFA is a familiar French loanword in the region.
           const rawNumber = (t.value.match(/\d[\d\s.,]*\d|\d/) || [''])[0];
           const number = root.LangwaSpeech ? root.LangwaSpeech.spokenNumber(rawNumber) : rawNumber.replace(/[\s.,]/g, '');
           steps.push({ missing: true, text: state.pack.code === 'lns' ? `${number} francs CFA` : `${number} CFA francs` });
+        } else if (t.type === 'money' && (state.pack.africaTts || state.pack.mms)) {
+          // Let the selected language's local speech model pronounce the amount, instead of
+          // routing every non-Pidgin amount through the French number voice.
+          steps.push({ missing: true, text: t.value });
         } else steps.push({ value: t.value, type: t.type });
         rest = after || '';
       }
@@ -252,14 +257,33 @@
       if (!q) return;
       push({ role: 'me', text: q });
       const intent = intentHint || detectIntent(q);
-      if (intent) return reply(answerKamtok(intent) || answer(intent));
+      if (intent) {
+        const grounded = answerKamtok(intent) || answer(intent);
+        if (state.pack.code !== 'lns') return reply(grounded);
+        const thinking = waitFor('think');
+        let translated = '';
+        try {
+          const masked = P.mask(grounded, { brands: state.brands || [] });
+          const result = await timed(send({ type: 'translateBatch', lang: 'lns', items: [{ masked: masked.masked }] }), 60000);
+          const draft = result && !result.timeout && result.results && result.results[0];
+          if (draft && draft.text) {
+            const restored = P.unmask(draft.text, masked.tokens);
+            if (restored.ok) translated = restored.text;
+          }
+        } catch { /* show the grounded fallback below */ }
+        done(thinking);
+        return translated
+          ? reply(translated, { model: true })
+          : reply(`English fallback (Lamnso draft unavailable): ${grounded}`);
+      }
       // Free question: local open-source model, if set up.
-      if (state.settings.mt && state.settings.mt.mode === 'openai') {
-        const thinking = push({ role: 'bot', text: '…', pending: true });
+      if ((state.settings.mt && state.settings.mt.mode === 'openai') || state.pack.code === 'lns') {
+        const thinking = waitFor('think');
         const context = state.units.filter(u => u.result).slice(0, 80).map(u => (u.result.value ? u.text : `${shownText(u)} (${u.text})`));
         let res = null;
-        try { res = await send({ type: 'chat', lang: state.pack.code, question: q, context }); } catch { res = null; }
-        chat.splice(chat.indexOf(thinking), 1);
+        try { res = await timed(send({ type: 'chat', lang: state.pack.code, question: q, context }), 60000); } catch { res = null; }
+        done(thinking);
+        if (res && res.timeout) { reply(ui('ans_model_timeout', 'Le modèle local met trop de temps. Voici ce que je peux dire sans lui :'), { chips: true }); return; }
         if (res && res.text && numbersAreFromPage(res.text)) {
           // Do not show unconstrained model prose as Kamtok: many local models only know
           // Nigerian Pidgin or produce literal English word order. Keep the grounded path.
@@ -279,6 +303,33 @@
     }
 
     function push(m) { chat.push(m); render(); return m; }
+
+    // ---------------- waiting feedback ----------------
+    const timed = (p, ms) => Promise.race([p, new Promise(r => setTimeout(() => r({ timeout: true }), ms))]);
+    /** A "working" bubble: dots + what is happening; after 8 s, why it takes time. */
+    function waitFor(kind) {
+      const m = push({ role: 'bot', text: '…', pending: true, kind, since: Date.now() });
+      setBusy(true);
+      setTimeout(() => { if (chat.includes(m)) render(); }, 8050);
+      return m;
+    }
+    function done(m) {
+      const i = chat.indexOf(m);
+      if (i >= 0) chat.splice(i, 1);
+      setBusy(false);
+      render();
+    }
+    function setBusy(on) {
+      if (!els) return;
+      els.send.disabled = on;
+      els.log.setAttribute('aria-busy', String(on));
+      els.chips.querySelectorAll('button').forEach(b => { b.disabled = on; });
+    }
+    function waitText(m) {
+      const slow = Date.now() - m.since > 8000;
+      if (m.kind === 'asr') return slow ? ui('ui_transcribing_slow', 'Je transcris votre voix… (le modèle vocal démarre)') : ui('ui_transcribing', 'Je transcris votre voix…');
+      return slow ? ui('ui_model_loading', 'Le modèle local démarre : la première réponse peut prendre une minute.') : ui('ui_thinking', 'Je réfléchis…');
+    }
 
     // ---------------- voice questions ----------------
     let rec = null;
@@ -303,14 +354,20 @@
       rec = { stop: () => r.stop() };
       setMic(true);
       r.onresult = e => { const t = e.results[0][0].transcript; ask(t); };
-      r.onerror = () => {};
+      r.onerror = e => {
+        const why = e && e.error;
+        if (why === 'no-speech') reply(ui('ans_no_speech', 'Je n’ai rien entendu. Touchez le micro et parlez, ou écrivez votre question.'));
+        else if (why === 'not-allowed' || why === 'service-not-allowed') reply(ui('ans_mic_blocked', 'Le micro est bloqué. Autorisez-le dans la barre d’adresse du navigateur, ou écrivez votre question.'));
+        else if (why === 'network') reply(ui('ans_speech_network', 'La reconnaissance vocale a besoin d’internet. Écrivez votre question ou réessayez.'));
+        else if (why && why !== 'aborted') reply(ui('ans_type_instead', 'Écrivez votre question ou touchez une question ci-dessous.'));
+      };
       r.onend = () => { rec = null; setMic(false); };
       r.start();
     }
 
     async function listenLocal() {
       let stream;
-      try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); } catch { return reply(ui('ans_type_instead', 'Écrivez votre question ou touchez une question ci-dessous.')); }
+      try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); } catch { return reply(ui('ans_mic_blocked', 'Le micro est bloqué. Autorisez-le dans la barre d’adresse du navigateur, ou écrivez votre question.')); }
       const chunks = [];
       const mr = new MediaRecorder(stream);
       rec = { stop: () => mr.state !== 'inactive' && mr.stop() };
@@ -322,12 +379,17 @@
         stream.getTracks().forEach(t => t.stop());
         rec = null;
         setMic(false);
-        const wav = await toWav16k(new Blob(chunks, { type: mr.mimeType }));
-        const thinking = push({ role: 'bot', text: '…', pending: true });
+        const thinking = waitFor('asr');
+        if (els) els.mic.classList.add('busy');
         let res = null;
-        try { res = await send({ type: 'asr', audio: wav, hint: state.pack.code }); } catch { res = null; }
-        chat.splice(chat.indexOf(thinking), 1);
-        if (!res || !res.text) { reply(ui('ans_type_instead', 'Écrivez votre question ou touchez une question ci-dessous.')); return; }
+        try {
+          const wav = await toWav16k(new Blob(chunks, { type: mr.mimeType }));
+          res = await timed(send({ type: 'asr', audio: wav, hint: state.pack.code }), 45000);
+        } catch { res = null; }
+        if (els) els.mic.classList.remove('busy');
+        done(thinking);
+        const heardNothing = res && !res.timeout && typeof res.text === 'string' && !res.text.trim();
+        if (!res || res.timeout || !res.text) { reply(heardNothing ? ui('ans_no_speech', 'Je n’ai rien entendu. Touchez le micro et parlez, ou écrivez votre question.') : ui('ans_asr_down', 'Je n’ai pas pu transcrire votre voix (serveur vocal local éteint ?). Écrivez votre question.')); return; }
         if (res.lang && res.lang !== state.pack.code && state.langs && state.langs[res.lang]) offerLanguage(res.lang);
         ask(res.text);
       };
@@ -369,7 +431,15 @@
       push({ role: 'bot', text: ui('ans_speech_consent', 'Pour comprendre votre voix, le navigateur envoie l’enregistrement au service de reconnaissance de Google (français, anglais, pidgin).'), action: { label: ui('ui_enable', 'Activer'), run: () => { setLight({ onlineSpeech: true }); then(); } } });
     }
 
-    function setMic(on) { if (els) { els.mic.classList.toggle('on', on); els.mic.setAttribute('aria-pressed', on); els.input.placeholder = on ? ui('ui_listening', 'J’écoute…') : ui('ui_ask_placeholder', 'Posez votre question…'); } }
+    function setMic(on) {
+      if (!els) return;
+      const label = on ? ui('ui_listening_stop', 'J’écoute… touchez pour arrêter') : ui('ui_mic', 'Parler');
+      els.mic.classList.toggle('on', on);
+      els.mic.setAttribute('aria-pressed', String(on));
+      els.mic.setAttribute('aria-label', label);
+      els.mic.title = label;
+      els.input.placeholder = on ? ui('ui_listening_stop', 'J’écoute… touchez pour arrêter') : ui('ui_ask_placeholder', 'Posez votre question…');
+    }
 
     // ---------------- view ----------------
     const QUESTIONS = [
@@ -383,6 +453,21 @@
 
     function mount() {
       const log = h('div', { class: 'log', 'aria-live': 'polite' });
+      // One quiet line that never pushes the conversation away: details on tap, × hides it for good.
+      let pidginCoverage = null;
+      if (state.pack.code === 'wes' && (!state.settings.mt || state.settings.mt.mode === 'none') && !state.coverageHidden) {
+        const close = h('button', { type: 'button', class: 'cn-x', 'aria-label': ui('ui_close', 'Fermer'), title: ui('ui_close', 'Fermer') }, icon('x'));
+        pidginCoverage = h('details', { class: 'coverage-note' },
+          h('summary', {}, icon('info'), h('span', {}, 'Limited Pidgin translation'), h('span', { class: 'cn-more' }, 'Details'), close),
+          h('p', {}, 'No general Pidgin translation model is connected, and machine translation is off. Page translation relies on phrase matches, so unfamiliar text may stay in English or appear as not translated.'));
+        close.addEventListener('click', e => {
+          e.preventDefault();
+          state.coverageHidden = true;
+          pidginCoverage.remove();
+          try { api.storage.local.set({ coverageHidden: true }); } catch { /* not critical */ }
+        });
+        api.storage.local.get('coverageHidden').then(r => { if (r && r.coverageHidden) { state.coverageHidden = true; pidginCoverage.remove(); } }).catch(() => {});
+      }
       const chips = h('div', { class: 'qchips' }, QUESTIONS.map(([intent, id, fr]) => h('button', { type: 'button', class: 'qchip', onclick: () => ask(ui(id, fr), intent) }, ui(id, fr))));
       const input = h('input', { type: 'text', class: 'askin', placeholder: ui('ui_ask_placeholder', 'Posez votre question…'), 'aria-label': ui('ui_ask_placeholder', 'Posez votre question…'), enterkeyhint: 'send' });
       const mic = h('button', { type: 'button', class: 'mic', title: ui('ui_mic', 'Parler'), 'aria-label': ui('ui_mic', 'Parler'), onclick: listen }, icon('mic'));
@@ -390,8 +475,8 @@
       const form = h('form', { class: 'askrow' }, mic, input, sendBtn);
       form.addEventListener('submit', e => { e.preventDefault(); const v = input.value; input.value = ''; ask(v); });
       input.addEventListener('keydown', e => e.stopPropagation()); // typing never triggers page shortcuts
-      const view = h('div', { class: 'chat' }, log, chips, form);
-      els = { view, log, chips, input, mic };
+      const view = h('div', { class: 'chat' }, pidginCoverage, log, chips, form);
+      els = { view, log, chips, input, mic, send: sendBtn };
       render();
       return view;
     }
@@ -403,7 +488,9 @@
         if (m.role === 'me') return h('div', { class: 'msg me' }, m.text);
         const steps = !m.pending && stepsOf(m.text);
         return h('div', { class: `msg bot${m.pending ? ' pending' : ''}` },
-          h('div', { class: 'mrow' }, h('div', { class: 'mtext' }, m.pending ? h('span', { class: 'dots' }, h('i'), h('i'), h('i')) : m.text),
+          h('div', { class: 'mrow' }, h('div', { class: 'mtext' }, m.pending
+            ? h('span', { class: 'mwait', role: 'status' }, h('span', { class: 'dots', 'aria-hidden': 'true' }, h('i'), h('i'), h('i')), h('span', { class: 'mwt' }, waitText(m)))
+            : m.text),
             steps ? ctx.sayButton(steps, ui('ui_listen', 'Écouter'), { compact: true }) : null),
           m.model ? h('div', { class: 'mnote' }, ui('ans_model_note', 'Réponse d’un modèle local, à vérifier.')) : null,
           m.action ? h('button', { class: 'maction', type: 'button', onclick: e => { e.stopPropagation(); m.action.run(); m.action = null; render(); } }, m.action.label) : null);

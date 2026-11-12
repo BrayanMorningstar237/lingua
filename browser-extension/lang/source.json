@@ -864,6 +864,12 @@
    "en": "Close"
   },
   {
+   "id": "ui_drag_hint",
+   "group": "ui",
+   "fr": "Glisser pour déplacer · double-clic pour replacer",
+   "en": "Drag to move · double-click to reset"
+  },
+  {
    "id": "ui_empty",
    "group": "ui",
    "fr": "Rien à traduire ici",
@@ -872,8 +878,8 @@
   {
    "id": "ui_mt_down",
    "group": "ui",
-   "fr": "Traduction locale indisponible : résumé utilisé",
-   "en": "Local translation unavailable: summary used"
+   "fr": "Traduction automatique indisponible : le texte reste non traduit",
+   "en": "Machine translation unavailable: unmatched text remains untranslated"
   },
   {
    "id": "ui_hint_hover",
@@ -1128,6 +1134,30 @@
    "en": "local voice is loading"
   },
   {
+   "id": "ui_voice_installing",
+   "group": "ui",
+   "fr": "voix naturelle",
+   "en": "natural voice"
+  },
+  {
+   "id": "ui_voice_natural",
+   "group": "ui",
+   "fr": "Voix naturelle",
+   "en": "Natural voice"
+  },
+  {
+   "id": "ui_voice_hint",
+   "group": "ui",
+   "fr": "Voix du navigateur. Pour une voix plus naturelle, lancez « Start Langwa voice » sur cet ordinateur.",
+   "en": "Browser voice. For a more natural voice, start “Start Langwa voice” on this computer."
+  },
+  {
+   "id": "ui_voice_starting",
+   "group": "ui",
+   "fr": "voix naturelle, démarrage…",
+   "en": "natural voice starting…"
+  },
+  {
    "id": "ui_voice_why_slow",
    "group": "ui",
    "fr": "voix locale trop lente",
@@ -1308,6 +1338,48 @@
    "en": "This page: {title}."
   },
   {
+   "id": "ans_page_account",
+   "group": "ui",
+   "fr": "Voici le récapitulatif du compte : solde disponible et opérations récentes.",
+   "en": "This is your account overview. It shows your available balance and recent transactions."
+  },
+  {
+   "id": "ans_page_costs",
+   "group": "ui",
+   "fr": "Vous êtes à l’étape des frais. Choisissez le type et le montant, puis vérifiez les frais avant de continuer.",
+   "en": "This is the costs step. Choose the transfer type and amount, then check the fee before continuing."
+  },
+  {
+   "id": "ans_page_beneficiary",
+   "group": "ui",
+   "fr": "Vous êtes à l’étape du bénéficiaire. Saisissez puis vérifiez son nom et son numéro avant de continuer.",
+   "en": "This is the beneficiary step. Enter and check the recipient’s name and number before continuing."
+  },
+  {
+   "id": "ans_page_summary",
+   "group": "ui",
+   "fr": "Voici le récapitulatif du virement. Vérifiez le montant, les frais, le bénéficiaire et son numéro avant de confirmer.",
+   "en": "This is the transfer summary. Check the amount, fees, recipient, and phone number before confirming."
+  },
+  {
+   "id": "ans_page_confirmation",
+   "group": "ui",
+   "fr": "Vous êtes à l’étape de confirmation. Relisez les détails et confirmez seulement s’ils sont corrects.",
+   "en": "This is the confirmation step. Review the transfer details, then confirm only if they are correct."
+  },
+  {
+   "id": "ans_page_complete",
+   "group": "ui",
+   "fr": "Le virement est terminé. Cette page indique son montant, son bénéficiaire et son statut.",
+   "en": "The transfer is complete. This page shows its amount, recipient, and status."
+  },
+  {
+   "id": "ans_transfer_steps",
+   "group": "ui",
+   "fr": "Un virement comporte cinq étapes : payer, frais, bénéficiaire, récapitulatif et confirmation. Vérifiez chaque information avant de confirmer.",
+   "en": "A transfer has five steps: Pay, Costs, Beneficiary, Summary, and Confirmation. Check each detail before confirming."
+  },
+  {
    "id": "ans_amount",
    "group": "ui",
    "fr": "Montant total : {total}.",
@@ -1396,6 +1468,252 @@
    "group": "ui",
    "fr": "Réponse d’un modèle local, à vérifier.",
    "en": "Answer from a local model: please check."
+  },
+  {
+   "id": "ui_preparing",
+   "group": "ui",
+   "fr": "Préparation…",
+   "en": "Preparing…"
+  },
+  {
+   "id": "ui_still_preparing",
+   "group": "ui",
+   "fr": "Encore un instant…",
+   "en": "Almost ready…"
+  },
+  {
+   "id": "ui_no_voice",
+   "group": "ui",
+   "fr": "Aucune voix disponible sur cet appareil",
+   "en": "No voice available on this device"
+  },
+  {
+   "id": "ui_no_voice_short",
+   "group": "ui",
+   "fr": "Pas de voix",
+   "en": "No voice"
+  },
+  {
+   "id": "ui_voice_why_none",
+   "group": "ui",
+   "fr": "aucune voix sur cet appareil",
+   "en": "no voice on this device"
+  },
+  {
+   "id": "ui_thinking",
+   "group": "ui",
+   "fr": "Je réfléchis…",
+   "en": "Thinking…"
+  },
+  {
+   "id": "ui_model_loading",
+   "group": "ui",
+   "fr": "Le modèle local démarre : la première réponse peut prendre une minute.",
+   "en": "The local model is starting: the first answer can take a minute."
+  },
+  {
+   "id": "ui_transcribing",
+   "group": "ui",
+   "fr": "Je transcris votre voix…",
+   "en": "Transcribing your voice…"
+  },
+  {
+   "id": "ui_transcribing_slow",
+   "group": "ui",
+   "fr": "Je transcris votre voix… (le modèle vocal démarre)",
+   "en": "Transcribing your voice… (the speech model is starting)"
+  },
+  {
+   "id": "ui_listening_stop",
+   "group": "ui",
+   "fr": "J’écoute… touchez pour arrêter",
+   "en": "Listening… tap to stop"
+  },
+  {
+   "id": "ans_model_timeout",
+   "group": "ui",
+   "fr": "Le modèle local met trop de temps. Voici ce que je peux dire sans lui :",
+   "en": "The local model is taking too long. Here is what I can tell you without it:"
+  },
+  {
+   "id": "ans_no_speech",
+   "group": "ui",
+   "fr": "Je n’ai rien entendu. Touchez le micro et parlez, ou écrivez votre question.",
+   "en": "I did not hear anything. Tap the microphone and speak, or type your question."
+  },
+  {
+   "id": "ans_mic_blocked",
+   "group": "ui",
+   "fr": "Le micro est bloqué. Autorisez-le dans la barre d’adresse du navigateur, ou écrivez votre question.",
+   "en": "The microphone is blocked. Allow it in the browser address bar, or type your question."
+  },
+  {
+   "id": "ans_speech_network",
+   "group": "ui",
+   "fr": "La reconnaissance vocale a besoin d’internet. Écrivez votre question ou réessayez.",
+   "en": "Speech recognition needs the internet. Type your question or try again."
+  },
+  {
+   "id": "ans_asr_down",
+   "group": "ui",
+   "fr": "Je n’ai pas pu transcrire votre voix (serveur vocal local éteint ?). Écrivez votre question.",
+   "en": "I could not transcribe your voice (is the local speech server off?). Type your question."
+  },
+  {
+   "id": "tour_welcome_t",
+   "group": "ui",
+   "fr": "Bienvenue dans Langwa",
+   "en": "Welcome to Langwa"
+  },
+  {
+   "id": "tour_welcome_b",
+   "group": "ui",
+   "fr": "Langwa vous montre cette page en {lang}, à lire et à écouter. Une visite rapide : moins d’une minute.",
+   "en": "Langwa shows you this page in {lang}, to read and to hear. A quick tour: less than a minute."
+  },
+  {
+   "id": "tour_start",
+   "group": "ui",
+   "fr": "Commencer la visite",
+   "en": "Start the tour"
+  },
+  {
+   "id": "tour_point_t",
+   "group": "ui",
+   "fr": "Maintenez Ctrl et pointez un texte",
+   "en": "Hold Ctrl and point at a text"
+  },
+  {
+   "id": "tour_point_touch_t",
+   "group": "ui",
+   "fr": "Appuyez longuement sur un texte",
+   "en": "Press and hold a text"
+  },
+  {
+   "id": "tour_point_b",
+   "group": "ui",
+   "fr": "Sa traduction s’affiche juste dessous, avec le bouton Écouter. Les montants et les noms restent exactement ceux de la page.",
+   "en": "Its translation appears right below, with a Listen button. Amounts and names stay exactly as on the page."
+  },
+  {
+   "id": "tour_fab_t",
+   "group": "ui",
+   "fr": "Le bouton Langwa",
+   "en": "The Langwa button"
+  },
+  {
+   "id": "tour_fab_b",
+   "group": "ui",
+   "fr": "Il ouvre le panneau. Le chiffre rouge compte les messages importants de la page.",
+   "en": "It opens the panel. The red number counts the important messages on the page."
+  },
+  {
+   "id": "tour_ask_t",
+   "group": "ui",
+   "fr": "Posez votre question",
+   "en": "Ask your question"
+  },
+  {
+   "id": "tour_ask_b",
+   "group": "ui",
+   "fr": "Touchez une question toute prête, écrivez, ou touchez le micro et parlez. Langwa répond dans votre langue, avec les montants de la page.",
+   "en": "Tap a ready-made question, type, or tap the microphone and speak. Langwa answers in your language, with the page’s own amounts."
+  },
+  {
+   "id": "tour_read_t",
+   "group": "ui",
+   "fr": "Écoutez toute la page",
+   "en": "Listen to the whole page"
+  },
+  {
+   "id": "tour_read_b",
+   "group": "ui",
+   "fr": "Langwa lit la page à voix haute, les messages importants d’abord.",
+   "en": "Langwa reads the page aloud, important messages first."
+  },
+  {
+   "id": "tour_page_t",
+   "group": "ui",
+   "fr": "Traduisez toute la page",
+   "en": "Translate the whole page"
+  },
+  {
+   "id": "tour_page_b",
+   "group": "ui",
+   "fr": "La traduction s’affiche sur chaque texte de la page. Touchez encore pour revenir à l’original.",
+   "en": "The translation appears over every text on the page. Tap again to go back to the original."
+  },
+  {
+   "id": "tour_voice_t",
+   "group": "ui",
+   "fr": "Qui lit à voix haute",
+   "en": "Who reads aloud"
+  },
+  {
+   "id": "tour_voice_b",
+   "group": "ui",
+   "fr": "La voix du navigateur, ou la voix naturelle si elle est installée sur cet ordinateur. Son installation s’affiche ici en direct.",
+   "en": "The browser voice, or the natural voice if it is installed on this computer. Its installation shows here, live."
+  },
+  {
+   "id": "tour_lang_t",
+   "group": "ui",
+   "fr": "Changez de langue",
+   "en": "Change language"
+  },
+  {
+   "id": "tour_lang_b",
+   "group": "ui",
+   "fr": "À tout moment, ici. Les langues les plus complètes sont en premier.",
+   "en": "Any time, here. The most complete languages come first."
+  },
+  {
+   "id": "tour_done_t",
+   "group": "ui",
+   "fr": "C’est prêt !",
+   "en": "You are ready!"
+  },
+  {
+   "id": "tour_done_b",
+   "group": "ui",
+   "fr": "Pour revoir ce guide : le bouton Guide en bas du panneau, ou la fenêtre Langwa dans la barre du navigateur.",
+   "en": "To see this guide again: the Guide button at the bottom of the panel, or the Langwa window in the browser toolbar."
+  },
+  {
+   "id": "tour_finish",
+   "group": "ui",
+   "fr": "Terminer",
+   "en": "Finish"
+  },
+  {
+   "id": "tour_next",
+   "group": "ui",
+   "fr": "Suivant",
+   "en": "Next"
+  },
+  {
+   "id": "tour_back",
+   "group": "ui",
+   "fr": "Retour",
+   "en": "Back"
+  },
+  {
+   "id": "tour_skip",
+   "group": "ui",
+   "fr": "Passer le guide",
+   "en": "Skip the guide"
+  },
+  {
+   "id": "tour_replay",
+   "group": "ui",
+   "fr": "Revoir le guide",
+   "en": "See the guide again"
+  },
+  {
+   "id": "tour_guide",
+   "group": "ui",
+   "fr": "Guide",
+   "en": "Guide"
   }
  ]
 }

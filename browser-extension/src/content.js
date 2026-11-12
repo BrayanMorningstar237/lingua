@@ -13,10 +13,16 @@
 (() => {
   'use strict';
   if (window.__langwa) return;
-  window.__langwa = true;
 
-  // Extension APIs, or the standalone runtime when running as a userscript on phones.
-  const api = globalThis.LangwaRuntime ?? globalThis.browser ?? globalThis.chrome;
+  // Extension APIs, or the standalone runtime when running as a userscript on phones. Only an
+  // object with working runtime and storage counts: a page element with id="browser" shows up as
+  // window.browser, and while the extension is being reloaded or updated Chrome hands a starting
+  // script a cut-down chrome object without storage. Then this copy stays silent; the next page
+  // load gets a working one.
+  const api = [globalThis.LangwaRuntime, globalThis.browser, globalThis.chrome]
+    .find(a => a && a.runtime && a.storage && a.storage.local && a.storage.onChanged);
+  if (!api) return;
+  window.__langwa = true;
   const P = globalThis.LangwaProtect;
   const E = globalThis.LangwaEngine;
 
@@ -71,6 +77,7 @@
     if (tabsBar) for (const b of tabsBar.children) { const on = b.dataset.tab === id; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); }
     if (id === 'list') renderPanel();
   }
+  let panelVoice; // live voice line in the panel header (browser voice / natural voice 42 % / ready)
   let host, shadow, tip, tipBody, tipArrow, panel, panelList, panelStatus, toastBox, hl, subLayer, fab, fabDot, fabCount;
 
   function h(tag, attrs = {}, ...kids) {
@@ -83,6 +90,8 @@
     for (const kid of kids.flat()) if (kid != null && kid !== false) el.append(kid.nodeType ? kid : String(kid));
     return el;
   }
+  /** replaceChildren without empty slots: the browser would write a null child as the text "null". */
+  const fill = (el, ...kids) => el.replaceChildren(...kids.flat().filter(k => k != null && k !== false));
 
   /*
    * Theme: warm ebony and ivory surfaces, kente gold accent, forest green for
@@ -110,30 +119,34 @@
 
   /* ---------- hover card ---------- */
   .tip { position: fixed; z-index: 2147483647; width: max-content; max-width: min(440px, calc(100vw - 16px)); pointer-events: auto;
-    background: var(--ebony); color: var(--ivory); border-radius: 16px; padding: 14px 16px;
-    box-shadow: 0 20px 50px rgba(20,12,4,.45), 0 0 0 1px rgba(255,240,220,.07);
-    font-size: 15px; line-height: 1.42; visibility: hidden; opacity: 0; transform: translateY(4px);
+    min-width: min(290px, calc(100vw - 16px)); box-sizing: border-box;
+    background: var(--ebony); color: var(--ivory); border-radius: 18px; padding: 16px 18px 14px;
+    box-shadow: 0 24px 60px rgba(20,12,4,.42), 0 2px 8px rgba(20,12,4,.25), 0 0 0 1px rgba(255,240,220,.08);
+    font-size: 15px; line-height: 1.4; visibility: hidden; opacity: 0; transform: translateY(4px);
     transition: opacity .14s ease, transform .14s ease, visibility 0s .14s; }
   .tip.show { visibility: visible; opacity: 1; transform: none; transition: opacity .14s ease, transform .14s ease; }
   .tip.passthru { pointer-events: none; }
   .arrow { position: absolute; width: 14px; height: 14px; background: var(--ebony); transform: rotate(45deg); top: -6px; border-radius: 3px; }
   .tip.above .arrow { top: auto; bottom: -6px; }
-  .block + .block { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--ebony-3); }
+  .block + .block { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--ebony-3); }
   .tr .i.kind { margin-right: 7px; }
   .tr .i.err { color: #ec8a6c; } .tr .i.warn { color: var(--gold); } .tr .i.okk { color: #6fd29d; }
   .tr.missing { font-size: 15px; font-weight: 600; color: var(--sand); }
-  .row { display: flex; align-items: flex-start; gap: 12px; }
-  .tr { flex: 1; font-size: 19px; font-weight: 650; letter-spacing: -.005em; overflow-wrap: anywhere; }
+  .row { display: flex; align-items: flex-start; gap: 14px; }
+  .tr { flex: 1; min-width: 0; font-size: 19px; line-height: 1.3; font-weight: 700; letter-spacing: -.01em; overflow-wrap: break-word; padding-top: 6px; }
   .tr .i { color: var(--sand); margin-right: 6px; }
-  .explain { display: flex; gap: 8px; margin-top: 7px; font-size: 14px; color: #efe3d1; }
+  .explain { display: flex; gap: 8px; margin-top: 10px; font-size: 14px; color: #efe3d1; }
   .explain .i { color: var(--gold); margin-top: 2px; }
-  .orig { margin-top: 7px; font-size: 13px; color: var(--sand); opacity: .85; overflow-wrap: anywhere; }
-  .orig b { font-size: 9.5px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; margin-right: 7px; opacity: .7; }
-  .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 10px; }
-  .chip { display: inline-flex; align-items: center; gap: 5px; font: 700 13px "Cascadia Mono", ui-monospace, Consolas, monospace;
-    background: var(--gold-soft); color: #3b2604; padding: 3px 8px; border-radius: 8px; }
+  .orig { margin-top: 4px; font-size: 13.5px; color: var(--sand); opacity: .82; overflow-wrap: break-word; }
+  .orig b { font-size: 9.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; margin-right: 8px; opacity: .6; }
+  /* Footer: voice, protected values and validation status as one row of matching chips. */
+  .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 12px; padding-top: 11px;
+    border-top: 1px solid color-mix(in srgb, currentColor 10%, transparent); }
+  .meta:empty { display: none; }
+  .chip { display: inline-flex; align-items: center; gap: 5px; height: 24px; box-sizing: border-box; font: 700 12px "Cascadia Mono", ui-monospace, Consolas, monospace;
+    background: var(--gold-soft); color: #3b2604; padding: 0 8px; border-radius: 7px; }
   .chip .i { font-size: 12px; }
-  .pill { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; padding: 3px 9px 3px 7px; border-radius: 999px; }
+  .pill { display: inline-flex; align-items: center; gap: 5px; height: 24px; box-sizing: border-box; font-size: 11.5px; font-weight: 650; padding: 0 10px 0 8px; border-radius: 999px; white-space: nowrap; }
   .pill.ok { background: rgba(47,158,102,.18); color: #7fd9a8; } .pill.mt { background: rgba(227,162,26,.18); color: #f3c460; }
   .pill.gist { background: rgba(143,160,230,.18); color: #b9c5f3; } .pill.block { background: rgba(194,80,46,.22); color: #f2a58d; }
   .pill.none { background: rgba(217,201,180,.14); color: var(--sand); }
@@ -142,23 +155,32 @@
   .spin { animation: spin 1s linear infinite; } @keyframes spin { to { transform: rotate(360deg); } }
 
   /* listen button */
-  .say.wide { width: auto; height: 40px; padding: 0 14px 0 12px; display: inline-flex; gap: 8px; align-items: center; font-size: 18px; }
-  .say .lbl { font-size: 14px; font-weight: 700; white-space: nowrap; }
+  .say.wide { width: auto; height: 38px; padding: 0 15px 0 12px; display: inline-flex; gap: 7px; align-items: center; font-size: 17px; }
+  .say .lbl { font-size: 13.5px; font-weight: 700; white-space: nowrap; }
   .bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 16px; }
   .bars i { width: 3px; height: 6px; border-radius: 2px; background: currentColor; animation: eq .8s ease-in-out infinite; }
   .bars i:nth-child(2) { animation-delay: .15s; } .bars i:nth-child(3) { animation-delay: .3s; }
   @keyframes eq { 50% { height: 16px; } }
   .voice { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 12px; color: var(--sand); opacity: .85; }
   /* Voice chip: who is speaking, live (local model, browser voice, human recording). */
-  .vchip { --c: var(--sand); display: inline-flex; align-items: center; gap: 7px; max-width: 100%; margin-top: 9px; padding: 4px 11px 4px 9px;
-    border-radius: 999px; font-size: 12px; font-weight: 600; line-height: 1.3; color: var(--c);
+  .vchip { --c: var(--sand); display: inline-flex; align-items: center; gap: 6px; max-width: 100%; height: 24px; box-sizing: border-box; padding: 0 10px 0 8px;
+    border-radius: 999px; font-size: 11.5px; font-weight: 650; line-height: 1; color: var(--c);
     background: color-mix(in srgb, var(--c) 13%, transparent); border: 1px solid color-mix(in srgb, var(--c) 30%, transparent);
     transition: color .2s ease, background .2s ease, border-color .2s ease; }
-  .vchip .i { font-size: 14px; flex: none; }
+  .vchip .i { font-size: 13px; flex: none; }
   .vchip .vt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .vchip .why { font-weight: 500; opacity: .8; }
-  .vchip .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex: none; display: none; }
-  .vchip.live .dot { display: block; animation: pulse 1.1s ease-in-out infinite; }
+  .vchip .dot { position: static; width: 7px; height: 7px; border: 0; box-shadow: none; border-radius: 50%; background: currentColor; flex: none; display: none; }
+  .vchip.live .dot, .vchip.warm .dot { display: block; animation: pulse 1.1s ease-in-out infinite; }
+  .vchip.warm .dot { color: var(--gold); }
+  .pvoice { display: flex; align-items: center; gap: 6px; margin-top: 3px; font-size: 12px; font-weight: 600; color: var(--indigo-2); min-width: 0; }
+  .pvoice svg { width: 13px; height: 13px; }
+  .pvoice .vt { display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .pvoice .vt::first-letter { text-transform: uppercase; }
+  .pvoice[data-s="ready"] { color: #7fd9a8; }
+  .pvoice[data-s="installing"], .pvoice[data-s="loading"] { color: var(--gold); }
+  .vprog { flex: none; width: 48px; height: 5px; border-radius: 99px; overflow: hidden; background: color-mix(in srgb, currentColor 22%, transparent); }
+  .vprog i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #7fe0ad, var(--gold)); transition: width 3s linear; }
   .vchip[data-src="local"], .vchip[data-src="wait"] { --c: #7fe0ad; }
   .vchip[data-src="browser"] { --c: var(--indigo-2); }
   .vchip[data-src="human"] { --c: var(--gold); }
@@ -173,7 +195,25 @@
     background: var(--forest); color: #fff; box-shadow: 0 4px 14px rgba(30,122,76,.45); transition: transform .1s ease, background .15s ease; }
   .say:hover { transform: scale(1.06); background: var(--forest-2); }
   .say:active { transform: scale(.95); }
+  /* Every control answers the touch: a quick press, a hover lift, a busy cursor when working. */
+  .tab, .qchip, .mic, .sendq, .icon-btn, .lang-btn, .maction, .cyes, .cno { transition: transform .1s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease, opacity .15s ease; }
+  .tab:active, .qchip:active, .mic:active, .sendq:active, .icon-btn:active, .lang-btn:active, .maction:active, .cyes:active, .cno:active, .fab:active { transform: scale(.95); }
+  .qchip:hover { border-color: var(--gold); }
+  .mic:hover, .sendq:hover { box-shadow: 0 4px 12px rgba(20,12,4,.18); }
+  .icon-btn:hover { border-color: var(--gold); }
+  .sendq:disabled, .qchip:disabled { opacity: .45; cursor: progress; transform: none; }
+  [aria-busy="true"] { cursor: progress; }
+  .mic.busy { background: var(--ebony-3); color: var(--ivory); animation: none; cursor: progress; }
+  .mwait { display: inline-flex; align-items: center; gap: 10px; }
+  .mwt { font-size: 13px; color: var(--card-muted); }
+  .mhint { margin-top: 6px; font-size: 12px; color: var(--card-muted); display: flex; align-items: center; gap: 6px; }
+  .mhint .i { font-size: 13px; }
   .say.on { background: var(--terracotta); animation: ring 1.2s ease-out infinite; }
+  /* preparing: calm, no pulsing ring yet (the ring means "sound is playing") */
+  .say.on[data-phase="prep"], .say.on[data-phase="slow"] { background: color-mix(in srgb, var(--forest) 72%, var(--ebony)); animation: none; cursor: progress; }
+  .say.on[data-phase="slow"] .lbl { opacity: .9; }
+  .say.fail { background: var(--terracotta); animation: shake .32s ease; }
+  @keyframes shake { 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
   .say:disabled { background: var(--ebony-3); color: #9c8b78; box-shadow: none; cursor: not-allowed; transform: none; }
   @keyframes ring { from { box-shadow: 0 0 0 0 rgba(194,80,46,.55); } to { box-shadow: 0 0 0 12px rgba(194,80,46,0); } }
 
@@ -202,6 +242,16 @@
   .mtext { flex: 1; }
   .msg .say { width: 32px; height: 32px; font-size: 15px; box-shadow: none; }
   .mnote { margin-top: 6px; font-size: 11.5px; color: var(--card-muted); }
+  .coverage-note { flex: none; margin: 8px 14px 0; border: 1px solid var(--line); border-radius: 10px; background: var(--soft); color: var(--card-muted); font-size: 12px; line-height: 1.4; }
+  .coverage-note summary { display: flex; align-items: center; gap: 7px; padding: 5px 6px 5px 10px; cursor: pointer; list-style: none; font-weight: 600; }
+  .coverage-note summary::-webkit-details-marker { display: none; }
+  .coverage-note summary .i { flex: none; font-size: 13px; opacity: .8; }
+  .coverage-note .cn-more { margin-left: auto; font-weight: 500; text-decoration: underline; text-underline-offset: 2px; opacity: .8; }
+  .coverage-note[open] .cn-more { display: none; }
+  .coverage-note[open] summary > span:nth-of-type(1) { flex: 1; }
+  .coverage-note .cn-x { flex: none; display: grid; place-items: center; width: 24px; height: 24px; border: 0; border-radius: 6px; background: transparent; color: inherit; font-size: 13px; }
+  .coverage-note .cn-x:hover { background: color-mix(in srgb, currentColor 10%, transparent); }
+  .coverage-note p { margin: 0; padding: 0 12px 9px 30px; }
   .maction { margin-top: 8px; border: 0; border-radius: 10px; padding: 7px 12px; background: var(--gold); color: var(--ebony); font-weight: 800; font-size: 13px; }
   .dots { display: inline-flex; gap: 4px; } .dots i { width: 6px; height: 6px; border-radius: 99px; background: var(--card-muted); animation: pulse 1s infinite; }
   .dots i:nth-child(2) { animation-delay: .2s; } .dots i:nth-child(3) { animation-delay: .4s; }
@@ -247,6 +297,13 @@
   .panel.show { visibility: visible; opacity: 1; transform: none; transition: opacity .16s ease, transform .16s ease; }
   .panel { height: min(72vh, 680px); height: min(72dvh, 680px); }
   .band { height: 6px; background: var(--kente); flex: none; }
+  /* Drag to move: the panel header and the floating button (they move together). */
+  .ph { cursor: grab; touch-action: none; user-select: none; }
+  .ph button, .ph select { cursor: pointer; }
+  .fab { touch-action: none; }
+  .layer.dragging .ph, .layer.dragging .fab { cursor: grabbing; }
+  .layer.dragging .panel, .layer.dragging .fab { transition: none; }
+  .layer.dragging .fab { transform: scale(1.03); box-shadow: 0 20px 40px rgba(20,12,4,.45), 0 0 0 2px var(--gold); }
   .ph { display: flex; align-items: center; gap: 10px; padding: 14px 14px 12px 16px; background: var(--ebony); color: var(--ivory); }
   .ph .logo { width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; background: var(--gold); color: var(--ebony); font-size: 19px; flex: none; }
   .ph .title { flex: 1; min-width: 0; }
@@ -311,7 +368,7 @@
   /* ---------- page highlight, subtitles, first-run hint ---------- */
   .hl { display: none !important; }
   .subs { position: fixed; inset: 0; pointer-events: none; z-index: 2147483644; }
-  .sub { position: fixed; padding: 0 2px; border-radius: 4px; box-sizing: border-box; overflow-wrap: anywhere;
+  .sub { position: fixed; padding: 0 2px; border-radius: 4px; box-sizing: border-box; overflow-wrap: normal; word-break: normal; hyphens: none;
     text-decoration: underline dotted rgba(227,162,26,.75); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
 
   .hint { position: fixed; right: 18px; bottom: 86px; z-index: 2147483647; width: min(330px, calc(100vw - 36px)); background: var(--ebony); color: var(--ivory); pointer-events: auto;
@@ -342,6 +399,60 @@
   .lang-btn small { min-width: 0; font-size: 11.5px; color: var(--sand); line-height: 1.35; overflow-wrap: anywhere; }
   .lang-btn { justify-items: start; align-content: start; }
   .lang-btn .soon { position: static; justify-self: start; max-width: 100%; font-size: 10px; font-weight: 800; letter-spacing: .035em; text-transform: uppercase; color: var(--gold); line-height: 1.35; overflow-wrap: anywhere; }
+  /* guided tour: dimmed page, a ring around the control, a card beside it */
+  .tour { position: fixed; inset: 0; z-index: 2147483646; pointer-events: auto; }
+  .tip.intour { z-index: 2147483647; }
+  .pf-guide { margin-left: auto; display: inline-flex; align-items: center; gap: 5px; border: 0; background: none; color: inherit; font: 600 12.5px inherit; font-family: inherit; padding: 4px 8px; border-radius: 8px; }
+  .pf-guide:hover { background: var(--soft); color: var(--card-fg); }
+  .pf-guide .i { font-size: 14px; }
+  .tspot { position: fixed; border-radius: 14px; box-shadow: 0 0 0 200vmax rgba(15,10,6,.62), 0 0 0 3px var(--gold), 0 0 24px 6px rgba(227,162,26,.45);
+    transition: left .32s cubic-bezier(.2,.8,.2,1), top .32s cubic-bezier(.2,.8,.2,1), width .32s cubic-bezier(.2,.8,.2,1), height .32s cubic-bezier(.2,.8,.2,1);
+    pointer-events: none; animation: tglow 2.2s ease-in-out infinite; }
+  @keyframes tglow { 50% { box-shadow: 0 0 0 200vmax rgba(15,10,6,.62), 0 0 0 3px var(--gold), 0 0 36px 12px rgba(227,162,26,.62); } }
+  .tcontent.fwd { animation: tinR .3s cubic-bezier(.2,.8,.2,1); } .tcontent.bwd { animation: tinL .3s cubic-bezier(.2,.8,.2,1); }
+  @keyframes tinR { from { opacity: 0; transform: translateX(14px); } } @keyframes tinL { from { opacity: 0; transform: translateX(-14px); } }
+  .tdone { width: 44px; height: 44px; border-radius: 99px; display: grid; place-items: center; margin-bottom: 10px; background: var(--forest-2); color: #fff; font-size: 22px; animation: tpop .45s cubic-bezier(.2,1.4,.4,1); }
+  .tdone[hidden] { display: none; }
+  @keyframes tpop { from { opacity: 0; transform: scale(.4); } 70% { transform: scale(1.12); } }
+  .tour.nospot { background: rgba(15,10,6,.62); } .tour.nospot .tspot { display: none; }
+  .tcard { position: fixed; width: min(360px, calc(100vw - 24px)); background: var(--ebony); color: var(--ivory); border-radius: 18px; padding: 16px 18px 14px;
+    box-shadow: 0 24px 60px rgba(0,0,0,.45), 0 0 0 1px rgba(255,240,220,.1); transition: left .28s ease, top .28s ease; animation: drop .25s ease; }
+  .tcard::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 5px; border-radius: 18px 18px 0 0; background: var(--kente); }
+  .thead { display: flex; align-items: center; gap: 10px; margin: 4px 0 10px; }
+  .tstep { font-size: 12px; font-weight: 800; color: var(--gold); font-variant-numeric: tabular-nums; }
+  .tdots { display: flex; gap: 4px; }
+  .tdots i { width: 6px; height: 6px; border-radius: 99px; background: var(--ebony-3); transition: background .25s ease, width .25s ease; }
+  .tdots i.on { background: color-mix(in srgb, var(--gold) 55%, var(--ebony-3)); }
+  .tdots i.cur { width: 18px; background: var(--gold); }
+  .tskip { margin-left: auto; border: 0; background: none; color: var(--sand); font-size: 13px; padding: 4px 6px; border-radius: 8px; text-decoration: underline; text-underline-offset: 3px; }
+  .tskip:hover { color: #fff; background: var(--ebony-2); }
+  .tcard h4 { font-size: 18px; font-weight: 800; line-height: 1.3; margin: 0 0 6px; }
+  .tcard p { font-size: 14.5px; line-height: 1.5; color: #efe3d1; margin: 0; }
+  .tbtns { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+  .tback, .tnext { border: 0; border-radius: 12px; padding: 10px 16px; font-size: 14.5px; font-weight: 700; transition: transform .1s ease, filter .15s ease, background .15s ease; }
+  .tback:active, .tnext:active, .tskip:active { transform: scale(.95); }
+  .tback { background: var(--ebony-2); color: var(--ivory); box-shadow: inset 0 0 0 1px var(--ebony-3); }
+  .tnext { background: var(--gold); color: var(--ebony); min-width: 112px; }
+  .tback:hover { background: var(--ebony-3); } .tnext:hover { filter: brightness(1.06); }
+  @media (max-width: 640px) {
+    .tcard { left: 0 !important; right: 0; bottom: 0; top: auto !important; width: 100vw; border-radius: 22px 22px 0 0; padding: 18px 18px max(16px, env(safe-area-inset-bottom)); }
+    .tcard::before { border-radius: 22px 22px 0 0; }
+    .tcard.top { top: 0 !important; bottom: auto; border-radius: 0 0 22px 22px; padding-top: max(18px, env(safe-area-inset-top)); }
+    .tcard.top::before { top: auto; bottom: 0; border-radius: 0 0 22px 22px; }
+    .tbtns .tnext { flex: 1; }
+  }
+  .lsearch-wrap { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; padding: 0 12px; height: 42px; border-radius: 12px;
+    border: 1px solid var(--ebony-3); background: var(--ebony-2); color: var(--sand); transition: border-color .12s ease, box-shadow .12s ease; }
+  .lsearch-wrap:focus-within { border-color: var(--gold); box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 25%, transparent); }
+  .lsearch-wrap .i { flex: none; font-size: 16px; }
+  .lsearch { flex: 1; min-width: 0; height: 100%; border: 0; outline: 0; background: transparent; color: var(--ivory); font: inherit; font-size: 14.5px; }
+  .lsearch::placeholder { color: var(--sand); opacity: .7; }
+  .lang-btn[hidden], .nolang[hidden] { display: none; }
+  .nolang { margin: 4px 2px 0; font-size: 13px; color: var(--sand); text-align: center; padding: 14px 8px; border: 1px dashed var(--ebony-3); border-radius: 12px; }
+  .lang-btn .cov { display: flex; align-items: center; gap: 8px; width: 100%; margin-top: 2px; font-size: 11px; font-weight: 800; color: #7fd9a8; font-variant-numeric: tabular-nums; }
+  .lang-btn .covbar { flex: 1; height: 5px; border-radius: 99px; background: var(--ebony-3); overflow: hidden; }
+  .lang-btn .covbar i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--forest-2), #7fd9a8); }
+  .lang-btn.unavail b { opacity: .82; } .lang-btn.unavail small { opacity: .7; }
   .chooser .later { display: block; margin: 10px auto 0; border: 0; background: none; color: var(--sand); font-size: 13px; padding: 6px 10px; border-radius: 8px; }
   .chooser .later:hover { color: #fff; background: var(--ebony-2); }
 
@@ -420,6 +531,8 @@
     mic: '<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><path d="M12 18v4"/>',
     send: '<path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/>',
     list: '<path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/>',
+    search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+    help: '<circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>',
   };
   function icon(name, extra = '') {
     const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -441,6 +554,7 @@
     makeHost();
     shadow = host.attachShadow({ mode: 'open' });
     const layer = h('div', { class: 'layer notranslate', translate: 'no' });
+    layerEl = layer;
     shadow.append(h('style', {}, CSS), layer);
 
     tipArrow = h('div', { class: 'arrow' });
@@ -454,10 +568,11 @@
     toastBox = h('div', { class: 'toasts', 'aria-live': 'assertive' });
 
     panelStatus = h('div', { class: 'status' });
+    panelVoice = h('div', { class: 'pvoice', role: 'status' });
     panelList = h('div', { class: 'list' });
     pageBtn = h('button', { class: `icon-btn${state.subtitles ? ' on' : ''}`, title: `${ui('ui_page_mode', 'Traduire la page')} (Alt+Shift+T)`, 'aria-label': ui('ui_page_mode', 'Traduire la page') }, icon('languages'));
     pageBtn.addEventListener('click', () => setSubtitles(!state.subtitles, true));
-    const readBtn = h('button', { class: 'icon-btn', title: `${ui('ui_read_all', 'Tout lire')} (Alt+Shift+L)`, 'aria-label': ui('ui_read_all', 'Tout lire') }, icon('volume'));
+    const readBtn = h('button', { class: 'icon-btn', 'data-tour': 'read', title: `${ui('ui_read_all', 'Tout lire')} (Alt+Shift+L)`, 'aria-label': ui('ui_read_all', 'Tout lire') }, icon('volume'));
     readBtn.addEventListener('click', () => readAll(readBtn));
     const ccBtn = h('span', { style: 'display:flex;gap:8px' }, pageBtn, readBtn);
     // Two tabs: Assistant (ask about the page, by text or voice) and Messages (translated page).
@@ -471,9 +586,9 @@
     views = { chat: chatView, list: panelList };
     panel = h('div', { class: 'panel', role: 'dialog', 'aria-label': `Langwa, ${state.pack.name}` },
       h('div', { class: 'band' }),
-      h('div', { class: 'ph' },
+      h('div', { class: 'ph', title: ui('ui_drag_hint', 'Glisser pour déplacer · double-clic pour replacer') },
         h('div', { class: 'logo' }, icon('languages')),
-        h('div', { class: 'title' }, langPicker(), panelStatus),
+        h('div', { class: 'title' }, langPicker(), panelStatus, panelVoice),
         ccBtn,
         h('button', { class: 'icon-btn', title: ui('ui_close', 'Fermer'), 'aria-label': ui('ui_close', 'Fermer'), onclick: () => togglePanel(false) }, icon('x'))),
       tabsBar,
@@ -481,27 +596,94 @@
       panelList,
       h('div', { class: 'pf' }, ...(isTouch
         ? [icon('pointer'), ui('ui_hint_touch_short', 'appui long = traduction')]
-        : [h('kbd', {}, 'Ctrl'), '+', icon('pointer'), ui('ui_hint_hover_short', 'survol = traduction')])));
+        : [h('kbd', {}, 'Ctrl'), '+', icon('pointer'), ui('ui_hint_hover_short', 'survol = traduction')]),
+        h('button', { class: 'pf-guide', type: 'button', title: ui('tour_replay', 'Revoir le guide'), onclick: () => startTour() }, icon('help'), ui('tour_guide', 'Guide'))));
 
     fabDot = h('span', { class: 'dot busy' });
     fabCount = h('span', { class: 'count' });
-    fab = h('button', { class: 'fab', title: 'Alt+Shift+M', 'aria-label': `Langwa, ${state.pack.name}`, onclick: () => togglePanel() },
+    fab = h('button', { class: 'fab', title: `Alt+Shift+M · ${ui('ui_drag_hint', 'Glisser pour déplacer · double-clic pour replacer')}`, 'aria-label': `Langwa, ${state.pack.name}`, onclick: () => { if (Date.now() - lastDragEnd > 350) togglePanel(); } },
       h('span', { class: 'logo' }, icon('languages'), fabDot), state.pack.name, fabCount);
 
     layer.append(subLayer, hl, tip, panel, fab, toastBox);
     document.documentElement.append(host);
+    draggable(panel.querySelector('.ph'));
+    draggable(fab);
+    panel.querySelector('.ph').addEventListener('dblclick', e => {
+      if (e.target.closest('button, select')) return;
+      dock = { ...DOCK_HOME }; placeDock(); saveDock();
+    });
+    try {
+      api.storage.local.get('dock').then(r => { if (r && r.dock) dock = { ...DOCK_HOME, ...r.dock }; placeDock(); }).catch(() => placeDock());
+    } catch { placeDock(); }
+  }
+
+  // ---------------- move the panel and its button anywhere on screen ----------------
+  // dock = distance of the floating button from the right and bottom edges. The panel follows
+  // the button: above it when there is room, else below, always fully on screen. On phones the
+  // panel stays a bottom sheet; only the button moves.
+  const DOCK_HOME = { right: 18, bottom: 18 };
+  let dock = { ...DOCK_HOME }, layerEl = null, lastDragEnd = 0;
+  const isPhone = () => innerWidth <= 640;
+  const saveDock = () => { try { api.storage.local.set({ dock }); } catch { /* not critical */ } };
+  function placeDock() {
+    if (!fab || !panel) return;
+    const m = 8, fw = fab.offsetWidth || 160, fh = fab.offsetHeight || 50;
+    dock.right = Math.round(Math.min(Math.max(dock.right, m), Math.max(m, innerWidth - fw - m)));
+    dock.bottom = Math.round(Math.min(Math.max(dock.bottom, m), Math.max(m, innerHeight - fh - m)));
+    fab.style.right = `${dock.right}px`;
+    fab.style.bottom = `${dock.bottom}px`;
+    if (isPhone()) { panel.style.right = panel.style.top = panel.style.bottom = panel.style.transformOrigin = ''; return; }
+    const pw = panel.offsetWidth, ph = panel.offsetHeight;
+    panel.style.right = `${Math.min(Math.max(dock.right, m), Math.max(m, innerWidth - pw - m))}px`;
+    const fabTop = innerHeight - dock.bottom - fh, aboveTop = fabTop - 10 - ph, belowTop = innerHeight - dock.bottom + 10;
+    const top = aboveTop >= m ? aboveTop : belowTop + ph <= innerHeight - m ? belowTop : Math.max(m, innerHeight - ph - m);
+    panel.style.top = `${top}px`;
+    panel.style.bottom = 'auto';
+    panel.style.transformOrigin = top > fabTop ? 'top right' : 'bottom right';
+  }
+  addEventListener('resize', () => placeDock());
+  /** Pointer drag (mouse, pen, touch). Under 6 px it is still a click. */
+  function draggable(handle) {
+    let st = null;
+    handle.addEventListener('pointerdown', e => {
+      if (e.button !== 0) return;
+      if (handle !== fab && e.target.closest('button, select, input, textarea, a, label')) return;
+      if (handle !== fab && isPhone()) return; // the bottom sheet does not move
+      st = { x: e.clientX, y: e.clientY, r: dock.right, b: dock.bottom, id: e.pointerId, moved: false };
+    });
+    handle.addEventListener('pointermove', e => {
+      if (!st || e.pointerId !== st.id) return;
+      const dx = e.clientX - st.x, dy = e.clientY - st.y;
+      if (!st.moved && Math.hypot(dx, dy) < 6) return;
+      if (!st.moved) { st.moved = true; try { handle.setPointerCapture(e.pointerId); } catch { /* ok */ } layerEl.classList.add('dragging'); hideTipSoon(); }
+      dock.right = st.r - dx;
+      dock.bottom = st.b - dy;
+      placeDock();
+      e.preventDefault();
+    });
+    const end = () => {
+      if (!st) return;
+      if (st.moved) { lastDragEnd = Date.now(); layerEl.classList.remove('dragging'); saveDock(); }
+      st = null;
+    };
+    handle.addEventListener('pointerup', end);
+    handle.addEventListener('pointercancel', end);
   }
 
   /** Language switcher in the panel header (the only way to switch on phones). */
+  // Languages, most complete first: translated share, then automatic drafts, then by name.
+  const rankLangs = langs => Object.entries(langs || {}).sort(([, a], [, b]) =>
+    (b.count || 0) - (a.count || 0) || (b.machineTranslation ? 1 : 0) - (a.machineTranslation ? 1 : 0) || a.name.localeCompare(b.name));
+  const coverageText = l => (l.count ? `${l.pct ?? 0} %` : l.machineTranslation
+    ? (BASE === 'en' ? 'Automatic draft' : 'Brouillon automatique') : ui('ui_soon', BASE === 'en' ? 'Soon' : 'Bientôt'));
+  const fold = s => (s || '').normalize('NFD').replace(/[̀-ͯ'’ʼ]/g, '').toLowerCase();
+
   function langPicker() {
-    const langs = Object.entries(state.langs || {});
+    const langs = rankLangs(state.langs);
     if (langs.length < 2) return h('div', { class: 'lang' }, state.pack.name);
     const sel = h('select', { class: 'lang lang-select', 'aria-label': ui('ui_language', 'Langue') },
       langs.map(([code, l]) => {
-        const suffix = l.machineTranslation
-          ? (BASE === 'en' ? ' (MT draft, unvalidated)' : ' (Brouillon MT, non validé)')
-          : ` (${ui('ui_soon', BASE === 'en' ? 'Soon' : 'Bientôt')})`;
-        const o = h('option', { value: code }, l.count || code === state.pack.code ? l.name : `${l.name}${suffix}`);
+        const o = h('option', { value: code }, code === state.pack.code ? l.name : `${l.name} · ${coverageText(l)}`);
         o.selected = code === state.pack.code;
         return o;
       }));
@@ -528,18 +710,39 @@
       const cur = await send({ type: 'getSettings' });
       await api.storage.local.set({ settings: { ...cur, lang: code } }); // storage change restarts Langwa
     };
-    const langs = Object.entries(state.langs || {}).sort((a, b) => ((b[1].count > 0 || b[1].machineTranslation) - (a[1].count > 0 || a[1].machineTranslation)));
+    const langs = rankLangs(state.langs);
+    // Search: names, other names, regions, towns; accents and apostrophes ignored. Filtering only
+    // shows or hides the buttons already built, so it answers on every keystroke.
+    const buttons = langs.map(([code, l]) => {
+      const meter = l.count
+        ? h('span', { class: 'cov' }, h('span', { class: 'covbar', 'aria-hidden': 'true' }, h('i', { style: `width:${l.pct ?? 0}%` })), h('span', {}, coverageText(l)))
+        : h('span', { class: 'soon' }, coverageText(l));
+      const b = h('button', {
+        class: `lang-btn${l.count || l.machineTranslation ? '' : ' unavail'}`, onclick: () => choose(code),
+        title: l.count ? `${l.count} / ${l.total} ${BASE === 'en' ? 'phrases translated' : 'phrases traduites'}${l.verified ? ` · ${l.verified} ${BASE === 'en' ? 'validated by a speaker' : 'validées par un locuteur'}` : ''}` : '',
+      }, h('b', {}, l.name), h('small', {}, l.region || ''), meter);
+      b.dataset.q = fold(`${code} ${l.name} ${l.region || ''} ${l.search || ''}`);
+      return b;
+    });
+    const none = h('p', { class: 'nolang', hidden: true }, BASE === 'en' ? 'No language found. Try another name or a town.' : 'Aucune langue trouvée. Essayez un autre nom ou une ville.');
+    const search = h('input', { type: 'search', class: 'lsearch', placeholder: BASE === 'en' ? 'Search: Pidgin, Fulani, Bamiléké, Kumbo…' : 'Rechercher : pidgin, peul, bamiléké, Kumbo…', 'aria-label': BASE === 'en' ? 'Search a language' : 'Rechercher une langue', autocomplete: 'off', spellcheck: 'false' });
+    search.addEventListener('input', () => {
+      const words = fold(search.value).split(/\s+/).filter(Boolean);
+      let shown = 0;
+      for (const b of buttons) { const ok = words.every(w => b.dataset.q.includes(w)); b.hidden = !ok; shown += ok; }
+      none.hidden = shown > 0;
+    });
+    search.addEventListener('keydown', e => {
+      e.stopPropagation(); // typing never triggers page shortcuts
+      if (e.key === 'Enter') { const first = buttons.find(b => !b.hidden); if (first) first.click(); }
+    });
     const card = h('div', { class: 'chooser', role: 'dialog', 'aria-label': ui('ui_choose', 'Quelle langue parlez-vous ?') },
       h('div', { class: 'head' },
         h('div', { class: 'logo' }, icon('languages')),
         h('div', {}, h('h3', {}, ui('ui_choose', 'Quelle langue parlez-vous ?')), h('p', {}, ui('ui_choose_sub', 'Langwa affichera la banque dans cette langue.')))),
-      h('div', { class: 'langs' }, langs.map(([code, l]) =>
-        h('button', { class: `lang-btn${l.count || l.machineTranslation ? '' : ' empty'}`, onclick: () => choose(code) },
-          h('b', {}, l.name),
-          h('small', {}, l.region || ''),
-          l.count ? null : h('span', { class: 'soon' }, l.machineTranslation
-            ? (BASE === 'en' ? 'MT draft - unvalidated' : 'Brouillon MT - non validé')
-            : ui('ui_soon', BASE === 'en' ? 'Soon' : 'Bientôt'))))),
+      h('label', { class: 'lsearch-wrap' }, icon('search'), search),
+      h('div', { class: 'langs' }, buttons),
+      none,
       h('button', { class: 'later', onclick: () => { card.hidden = true; fab.hidden = false; } }, ui('ui_later', 'Plus tard')));
     const fab = h('button', { class: 'fab', hidden: true, 'aria-label': ui('ui_choose', 'Quelle langue parlez-vous ?'), onclick: () => { card.hidden = false; fab.hidden = true; } },
       h('span', { class: 'logo' }, icon('languages')), 'Langwa');
@@ -597,7 +800,53 @@
   async function refreshVoice() {
     if (!state.active || document.hidden) return;
     const v = await send({ type: 'voiceStatus' }).catch(() => null);
+    const was = state.localVoice;
     state.localVoice = !!(v && v.ready);
+    // Installing or starting: the cards show it live, checked every 3 s until the voice is ready.
+    state.voice = v && !v.ready && v.info ? v.info : null;
+    const key = `${state.localVoice}|${state.voice ? `${state.voice.status}${Math.round(state.voice.progress * 100)}` : ''}`;
+    if (key !== state.voiceKey || was !== state.localVoice) { state.voiceKey = key; refreshChips(); }
+    clearTimeout(state.voiceTimer);
+    if (state.voice) state.voiceTimer = setTimeout(refreshVoice, 3000);
+  }
+  /**
+   * Panel header: which voice reads, live, for the assistant and the translations alike.
+   * Built again only when the state changes; while installing only the numbers move.
+   */
+  function renderPanelVoice() {
+    if (!panelVoice) return;
+    const mode = state.settings && state.settings.tts && state.settings.tts.mode;
+    panelVoice.hidden = mode === 'none';
+    const natural = !!(state.pack && state.pack.africaTts) && mode !== 'mms';
+    const v = natural && !state.localVoice ? state.voice : null;
+    const s = natural && state.localVoice ? 'ready' : v ? v.status : 'browser';
+    const pct = v ? Math.max(1, Math.round((v.progress || 0) * 100)) : 0;
+    const label = s === 'ready' ? `✓ ${ui('ui_voice_natural', 'Voix naturelle')}`
+      : s === 'installing' ? `${ui('ui_voice_natural', 'Voix naturelle')} · ${pct} %`
+        : s === 'loading' ? ui('ui_voice_starting', 'voix naturelle, démarrage…') : voiceName('synthetic');
+    const eta = v && v.etaSec != null ? (v.etaSec < 60 ? ' · <1 min' : ` · ~${Math.round(v.etaSec / 60)} min`) : '';
+    if (s === 'installing' && panelVoice.dataset.s === 'installing') {
+      panelVoice.querySelector('.vt').textContent = label + eta;
+      panelVoice.querySelector('.vprog i').style.width = `${pct}%`;
+      return;
+    }
+    panelVoice.dataset.s = s;
+    panelVoice.setAttribute('aria-live', s === 'installing' ? 'off' : 'polite');
+    let prog = null;
+    if (s === 'installing') { const i = h('i'); i.style.width = `${pct}%`; prog = h('span', { class: 'vprog', 'aria-hidden': 'true' }, i); }
+    const ic = s === 'ready' ? icon('cpu') : s === 'loading' ? icon('loader', 'spin') : s === 'installing' ? icon('loader', 'spin') : icon('monitor');
+    panelVoice.replaceChildren(ic, h('span', { class: 'vt' }, label + eta), ...(prog ? [prog] : []));
+    panelVoice.title = s === 'browser' && natural
+      ? ui('ui_voice_hint', 'Voix du navigateur. Pour une voix plus naturelle, lancez « Start Langwa voice » sur cet ordinateur.')
+      : panelVoice.textContent;
+  }
+  /** Idle voice chips follow the local voice: progress while it installs, then "Local voice". */
+  function refreshChips() {
+    renderPanelVoice();
+    if (!shadow) return;
+    for (const chip of shadow.querySelectorAll('.vchip:not(.live)')) {
+      if (chip.dataset.src === 'browser' || chip.dataset.src === 'local') setChip(chip, ttsOn() ? 'local' : 'browser');
+    }
   }
   setInterval(refreshVoice, 20000);
   document.addEventListener('visibilitychange', refreshVoice);
@@ -611,9 +860,10 @@
     loading: ['ui_voice_why_loading', 'voix locale en chargement'],
     slow: ['ui_voice_why_slow', 'voix locale trop lente'],
     error: ['ui_voice_why_error', 'voix locale indisponible'],
+    none: ['ui_voice_why_none', 'aucune voix sur cet appareil'],
   };
   const SRC = {
-    local: ['cpu', () => [voiceName('neural'), modelName()].filter(Boolean).join(' · ')],
+    local: ['cpu', () => ui('ui_voice_natural', 'Voix naturelle')], // model name in the tooltip
     wait: ['loader', () => ui('ui_voice_preparing', 'Voix locale, préparation…')],
     browser: ['monitor', () => voiceName('synthetic')],
     human: ['user', () => voiceName('human')],
@@ -630,11 +880,28 @@
   }
   function setChip(chip, src, why, live = false) {
     const [ic, text] = SRC[src] || SRC.browser;
+    // Browser voice for now, natural voice on its way: say so, with its progress.
+    const v = src === 'browser' && !why && !live && state.voice && state.pack && state.pack.africaTts ? state.voice : null;
+    const installing = !!v && v.status === 'installing';
+    const pct = v ? Math.max(1, Math.round((v.progress || 0) * 100)) : 0;
+    const note = !v ? '' : installing ? ` · ${ui('ui_voice_installing', 'voix naturelle')} ${pct} %` : ` · ${ui('ui_voice_starting', 'voix naturelle, démarrage…')}`;
+    const bar = chip.querySelector('.vprog i');
+    if (installing && bar && chip.dataset.src === src) { // update in place, so the bar glides
+      bar.style.width = `${pct}%`;
+      chip.querySelector('.why').textContent = note;
+      chip.title = chip.textContent;
+      return;
+    }
     chip.dataset.src = src;
     chip.classList.toggle('live', live && src !== 'wait');
+    chip.classList.toggle('warm', !!v);
+    chip.setAttribute('aria-live', v ? 'off' : 'polite'); // no announcement every 3 s
     const w = why && WHY[why];
-    chip.replaceChildren(h('span', { class: 'dot' }), icon(ic), h('span', { class: 'vt' }, text(), w ? h('span', { class: 'why' }, ` · ${ui(w[0], w[1])}`) : null));
-    chip.title = chip.textContent;
+    const extra = w ? ` · ${ui(w[0], w[1])}` : note;
+    let prog = null;
+    if (installing) { const i = h('i'); i.style.width = `${pct}%`; prog = h('span', { class: 'vprog', 'aria-hidden': 'true' }, i); }
+    chip.replaceChildren(h('span', { class: 'dot' }), icon(ic), h('span', { class: 'vt' }, text(), extra ? h('span', { class: 'why' }, extra) : null), ...(prog ? [prog] : []));
+    chip.title = src === 'local' && modelName() ? `${chip.textContent} · ${modelName()}` : chip.textContent;
   }
   const chipFor = b => { const host = b && (b.closest('.block') || b.closest('.item') || b.closest('.tip')); return host && host.querySelector('.vchip'); };
 
@@ -645,7 +912,7 @@
     const b = h('button', { class: `say${compact ? '' : ' wide'}`, title: `${label} · ${voiceName(steps.voice)}`, 'aria-label': label }, ...idle());
     b.addEventListener('click', ev => {
       ev.stopPropagation();
-      if (b.classList.contains('on')) { player.stop(); if (!player.isPlaying()) { b.classList.remove('on'); b.replaceChildren(...idle()); } return; }
+      if (b.classList.contains('on')) { player.stop(); if (!player.isPlaying()) { b.classList.remove('on'); fill(b, ...idle()); } return; }
       if (askOnlineVoice(b, () => speak(steps, b, idle))) return;
       speak(steps, b, idle);
     });
@@ -682,21 +949,65 @@
   }
 
   /** Plays steps, animating the button that started it (if any). */
+  /**
+   * Plays steps and keeps the user informed at every moment, on the button that started it:
+   * preparing (spinner, "Préparation…", "Encore un instant…" after 4 s), playing (bars,
+   * "Arrêter"), and a short, clear failure state when nothing could be heard.
+   */
   async function speak(planned, b, idle) {
     if (!planned) return;
-    if (b) { b.classList.add('on'); b.replaceChildren(bars(), compact(b) ? null : h('span', { class: 'lbl' }, ui('ui_stop', 'Arrêter'))); }
+    const wide = b && !compact(b);
+    const label = text => (wide ? h('span', { class: 'lbl' }, text) : null);
+    const phase = (name, text) => {
+      if (!b) return;
+      b.dataset.phase = name;
+      b.setAttribute('aria-busy', String(name !== 'play'));
+      b.setAttribute('aria-label', text);
+      b.title = text;
+      fill(b, name === 'play' ? bars() : icon('loader', 'spin'), label(text));
+    };
+    if (b) b.classList.add('on');
+    phase('prep', ui('ui_preparing', 'Préparation…'));
+    let playing = false;
+    const slow = setTimeout(() => { if (!playing) phase('slow', ui('ui_still_preparing', 'Encore un instant…')); }, 4000);
     // The voice is decided now, not when the card or chat bubble was drawn: the local voice
     // may have started (or stopped) since. The check is cached, so this takes milliseconds.
     if (state.settings && state.settings.tts && state.settings.tts.mode === 'auto') await refreshVoice();
     const steps = (planned.raw && player.prepare(planned.raw, voiceOpts())) || planned;
-    if (b && !b.classList.contains('on')) return; // stopped while checking
+    if (b && !b.classList.contains('on')) { clearTimeout(slow); return; } // stopped while checking
     const chip = chipFor(b);
     player.play(steps,
-      () => { if (b) { b.classList.remove('on'); b.replaceChildren(...idle()); } if (chip) chip.classList.remove('live'); },
+      endInfo => {
+        clearTimeout(slow);
+        if (chip) chip.classList.remove('live');
+        if (!b) return;
+        b.classList.remove('on');
+        delete b.dataset.phase;
+        b.removeAttribute('aria-busy');
+        b.setAttribute('aria-label', listenLabel());
+        fill(b, ...idle());
+        if (endInfo && !endInfo.spoke && !endInfo.stopped) noVoice(b, chip, idle, wide);
+      },
       (src, why) => {
         if (src === 'local') state.localVoice = true;
         if (why === 'offline' || why === 'loading') state.localVoice = false;
-        if (chip) setChip(chip, src, why, true); if (b) b.title = `${listenLabel()} · ${(SRC[src] || SRC.browser)[1]()}`; });
+        if (chip) setChip(chip, src, why, true);
+        if (src === 'wait') { if (!playing) phase(b && b.dataset.phase === 'slow' ? 'slow' : 'prep', b && b.dataset.phase === 'slow' ? ui('ui_still_preparing', 'Encore un instant…') : ui('ui_voice_preparing', 'Voix locale, préparation…')); return; }
+        playing = true;
+        clearTimeout(slow);
+        phase('play', ui('ui_stop', 'Arrêter'));
+        if (b) b.title = `${ui('ui_stop', 'Arrêter')} · ${(SRC[src] || SRC.browser)[1]()}`;
+      });
+  }
+  /** Nothing could be heard (no voice on this device, audio blocked): say it, briefly. */
+  function noVoice(b, chip, idle, wide) {
+    const text = ui('ui_no_voice', 'Aucune voix disponible sur cet appareil');
+    b.classList.add('fail');
+    b.setAttribute('aria-label', text);
+    b.title = text;
+    fill(b, icon('mute'), wide ? h('span', { class: 'lbl' }, ui('ui_no_voice_short', 'Pas de voix')) : null);
+    if (chip) setChip(chip, 'browser', 'none');
+    setTimeout(() => { if (b.classList.contains('fail')) { b.classList.remove('fail'); b.setAttribute('aria-label', listenLabel()); fill(b, ...idle()); } }, 2800);
   }
   const compact = b => !b.classList.contains('wide');
   const listenLabel = () => ui('ui_listen', 'Écouter');
@@ -750,11 +1061,12 @@
           ? h('div', { class: 'tr' }, isNew ? h('span', { class: 'new' }, ui('ui_new', 'NOUVEAU')) : null, kindIcon, shownText(u))
           : h('div', { class: 'tr missing' }, isNew ? h('span', { class: 'new' }, ui('ui_new', 'NOUVEAU')) : null, kindIcon, missing),
         (r.status === 'ok' || r.status === 'gist') ? sayButton(stepsFor(r), listenLabel()) : null),
+      // Original right under the translation (they read as a pair), then help, then one footer
+      // row with the voice and the validation status.
+      shown && shownText(u).trim() === u.text.trim() ? null : h('div', { class: 'orig' }, h('b', {}, ui('ui_original', 'Original')), u.text),
       r.explain ? h('div', { class: 'explain' }, icon('bulb'), h('span', {}, r.explain)) : null,
-      shown ? voiceChip(stepsFor(r)) : null,
-      h('div', { class: 'orig' }, h('b', {}, ui('ui_original', 'Original')), u.text),
       shown ? null : wordsRow(r),
-      h('div', { class: 'meta' }, chipsFor(u.text), shown || r.status === 'blocked' ? pillFor(r) : null));
+      h('div', { class: 'meta' }, shown ? voiceChip(stepsFor(r)) : null, chipsFor(u.text), shown || r.status === 'blocked' ? pillFor(r) : null));
   }
 
   // ======================================================================================
@@ -954,8 +1266,9 @@
     state.panelOpen = force ?? !state.panelOpen;
     if (state.panelOpen) clearToasts();
     panel.classList.toggle('show', state.panelOpen);
+    if (state.panelOpen) placeDock();
     fab.classList.toggle('hidden-under-sheet', state.panelOpen && innerWidth <= 640);
-    if (state.panelOpen) { setTab(state.tab || 'chat'); hideHint(); }
+    if (state.panelOpen) { setTab(state.tab || 'chat'); hideHint(); refreshVoice(); }
   }
 
   let panelTimer = null;
@@ -1067,9 +1380,26 @@
       const light = (rgb[0] * 299 + rgb[1] * 587 + rgb[2] * 114) / 1000 > 150;
       bg = light ? 'rgb(24,18,40)' : 'rgb(255,255,255)'; // fully opaque: no trace of the original
     }
-    l = { font: cs.fontFamily, size: parseFloat(cs.fontSize) || 15, weight: cs.fontWeight, color: cs.color, align: cs.textAlign, bg, lh: cs.lineHeight };
+    l = { font: cs.fontFamily, size: parseFloat(cs.fontSize) || 15, weight: cs.fontWeight, color: cs.color, align: cs.textAlign, bg, lh: cs.lineHeight,
+      tt: cs.textTransform, ls: parseFloat(cs.letterSpacing) || 0 };
     lookCache.set(el, l);
     return l;
+  }
+
+  /** Width of a text in the page's font, at 1px (cached: measured once per text and font). */
+  const measureCtx = document.createElement('canvas').getContext('2d');
+  const widthCache = new Map();
+  function textWidth(text, l) {
+    const t = l.tt === 'uppercase' ? text.toUpperCase() : text;
+    const k = `${l.weight}|${l.font}|${t}`;
+    let w = widthCache.get(k);
+    if (w == null) {
+      measureCtx.font = `${l.weight} 100px ${l.font}`;
+      w = measureCtx.measureText(t).width / 100;
+      if (widthCache.size > 3000) widthCache.clear();
+      widthCache.set(k, w);
+    }
+    return w;
   }
 
   let subRaf = 0;
@@ -1094,12 +1424,23 @@
           if (sr.width && sr.left >= b.right - 1 && sr.top < b.bottom && sr.bottom > b.top) { right = Math.min(right, sr.left - 8); break; }
         }
         const avail = Math.max(b.width, Math.min(right, innerWidth - 4) - b.left);
-        // Longer translations get a slightly smaller font so they stay in their place.
-        const ratio = Math.min(1, Math.max(0.78, Math.sqrt(u.text.length / Math.max(1, r.text.length))));
+        // One-line originals (labels, tabs, buttons) stay on one line: the font shrinks just enough
+        // to fit (down to 70 %), never breaking a word. Longer, multi-line texts wrap between words.
+        let ratio;
+        // One line if the original itself fits on one line in its box (buttons have padding: height alone misleads).
+        let oneLine = b.height <= l.size * 4 && textWidth(u.text, l) * l.size + l.ls * u.text.length <= b.width + 4;
+        if (oneLine) {
+          const need = textWidth(r.text, l) * l.size + l.ls * r.text.length + 4; // +4: padding
+          ratio = Math.min(1, avail / need);
+          if (ratio < 0.7) { ratio = 0.78; oneLine = false; } // far too long: wrap between words instead
+        } else {
+          ratio = Math.min(1, Math.max(0.78, Math.sqrt(u.text.length / Math.max(1, r.text.length))));
+        }
         const isButton = /^(BUTTON|A)$/.test(u.el.tagName) || u.el.getAttribute('role') === 'button';
         const s = h('div', { class: 'sub' }, r.text);
         Object.assign(s.style, {
-          top: `${b.top}px`, left: `${b.left}px`, minWidth: `${b.width}px`, maxWidth: `${avail}px`, width: 'max-content', minHeight: `${b.height}px`,
+          whiteSpace: oneLine ? 'nowrap' : 'normal', textTransform: l.tt, letterSpacing: l.ls ? `${l.ls}px` : '',
+          top: `${b.top}px`, left: `${b.left}px`, minWidth: `${b.width}px`, maxWidth: oneLine ? 'none' : `${avail}px`, width: 'max-content', minHeight: `${b.height}px`,
           display: 'flex', alignItems: 'center',
           justifyContent: isButton || l.align === 'center' ? 'center' : l.align === 'right' || l.align === 'end' ? 'flex-end' : 'flex-start',
           textAlign: isButton ? 'center' : l.align,
@@ -1189,6 +1530,149 @@
     host.shadowRoot.querySelector('.layer').append(hintEl);
   }
   function hideHint() { if (hintEl) { hintEl.remove(); hintEl = null; } }
+
+  // ======================================================================================
+  // Guided tour: first time after choosing a language, or again from "?" / the popup.
+  // Points at the real controls one by one (spotlight + card), Back / Next / Skip, keyboard
+  // (Esc, arrows, Enter). Steps whose control is not on screen are skipped. Nothing exists
+  // until it runs; everything is removed when it ends.
+  // ======================================================================================
+  let tourEl = null;
+  function tourSteps() {
+    const lang = state.pack ? state.pack.name : '';
+    // A translated sentence in the page's main content (not a banner or top bar), headings first.
+    const shown = state.units.filter(u => u.result && (u.result.status === 'ok' || u.result.status === 'gist') && !u.result.value
+      && !u.attr && u.el.getBoundingClientRect().width > 40 && visible(u.el)
+      && !u.el.closest('nav, header, footer, [role="banner"], [role="navigation"]')
+      && getComputedStyle(u.el).position !== 'fixed' && u.el.getBoundingClientRect().top + scrollY > 120);
+    const sample = shown.find(u => /^H[1-3]$/.test(u.el.tagName)) || shown.find(u => u.el.closest('main')) || shown[0];
+    const inPanel = sel => () => { if (!state.panelOpen) togglePanel(true); setTab('chat'); return panel && panel.querySelector(sel); };
+    return [
+      { title: ui('tour_welcome_t', 'Bienvenue dans Langwa'), body: ui('tour_welcome_b', 'Langwa vous montre cette page en {lang}, à lire et à écouter. Une visite rapide : moins d’une minute.').replace('{lang}', lang), next: ui('tour_start', 'Commencer la visite') },
+      sample && { target: () => {
+        if (state.panelOpen) togglePanel(false);
+        sample.el.scrollIntoView({ block: 'center', behavior: 'instant' });
+        const both = () => { const a = sample.el.getBoundingClientRect(); const b = tip.classList.contains('show') ? tip.getBoundingClientRect() : a;
+          const left = Math.min(a.left, b.left); const top = Math.min(a.top, b.top); const right = Math.max(a.right, b.right); const bottom = Math.max(a.bottom, b.bottom);
+          return { left, top, right, bottom, width: right - left, height: bottom - top }; };
+        return { isConnected: true, getBoundingClientRect: both };
+      },
+        // Once the scroll has settled (scrolling closes cards), open the real translation card.
+        after: place => setTimeout(() => { if (!tourEl) return; showTip([sample], sample.el); tip.classList.add('intour'); place(); }, 120),
+        title: isTouch ? ui('tour_point_touch_t', 'Appuyez longuement sur un texte') : ui('tour_point_t', 'Maintenez Ctrl et pointez un texte'),
+        body: ui('tour_point_b', 'Sa traduction s’affiche juste dessous, avec le bouton Écouter. Les montants et les noms restent exactement ceux de la page.') },
+      { target: () => { if (state.panelOpen) togglePanel(false); return fab; }, title: ui('tour_fab_t', 'Le bouton Langwa'), body: ui('tour_fab_b', 'Il ouvre le panneau. Le chiffre rouge compte les messages importants de la page.') },
+      { target: inPanel('.askrow'), title: ui('tour_ask_t', 'Posez votre question'), body: ui('tour_ask_b', 'Touchez une question toute prête, écrivez, ou touchez le micro et parlez. Langwa répond dans votre langue, avec les montants de la page.') },
+      { target: () => (state.panelOpen || togglePanel(true), panel && panel.querySelector('[data-tour="read"]')), title: ui('tour_read_t', 'Écoutez toute la page'), body: ui('tour_read_b', 'Langwa lit la page à voix haute, les messages importants d’abord.') },
+      { target: () => (state.panelOpen || togglePanel(true), pageBtn), title: ui('tour_page_t', 'Traduisez toute la page'), body: ui('tour_page_b', 'La traduction s’affiche sur chaque texte de la page. Touchez encore pour revenir à l’original.') },
+      { target: () => (state.panelOpen || togglePanel(true), panelVoice && !panelVoice.hidden ? panelVoice : null), title: ui('tour_voice_t', 'Qui lit à voix haute'), body: ui('tour_voice_b', 'La voix du navigateur, ou la voix naturelle si elle est installée sur cet ordinateur. Son installation s’affiche ici en direct.') },
+      { target: () => (state.panelOpen || togglePanel(true), panel && panel.querySelector('.lang-select')), title: ui('tour_lang_t', 'Changez de langue'), body: ui('tour_lang_b', 'À tout moment, ici. Les langues les plus complètes sont en premier.') },
+      { title: ui('tour_done_t', 'C’est prêt !'), body: ui('tour_done_b', 'Pour revoir ce guide : le bouton Guide en bas du panneau, ou la fenêtre Langwa dans la barre du navigateur.'), next: ui('tour_finish', 'Terminer') },
+    ].filter(Boolean);
+  }
+
+  function endTour(done = true) {
+    if (!tourEl) return;
+    tourEl._off();
+    tourEl.remove();
+    if (tip) tip.classList.remove('intour', 'show');
+    tourEl = null;
+    if (done) api.storage.local.set({ tourDone: true }).catch(() => {});
+  }
+
+  function startTour() {
+    if (!host || !state.active) return;
+    endTour(false);
+    hideHint();
+    hideTipSoon();
+    const steps = tourSteps();
+    let i = 0;
+    let target = null;
+    const spot = h('div', { class: 'tspot' });
+    const count = h('span', { class: 'tstep' });
+    const dots = h('span', { class: 'tdots', 'aria-hidden': 'true' }, steps.map(() => h('i')));
+    const title = h('h4', { id: 'langwa-tour-title' });
+    const body = h('p');
+    const back = h('button', { class: 'tback', type: 'button' }, ui('tour_back', 'Retour'));
+    const next = h('button', { class: 'tnext', type: 'button' });
+    const skip = h('button', { class: 'tskip', type: 'button' }, ui('tour_skip', 'Passer le guide'));
+    const doneMark = h('div', { class: 'tdone', hidden: true }, icon('check'));
+    const content = h('div', { class: 'tcontent', 'aria-live': 'polite' }, doneMark, title, body);
+    const card = h('div', { class: 'tcard', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'langwa-tour-title' },
+      h('div', { class: 'thead' }, count, dots, skip), content, h('div', { class: 'tbtns' }, back, next));
+    tourEl = h('div', { class: 'tour' }, spot, card);
+    shadow.querySelector('.layer').append(tourEl);
+
+    const place = () => {
+      const pad = 8;
+      const vw = innerWidth;
+      const vh = innerHeight;
+      const r = target && target.isConnected ? target.getBoundingClientRect() : null;
+      const has = r && r.width > 0 && r.height > 0;
+      tourEl.classList.toggle('nospot', !has);
+      if (has) Object.assign(spot.style, { left: `${r.left - pad}px`, top: `${r.top - pad}px`, width: `${r.width + 2 * pad}px`, height: `${r.height + 2 * pad}px` });
+      if (vw <= 640) { // phones: a sheet at the bottom, or at the top when the control is in the lower half
+        card.style.left = card.style.top = '';
+        card.classList.toggle('top', !!has && (r.top + r.bottom) / 2 > vh / 2);
+        return;
+      }
+      const cw = card.offsetWidth;
+      const ch = card.offsetHeight;
+      let left;
+      let top;
+      if (!has) { left = (vw - cw) / 2; top = (vh - ch) / 2; } else if (r.bottom + pad + 14 + ch < vh) { top = r.bottom + pad + 14; left = r.left; } else if (r.top - pad - 14 - ch > 0) { top = r.top - pad - 14 - ch; left = r.left; } else if (r.left - pad - 14 - cw > 0) { left = r.left - pad - 14 - cw; top = r.top; } else { left = r.right + pad + 14; top = r.top; }
+      card.style.left = `${Math.max(12, Math.min(left, vw - cw - 12))}px`;
+      card.style.top = `${Math.max(12, Math.min(top, vh - ch - 12))}px`;
+    };
+    const go = (n, dir = 1) => {
+      if (n < 0) return;
+      if (n >= steps.length) { endTour(true); return; }
+      i = n;
+      const st = steps[i];
+      if (tip) tip.classList.remove('intour', 'show');
+      let t = null;
+      try { t = st.target ? st.target() : null; } catch { t = null; }
+      if (st.target && !t) { go(n + dir, dir); return; } // control not on screen: skip this step
+      target = t;
+      count.textContent = `${i + 1} / ${steps.length}`;
+      [...dots.children].forEach((d, k) => { d.classList.toggle('on', k < i); d.classList.toggle('cur', k === i); });
+      content.classList.remove('fwd', 'bwd');
+      void content.offsetWidth; // restart the slide-in
+      content.classList.add(dir > 0 ? 'fwd' : 'bwd');
+      doneMark.hidden = i !== steps.length - 1;
+      title.textContent = st.title;
+      body.textContent = st.body;
+      next.textContent = st.next || (i === steps.length - 1 ? ui('tour_finish', 'Terminer') : ui('tour_next', 'Suivant'));
+      back.hidden = i === 0;
+      skip.hidden = i === steps.length - 1;
+      requestAnimationFrame(() => { place(); next.focus({ preventScroll: true }); if (st.after) st.after(place); });
+    };
+    let raf = 0;
+    const onMove = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(place); };
+    const onKey = e => {
+      if (!tourEl) return;
+      if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); endTour(true); }
+      else if (e.key === 'ArrowRight' || (e.key === 'Enter' && e.composedPath()[0] !== skip && e.composedPath()[0] !== back)) { e.preventDefault(); e.stopPropagation(); go(i + 1); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); e.stopPropagation(); go(i - 1, -1); }
+    };
+    addEventListener('resize', onMove, { passive: true });
+    addEventListener('scroll', onMove, { passive: true, capture: true });
+    addEventListener('keydown', onKey, true);
+    tourEl._off = () => { removeEventListener('resize', onMove); removeEventListener('scroll', onMove, { capture: true }); removeEventListener('keydown', onKey, true); cancelAnimationFrame(raf); };
+    next.onclick = () => go(i + 1);
+    back.onclick = () => go(i - 1, -1);
+    skip.onclick = () => endTour(true);
+    go(0);
+  }
+
+  /** First time on a page after choosing a language: the tour, once (skip counts as seen). */
+  async function maybeTour() {
+    try {
+      const { tourDone } = await api.storage.local.get('tourDone');
+      if (tourDone) return;
+    } catch { return; }
+    setTimeout(() => { if (state.active && !tourEl) startTour(); }, 900); // let the page be read first
+  }
 
   // ======================================================================================
   // Collecting interface text
@@ -1490,6 +1974,7 @@
     state.mtError = false;
     destroyUI();
     buildUI();
+    renderPanelVoice(); // last known voice state at once; refreshVoice() below brings the live one
     if (state.panelOpen) togglePanel(true);
     state.active = true;
     state.startedAt = Date.now();
@@ -1497,7 +1982,7 @@
     listen(true);
     scan();
     if (settings.pageMode) setSubtitles(true); // page translation stays on between pages
-    showFirstRunHint();
+    maybeTour(); // first time: the guided tour (replaces the one-line hint)
     if (!observer) {
       observer = new MutationObserver(muts => {
         // Ignore our own layer being attached.
@@ -1542,6 +2027,7 @@
     if (msg.type === 'togglePanel') togglePanel();
     if (msg.type === 'toggleSubtitles' || msg.type === 'togglePage') setSubtitles(!state.subtitles, true);
     if (msg.type === 'readAll') readAll(pageBtn && pageBtn.nextSibling);
+    if (msg.type === 'startTour') startTour();
   });
 
   start();

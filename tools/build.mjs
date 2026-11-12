@@ -70,6 +70,10 @@ const crc32 = buf => {
   for (const b of buf) c = CRC_TABLE[(c ^ b) & 0xff] ^ (c >>> 8);
   return (c ^ 0xffffffff) >>> 0;
 };
+// A valid date for every file (12:00, build day): a zero date ("1980-00-00") upsets some unzip tools.
+const NOW = new Date();
+const DOS_DATE = ((NOW.getFullYear() - 1980) << 9) | ((NOW.getMonth() + 1) << 5) | NOW.getDate();
+const DOS_TIME = 12 << 11;
 function zip(entries) {
   const locals = [];
   const centrals = [];
@@ -79,11 +83,11 @@ function zip(entries) {
     const crc = crc32(data);
     const local = Buffer.alloc(30);
     local.writeUInt32LE(0x04034b50, 0); local.writeUInt16LE(20, 4); local.writeUInt16LE(0x0800, 6);
-    local.writeUInt16LE(0, 8); local.writeUInt32LE(0, 10); local.writeUInt32LE(crc, 14);
+    local.writeUInt16LE(0, 8); local.writeUInt16LE(DOS_TIME, 10); local.writeUInt16LE(DOS_DATE, 12); local.writeUInt32LE(crc, 14);
     local.writeUInt32LE(data.length, 18); local.writeUInt32LE(data.length, 22); local.writeUInt16LE(nameBuf.length, 26);
     const central = Buffer.alloc(46);
     central.writeUInt32LE(0x02014b50, 0); central.writeUInt16LE(20, 4); central.writeUInt16LE(20, 6); central.writeUInt16LE(0x0800, 8);
-    central.writeUInt32LE(crc, 16); central.writeUInt32LE(data.length, 20); central.writeUInt32LE(data.length, 24);
+    central.writeUInt16LE(DOS_TIME, 12); central.writeUInt16LE(DOS_DATE, 14); central.writeUInt32LE(crc, 16); central.writeUInt32LE(data.length, 20); central.writeUInt32LE(data.length, 24);
     central.writeUInt16LE(nameBuf.length, 28); central.writeUInt32LE(offset, 42);
     locals.push(local, nameBuf, data);
     centrals.push(central, nameBuf);
@@ -111,12 +115,50 @@ const firefoxFiles = files.map(f => (f.name === 'manifest.json'
   : f));
 writeFileSync(join(DIST, 'langwa-firefox.xpi'), zip(firefoxFiles));
 
+// ---------- natural voice for the computer (a few KB; everything heavy downloads on first start) ----------
+// Unzip, double-click "Start Langwa voice.cmd". No Python needed beforehand: the launcher brings its own.
+const SRV = join(ROOT, 'server');
+const voiceFiles = [
+  { name: 'Langwa voice/Start Langwa voice.cmd', data: Buffer.from('@echo off\r\ncall "%~dp0server\\start-voice.cmd"\r\n') },
+  { name: 'Langwa voice/README.txt', data: Buffer.from([
+    'Langwa natural voice',
+    '',
+    'Windows: double-click "Start Langwa voice.cmd".',
+    'Mac / Linux: open a terminal in this folder and run:  sh server/start-voice.sh',
+    '',
+    'The first time, it downloads about 700 MB once (it resumes if the connection drops) and asks',
+    'whether to start with the computer. Keep its window open; Langwa then reads with this voice.',
+    'Everything stays in this folder and runs on this computer, offline. To remove it, delete the folder.',
+    '',
+    'Voix naturelle Langwa',
+    '',
+    'Windows : double-cliquez sur "Start Langwa voice.cmd".',
+    'Mac / Linux : ouvrez un terminal dans ce dossier et lancez :  sh server/start-voice.sh',
+    '',
+    'La premiere fois, environ 700 Mo sont telecharges une seule fois (reprise si la connexion coupe).',
+    'Gardez la fenetre ouverte ; Langwa lit alors avec cette voix. Tout reste dans ce dossier, hors ligne.',
+    '',
+    'Model and voices: Africa TTS, CC-BY-NC-4.0 (AfriSpeech). Code: MIT.',
+    '',
+  ].join('\r\n')) },
+  ...['start-voice.cmd', 'start-voice.sh', 'voice_setup.py', 'africa_tts_server.py', 'requirements-africa-tts.txt']
+    .map(f => ({ name: `Langwa voice/server/${f}`, data: readFileSync(join(SRV, f)) })),
+];
+writeFileSync(join(DIST, 'langwa-voice.zip'), zip(voiceFiles));
+
 // ---------- userscript ----------
 const langs = JSON.parse(read('lang/languages.json'));
 const packs = Object.fromEntries(Object.keys(langs).map(c => {
   try { return [c, JSON.parse(read(`lang/${c}.json`))]; } catch { return [c, { entries: {} }]; }
 }));
 const data = { source: JSON.parse(read('lang/source.json')), langs, packs, lexicon };
+// Coverage per language (translated phrases out of all page phrases): the website and the
+// contribution page show the same figures as the extension's pickers.
+const TOTAL = Math.max(1, (data.source.entries || []).length);
+const langsCov = Object.fromEntries(Object.entries(langs).map(([c, l]) => {
+  const count = Object.values((packs[c] && packs[c].entries) || {}).filter(e => e && e.t).length;
+  return [c, { ...l, count, total: TOTAL, pct: Math.min(100, Math.round((100 * count) / TOTAL)) }];
+}));
 const header = `// ==UserScript==
 // @name         Langwa
 // @namespace    langwa
@@ -143,7 +185,7 @@ writeFileSync(join(DIST, 'langwa.user.js'), userscript);
 // ---------- contribution page for speakers (one file, works offline, phone first) ----------
 const terms = termsFr;
 const collect = readFileSync(join(ROOT, 'tools', 'collect.template.html'), 'utf8')
-  .replace('/*DATA*/null', () => JSON.stringify({ source: data.source, langs, terms, termsEn }).replace(/</g, '\\u003c'));
+  .replace('/*DATA*/null', () => JSON.stringify({ source: data.source, langs: langsCov, terms, termsEn }).replace(/</g, '\\u003c'));
 writeFileSync(join(DIST, 'langwa-collect.html'), collect);
 
 // ---------- public website (Vercel root directory = collect/) ----------
@@ -154,7 +196,7 @@ const SITE = join(ROOT, 'collect');
 mkdirSync(join(SITE, 'contribute'), { recursive: true });
 mkdirSync(join(SITE, 'downloads'), { recursive: true });
 const landing = readFileSync(join(ROOT, 'tools', 'site.template.html'), 'utf8')
-  .replace('/*LANGS*/{}', () => JSON.stringify(langs).replace(/</g, '\\u003c'));
+  .replace('/*LANGS*/{}', () => JSON.stringify(langsCov).replace(/</g, '\\u003c'));
 writeFileSync(join(SITE, 'index.html'), landing);
 writeFileSync(join(SITE, 'contribute', 'index.html'), collect);
 writeFileSync(join(SITE, 'icon.svg'), readFileSync(join(EXT, 'icons', 'icon.svg')));
@@ -164,8 +206,9 @@ for (const f of readdirSync(join(ROOT, 'tools', 'site-assets'))) writeFileSync(j
 writeFileSync(join(SITE, 'downloads', 'langwa-chromium.zip'), readFileSync(join(DIST, 'langwa-chromium.zip')));
 writeFileSync(join(SITE, 'downloads', 'langwa-firefox.xpi'), readFileSync(join(DIST, 'langwa-firefox.xpi')));
 writeFileSync(join(SITE, 'downloads', 'langwa.user.js'), readFileSync(join(DIST, 'langwa.user.js')));
+writeFileSync(join(SITE, 'downloads', 'langwa-voice.zip'), readFileSync(join(DIST, 'langwa-voice.zip')));
 
 const kb = p => `${(statSync(join(DIST, p)).size / 1024).toFixed(0)} KB`;
 console.log(`Langwa ${manifest.version}`);
-for (const p of ['langwa-chromium.zip', 'langwa-firefox.xpi', 'langwa.user.js', 'langwa-collect.html']) console.log(`  dist/${p.padEnd(28)} ${kb(p)}`);
+for (const p of ['langwa-chromium.zip', 'langwa-firefox.xpi', 'langwa.user.js', 'langwa-voice.zip', 'langwa-collect.html']) console.log(`  dist/${p.padEnd(28)} ${kb(p)}`);
 console.log(`  ${files.length} files: ${shipped.join(', ')}`);

@@ -47,15 +47,15 @@
       "by": "Brouillon IA, à valider"
     },
     "step_costs": {
-      "t": "Charges",
+      "t": "See charges",
       "by": "Brouillon IA, à valider"
     },
     "step_beneficiary": {
-      "t": "Person wey go receive",
+      "t": "Person wey go receive am",
       "by": "Brouillon IA, à valider"
     },
     "step_summary": {
-      "t": "Summary",
+      "t": "Check all tindem",
       "by": "Brouillon IA, à valider"
     },
     "step_confirmation": {
@@ -147,7 +147,7 @@
       "by": "Brouillon IA, à valider"
     },
     "security_check_beneficiary": {
-      "t": "Always check the name and number of the person wey go receive, before you confirm the transfer.",
+      "t": "Always check the name and number of the person wey go receive am, before you confirm the transfer.",
       "by": "Brouillon IA, à valider"
     },
     "secure_connection": {
@@ -187,8 +187,11 @@
       "by": "Brouillon IA, à valider"
     },
     "choose_type_amount": {
-      "t": "Choose how you want send and how much. The charges go calculate by themself.",
-      "by": "Brouillon IA, à valider"
+      "t": "Choose how you want send and how much. The charges go calculate by ei self.",
+      "by": "Locuteur natif (Cameroun)",
+      "verified": true,
+      "validator": "Locuteur natif camerounais (équipe Langwa)",
+      "date": "2026-11-12"
     },
     "operation_type": {
       "t": "Which kind operation",
@@ -235,11 +238,11 @@
       "by": "Brouillon IA, à valider"
     },
     "beneficiary": {
-      "t": "Person wey go receive",
+      "t": "Person wey go receive am",
       "by": "Brouillon IA, à valider"
     },
     "beneficiary_name": {
-      "t": "Name of the person wey go receive",
+      "t": "Name of the person wey go receive am",
       "by": "Brouillon IA, à valider"
     },
     "phone_number": {
@@ -255,7 +258,7 @@
       "by": "Brouillon IA, à valider"
     },
     "transfer_summary": {
-      "t": "Summary of the transfer",
+      "t": "All tindem wey you don enter for the transfer, so you fit confirm am",
       "by": "Brouillon IA, à valider"
     },
     "send_amount_to": {
@@ -359,7 +362,7 @@
       "by": "Brouillon IA, à valider"
     },
     "enter_recipient_info": {
-      "t": "Put the information of the person wey go receive. Always check the number before you send.",
+      "t": "Put the information of the person wey go receive am. Always check the number before you send.",
       "by": "Brouillon IA, à valider"
     },
     "new_beneficiary_warning": {
@@ -375,7 +378,7 @@
       "by": "Brouillon IA, à valider"
     },
     "checked_name_number": {
-      "t": "I don check the name and number of the person wey go receive.",
+      "t": "I don check the name and number of the person wey go receive am.",
       "by": "Brouillon IA, à valider"
     },
     "check_info_before_confirm": {
@@ -487,7 +490,7 @@
       "by": "Brouillon IA, à valider"
     },
     "ui_mt_down": {
-      "t": "Computer translation no dey: na summary we use",
+      "t": "Machine translation no dey available; text wey no get translation go stay as e be",
       "by": "Brouillon IA, à valider"
     },
     "ui_hint_hover": {
@@ -651,7 +654,7 @@
       "by": "Brouillon IA, à valider"
     },
     "ui_autoread": {
-      "t": "Read by itself",
+      "t": "Read by ei self",
       "by": "Brouillon IA, à valider"
     },
     "ui_autoread_sub": {
@@ -767,7 +770,7 @@
       "by": "Brouillon IA, à valider"
     },
     "ans_no_receiver": {
-      "t": "I never see the person wey go receive for dis page.",
+      "t": "I never see the person wey go receive am for dis page.",
       "by": "Brouillon IA, à valider"
     },
     "ans_warning": {

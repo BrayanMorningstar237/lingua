@@ -160,26 +160,43 @@
       if (session) {
         session.stopped = true;
         if (session.audio) session.audio.pause();
-        if (session.onStop) session.onStop();
+        if (session.onStop) session.onStop({ stopped: true, spoke: !!session.spoke });
       }
       if (root.speechSynthesis) root.speechSynthesis.cancel();
       session = null;
     }
 
+    /** Plays an audio file. Resolves true if sound actually started, false otherwise. */
     const playUrl = (url, s) => new Promise(res => {
       const a = new Audio(url);
       s.audio = a;
-      a.onended = a.onerror = () => res();
-      a.play().catch(() => res());
+      let started = false;
+      a.onplaying = () => { started = true; s.spoke = true; };
+      a.onended = () => res(true);
+      a.onerror = () => res(started);
+      a.play().catch(() => res(false));
     });
 
+    /**
+     * Speaks with a device or online voice. Resolves true if speech started. Two safety nets:
+     * if nothing starts within 5 s (a voice that never loads) it gives up, and online Chrome
+     * voices are nudged every 10 s (they otherwise go silent mid-sentence on long text).
+     */
     const say = (text, voice, s) => new Promise(res => {
-      if (!root.speechSynthesis || s.stopped || !text.trim()) return res();
+      if (!root.speechSynthesis || s.stopped || !text.trim()) return res(false);
       const u = new SpeechSynthesisUtterance(text);
       if (voice) { u.voice = voice; u.lang = voice.lang; } else u.lang = 'fr-FR';
       u.rate = 1;     // natural pace
       u.pitch = 1;
-      u.onend = u.onerror = () => res();
+      let started = false, done = false;
+      const finish = ok => { if (done) return; done = true; clearTimeout(watch); clearInterval(nudge); res(ok); };
+      const watch = setTimeout(() => { if (!started) { root.speechSynthesis.cancel(); finish(false); } }, 5000);
+      const nudge = voice && voice.localService === false
+        ? setInterval(() => { if (root.speechSynthesis.speaking) { root.speechSynthesis.pause(); root.speechSynthesis.resume(); } }, 10000)
+        : 0;
+      u.onstart = () => { started = true; s.spoke = true; };
+      u.onend = () => finish(true);
+      u.onerror = () => finish(started);
       root.speechSynthesis.speak(u);
     });
 
@@ -251,23 +268,50 @@
         if (piece && prev && prev.voice === piece.voice && !prev.audio && !prev.tts) { prev.text += ` ${piece.text}`; prev.national = prev.national || piece.national; }
         else runs.push(piece || step);
       }
-      // Ask the local model for every piece at once: the next one is ready while one plays.
-      const pending = runs.map(r => (r.tts && tts ? Promise.resolve(tts(r.tts)).catch(() => null) : null));
-      for (const [i, r] of runs.entries()) {
+      // Long model text is cut at sentence ends so the first words play quickly: the first
+      // sentence alone, then parts of about 160 characters.
+      const parts = [];
+      for (const r of runs) {
+        if (!(r.tts && r.tts.length > 160)) { parts.push(r); continue; }
+        const sentences = r.tts.match(/[^.!?]+[.!?]+["»”)]*\s*|[^.!?]+$/g) || [r.tts];
+        let cur = '';
+        let first = true;
+        for (const piece of sentences) {
+          cur += piece;
+          if (first || cur.length >= 160) { parts.push({ tts: cur.trim() }); cur = ''; first = false; }
+        }
+        if (cur.trim()) parts.push({ tts: cur.trim() });
+      }
+      // The local model answers one request at a time: ask in reading order, one after the other,
+      // so the part being played is never queued behind a later one, and the next part is made
+      // while the current one plays. After Stop, the remaining parts are not asked for.
+      let chain = Promise.resolve();
+      const pending = parts.map(r => {
+        if (!(r.tts && tts)) return null;
+        const p = chain.then(() => (s.stopped ? null : tts(r.tts))).catch(() => null);
+        chain = p;
+        return p;
+      });
+      for (const [i, r] of parts.entries()) {
         if (s.stopped) break;
         if (r.audio) { report('human'); await playUrl(r.audio, s); }
         else if (r.tts && tts) {
           report('wait');
           const got = await pending[i];
           if (s.stopped) break;
-          if (typeof got === 'string') { report('local'); await playUrl(got, s); }
+          if (typeof got === 'string') {
+            report('local');
+            if (!(await playUrl(got, s)) && !s.stopped) { report('browser', 'error'); await say(nat.adapt(r.tts), nat.voice, s); }
+          }
           else { report('browser', (got && got.fail) || 'offline'); await say(nat.adapt(r.tts), nat.voice, s); }
         } else if (r.text !== undefined) {
           if (r.national) report('browser');
           await say(r.text, r.voice, s);
         }
       }
-      if (session === s) { session = null; if (onStop) onStop(); }
+      // onStop({ spoke }): spoke = false means nothing could be heard (no voice on this device,
+      // audio blocked): the button says so instead of failing silently.
+      if (session === s) { session = null; if (onStop) onStop({ stopped: false, spoke: !!s.spoke }); }
     }
 
     return { play, stop, prepare, isPlaying: () => !!session };

@@ -46,8 +46,11 @@ async function loadAll() {
   const settings = await api.runtime.sendMessage({ type: 'getSettings' });
   langs = await api.runtime.sendMessage({ type: 'getLangs' });
   code = code || settings.lang;
-  $('lang').replaceChildren(...Object.entries(langs).map(([c, l]) => {
-    const o = new Option(l.name, c);
+  // Most complete first, with the share of phrases already translated.
+  const ranked = Object.entries(langs).sort(([, a], [, b]) => (b.count || 0) - (a.count || 0)
+    || (b.machineTranslation ? 1 : 0) - (a.machineTranslation ? 1 : 0) || a.name.localeCompare(b.name));
+  $('lang').replaceChildren(...ranked.map(([c, l]) => {
+    const o = new Option(`${l.name} · ${l.count ? `${l.pct ?? 0} %` : l.machineTranslation ? 'brouillon automatique' : 'bientôt'}`, c);
     o.selected = c === code;
     return o;
   }));
@@ -58,6 +61,8 @@ async function loadAll() {
   $('mtMode').value = settings.mt.mode;
   $('mtEndpoint').value = settings.mt.endpoint;
   $('mtModel').value = settings.mt.model;
+  $('turacoHelp').hidden = settings.mt.mode !== 'turaco';
+  checkMt();
   $('ttsMode').value = settings.tts.mode;
   ttsEndpoints.mms = settings.tts.endpoint || ttsEndpoints.mms;
   ttsEndpoints.africa = settings.tts.africaEndpoint || ttsEndpoints.africa;
@@ -457,6 +462,12 @@ $('mtMode').onchange = () => {
   if ($('mtMode').value === 'nllb') $('mtEndpoint').value = 'http://127.0.0.1:8765/translate';
   if ($('mtMode').value === 'cameroon') $('mtEndpoint').value = 'http://127.0.0.1:8768/translate';
   if ($('mtMode').value === 'openai') $('mtEndpoint').value = 'http://localhost:11434/v1/chat/completions';
+  if ($('mtMode').value === 'turaco') {
+    $('mtEndpoint').value = 'http://localhost:11434/v1/chat/completions';
+    $('mtModel').value = 'hf.co/mradermacher/Turaco-E2B-it-mt-en-wes-GGUF:Q4_K_M';
+  }
+  $('turacoHelp').hidden = $('mtMode').value !== 'turaco';
+  checkMt();
 };
 $('clearCache').onclick = async () => { await api.runtime.sendMessage({ type: 'clearCache', lang: code }); $('mtMsg').textContent = 'Cache vidé.'; };
 $('validator').onchange = () => api.storage.local.set({ validatorName: $('validator').value.trim() });
@@ -474,37 +485,103 @@ $('ttsEndpoint').onchange = checkVoice;
  * Live status of the local voice server, so it is obvious whether Langwa reads with the model
  * or with the browser's voice. Checked every 3 s while this page is visible.
  */
-const START = { auto: '.venv\\Scripts\\python.exe server\\africa_tts_server.py', africa: '.venv\\Scripts\\python.exe server\\africa_tts_server.py', mms: '.venv\\Scripts\\python.exe server\\tts_server.py' };
+// One double-click starts the local voice (installs and downloads it the first time).
+const START = { auto: 'server\\start-voice.cmd   (Mac/Linux : sh server/start-voice.sh)', africa: 'server\\start-voice.cmd   (Mac/Linux : sh server/start-voice.sh)', mms: '.venv\\Scripts\\python.exe server\\tts_server.py' };
 let voiceTimer = 0;
 async function checkVoice() {
   clearTimeout(voiceTimer);
   const box = $('ttsStatus'), mode = $('ttsMode').value;
   if (mode === 'none') { box.hidden = true; return; }
   box.hidden = false;
-  const show = (st, title, sub, cmd) => {
+  const el = (tag, cls, text) => Object.assign(document.createElement(tag), cls ? { className: cls } : {}, text ? { textContent: text } : {});
+  const chips = voice => { const d = el('div', 'vchips'); d.append(el('span', 'chip ok', '✓ Traduction du texte : prête'), voice); return d; };
+  const VOICE_CHIP = { ready: ['chip ok', '✓ Voix naturelle : prête'], loading: ['chip wait', 'Voix naturelle : démarrage…'], offline: ['chip', 'Voix naturelle : non lancée'] };
+  const show = (st, title, sub, cmd, bar) => {
     box.dataset.s = st;
-    const parts = [Object.assign(document.createElement('b'), { textContent: title })];
-    if (sub) parts.push(Object.assign(document.createElement('small'), { textContent: sub }));
-    if (cmd) parts.push(Object.assign(document.createElement('code'), { textContent: cmd }));
+    const parts = [el('b', '', title)];
+    if (VOICE_CHIP[st]) parts.push(chips(el('span', ...VOICE_CHIP[st])));
+    if (bar) { const b = el('div', 'vprog ind'); b.appendChild(el('i')); parts.push(b); }
+    if (sub) parts.push(el('small', '', sub));
+    if (cmd) parts.push(el('code', '', cmd));
     const text = document.createElement('div'); text.append(...parts);
-    box.replaceChildren(Object.assign(document.createElement('span'), { className: 'led' }), text);
+    box.replaceChildren(el('span', 'led'), text);
+  };
+  // First-time setup (server/voice_setup.py): live progress. Built once, then only numbers change,
+  // and the bar glides between the 3 s updates (CSS transition), so it moves smoothly and cheaply.
+  const showInstall = j => {
+    if (box.dataset.s !== 'installing') {
+      box.dataset.s = 'installing';
+      const bar = el('div', 'vprog');
+      bar.setAttribute('role', 'progressbar'); bar.setAttribute('aria-label', 'Installation de la voix naturelle');
+      bar.setAttribute('aria-valuemin', '0'); bar.setAttribute('aria-valuemax', '100');
+      bar.appendChild(el('i'));
+      const text = document.createElement('div');
+      text.append(el('b', '', 'Installation de la voix naturelle'), chips(el('span', 'chip wait vpct')), bar,
+        el('small', 'vstep'), el('small', '', 'Vous pouvez déjà utiliser Langwa : en attendant, la voix du navigateur lit les textes.'));
+      box.replaceChildren(el('span', 'led'), text);
+    }
+    const pct = Math.max(1, Math.round((j.progress || 0) * 100));
+    const step = j.step === 'model' ? 'Téléchargement du modèle de voix'
+      : j.detail === 'resolving' ? 'Préparation de l’installation' : j.detail === 'unpacking' ? 'Installation des fichiers' : 'Téléchargement de la voix';
+    const eta = j.etaSec == null ? 'calcul du temps restant…' : j.etaSec < 60 ? 'moins d’une minute' : `environ ${Math.round(j.etaSec / 60)} min restantes`;
+    box.querySelector('.vpct').textContent = `Voix naturelle : ${pct} %`;
+    box.querySelector('.vprog i').style.width = `${pct}%`;
+    box.querySelector('.vprog').setAttribute('aria-valuenow', String(pct));
+    box.querySelector('.vstep').textContent = `${step} · ${j.doneMB || 0} / ${j.totalMB || '…'} Mo · ${eta}`;
   };
   const health = $('ttsEndpoint').value.trim().replace(/\/tts\/?$/, '/health');
   try {
     const r = await fetch(health, { signal: AbortSignal.timeout(2500) });
     const j = r.ok ? await r.json().catch(() => ({})) : {};
-    if (!r.ok || !j.status) show('ready', 'Voix locale joignable', 'Le serveur répond. Langwa lit avec le modèle local.');
+    if (j.status === 'installing') showInstall(j);
+    else if (!r.ok || !j.status) show('ready', 'Voix locale joignable', 'Le serveur répond. Langwa lit avec le modèle local.');
     else if (j.status === 'ready') show('ready', 'Voix locale prête', `Langwa lit avec le modèle sur cet ordinateur (${j.threads || '?'} cœurs, ${j.cached || 0} phrases en mémoire).`);
     else if (j.status === 'error') show('error', 'Voix locale en erreur', `${j.detail || ''} En attendant, la voix du navigateur est utilisée.`);
-    else show('loading', 'Voix locale en chargement…', `${j.detail || 'Préparation du modèle'}. En attendant, la voix du navigateur est utilisée.`);
+    else show('loading', 'Voix locale en chargement…', `${j.detail || 'Préparation du modèle'}. En attendant, la voix du navigateur est utilisée.`, '', true);
   } catch {
     const langVoice = langs[$('lang').value] || {};
     const useMms = mode === 'mms' || (mode === 'auto' && !langVoice.africaTts && langVoice.mms);
-    show('offline', 'Voix locale éteinte', 'La voix du navigateur est utilisée. Pour la voix locale, lancez dans le dossier du projet :', useMms ? START.mms : START[mode]);
+    show('offline', 'Voix du navigateur utilisée', useMms
+      ? 'Pour la voix locale MMS, lancez dans le dossier du projet :'
+      : 'Pour une voix plus naturelle, double-cliquez sur « Start Langwa voice » (téléchargement « Voix naturelle » sur le site de Langwa). Depuis le projet :', useMms ? START.mms : START[mode]);
   }
   if (!document.hidden) voiceTimer = setTimeout(checkVoice, 3000);
 }
-document.addEventListener('visibilitychange', () => { if (!document.hidden) checkVoice(); });
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { checkVoice(); checkMt(); } });
+
+/** Lamnso drafts need two local services, the corpus retriever and an LLM: show both, live. */
+let mtTimer = null;
+async function checkMt() {
+  clearTimeout(mtTimer);
+  const box = $('mtStatus');
+  if ($('lang').value !== 'lns') { box.hidden = true; return; }
+  box.hidden = false;
+  const ping = async (url, ok) => {
+    try { const r = await fetch(url, { signal: AbortSignal.timeout(2000) }); return r.ok && ok(await r.json().catch(() => ({}))); }
+    catch { return false; }
+  };
+  // Lamnso uses its own model on port 8771 unless the user picked their own LLM.
+  const own = $('mtMode').value === 'openai';
+  const llmUrl = own ? $('mtEndpoint').value.trim().replace(/\/chat\/completions\/?$/, '/models') : 'http://127.0.0.1:8771/v1/models';
+  const [corpus, llm] = await Promise.all([
+    ping('http://127.0.0.1:8769/health', j => j.status === 'ready'),
+    ping(llmUrl, () => true),
+  ]);
+  const show = (st, title, sub, cmd) => {
+    box.dataset.s = st;
+    const parts = [Object.assign(document.createElement('b'), { textContent: title }),
+      Object.assign(document.createElement('small'), { textContent: sub })];
+    if (cmd) parts.push(Object.assign(document.createElement('code'), { textContent: cmd }));
+    const text = document.createElement('div'); text.append(...parts);
+    box.replaceChildren(Object.assign(document.createElement('span'), { className: 'led' }), text);
+  };
+  if (!corpus && !llm) show('offline', 'Traduction lamnso éteinte', 'Lancez dans le dossier du projet (le premier lancement télécharge environ 1,1 Go) :', 'server\\start-lamnso.cmd');
+  else if (!corpus) show('offline', 'Modèle prêt, corpus lamnso éteint', 'Relancez dans le dossier du projet :', 'server\\start-lamnso.cmd');
+  else if (!llm) show('loading', 'Corpus prêt, modèle lamnso en attente', own ? `Aucune réponse de ${llmUrl}.` : 'Le modèle démarre ou n’est pas lancé :', own ? '' : 'server\\start-lamnso.cmd');
+  else show('ready', 'Traduction lamnso prête', 'Le corpus et le modèle local répondent. Les brouillons portent la mention « non validé ».');
+  if (!document.hidden) mtTimer = setTimeout(checkMt, 5000);
+}
+$('mtEndpoint').onchange = checkMt;
 $('lang').onchange = () => { code = $('lang').value; loadAll(); };
 $('filter').oninput = render;
 $('onlyMissing').onchange = render;

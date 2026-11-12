@@ -34,6 +34,16 @@
   .switch input:checked + span { background: var(--forest); }
   .switch input:checked + span::after { transform: translateX(20px); }
   .switch input:focus-visible + span { outline: 3px solid var(--gold); outline-offset: 2px; }
+  /* Local natural voice: live status (installing with progress, starting, ready). */
+  .vline { display: flex; align-items: center; gap: 8px; margin-top: -4px; padding: 0 4px; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .vline .dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: #b07a0a; animation: vp 1.1s ease-in-out infinite; }
+  .vline[data-s="ready"] .dot { background: var(--forest); animation: none; }
+  .vline[data-s="ready"] { color: var(--forest); font-weight: 650; }
+  .vline .vbar { flex: 1; min-width: 40px; height: 6px; border-radius: 99px; background: var(--line); overflow: hidden; }
+  .vline .vbar i { display: block; height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, var(--forest), var(--gold)); transition: width 3s linear; }
+  .vline:not([data-s="installing"]) .vbar { display: none; }
+  @keyframes vp { 50% { opacity: .35; } }
+  @media (prefers-reduced-motion: reduce) { .vline .dot { animation: none; } .vline .vbar i { transition: none; } }
   label.field { display: grid; gap: 6px; font-weight: 650; font-size: 13px; color: var(--muted); }
   select { font: inherit; color: var(--fg); padding: 9px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); }
   .seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; border-radius: 12px; background: var(--soft); border: 1px solid var(--line); }
@@ -58,18 +68,29 @@
   .reload.show { display: flex; }
   .reload span { flex: 1; font-size: 13px; }
   .reload .btn { padding: 8px 12px; background: var(--gold); color: var(--ebony); }
+  .linkrow { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; }
+  .link:disabled { opacity: .45; cursor: default; }
   .link { display: flex; align-items: center; justify-content: center; gap: 6px; border: 0; background: none; color: var(--muted); font: 600 13px inherit; font-family: inherit; cursor: pointer; padding: 2px; }
   .link:hover { color: var(--fg); }
   [hidden] { display: none !important; }
   .ask { display: grid; gap: 4px; }
   .ask b { font-size: 17px; }
   .ask small { color: var(--muted); }
+  .lsearch-wrap { display: flex; align-items: center; gap: 9px; margin: 2px 0 2px; padding: 0 12px; height: 40px; border-radius: 12px; border: 1px solid var(--line); background: var(--soft); color: var(--muted); }
+  .lsearch-wrap:focus-within { border-color: var(--gold); box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 25%, transparent); }
+  .lsearch-wrap svg { width: 16px; height: 16px; }
+  .lsearch-wrap input { flex: 1; min-width: 0; height: 100%; border: 0; outline: 0; background: transparent; color: var(--fg); font: inherit; font-size: 14px; }
+  .lang-btn[hidden], .nolang[hidden] { display: none; }
+  .nolang { margin: 0; padding: 14px 8px; font-size: 13px; color: var(--muted); text-align: center; border: 1px dashed var(--line); border-radius: 12px; }
+  .lang-btn .cov { display: flex; align-items: center; gap: 8px; width: 100%; margin-top: 2px; font-size: 11px; font-weight: 800; color: var(--forest); font-variant-numeric: tabular-nums; }
+  .lang-btn .covbar { flex: 1; height: 5px; border-radius: 99px; background: var(--line); overflow: hidden; }
+  .lang-btn .covbar i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--forest), #2f9e66); }
   .langs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .lang-btn { position: relative; display: grid; min-width: 0; gap: 4px; text-align: left; padding: 12px; border-radius: 14px; border: 1px solid var(--line); background: var(--soft); color: var(--fg); cursor: pointer; font-family: inherit; }
   .lang-btn:hover { border-color: var(--gold); }
   .lang-btn b { min-width: 0; font-size: 15.5px; overflow-wrap: anywhere; }
   .lang-btn small { min-width: 0; font-size: 11.5px; color: var(--muted); line-height: 1.35; overflow-wrap: anywhere; }
-  .lang-btn.empty b, .lang-btn.empty small { opacity: .55; }
+  .lang-btn.empty b { opacity: .82; } .lang-btn.empty small { opacity: .7; }
   .btn.big { width: 100%; padding: 13px 14px; font-size: 15px; }
   .btn.big kbd { margin-left: auto; font: 700 10.5px ui-monospace, Consolas, monospace; padding: 2px 6px; border-radius: 6px; background: rgba(251,246,238,.12); color: var(--sand); }
   .btn.big.on { background: var(--gold); color: var(--ebony); } .btn.big.on svg { color: var(--ebony); } .btn.big.on kbd { background: rgba(29,23,18,.12); color: var(--ebony); }
@@ -95,7 +116,9 @@
 <!-- First use: choose a language -->
 <main id="chooser" hidden>
   <div class="ask"><b data-ui="ui_choose">Quelle langue parlez-vous ?</b><small data-ui="ui_choose_sub">Langwa affichera la banque dans cette langue.</small></div>
+  <label class="lsearch-wrap"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" id="lsearch" autocomplete="off" spellcheck="false"></label>
   <div class="langs" id="langs"></div>
+  <p class="nolang" id="nolang" hidden></p>
 </main>
 
 <main id="main" hidden>
@@ -136,6 +159,7 @@
     <span class="txt"><b data-ui="ui_online_voice">Voix naturelles en ligne</b><small data-ui="ui_online_voice_sub">Plus fluide. Le texte lu est envoyé à Microsoft ou Google.</small></span>
     <span class="switch"><input type="checkbox" id="onlineVoice"><span></span></span>
   </label>
+  <div class="vline" id="vline" role="status" hidden><span class="dot"></span><span id="vlineText"></span><span class="vbar"><i id="vlineBar"></i></span></div>
 
   <div class="keys"><span><kbd>Ctrl</kbd> + <svg viewBox="0 0 24 24"><path d="M4 4l7 17 2.5-7.5L21 11 4 4z"/></svg></span><span><kbd>Ctrl+Espace</kbd> <span data-ui="ui_space_listen">écouter</span></span><span><kbd>Alt+Shift+L</kbd> <span data-ui="ui_read_all">Tout lire</span></span></div>
 
@@ -144,7 +168,10 @@
     <div class="legend"><span class="lv" id="legV"></span><span class="lt" id="legT"></span><span id="legN"></span></div>
   </div>
 
+  <div class="linkrow">
+    <button class="link" id="guide"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg><span data-ui="tour_replay">Revoir le guide</span></button>
   <button class="link" id="opts"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M8 7h8M8 11h6"/></svg><span data-ui="ui_settings">Glossaire, voix et paramètres</span></button>
+  </div>
 </main>
 <script src="popup.js"></script>
 </body>

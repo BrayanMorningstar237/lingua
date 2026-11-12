@@ -50,8 +50,8 @@ test('label : value -> recorded label then the value read exactly', () => {
 function stubVoices() {
   const spoken = [];
   globalThis.SpeechSynthesisUtterance = class { constructor(t) { this.text = t; } };
-  globalThis.speechSynthesis = { getVoices: () => [], speak: u => { spoken.push(u.text); u.onend(); }, cancel() {} };
-  globalThis.Audio = class { constructor(u) { this.src = u; } play() { setTimeout(() => this.onended(), 0); return Promise.resolve(); } pause() {} };
+  globalThis.speechSynthesis = { getVoices: () => [], speak: u => { spoken.push(u.text); if (u.onstart) u.onstart(); u.onend(); }, cancel() {} };
+  globalThis.Audio = class { constructor(u) { this.src = u; } play() { setTimeout(() => { if (this.onplaying) this.onplaying(); this.onended(); }, 0); return Promise.resolve(); } pause() {} };
   return spoken;
 }
 
@@ -87,4 +87,34 @@ test('Pidgin with the local model: words, amount and name are one request, one v
   await new Promise(res => player.play(steps, res));
   assert.equal(asked.length, 1, 'a single model request');
   assert.match(asked[0], /^You go send .*CFA francs give Jean Mballa$/);
+});
+
+test('nothing could be heard: the player says so (spoke = false), so the button can tell the user', async () => {
+  stubVoices();
+  globalThis.speechSynthesis = { getVoices: () => [], speak: u => { if (u.onerror) u.onerror(); }, cancel() {} }; // voice fails
+  const S = require('../src/speech.js');
+  const player = S.createPlayer({ tts: async () => ({ fail: 'offline' }), online: () => false, language: () => ({}) });
+  const steps = player.prepare([{ missing: true, text: 'Mbolo' }], { tts: true, approx: true });
+  const end = await new Promise(res => player.play(steps, res));
+  assert.deepEqual(end, { stopped: false, spoke: false });
+});
+
+test('long model text: the first sentence is asked first and alone, then parts in order, one at a time', async () => {
+  stubVoices();
+  const S = require('../src/speech.js');
+  const asked = [];
+  let active = 0;
+  let maxActive = 0;
+  const player = S.createPlayer({
+    tts: async t => { active++; maxActive = Math.max(maxActive, active); asked.push(t); await new Promise(r => setTimeout(r, 5)); active--; return 'data:audio/wav;base64,AA'; },
+    online: () => false, language: () => ({ reading: 'none' }),
+  });
+  const text = 'Dis na your account page. E show the money wey dey your account and your recent transactions. '
+    + 'To send the money, follow the five transfer steps: Pay, Charges, Person wey go receive am, Check all tindem, Confirm.';
+  const steps = player.prepare([{ missing: true, text }], { tts: true, approx: true });
+  await new Promise(res => player.play(steps, res));
+  assert.equal(asked[0], 'Dis na your account page.', 'the first words play after one short request');
+  assert.ok(asked.length > 1, 'the rest comes in further parts');
+  assert.equal(asked.join(' '), text, 'nothing lost or reordered');
+  assert.equal(maxActive, 1, 'one request at a time, in reading order');
 });

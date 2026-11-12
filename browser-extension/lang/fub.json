@@ -362,6 +362,34 @@
       "t": "Ɗoo ko: {title}.",
       "by": "Brouillon IA, à valider"
     },
+    "ans_page_account": {
+      "t": "Doo ko kontu maa. E hollata ceede ɗe ngon-ɗaa jogii e kontu maa e transaksyon kesɗitɗi maa.",
+      "by": "Brouillon IA, à valider"
+    },
+    "ans_page_costs": {
+      "t": "Ngon-ɗaa e njoɓdi. Suɓo sifaa neldude e adadu ceede, tee ƴeew njoɓdi hade maa yaahude yeeso.",
+      "by": "Brouillon IA, à valider"
+    },
+    "ans_page_beneficiary": {
+      "t": "Ngon-ɗaa e jaɓoowo ceede. Winndu innde e tonngoode telefoon mum, tee ƴeew ɗum fuu hade maa yaahude yeeso.",
+      "by": "Brouillon IA, à valider"
+    },
+    "ans_page_summary": {
+      "t": "Doo ko yeewndo neldude ceede. Ƴeew adadu ceede, njoɓdi, innde jaɓoowo e tonngoode mum hade maa tabbitinde.",
+      "by": "Brouillon IA, à valider"
+    },
+    "ans_page_confirmation": {
+      "t": "Ngon-ɗaa e tabbitingol. Ƴeew kabaaruuji neldude ceede kadi, tee tabbitin so ɗi fuu feewi tan.",
+      "by": "Brouillon IA, à valider"
+    },
+    "ans_page_complete": {
+      "t": "Neldude ceede timmi. Ngol hello hollata adadu ceede, jaɓoowo e ngonka mum.",
+      "by": "Brouillon IA, à valider"
+    },
+    "ans_transfer_steps": {
+      "t": "Neldude ceede woodi jawdi 5: Yobugo, Njoɓdi, Jaɓoowo, Yeewndo, Tabbintingol. Ƴeew kabaaruuji fuu hade maa tabbitinde.",
+      "by": "Brouillon IA, à valider"
+    },
     "ans_amount": {
       "t": "Ceede fuu ɗe njaltata: {total}.",
       "by": "Brouillon IA, à valider"

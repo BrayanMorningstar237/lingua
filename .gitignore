@@ -23,3 +23,5 @@ data/wiktionary-en-cache.json
 server/*.log
 server/models/
 data/bible-cache/
+data/africa-corpus-builder/
+data/nso-corpus/*.csv

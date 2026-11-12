@@ -37,6 +37,7 @@
   nav .links a { text-decoration: none; color: var(--sand); }
   nav .links a:hover { color: #fff; }
   nav .links .btn { padding: 10px 16px; font-size: 15px; color: var(--ebony); }
+  @media (max-width: 1020px) { nav .links a.opt { display: none; } }
   @media (max-width: 760px) { nav .links a:not(.btn) { display: none; } }
 
   /* hero */
@@ -64,7 +65,11 @@
   .card .line { display: flex; align-items: center; gap: 12px; }
   .card .slot { flex: 1; font-size: 18px; font-weight: 700; }
   .card .slot small { display: block; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
-  .card .slot span { display: inline-block; padding: 2px 10px; border-radius: 8px; background: rgba(227,162,26,.14); color: var(--gold-soft); border: 1.5px dashed rgba(227,162,26,.6); }
+  .card .slot span { display: block; color: #fff; line-height: 1.3; transition: opacity .35s ease, transform .35s ease; }
+  .card .slot small { transition: opacity .35s ease; }
+  .card.swap .slot span, .card.swap .slot small { opacity: 0; transform: translateY(4px); }
+  .vpill { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 700; padding: 4px 10px; border-radius: 99px; background: rgba(127,224,173,.12); color: #7fe0ad; box-shadow: inset 0 0 0 1px rgba(127,224,173,.3); }
+  .vpill svg { width: 14px; height: 14px; }
   .say { width: 42px; height: 42px; border-radius: 99px; display: grid; place-items: center; background: var(--forest); color: #fff; flex: none; }
   .say svg { width: 20px; height: 20px; }
   .card .orig { margin-top: 10px; font-size: 13px; color: var(--sand); }
@@ -102,7 +107,45 @@
   .lang:hover { border-color: var(--gold); transform: translateY(-2px); }
   .lang b { display: block; font-size: 19px; }
   .lang small { color: var(--muted); font-size: 14px; }
-  .lang .st { display: inline-block; margin-top: 10px; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 99px; background: color-mix(in srgb, var(--gold) 18%, var(--card)); color: #8a5a00; }
+  .lang { display: flex; flex-direction: column; gap: 2px; }
+  .lang .cov { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 14px; font-size: 12.5px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .lang .bar { flex: 1; height: 6px; border-radius: 99px; background: var(--line); overflow: hidden; }
+  .lang .bar i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--forest), var(--forest-2)); }
+  .lang .cov.ready { color: var(--forest); } .lang .cov.part { color: #9a6a00; } .lang .cov.part .bar i { background: linear-gradient(90deg, #c98a0c, var(--gold)); }
+  .lang .st { align-self: flex-start; margin-top: auto; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 99px; background: color-mix(in srgb, var(--gold) 16%, var(--card)); color: #8a5a00; }
+  .lang .st.auto { background: color-mix(in srgb, var(--indigo) 12%, var(--card)); color: var(--indigo); }
+  .lang .help { font-size: 13px; color: var(--muted); }
+  .lang:hover .help { color: var(--fg); }
+  @media (prefers-color-scheme: dark) { .lang .cov.part, .lang .st { color: var(--gold); } .lang .st.auto { color: #aab6f0; } .lang .cov.ready { color: #7fd9a8; } }
+
+  /* listen and ask */
+  .voice-grid { display: grid; grid-template-columns: 1fr .95fr; gap: 56px; align-items: center; }
+  .feats { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+  .feats li { display: flex; gap: 14px; align-items: flex-start; }
+  .feats .ico { flex: none; width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center; }
+  .feats b { display: block; font-size: 17.5px; margin-bottom: 2px; }
+  .feats span:not(.ico) { color: var(--muted); font-size: 16px; }
+  .chatmock { background: var(--ebony); color: var(--ivory); border-radius: 24px; padding: 18px; box-shadow: 0 30px 70px rgba(36,29,22,.28); position: relative; overflow: hidden; }
+  .chatmock::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px; background: var(--kente); }
+  .cm-head { display: flex; align-items: center; gap: 12px; padding: 8px 4px 14px; border-bottom: 1px solid var(--ebony-3); }
+  .cm-head b { display: block; font-size: 16px; }
+  .cm-head small { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 700; color: #7fe0ad; }
+  .cm-head small svg { width: 13px; height: 13px; }
+  .cm-log { display: grid; gap: 10px; padding: 16px 2px; }
+  .cm-me { justify-self: end; max-width: 80%; background: var(--gold); color: var(--ebony); font-weight: 700; padding: 10px 14px; border-radius: 16px 16px 4px 16px; }
+  .cm-bot { justify-self: start; max-width: 92%; display: flex; gap: 12px; align-items: flex-start; background: var(--ebony-2); padding: 12px 14px; border-radius: 16px 16px 16px 4px; }
+  .cm-bot p { margin: 0; font-size: 15.5px; line-height: 1.5; }
+  .cm-say { flex: none; width: 36px; height: 36px; border-radius: 99px; background: var(--terracotta); display: inline-flex; align-items: center; justify-content: center; gap: 3px; }
+  .cm-say i { width: 3px; height: 8px; border-radius: 2px; background: #fff; animation: eq 1s ease-in-out infinite; }
+  .cm-say i:nth-child(2) { animation-delay: .15s; } .cm-say i:nth-child(3) { animation-delay: .3s; }
+  @keyframes eq { 50% { height: 18px; } }
+  .cm-chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 2px 14px; }
+  .cm-chips span { font-size: 13.5px; font-weight: 600; padding: 7px 12px; border-radius: 99px; background: var(--ebony-2); box-shadow: inset 0 0 0 1px var(--ebony-3); color: var(--sand); }
+  .cm-ask { display: flex; align-items: center; gap: 10px; }
+  .cm-mic { width: 44px; height: 44px; border-radius: 99px; background: var(--forest); color: #fff; display: grid; place-items: center; flex: none; }
+  .cm-mic svg { width: 20px; height: 20px; }
+  .cm-in { flex: 1; padding: 11px 16px; border-radius: 99px; background: var(--ebony-2); color: var(--sand); font-size: 15px; box-shadow: inset 0 0 0 1px var(--ebony-3); }
+  @media (max-width: 900px) { .voice-grid { grid-template-columns: 1fr; gap: 36px; } }
 
   /* contribute */
   .contribute { background: var(--ebony); color: var(--ivory); border-radius: 28px; padding: 56px; position: relative; overflow: hidden; display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; }
@@ -116,10 +159,24 @@
   @media (max-width: 860px) { .contribute { grid-template-columns: 1fr; padding: 40px 22px 28px; border-radius: 22px; } }
 
   /* install */
-  .install { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .install { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  @media (max-width: 1180px) { .install { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 860px) { .install { grid-template-columns: 1fr; } }
-  .install .tile ol { margin: 12px 0 18px; padding-left: 20px; color: var(--muted); font-size: 15.5px; }
-  .install .tile li { margin: 4px 0; }
+  .install .tile { position: relative; display: flex; flex-direction: column; align-items: flex-start; }
+  .install .tile ol { flex: 1; margin: 12px 0 20px; padding-left: 20px; color: var(--muted); font-size: 15.5px; }
+  .install .tile li { margin: 6px 0; }
+  .install .tile .btn { align-self: stretch; }
+  .install .tile.mine { border-color: var(--gold); box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 30%, transparent), 0 18px 40px rgba(36,29,22,.1); }
+  .install .tile.mine .btn { background: var(--ebony); color: var(--ivory); } .install .tile.mine .btn svg { color: var(--gold); }
+  .rec { display: none; position: absolute; top: -12px; left: 22px; font-size: 12px; font-weight: 800; letter-spacing: .02em; padding: 4px 11px; border-radius: 99px; background: var(--gold); color: var(--ebony); }
+  .tile.mine .rec { display: inline-block; }
+  .plat { margin-top: -4px; font-size: 13px; color: var(--muted); }
+  .after { margin-top: 22px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 18px; background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 20px 22px; }
+  .after .ico { flex: none; width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center; }
+  .after > div { flex: 1 1 320px; }
+  .after b { display: block; font-size: 17px; }
+  .after span { color: var(--muted); font-size: 15.5px; }
+  .after .btn span { color: inherit; font-size: 15.5px; }
   code { font: 600 14px ui-monospace, Consolas, monospace; background: var(--soft); padding: 1px 6px; border-radius: 6px; }
 
   /* ---------- phones: compact rows, shorter page ---------- */
@@ -137,7 +194,7 @@
     .tile .num { display: none; }
     .tile h3 { font-size: 17px; margin: 0 0 2px; }
     .tile p { font-size: 15px; }
-    .install .tile { display: block; }
+    .install .tile { display: flex; }
     .install .tile .ico { margin-bottom: 12px; }
     .langs { grid-template-columns: 1fr 1fr; gap: 10px; }
     .lang { padding: 14px; border-radius: 14px; }
@@ -199,9 +256,11 @@
     <a class="brand" href="./"><span class="logo"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></span>Langwa</a>
     <div class="links">
       <a href="#how" data-en="How it works">Comment ça marche</a>
+      <a href="#voice" data-en="Listen and ask">Écouter et demander</a>
       <a href="#safety" data-en="Safety">Sécurité</a>
-      <a href="#install" data-en="Install">Installer</a>
-      <a class="btn gold" href="contribute/" data-en="Contribute">Contribuer</a>
+      <a class="opt" href="#languages" data-en="Languages">Langues</a>
+      <a class="opt" href="contribute/" data-en="Contribute">Contribuer</a>
+      <a class="btn gold" href="#install" data-en="Install">Installer</a>
     </div>
   </div>
 </nav>
@@ -213,8 +272,8 @@
       <h1><span data-en="Online banking,">La banque en ligne,</span> <em data-en="in your language.">dans votre langue.</em></h1>
       <p class="lead" data-en="Langwa shows banking and mobile-money sites in Cameroon's national languages, in text and by voice. Amounts stay exact. The bank's site stays untouched.">Langwa affiche les sites de banque et de mobile money dans les langues nationales du Cameroun, à l’écrit et à l’oral. Les montants restent exacts. Le site de la banque reste inchangé.</p>
       <div class="cta">
-        <a class="btn gold" href="contribute/"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span data-en="Contribute translations">Contribuer des traductions</span></a>
-        <a class="btn light" href="#install"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Install Langwa">Installer Langwa</span></a>
+        <a class="btn gold" href="#install"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Install Langwa, free">Installer Langwa, gratuit</span></a>
+        <a class="btn light" href="contribute/"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span data-en="Help translate">Aider à traduire</span></a>
       </div>
       <div class="meta">
         <span><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span data-en="Free and open source">Gratuit et open source</span></span>
@@ -232,15 +291,17 @@
         <div class="row hl"><span data-en="Total to be debited">Total à débiter</span><b>25 000 FCFA</b></div>
         <div class="row"><span data-en="Beneficiary">Bénéficiaire</span><b>Jean-Paul Mbarga</b></div>
       </div>
+      <!-- Real Langwa translations of the highlighted line (from the language packs), alternating. -->
       <div class="card" aria-hidden="true">
         <div class="line">
-          <div class="slot"><small data-en="Your language">Votre langue</small><span data-en="your translation here">votre traduction ici</span></div>
+          <div class="slot"><small id="demoLang">Pidgin (Kamtok)</small><span id="demoText">All the money wey go comot for your account</span></div>
           <div class="say"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg></div>
         </div>
         <div class="orig"><b>Original</b><span data-en="Total to be debited">Total à débiter</span></div>
         <div class="chips">
+          <span class="vpill"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6"/></svg><span data-en="Natural voice">Voix naturelle</span></span>
           <span class="chip"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>25 000 FCFA</span>
-          <span class="pill"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><span data-en="Validated">Validé</span></span>
+          <span class="pill"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><span data-en="Amount checked">Montant vérifié</span></span>
         </div>
       </div>
     </div>
@@ -265,7 +326,7 @@
     <h2 data-en="Four steps, nothing to learn.">Quatre étapes, rien à apprendre.</h2>
     <p class="sub" data-en="Langwa works on top of the bank's site. Nothing to learn: one gesture shows the translation right under what you are reading.">Langwa fonctionne par-dessus le site de la banque. Rien à apprendre : un seul geste affiche la traduction juste sous ce que vous lisez.</p>
     <div class="shots">
-      <figure class="shot"><div class="frame"><img src="img/howto-1-choose.jpg" loading="lazy" alt="Fenêtre Langwa : Quelle langue parlez-vous ?" data-en-alt="Langwa window: Which language do you speak?"></div><figcaption><i>1</i><b data-en="Choose your language">Choisissez votre langue</b><span data-en="The first time, Langwa asks which language you speak.">La première fois, Langwa vous demande quelle langue vous parlez.</span></figcaption></figure>
+      <figure class="shot"><div class="frame"><img src="img/howto-1-choose.png" loading="lazy" alt="Fenêtre Langwa : Quelle langue parlez-vous ?" data-en-alt="Langwa window: Which language do you speak?"></div><figcaption><i>1</i><b data-en="Choose your language">Choisissez votre langue</b><span data-en="The first time, Langwa asks which language you speak.">La première fois, Langwa vous demande quelle langue vous parlez.</span></figcaption></figure>
       <figure class="shot"><div class="frame"><img src="img/howto-2-hover.jpg" loading="lazy" alt="Carte Langwa sous un montant verrouillé" data-en-alt="Langwa card under a locked amount"></div><figcaption><i>2</i><b data-en="Point at the text">Pointez le texte</b><span data-en="Hold Ctrl and point, or press and hold on a phone. The card opens below, amounts locked.">Maintenez Ctrl et pointez, ou appuyez longuement sur téléphone. La carte s’ouvre dessous, montants verrouillés.</span></figcaption></figure>
       <figure class="shot"><div class="frame"><img src="img/howto-3-panel.jpg" loading="lazy" alt="Panneau de lecture Langwa avec messages importants" data-en-alt="Langwa reading panel with important messages"></div><figcaption><i>3</i><b data-en="Read the whole page">Lisez toute la page</b><span data-en="The round button opens the panel: important messages first, then the rest of the page.">Le bouton rond ouvre le panneau : messages importants d’abord, puis le reste de la page.</span></figcaption></figure>
       <figure class="shot"><div class="frame"><img src="img/howto-4-contribute.jpg" loading="lazy" alt="Page de contribution sur téléphone" data-en-alt="Contribution page on a phone"></div><figcaption><i>4</i><b data-en="Add your language">Ajoutez votre langue</b><span data-en="Speakers translate on their phone and send it on WhatsApp.">Les locuteurs traduisent sur leur téléphone et envoient sur WhatsApp.</span></figcaption></figure>
@@ -275,6 +336,36 @@
       <div class="tile"><div class="num">01</div><div class="ico o"><svg viewBox="0 0 24 24"><path d="M4 4l7 17 2.5-7.5L21 11 4 4z"/></svg></div><h3 data-en="Point">Pointez</h3><p data-en="Hold Ctrl and point at any text or button on a computer, or press and hold on a phone.">Maintenez Ctrl et pointez un texte ou un bouton sur ordinateur, ou appuyez longuement sur téléphone.</p></div>
       <div class="tile"><div class="num">02</div><div class="ico g"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></div><h3 data-en="Understand">Comprenez</h3><p data-en="The translation appears below it, written by native speakers, with amounts and names locked exactly as on the page.">La traduction apparaît dessous, écrite par des locuteurs natifs, avec les montants et les noms verrouillés comme sur la page.</p></div>
       <div class="tile"><div class="num">03</div><div class="ico i"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg></div><h3 data-en="Listen">Écoutez</h3><p data-en="Press the speaker to hear it in a real human voice. New error or warning messages are read out automatically.">Touchez le haut-parleur pour l’entendre avec une vraie voix humaine. Les nouveaux messages d’erreur ou d’alerte sont lus automatiquement.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="voice">
+  <div class="wrap voice-grid">
+    <div>
+      <div class="kicker" data-en="Listen and ask">Écouter et demander</div>
+      <h2 data-en="Hear it. Ask it. In your language.">L’entendre. Le demander. Dans votre langue.</h2>
+      <p class="sub" data-en="Not everyone reads easily, and that is fine. Langwa reads the page aloud and answers questions about it, spoken or typed.">Tout le monde ne lit pas facilement, et ce n’est pas grave. Langwa lit la page à voix haute et répond aux questions, à l’oral ou à l’écrit.</p>
+      <ul class="feats">
+        <li><span class="ico g"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg></span><div><b data-en="Listen to every message">Écoutez chaque message</b><span data-en="One tap reads the translation aloud. On a computer, an optional natural voice runs offline; otherwise the phone or browser voice reads.">Un geste lit la traduction à voix haute. Sur ordinateur, une voix naturelle en option fonctionne hors ligne ; sinon, la voix du téléphone ou du navigateur lit.</span></div></li>
+        <li><span class="ico o"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><div><b data-en="Ask about the page">Posez vos questions</b><span data-en="“Wetin dis page be?”, “How much I go pay?”. Langwa answers from the page itself, with its exact amounts.">« Wetin dis page be? », « How much I go pay? ». Langwa répond à partir de la page elle-même, avec ses montants exacts.</span></div></li>
+        <li><span class="ico i"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg></span><div><b data-en="Speak instead of typing">Parlez au lieu d’écrire</b><span data-en="Tap the microphone and ask out loud, in French, English or Pidgin.">Touchez le micro et posez votre question à voix haute, en français, en anglais ou en pidgin.</span></div></li>
+      </ul>
+    </div>
+    <div class="chatmock" aria-hidden="true">
+      <div class="cm-head">
+        <span class="logo"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></span>
+        <div><b>Pidgin (Kamtok)</b><small><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6"/></svg><span data-en="Natural voice">Voix naturelle</span></small></div>
+      </div>
+      <div class="cm-log">
+        <div class="cm-me">Wetin dis page be?</div>
+        <div class="cm-bot">
+          <p>You dey the step for see the charges. Choose the transfer type and amount here; check the charges and total before you continue. The transfer charge na free (0 FCFA).</p>
+          <span class="cm-say"><i></i><i></i><i></i></span>
+        </div>
+      </div>
+      <div class="cm-chips"><span>How much I go pay?</span><span>Who go collect the moni?</span></div>
+      <div class="cm-ask"><span class="cm-mic"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg></span><span class="cm-in" data-en="Ask your question…">Posez votre question…</span></div>
     </div>
   </div>
 </section>
@@ -296,8 +387,8 @@
 <section class="block" id="languages">
   <div class="wrap">
     <div class="kicker" data-en="Languages">Langues</div>
-    <h2 data-en="Eight languages, built with their speakers.">Huit langues, construites avec leurs locuteurs.</h2>
-    <p class="sub" data-en="Every translation is written and validated by native speakers. Translations are being collected now: each language opens as soon as its speakers have translated it.">Chaque traduction est écrite et validée par des locuteurs natifs. La collecte est en cours : chaque langue s’ouvre dès que ses locuteurs l’ont traduite.</p>
+    <h2 data-en="Nine languages, built with their speakers.">Neuf langues, construites avec leurs locuteurs.</h2>
+    <p class="sub" data-en="Translations are written and checked by native speakers, and collected now. The most complete languages come first; tap a language to help finish it.">Les traductions sont écrites et vérifiées par des locuteurs natifs, et la collecte est en cours. Les langues les plus avancées viennent en premier ; touchez une langue pour aider à la terminer.</p>
     <div class="langs" id="langs"></div>
   </div>
 </section>
@@ -313,7 +404,7 @@
       </div>
       <div class="steps">
         <img class="contrib-photo" src="img/photo-community.jpg" width="900" height="675" loading="lazy" alt="Deux jeunes regardent leurs téléphones ensemble dans la rue" data-en-alt="Two young people looking at their phones together in the street">
-        <div class="step"><i>1</i><div><b data-en="Choose your language">Choisissez votre langue</b><span data-en="Ewondo, Fulfulde, Pidgin, Duala, Ghomálá', Basaá, Mankon (Ngemba) or Kom.">Ewondo, fulfulde, pidgin, duala, ghomálá', basaá, mankon (ngemba) ou kom.</span></div></div>
+        <div class="step"><i>1</i><div><b data-en="Choose your language">Choisissez votre langue</b><span data-en="Ewondo, Fulfulde (Fulani), Pidgin, Duala, Ghomálá' (Bamiléké), Basaá (Bassa), Lamnso' (Nso), Mankon (Ngemba) or Kom.">Ewondo, fulfulde (peul), pidgin, duala, ghomálá' (bamiléké), basaá (bassa), lamnso' (nso), mankon (ngemba) ou kom.</span></div></div>
         <div class="step"><i>2</i><div><b data-en="Translate the meaning">Traduisez le sens</b><span data-en="One sentence at a time, as you would explain it to a relative. Record your voice if you like.">Une phrase à la fois, comme vous l’expliqueriez à un parent. Enregistrez votre voix si vous le voulez.</span></div></div>
         <div class="step"><i>3</i><div><b data-en="Send it on WhatsApp">Envoyez sur WhatsApp</b><span data-en="One tap shares your translations with the team. Your name is credited.">Un seul geste partage vos traductions avec l’équipe. Votre nom est crédité.</span></div></div>
       </div>
@@ -325,19 +416,21 @@
   <div class="wrap">
     <div class="kicker" data-en="Install">Installer</div>
     <h2 data-en="Ready in two minutes.">Prêt en deux minutes.</h2>
-    <p class="sub" data-en="Langwa is a prototype for the SAFINUM Innovate Challenge. It is installed manually while it awaits publication on browser stores.">Langwa est un prototype pour le SAFINUM Innovate Challenge. Il s’installe à la main en attendant sa publication sur les boutiques des navigateurs.</p>
+    <p class="sub" data-en="Langwa is a prototype for the SAFINUM Innovate Challenge. It is installed by hand while it awaits publication on browser stores. Free, no account.">Langwa est un prototype pour le SAFINUM Innovate Challenge. Il s’installe à la main en attendant sa publication sur les boutiques des navigateurs. Gratuit, sans compte.</p>
     <div class="install">
-      <div class="tile">
+      <div class="tile" data-for="chromium">
+        <span class="rec" data-en="Recommended for you">Recommandé pour vous</span>
         <div class="ico o"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg></div>
         <h3>Chrome, Edge, Brave, Opera</h3>
         <ol>
-          <li data-en="Download and unzip the file.">Téléchargez et décompressez le fichier.</li>
-          <li data-en="Open chrome://extensions and turn on Developer mode.">Ouvrez <code>chrome://extensions</code> et activez le mode développeur.</li>
-          <li data-en="Click Load unpacked and choose the folder.">Cliquez sur « Charger l’extension non empaquetée » et choisissez le dossier.</li>
+          <li data-en="Download the file, then right-click it and choose Extract All.">Téléchargez le fichier, puis clic droit et « Extraire tout ».</li>
+          <li data-en="Open chrome://extensions (Edge: edge://extensions) and turn on Developer mode.">Ouvrez <code>chrome://extensions</code> (Edge : <code>edge://extensions</code>) et activez le mode développeur.</li>
+          <li data-en="Click Load unpacked and choose the extracted langwa-chromium folder.">Cliquez sur « Charger l’extension non empaquetée » et choisissez le dossier <code>langwa-chromium</code> extrait.</li>
         </ol>
         <a class="btn dark" href="downloads/langwa-chromium.zip" download><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Download">Télécharger</span></a>
       </div>
-      <div class="tile">
+      <div class="tile" data-for="firefox">
+        <span class="rec" data-en="Recommended for you">Recommandé pour vous</span>
         <div class="ico r"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a14 14 0 0 1 0 18M3 12h18"/></svg></div>
         <h3>Firefox</h3>
         <ol>
@@ -347,7 +440,8 @@
         </ol>
         <a class="btn soft" href="downloads/langwa-firefox.xpi" download><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Download">Télécharger</span></a>
       </div>
-      <div class="tile">
+      <div class="tile" data-for="phone">
+        <span class="rec" data-en="Recommended for you">Recommandé pour vous</span>
         <div class="ico g"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg></div>
         <h3 data-en="Phone">Téléphone</h3>
         <ol>
@@ -357,6 +451,22 @@
         </ol>
         <a class="btn soft" href="downloads/langwa.user.js"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Phone version">Version téléphone</span></a>
       </div>
+      <div class="tile voice-tile">
+        <div class="ico o"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg></div>
+        <h3 data-en="Natural voice (optional)">Voix naturelle (option)</h3><small class="plat" data-en="Computer: Windows, Mac, Linux">Ordinateur : Windows, Mac, Linux</small>
+        <ol>
+          <li data-en="Download and unzip the file.">Téléchargez et décompressez le fichier.</li>
+          <li data-en="Double-click Start Langwa voice. Nothing else to install.">Double-cliquez sur « Start Langwa voice ». Rien d’autre à installer.</li>
+          <li data-en="The first time it downloads about 700 MB, once, with live progress. Langwa then reads aloud in Pidgin, Ewondo, Duala and Basaá.">La première fois, environ 700 Mo sont téléchargés une seule fois, avec la progression en direct. Langwa lit alors en pidgin, ewondo, duala et basaá.</li>
+        </ol>
+        <a class="btn soft" href="downloads/langwa-voice.zip" download><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Download the voice">Télécharger la voix</span></a>
+      </div>
+    </div>
+    <div class="after">
+      <span class="ico g"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+      <div><b data-en="Then: open your bank's page and choose your language.">Ensuite : ouvrez la page de votre banque et choisissez votre langue.</b>
+      <span data-en="Langwa asks once which language you speak. Hold Ctrl and point at any text, or open the round Langwa button.">Langwa vous demande une seule fois quelle langue vous parlez. Maintenez Ctrl et pointez un texte, ou ouvrez le bouton rond Langwa.</span></div>
+      <a class="btn gold" href="https://safinum.cm/hackathon-test" target="_blank" rel="noopener"><span data-en="Try it on the SAFINUM test page">Essayer sur la page de test SAFINUM</span><svg viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
     </div>
   </div>
 </section>
@@ -379,16 +489,56 @@
     document.querySelectorAll('[data-en]').forEach(el => { el.textContent = el.dataset.en; });
     document.querySelectorAll('[data-en-alt]').forEach(el => { el.alt = el.dataset.enAlt; });
   }
-  // Each language card leads to the contribution page with that language preselected.
-  document.getElementById('langs').replaceChildren(...Object.entries(LANGS).map(([code, l]) => {
-    const d = document.createElement('a');
-    d.className = 'lang';
+  const el = (tag, cls, text) => Object.assign(document.createElement(tag), cls ? { className: cls } : {}, text != null ? { textContent: text } : {});
+
+  // Languages, most complete first, with their real coverage (computed at build time from the
+  // language packs). Each card leads to the contribution page with that language preselected.
+  const ranked = Object.entries(LANGS).sort(([, a], [, b]) => (b.count || 0) - (a.count || 0)
+    || (b.machineTranslation ? 1 : 0) - (a.machineTranslation ? 1 : 0) || a.name.localeCompare(b.name));
+  document.getElementById('langs').replaceChildren(...ranked.map(([code, l]) => {
+    const d = el('a', 'lang');
     d.href = `contribute/#${code}`;
-    const b = document.createElement('b'); b.textContent = l.name;
-    const s = document.createElement('small'); s.textContent = l.region || '';
-    d.append(b, s);
+    d.append(el('b', '', l.name), el('small', '', l.region || ''));
+    if (l.count) {
+      const ready = l.pct >= 75;
+      const cov = el('span', `cov ${ready ? 'ready' : 'part'}`);
+      const bar = el('span', 'bar'); const fill = el('i'); fill.style.width = `${l.pct}%`; bar.append(fill);
+      cov.append(bar, el('span', '', `${l.pct} % ${ready ? (EN ? 'ready' : 'prête') : (EN ? 'in progress' : 'en cours')}`));
+      d.append(cov);
+      d.title = EN ? `${l.count} of ${l.total} phrases translated` : `${l.count} phrases traduites sur ${l.total}`;
+    } else {
+      d.append(el('span', l.machineTranslation ? 'st auto' : 'st', l.machineTranslation
+        ? (EN ? 'Automatic draft' : 'Brouillon automatique') : (EN ? 'Soon' : 'Bientôt')));
+    }
+    d.append(el('span', 'help', EN ? 'Help translate →' : 'Aider à traduire →'));
     return d;
   }));
+
+  // Install: highlight the option that matches this device and browser.
+  const ua = navigator.userAgent;
+  const kind = /Android|iPhone|iPad|iPod|Mobile/i.test(ua) ? 'phone' : /Firefox\//.test(ua) ? 'firefox' : /Chrome\/|Chromium\/|Edg\//.test(ua) ? 'chromium' : '';
+  const mine = kind && document.querySelector(`.install .tile[data-for="${kind}"]`);
+  if (mine) { mine.classList.add('mine'); mine.parentElement.prepend(mine); }
+
+  // Hero card: real Langwa translations of the highlighted line, one language after another.
+  const DEMO = [
+    ['Pidgin (Kamtok)', 'All the money wey go comot for your account'],
+    ['Fulfulde (Peul / Fulani)', 'Ceede fuu ɗe njaltata e konte maa'],
+  ];
+  const card = document.querySelector('.hero .card');
+  if (card && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let i = 0;
+    setInterval(() => {
+      if (document.hidden) return;
+      card.classList.add('swap');
+      setTimeout(() => {
+        i = (i + 1) % DEMO.length;
+        document.getElementById('demoLang').textContent = DEMO[i][0];
+        document.getElementById('demoText').textContent = DEMO[i][1];
+        card.classList.remove('swap');
+      }, 350);
+    }, 4200);
+  }
 </script>
 </body>
 </html>

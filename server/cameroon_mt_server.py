@@ -27,7 +27,14 @@ os.environ.setdefault("HUGGINGFACE_HUB_CACHE", str(MODEL_CACHE / "hub"))
 from huggingface_hub import snapshot_download
 from transformers import MarianTokenizer
 TOKEN = re.compile(r"\u27e6([A-Z]+)\u27e7")
-ENGLISH = re.compile(r"\b(the|your|you|is|and|to|for|with|this|amount|transfer|account|fees|send|check)\b", re.I)
+ENGLISH = re.compile(
+    r"\b(the|a|an|your|you|is|are|and|to|for|with|of|this|that|amount|transfer|account|fees|fee|send|check|"
+    r"back|continue|pay|costs|beneficiary|summary|confirmation|confirm|available|balance|recipient|name|phone|number|"
+    r"review|before|after|completed|success|successful|hello|welcome|recent|transactions|enter|choose|select|view|"
+    r"operation|type|total|debit|received|salary|merchant|payment|electricity|bill|service|free|security|always|"
+    r"warning|status|new|page|what|who|how|much|money|online|banking)\b",
+    re.I,
+)
 FRENCH = re.compile(r"\b(le|la|les|de|du|des|votre|vous|est|et|pour|avec|montant|transfert|compte|frais|envoyer|vérifiez)\b", re.I)
 
 

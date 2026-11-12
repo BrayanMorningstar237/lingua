@@ -47,17 +47,26 @@ let ttsDownWhy = 'offline';
  */
 
 /** Is the local voice server running and ready? Asked at most every 10 s, 1 s time limit. */
-const voiceHealth = { at: 0, ready: false, endpoint: '' };
+// info: { status, progress, etaSec } while the voice installs or loads, so cards can show it live
+// (asked every 2.5 s then, every 10 s otherwise).
+const voiceHealth = { at: 0, ready: false, endpoint: '', info: null };
 async function localVoiceReady(endpoint) {
-  if (voiceHealth.endpoint === endpoint && Date.now() - voiceHealth.at < 10000) return voiceHealth.ready;
+  const ttl = voiceHealth.info && !voiceHealth.ready ? 2500 : 10000;
+  if (voiceHealth.endpoint === endpoint && Date.now() - voiceHealth.at < ttl) return voiceHealth.ready;
   voiceHealth.at = Date.now();
   voiceHealth.endpoint = endpoint;
   try {
     const r = await fetch(endpoint.replace(/\/tts\/?$/, '/health'), { signal: AbortSignal.timeout(1000) });
     const j = r.ok ? await r.json() : {};
     voiceHealth.ready = j.status === 'ready';
+    voiceHealth.info = j.status === 'installing' || j.status === 'loading'
+      ? { status: j.status, progress: j.progress || 0, etaSec: j.etaSec ?? null } : null;
+    // The model sleeps when unused (low-memory computers): Langwa is opening a page, so wake it
+    // now; it is ready (about 20 s) before most people press Listen. The browser voice covers.
+    if (j.status === 'sleeping') fetch(endpoint.replace(/\/tts\/?$/, '/wake'), { method: 'POST' }).catch(() => {});
   } catch {
     voiceHealth.ready = false;
+    voiceHealth.info = null;
   }
   return voiceHealth.ready;
 }
@@ -70,7 +79,8 @@ async function voiceStatus() {
   if (tts.mode === 'auto' && !activeLang.africaTts && activeLang.mms) {
     return { mode: 'mms', ready: await localVoiceReady(tts.endpoint) };
   }
-  return { mode: tts.mode, ready: await localVoiceReady(tts.africaEndpoint) };
+  const ready = await localVoiceReady(tts.africaEndpoint);
+  return { mode: tts.mode, ready, info: voiceHealth.info };
 }
 
 async function synthesize(code, text) {
@@ -148,16 +158,24 @@ async function loadPack(code) {
 }
 
 /** Languages with the number of translated phrases (the chooser marks empty ones "Soon"). */
+// Coverage per language: translated phrases (count), validated by a speaker (verified), out of
+// the page phrases (total). Pickers list the most complete languages first.
 async function langsWithCounts() {
   const out = {};
+  const source = (await fetchJson('lang/source.json')) || { entries: [] };
+  const total = Math.max(1, (source.entries || []).length);
   for (const [code, l] of Object.entries(LANGS)) {
     const file = (await fetchJson(`lang/${code}.json`)) || { entries: {} };
     const key = `overrides:${code}`;
     const overrides = (await api.storage.local.get(key))[key] || {};
     const ids = new Set([...Object.keys(file.entries || {}), ...Object.keys(overrides)]);
     let count = 0;
-    for (const id of ids) if ((overrides[id] && overrides[id].t) || ((file.entries || {})[id] && file.entries[id].t)) count++;
-    out[code] = { ...l, count };
+    let verified = 0;
+    for (const id of ids) {
+      const e = (overrides[id] && overrides[id].t) ? overrides[id] : (file.entries || {})[id];
+      if (e && e.t) { count++; if (e.verified) verified++; }
+    }
+    out[code] = { ...l, count, verified, total, pct: Math.min(100, Math.round((100 * count) / total)) };
   }
   return out;
 }
@@ -177,24 +195,58 @@ async function cachePut(code, add) {
   await api.storage.local.set({ [cacheKey(code)]: next });
 }
 
-function systemPrompt(langName, glossary) {
+// Long verses cost prompt time on a small CPU model and add little: keep their start.
+const clip = s => (String(s).length > 220 ? String(s).slice(0, 220) + '…' : String(s));
+
+function systemPrompt(langName, glossary, code, corpusExamples = []) {
+  const targetRules = code === 'wes'
+    ? [
+      'Translate visible text from websites and apps into Cameroonian Pidgin English (Kamtok), the English-lexifier language used in Cameroon. This model is specialized for English to Kamtok.',
+      'Write natural, clear Kamtok as people use it in Cameroon. Do not produce Nigerian Pidgin, formal English, or a word-for-word English calque.',
+      'Preserve meaning, tone, negation, warnings, and who does what. Keep names, account/phone identifiers, and currency tokens exactly as given.',
+    ]
+    : [
+      `You translate the interface text of a banking application from French or English into ${langName}, a national language of Cameroon, for users who read ${langName} better than French or English.`,
+      `Use the standard orthography of ${langName} (General Alphabet of Cameroon Languages).`,
+      ...(code === 'lns' ? [
+        'Translate into Lamnso (Nso), not French or English. Use simple, natural Lamnso and preserve the source meaning rather than translating word by word.',
+        'The supplied parallel examples come from Bible verses. They are retrieved only as weak orthography and language-pattern hints, not banking vocabulary or authoritative meanings. Never copy their religious content into a banking translation.',
+      ] : []),
+    ];
   return [
-    `You translate the interface text of a banking application from French or English into ${langName}, a national language of Cameroon, for users who read ${langName} better than French or English.`,
+    ...targetRules,
     'Rules:',
     '- Tokens like ⟦A⟧, ⟦B⟧ stand for amounts, names, phone or account numbers. Copy every token exactly once, unchanged. Never write digits yourself.',
     '- Keep the exact meaning: who pays, who receives, debit or credit, conditions, deadlines, warnings and negations ("never", "do not").',
-    `- Use the standard orthography of ${langName} (General Alphabet of Cameroon Languages).`,
     '- Use these glossary drafts when they apply. They may be unvalidated; preserve their intended meaning and do not treat them as authoritative:',
     ...glossary.slice(0, 120).map(g => `  ${g.src} => ${g.t}${g.note ? ` (meaning: ${g.note})` : ''}`),
+    ...(corpusExamples.length ? [
+      'Retrieved parallel text (Bible-derived, weak language-pattern examples only; do not copy their meaning):',
+      ...corpusExamples.map((e, i) => `  ${i + 1}. ${clip(e.source)} => ${clip(e.lamnso)}`),
+    ] : []),
     '- Answer with the translation only, no explanation.',
   ].join('\n');
 }
 
 // ---------- assistant: free questions to a LOCAL open-source model ----------
 async function chatAnswer(code, question, context) {
-  const settings = await getSettings();
+  const settings = code === 'lns' ? lnsSettings(await getSettings()) : await getSettings();
   if (settings.mt.mode !== 'openai') return null;
   const name = (LANGS[code] || {}).name || code;
+  let corpusExamples = [];
+  if (code === 'lns') {
+    try {
+      const ex = await fetch('http://127.0.0.1:8769/examples', {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ text: `${question} ${context.slice(0, 20).join(' ')}`, limit: 3 }),
+        signal: AbortSignal.timeout(5000),
+      });
+      if (ex.ok) {
+        const j = await ex.json();
+        corpusExamples = Array.isArray(j.examples) ? j.examples : [];
+      }
+    } catch { /* question can still use the exact page facts */ }
+  }
   const r = await fetch(settings.mt.endpoint, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -203,16 +255,23 @@ async function chatAnswer(code, question, context) {
       temperature: 0.2,
       messages: [
         { role: 'system', content: [
-          `You are Langwa, a patient helper for a Cameroonian user who reads ${name} more easily than French or English.`,
-          'The user is on a banking page. Answer their question about this page only, in 2 or 3 short sentences, in the language of their question (if unsure, in ' + name + ').',
+          `You are Langwa, a patient helper for a Cameroonian user who selected ${name}.`,
+          `Always answer in ${name}, even when the question is in English or French. Never switch to the question's language. Keep the answer to 2 or 3 short, natural sentences.`,
+          'Answer only about the current web page. Preserve the page context and distinguish the current balance, transfer amount, fees, recipient, and next step.',
           'Use only the facts in the page content below. Never invent an amount, a name or a number. If the page does not say, say you do not know.',
           'Never ask for or repeat a PIN or secret code.',
+          ...(code === 'lns' ? [
+            'Answer in Lamnso (Nso), using short and clear sentences. Do not answer in English or French.',
+            'Any parallel examples below come from Bible verses. They provide weak language-pattern hints only; never use their religious meaning for a banking answer.',
+            ...corpusExamples.map(e => `Language example: ${clip(e.source)} => ${clip(e.lamnso)}`),
+          ] : []),
           'Page content (translation, then original):',
           ...context.slice(0, 80).map(c => '- ' + c),
         ].join('\n') },
         { role: 'user', content: question },
       ],
     }),
+    signal: AbortSignal.timeout(60000),
   });
   if (!r.ok) return null;
   const j = await r.json();
@@ -233,7 +292,43 @@ async function transcribe(audio, hint) {
   } catch { return null; }
 }
 
-async function mtOpenAICompatible(settings, langName, glossary, masked) {
+/**
+ * Lamnso' has its own small local model (server\start-lamnso.cmd: llama.cpp + Qwen2.5 1.5B on
+ * port 8771), used automatically whatever the general mode, unless the user chose their own LLM.
+ * Other languages never reach it.
+ */
+const LNS_LLM = { mode: 'openai', endpoint: 'http://127.0.0.1:8771/v1/chat/completions', model: 'lamnso' };
+function lnsSettings(settings) {
+  return settings.mt.mode === 'openai' ? settings : { ...settings, mt: { ...settings.mt, ...LNS_LLM } };
+}
+
+/** Dictionary words (Bible alignment) that occur in this text: the model's most useful hints. */
+function lexiconHints(lexicon, text) {
+  if (!lexicon) return [];
+  const words = new Set(String(text).toLowerCase().match(/\p{L}+/gu) || []);
+  const out = [];
+  for (const side of ['en', 'fr']) {
+    for (const [w, terms] of Object.entries(lexicon[side] || {})) {
+      if (!words.has(w.toLowerCase())) continue;
+      const t = (terms || []).map(x => (typeof x === 'string' ? x : x.term)).filter(Boolean);
+      if (t.length) out.push(`${w} => ${t.slice(0, 2).join(' / ')}`);
+    }
+  }
+  return out.slice(0, 12);
+}
+
+async function mtOpenAICompatible(settings, langName, glossary, masked, code, hints = []) {
+  let examples = [];
+  if (code === 'lns') {
+    const r = await fetch('http://127.0.0.1:8769/examples', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ text: masked, limit: 3 }), signal: AbortSignal.timeout(5000),
+    });
+    if (!r.ok) throw new Error('Lamnso corpus retrieval is offline. Start server\\start-lamnso.cmd.');
+    const j = await r.json();
+    // Short labels ("OK") can match nothing: the glossary alone still guides the model.
+    examples = Array.isArray(j.examples) ? j.examples : [];
+  }
   const r = await fetch(settings.mt.endpoint, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -241,10 +336,17 @@ async function mtOpenAICompatible(settings, langName, glossary, masked) {
       model: settings.mt.model,
       temperature: 0,
       messages: [
-        { role: 'system', content: systemPrompt(langName, glossary) },
-        { role: 'user', content: masked },
+        { role: 'system', content: systemPrompt(langName, glossary, code, examples) },
+        { role: 'user', content: code === 'lns'
+          ? [
+            ...(hints.length ? ['Lamnso dictionary words found in this text (unvalidated):', ...hints, ''] : []),
+            `Translate this banking interface text into Lamnso. Keep all ⟦...⟧ tokens exactly once.\n${masked}`,
+          ].join('\n')
+          : masked },
       ],
+      max_tokens: 160,
     }),
+    signal: AbortSignal.timeout(60000),
   });
   if (!r.ok) throw new Error(`MT HTTP ${r.status}`);
   const j = await r.json();
@@ -289,6 +391,8 @@ async function mtCameroon(settings, code, texts) {
 function looksBroken(src, out) {
   const t = String(out || '').trim();
   if (!t) return true;
+  const comparable = value => String(value || '').normalize('NFKC').replace(/[^\p{L}\p{N}]+/gu, '').toLowerCase();
+  if (comparable(src) && comparable(src) === comparable(t)) return true; // do not badge untranslated English as a draft
   if (t.length > Math.max(24, src.length * 2.5)) return true;
   const w = t.toLowerCase().split(/\s+/);
   const grams = new Map();
@@ -300,12 +404,18 @@ function looksBroken(src, out) {
 }
 
 async function translateBatch(code, items) {
-  const settings = await getSettings();
-  const cache = await cacheGet(code);
+  const base = await getSettings();
+  // Lamnso' always goes through the corpus and its own small local model.
+  const settings = code === 'lns' ? lnsSettings(base) : base;
+  // Keep Turaco output isolated from previous machine translations for Kamtok.
+  const cacheCode = code === 'wes' && settings.mt.mode === 'turaco' ? 'wes-turaco'
+    : code === 'lns' ? 'lns-rag' : code;
+  const cache = await cacheGet(cacheCode);
   const out = items.map(it => cache[it.masked] || null);
   const missing = items.map((it, i) => (out[i] ? null : i)).filter(i => i !== null);
-  const autoLamnso = code === 'lns' && (settings.mt.mode === 'none' || settings.mt.mode === 'nllb');
-  if (!missing.length || (settings.mt.mode === 'none' && !autoLamnso)) return { results: out, error: null };
+  // Turaco is specifically trained for English -> Cameroonian Pidgin (Kamtok).
+  if (settings.mt.mode === 'turaco' && code !== 'wes') return { results: out, error: null };
+  if (!missing.length || settings.mt.mode === 'none') return { results: out, error: null };
   let error = null;
 
   const pack = await loadPack(code);
@@ -313,7 +423,7 @@ async function translateBatch(code, items) {
     .map(e => ({ src: [e.fr, e.en].filter(Boolean).join(' / '), t: e.t, note: e.note || '' }));
   const add = {};
   try {
-    if (autoLamnso || settings.mt.mode === 'cameroon') {
+    if (settings.mt.mode === 'cameroon' && code !== 'lns') {
       const res = await mtCameroon(settings, code, missing.map(i => items[i].masked));
       missing.forEach((i, k) => { out[i] = res[k]; if (res[k]) add[items[i].masked] = res[k]; });
     } else if (settings.mt.mode === 'nllb') {
@@ -324,7 +434,8 @@ async function translateBatch(code, items) {
       for (let k = 0; k < missing.length; k += 3) {
         const chunk = missing.slice(k, k + 3);
         const res = await Promise.all(chunk.map(i =>
-          mtOpenAICompatible(settings, pack.name, glossary, items[i].masked).catch(e => { error = e.message; return null; })));
+          mtOpenAICompatible(settings, pack.name, glossary, items[i].masked, code,
+            code === 'lns' ? lexiconHints(pack.lexicon, items[i].masked) : []).catch(e => { error = e.message; return null; })));
         chunk.forEach((i, n) => { out[i] = res[n]; if (res[n]) add[items[i].masked] = res[n]; });
         if (error && !res.some(Boolean)) break; // server down: do not hammer it
       }
@@ -336,7 +447,7 @@ async function translateBatch(code, items) {
     if (out[i] && looksBroken(items[i].masked, out[i].text)) { delete add[items[i].masked]; out[i] = null; }
   }
   if (error) console.warn('[Langwa] local MT unavailable:', error);
-  if (Object.keys(add).length) await cachePut(code, add);
+  if (Object.keys(add).length) await cachePut(cacheCode, add);
   return { results: out, error };
 }
 
@@ -353,7 +464,11 @@ api.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       case 'voiceStatus': return voiceStatus();
       case 'chat': return chatAnswer(msg.lang, msg.question, msg.context || []).catch(() => null);
       case 'asr': return transcribe(msg.audio, msg.hint);
-      case 'clearCache': await api.storage.local.remove(cacheKey(msg.lang)); return true;
+      case 'clearCache': await api.storage.local.remove([
+        cacheKey(msg.lang),
+        ...(msg.lang === 'wes' ? [cacheKey('wes-turaco')] : []),
+        ...(msg.lang === 'lns' ? [cacheKey('lns-rag')] : []),
+      ]); return true;
       default: return null;
     }
   })().then(sendResponse, err => sendResponse({ error: String(err) }));

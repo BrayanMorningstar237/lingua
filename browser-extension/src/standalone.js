@@ -22,7 +22,11 @@
 
   // Translated phrases per language (the chooser marks empty languages "Soon").
   const count = code => Object.values((D.packs[code] || {}).entries || {}).filter(e => e && e.t).length;
-  const langs = () => Object.fromEntries(Object.entries(D.langs).map(([c, l]) => [c, { ...l, count: count(c) }]));
+  const TOTAL = Math.max(1, ((D.source && D.source.entries) || []).length);
+  const langs = () => Object.fromEntries(Object.entries(D.langs).map(([c, l]) => {
+    const n = count(c);
+    return [c, { ...l, count: n, total: TOTAL, pct: Math.min(100, Math.round((100 * n) / TOTAL)) }];
+  }));
 
   function settings() {
     const s = store.get('settings') || {};

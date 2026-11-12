@@ -190,7 +190,11 @@
     /** Pre-validated, meaning-safe summary of a message we cannot translate fully. */
     function gist(original, literals = []) {
       const clean = norm(original);
-      const kind = classify(clean) || 'info';
+      // A generic "info" gist is not a translation and can easily mislead users
+      // on arbitrary pages. Keep safe summaries for classified warnings/errors,
+      // but leave ordinary unknown text explicitly untranslated.
+      const kind = classify(clean);
+      if (!kind) return null;
       const head = byId.get('gist_' + kind);
       if (!head || !head.t) return null;
       const m = P.mask(clean, { literals });

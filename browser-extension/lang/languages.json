@@ -1,7 +1,7 @@
 {
   "ewo": {
-    "name": "Ewondo",
-    "region": "Centre",
+    "name": "Ewondo (Beti)",
+    "region": "Centre · Yaoundé, Mbalmayo",
     "nllb": null,
     "mms": null,
     "refs": [
@@ -14,11 +14,12 @@
         "url": "https://en.wiktionary.org/wiki/Category:Ewondo_lemmas"
       }
     ],
-    "africaTts": "ewo"
+    "africaTts": "ewo",
+    "search": "ewondo beti yaounde yaoundé mbalmayo centre"
   },
   "fub": {
-    "name": "Fulfulde",
-    "region": "Adamaoua, Nord, Extrême-Nord",
+    "name": "Fulfulde (Peul / Fulani)",
+    "region": "Nord, Adamaoua, Extrême-Nord · Garoua, Ngaoundéré, Maroua",
     "nllb": "fuv_Latn",
     "mms": "ful",
     "refs": [
@@ -31,11 +32,12 @@
         "url": "https://en.wiktionary.org/wiki/Category:Fula_lemmas"
       }
     ],
-    "africaTts": "fub"
+    "africaTts": "fub",
+    "search": "fulfulde foulfoulde foulfouldé peul peuhl fula fulani pulaar mbororo bororo garoua ngaoundere maroua nord adamaoua"
   },
   "wes": {
     "name": "Pidgin (Kamtok)",
-    "region": "Nord-Ouest, Sud-Ouest, Littoral, grandes villes",
+    "region": "Nord-Ouest, Sud-Ouest, Littoral · Bamenda, Buea, Douala, et dans tout le pays",
     "nllb": null,
     "mms": null,
     "voices": [
@@ -52,13 +54,19 @@
         "url": "https://en.wikipedia.org/wiki/Cameroonian_Pidgin_English"
       }
     ],
-    "africaTts": "pcm"
+    "africaTts": "pcm",
+    "search": "pidgin pidgin english kamtok broken english bamenda buea limbe douala anglophone"
   },
   "lns": {
-    "name": "Nso (Lamnso')",
-    "region": "Northwest Region",
+    "name": "Lamnso' (Nso / Banso)",
+    "region": "Nord-Ouest · Kumbo, Bui",
     "nllb": null,
-    "mms": "lns",
+    "mms": null,
+    "voices": [
+      "ln",
+      "sw"
+    ],
+    "reading": "none",
     "refs": [
       {
         "name": "Flagship AI Cameroon translation models (draft MT, CC BY-NC 4.0)",
@@ -69,17 +77,18 @@
         "url": "https://huggingface.co/datasets/flagship-ai/cameroon_bibles"
       },
       {
-        "name": "Lamnso' text-to-speech model (CC BY-NC 4.0)",
+        "name": "Lamnso' text-to-speech model (CC BY-NC 4.0; pronunciation model, not translation)",
         "url": "https://huggingface.co/facebook/mms-tts-lns"
       }
     ],
     "africaTts": null,
     "machineTranslation": true,
-    "translationStatus": "Automatic draft; not reviewed by Lamnso' speakers"
+    "translationStatus": "Local LLM + corpus service required; unvalidated.",
+    "search": "lamnso lamso nso banso bansoa kumbo bui"
   },
   "dua": {
-    "name": "Duala",
-    "region": "Littoral",
+    "name": "Duala (Douala)",
+    "region": "Littoral · Douala",
     "nllb": null,
     "mms": null,
     "refs": [
@@ -92,11 +101,12 @@
         "url": "https://en.wiktionary.org/wiki/Category:Duala_lemmas"
       }
     ],
-    "africaTts": "dua"
+    "africaTts": "dua",
+    "search": "duala douala sawa littoral"
   },
   "bbj": {
-    "name": "Ghomálá'",
-    "region": "Ouest",
+    "name": "Ghomálá' (Bamiléké)",
+    "region": "Ouest · Bafoussam, Bandjoun, Baham",
     "nllb": null,
     "mms": null,
     "refs": [
@@ -105,11 +115,12 @@
         "url": "https://en.wiktionary.org/wiki/Category:Ghomala%27_lemmas"
       }
     ],
-    "africaTts": "bbj"
+    "africaTts": "bbj",
+    "search": "ghomala ghomálá bamileke bamiléké bandjoun bafoussam baham ouest"
   },
   "bas": {
-    "name": "Basaá",
-    "region": "Centre, Littoral",
+    "name": "Basaá (Bassa)",
+    "region": "Centre, Littoral · Édéa, Eséka",
     "nllb": null,
     "mms": null,
     "refs": [
@@ -122,11 +133,12 @@
         "url": "https://en.wiktionary.org/wiki/Category:Basaa_lemmas"
       }
     ],
-    "africaTts": "bas"
+    "africaTts": "bas",
+    "search": "basaa bassa basa edea édéa eseka eséka"
   },
   "nge": {
     "name": "Mankon (Ngemba)",
-    "region": "Nord-Ouest (Bamenda)",
+    "region": "Nord-Ouest · Bamenda, Mankon",
     "nllb": null,
     "mms": null,
     "refs": [
@@ -135,11 +147,12 @@
         "url": "https://mankon-dictionary.vercel.app/"
       }
     ],
-    "africaTts": "nge"
+    "africaTts": "nge",
+    "search": "mankon ngemba bamenda nord-ouest"
   },
   "bkm": {
     "name": "Kom",
-    "region": "Nord-Ouest (Boyo)",
+    "region": "Nord-Ouest · Fundong, Njinikom, Belo",
     "nllb": null,
     "mms": null,
     "refs": [
@@ -152,6 +165,7 @@
         "url": "https://en.wiktionary.org/wiki/Category:Kom_(Cameroon)_lemmas"
       }
     ],
-    "africaTts": "bkm"
+    "africaTts": "bkm",
+    "search": "kom itanghi fundong njinikom belo boyo"
   }
 }

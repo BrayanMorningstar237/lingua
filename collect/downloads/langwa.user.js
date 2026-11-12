@@ -14,7 +14,7 @@
 // ==/UserScript==
 // To use it on another banking site, add the site in your userscript manager (User matches).
 
-globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). Each national-language file (lang/<code>.json) maps an id to { t, verified, validator, audio }. {placeholders} are filled with the protected values from the page (amounts, names...) and MUST be kept in the translation. Strings marked \"check\": true were taken from an auto-translated view of the test page and must be compared with the page's real FR/EN text.","entries":[{"id":"gist_error","group":"safety-net","fr":"Ceci est un message d'erreur. L'opération n'a pas abouti.","en":"This is an error message. The operation did not go through.","note":"Phrase générale pour TOUTE nouvelle erreur inconnue : l’opération n’a pas marché."},{"id":"gist_warning","group":"safety-net","fr":"Avertissement de sécurité : lisez attentivement ou demandez de l'aide à une personne de confiance.","en":"Security warning: read carefully or ask someone you trust for help.","note":"Phrase générale utilisée pour TOUT nouvel avertissement de sécurité inconnu. Doit inviter à la prudence."},{"id":"gist_success","group":"safety-net","fr":"L'opération a réussi.","en":"The operation was successful."},{"id":"gist_info","group":"safety-net","fr":"Message d'information.","en":"Information message."},{"id":"gist_keywords","group":"safety-net","fr":"Mots clés :","en":"Key words:"},{"id":"test_banner","group":"test-env","fr":"Environnement de test : données fictives, aucune transaction réelle.","en":"Test environment: dummy data, no real transactions.","check":true,"variants":["Environnement de test — données fictives, aucune transaction réelle.","Test environment — dummy data, no real transactions."]},{"id":"test_protocol","group":"test-env","fr":"Protocole de test","en":"Test protocol","check":true},{"id":"back_hackathon","group":"test-env","fr":"Retour au hackathon","en":"Back to the hackathon","check":true},{"id":"online_banking","group":"test-env","fr":"Banque en ligne","en":"Online banking","check":true},{"id":"step_pay","group":"steps","fr":"Payer","en":"Pay","variants":["Paiement","Payment"],"note":"Étape 1 du parcours : payer / envoyer de l’argent. / Step 1 of the journey: paying."},{"id":"step_costs","group":"steps","fr":"Frais","en":"Fees","variants":["Costs"],"check":true,"note":"Étape où l’on voit ce que la banque prend pour l’opération. / Step showing what the bank charges."},{"id":"step_beneficiary","group":"steps","fr":"Bénéficiaire","en":"Beneficiary","note":"Étape où l’on dit qui reçoit l’argent. / Step where you say who receives the money."},{"id":"step_summary","group":"steps","fr":"Récapitulatif","en":"Summary","variants":["Résumé"]},{"id":"step_confirmation","group":"steps","fr":"Confirmation","en":"Confirmation"},{"id":"your_account","group":"balance","fr":"Votre compte","en":"Your account"},{"id":"hello_name","group":"balance","fr":"Bonjour, {name}","en":"Hello, {name}"},{"id":"intro_balance","group":"balance","fr":"Consultez votre solde et initiez un virement sécurisé.","en":"Check your balance and initiate a secure transfer.","check":true},{"id":"available_balance","group":"balance","fr":"Solde disponible","en":"Available balance","note":"L’argent que vous pouvez utiliser maintenant. / The money you can use right now."},{"id":"balance","group":"balance","fr":"Solde","en":"Balance","note":"L’argent qui est sur le compte. / The money in the account."},{"id":"account_number","group":"balance","fr":"Numéro de compte","en":"Account number","note":"Le numéro qui identifie le compte. / The number identifying the account."},{"id":"current_account","group":"balance","fr":"Compte courant","en":"Current account","note":"Le compte de tous les jours. / The everyday account."},{"id":"savings_account","group":"balance","fr":"Compte épargne","en":"Savings account"},{"id":"perform_transfer","group":"balance","fr":"Effectuer un virement","en":"Make a transfer","variants":["Perform a transfer","Faire un virement","Faire un transfert"],"check":true},{"id":"view_fees","group":"balance","fr":"Voir les frais","en":"View fees","check":true},{"id":"recent_transactions","group":"balance","fr":"Transactions récentes","en":"Recent transactions","variants":["Dernières opérations","Dernières transactions"],"check":true},{"id":"merchant_payment","group":"balance","fr":"Paiement marchand","en":"Merchant payment","check":true,"note":"Argent payé dans un magasin ou à un commerçant."},{"id":"salary_received","group":"balance","fr":"Salaire reçu","en":"Salary received","check":true,"note":"Le salaire est arrivé sur le compte (argent qui entre)."},{"id":"transfer_received","group":"balance","fr":"Virement reçu","en":"Transfer received","variants":["Transfert reçu"],"note":"Quelqu un vous a envoyé de l’argent (argent qui entre)."},{"id":"transfer_sent","group":"balance","fr":"Virement envoyé","en":"Transfer sent","variants":["Transfert envoyé"]},{"id":"electricity_bill","group":"balance","fr":"Facture d'électricité","en":"Electricity bill"},{"id":"water_bill","group":"balance","fr":"Facture d'eau","en":"Water bill"},{"id":"cash_withdrawal","group":"balance","fr":"Retrait d'espèces","en":"Cash withdrawal"},{"id":"deposit","group":"balance","fr":"Dépôt","en":"Deposit"},{"id":"airtime","group":"balance","fr":"Achat de crédit","en":"Airtime purchase"},{"id":"security","group":"security","fr":"Sécurité","en":"Security"},{"id":"security_check_beneficiary","group":"security","fr":"Vérifiez toujours le nom et le numéro du bénéficiaire avant de confirmer un virement.","en":"Always check the beneficiary's name and number before confirming a transfer.","check":true,"note":"Conseil de sécurité : regardez bien le nom et le numéro avant de valider."},{"id":"secure_connection","group":"security","fr":"Connexion sécurisée","en":"Secure connection"},{"id":"demo_footer","group":"security","fr":"Safinum Pay : environnement de démonstration. N'entrez aucune donnée personnelle réelle.","en":"Safinum Pay: demonstration environment. Do not enter any real personal data.","check":true,"variants":["Safinum Pay — environnement de démonstration. N'entrez aucune donnée personnelle réelle.","Safinum Pay — demonstration environment. Do not enter any real personal data."]},{"id":"never_share_pin","group":"security","fr":"Ne communiquez jamais votre code PIN, même à un agent de la banque.","en":"Never share your PIN, not even with a bank employee.","note":"Le code secret ne se donne à personne, même pas à quelqu’un de la banque. La négation est essentielle."},{"id":"fraud_warning","group":"security","fr":"Méfiez-vous des appels ou SMS qui vous demandent votre code secret.","en":"Beware of calls or text messages asking for your secret code.","note":"Si quelqu’un vous appelle pour demander votre code secret, c’est un voleur."},{"id":"irreversible","group":"security","fr":"Une fois confirmé, le virement ne peut pas être annulé.","en":"Once confirmed, the transfer cannot be cancelled.","note":"Après confirmation, impossible de récupérer l’argent. Le sens doit être très clair."},{"id":"check_details","group":"security","fr":"Vérifiez les informations avant de confirmer.","en":"Check the details before confirming."},{"id":"transfer_fees","group":"fees","fr":"Frais de virement","en":"Transfer fees","variants":["Frais de transfert"],"note":"Ce que la banque prend pour envoyer l’argent. / What the bank charges to send money."},{"id":"transaction_fees","group":"fees","fr":"Frais de transaction","en":"Transaction fees"},{"id":"fees","group":"fees","fr":"Frais","en":"Fees","variants":["Costs"],"note":"L’argent que la banque prend pour faire l’opération. / What the bank charges for the operation."},{"id":"choose_type_amount","group":"fees","fr":"Choisissez le type de virement et le montant. Les frais sont calculés automatiquement.","en":"Choose the transfer type and amount. Fees are calculated automatically.","check":true},{"id":"operation_type","group":"fees","fr":"Type d'opération","en":"Type of operation","variants":["Operation type"],"check":true},{"id":"safinum_account","group":"fees","fr":"Compte Safinum","en":"Safinum account","check":true},{"id":"instant_free","group":"fees","fr":"Virement instantané et gratuit","en":"Instant and free transfer","check":true,"note":"L’argent arrive tout de suite et la banque ne prend rien. / Arrives immediately, the bank charges nothing."},{"id":"other_bank","group":"fees","fr":"Compte d'une autre banque","en":"Account at another bank"},{"id":"mobile_money","group":"fees","fr":"Mobile Money","en":"Mobile Money"},{"id":"amount_to_send","group":"fees","fr":"Montant à envoyer","en":"Amount to send"},{"id":"amount","group":"fees","fr":"Montant","en":"Amount"},{"id":"free","group":"fees","fr":"Gratuit","en":"Free"},{"id":"total_debited","group":"fees","fr":"Total à débiter","en":"Total to be debited","variants":["Total débité","Total debited"],"check":true,"note":"Tout ce qui va sortir du compte : montant envoyé + frais. / Everything that will leave the account: amount + fees."},{"id":"balance_after","group":"fees","fr":"Solde après l'opération","en":"Balance after operation","variants":["Balance after the operation"],"check":true,"note":"L’argent qui restera sur le compte après cet envoi. / Money left after this transfer."},{"id":"fee_rate_min","group":"fees","fr":"{rate} du montant (minimum {min})","en":"{rate} of the amount (minimum {min})"},{"id":"beneficiary","group":"transfer","fr":"Bénéficiaire","en":"Beneficiary","note":"La personne qui va recevoir l’argent. / The person who will receive the money."},{"id":"beneficiary_name","group":"transfer","fr":"Nom du bénéficiaire","en":"Beneficiary name","variants":["Beneficiary's name","Name of the beneficiary"]},{"id":"phone_number","group":"transfer","fr":"Numéro de téléphone","en":"Phone number"},{"id":"account_or_phone","group":"transfer","fr":"Numéro de compte ou de téléphone","en":"Account or phone number"},{"id":"reason","group":"transfer","fr":"Motif","en":"Reason","variants":["Motif du virement","Purpose"]},{"id":"transfer_summary","group":"transfer","fr":"Récapitulatif du virement","en":"Transfer summary"},{"id":"send_amount_to","group":"transfer","fr":"Vous allez envoyer {amount} à {name}.","en":"You are about to send {amount} to {name}.","note":"Phrase de confirmation : qui reçoit et combien. Gardez {amount} et {name}. / Confirmation: who receives how much."},{"id":"pin_code","group":"transfer","fr":"Code PIN","en":"PIN code","variants":["PIN"],"note":"Le code secret de 4 chiffres. / The secret 4-digit code."},{"id":"enter_pin","group":"transfer","fr":"Saisissez votre code PIN","en":"Enter your PIN"},{"id":"accept_terms","group":"transfer","fr":"J'accepte les conditions générales.","en":"I accept the terms and conditions."},{"id":"terms","group":"transfer","fr":"Conditions générales","en":"Terms and conditions"},{"id":"back","group":"transfer","fr":"Retour","en":"Back"},{"id":"continue","group":"transfer","fr":"Continuer","en":"Continue"},{"id":"confirm","group":"transfer","fr":"Confirmer","en":"Confirm"},{"id":"confirm_transfer","group":"transfer","fr":"Confirmer le virement","en":"Confirm the transfer","variants":["Confirm transfer"]},{"id":"cancel","group":"transfer","fr":"Annuler","en":"Cancel"},{"id":"reference","group":"transfer","fr":"Référence","en":"Reference","note":"Le code de cette opération ; à donner si vous appelez la banque. / The code of this operation; give it if you call the bank."},{"id":"date","group":"transfer","fr":"Date","en":"Date"},{"id":"status","group":"transfer","fr":"Statut","en":"Status"},{"id":"transfer_success","group":"messages","fr":"Virement effectué avec succès.","en":"Transfer completed successfully.","variants":["Transfert effectué avec succès."]},{"id":"insufficient_balance","group":"messages","fr":"Solde insuffisant pour effectuer cette opération.","en":"Insufficient balance for this transaction.","variants":["Solde insuffisant.","Insufficient balance."],"note":"Il n’y a pas assez d’argent sur le compte pour cette opération."},{"id":"pin_incorrect_attempts","group":"messages","fr":"Code PIN incorrect. Il vous reste {count} tentatives.","en":"Incorrect PIN. You have {count} attempts left.","note":"Le code secret est faux ; dire combien d’essais restent avant blocage. Gardez {count}."},{"id":"pin_incorrect","group":"messages","fr":"Code PIN incorrect.","en":"Incorrect PIN."},{"id":"account_locked","group":"messages","fr":"Votre compte est temporairement bloqué.","en":"Your account is temporarily locked."},{"id":"service_apology","group":"messages","fr":"Nous sommes désolés.","en":"We're sorry.","variants":["We are sorry","We’re sorry"],"note":"A brief apology from the service, usually after a failed action. Keep it as an apology, not a generic information label."},{"id":"required_field","group":"messages","fr":"Ce champ est obligatoire.","en":"This field is required."},{"id":"invalid_amount","group":"messages","fr":"Montant invalide.","en":"Invalid amount."},{"id":"must_accept_terms","group":"messages","fr":"Vous devez accepter les conditions générales.","en":"You must accept the terms and conditions."},{"id":"session_expired","group":"messages","fr":"Votre session a expiré. Veuillez vous reconnecter.","en":"Your session has expired. Please log in again."},{"id":"network_error","group":"messages","fr":"Erreur réseau. Veuillez réessayer.","en":"Network error. Please try again."},{"id":"processing","group":"messages","fr":"Traitement en cours...","en":"Processing..."},{"id":"enter_recipient_info","group":"test-env","fr":"Saisissez les informations du destinataire. Vérifiez toujours le numéro avant de valider.","en":"Enter the recipient's information. Always check the number before submitting.","check":true},{"id":"new_beneficiary_warning","group":"test-env","fr":"Ce bénéficiaire n'a jamais été utilisé sur ce compte. Veuillez vérifier le numéro avant de continuer.","en":"This beneficiary has never been used on this account. Please verify the number before proceeding.","check":true,"note":"Mise en garde : vous n’avez jamais envoyé d’argent à cette personne ; vérifiez le numéro. Garder le ton d’avertissement."},{"id":"reason_for_transfer","group":"test-env","fr":"Motif du virement","en":"Reason for transfer","check":true,"note":"Pourquoi vous envoyez l’argent. / Why you are sending the money."},{"id":"note_optional","group":"test-env","fr":"Note (facultatif)","en":"Note (optional)","variants":["Note (facultative)"],"check":true},{"id":"checked_name_number","group":"test-env","fr":"J'ai vérifié le nom et le numéro du bénéficiaire.","en":"I checked the beneficiary's name and number.","check":true,"note":"La personne dit qu’elle a bien vérifié le nom et le numéro."},{"id":"check_info_before_confirm","group":"test-env","fr":"Vérifiez les informations avant de confirmer le virement.","en":"Check the information before confirming the transfer.","check":true},{"id":"phone","group":"test-env","fr":"Téléphone","en":"Phone"},{"id":"operation","group":"test-env","fr":"Opération","en":"Operation"},{"id":"confirm_info_correct","group":"test-env","fr":"Je confirme que les informations ci-dessus sont exactes.","en":"I confirm that the above information is correct.","check":true,"note":"La personne s’engage : les informations sont justes."},{"id":"modify","group":"test-env","fr":"Modifier","en":"Edit","variants":["To modify","Modify"],"check":true},{"id":"transfer_completed","group":"test-env","fr":"Virement effectué","en":"Transfer completed","check":true},{"id":"transfer_sent_success","group":"test-env","fr":"Votre virement a été envoyé avec succès.","en":"Your transfer has been sent successfully.","check":true},{"id":"status_success","group":"test-env","fr":"Succès","en":"Success","variants":["Réussi"]},{"id":"new_transfer","group":"test-env","fr":"Nouveau virement","en":"New transfer","variants":["Nouveau transfert"]},{"id":"services_payment","group":"test-env","fr":"Paiement de services","en":"Payment for services"},{"id":"error","group":"messages","fr":"Erreur","en":"Error"},{"id":"warning","group":"messages","fr":"Attention","en":"Warning"},{"id":"ui_translating","group":"ui","fr":"Traduction en cours…","en":"Translating…"},{"id":"ui_protected","group":"ui","fr":"Valeur protégée, identique à la page","en":"Protected value, same as on the page"},{"id":"ui_validated","group":"ui","fr":"Validé","en":"Validated"},{"id":"ui_auto","group":"ui","fr":"Non validé","en":"Not validated"},{"id":"ui_summary","group":"ui","fr":"Résumé sûr","en":"Safe summary"},{"id":"ui_blocked","group":"ui","fr":"Bloqué : montant différent","en":"Blocked: amount mismatch"},{"id":"ui_missing","group":"ui","fr":"Pas encore traduit","en":"Not translated yet"},{"id":"ui_important","group":"ui","fr":"Messages importants","en":"Important messages"},{"id":"ui_page","group":"ui","fr":"Sur cette page","en":"On this page"},{"id":"ui_new","group":"ui","fr":"NOUVEAU","en":"NEW"},{"id":"ui_listen","group":"ui","fr":"Écouter","en":"Listen"},{"id":"ui_no_audio","group":"ui","fr":"Pas encore d’audio","en":"No audio yet"},{"id":"ui_subtitles","group":"ui","fr":"Sous-titres","en":"Subtitles"},{"id":"ui_close","group":"ui","fr":"Fermer","en":"Close"},{"id":"ui_empty","group":"ui","fr":"Rien à traduire ici","en":"Nothing to translate here"},{"id":"ui_mt_down","group":"ui","fr":"Traduction locale indisponible : résumé utilisé","en":"Local translation unavailable: summary used"},{"id":"ui_hint_hover","group":"ui","fr":"Maintenez Ctrl et pointez un texte : sa traduction s’affiche dessous.","en":"Hold Ctrl and point at any text: its translation appears below."},{"id":"ui_hint_hover_short","group":"ui","fr":"survol = traduction","en":"hover = translation"},{"id":"ui_hint_listen","group":"ui","fr":"Puis appuyez sur Espace pour écouter.","en":"Then press Space to listen."},{"id":"ui_ok","group":"ui","fr":"Compris","en":"Got it"},{"id":"ui_tagline","group":"ui","fr":"Banque en langues nationales","en":"Banking in national languages"},{"id":"ui_active","group":"ui","fr":"Actif sur ce site","en":"Active on this site"},{"id":"ui_unsupported","group":"ui","fr":"Page non prise en charge","en":"Page not supported"},{"id":"ui_reload_msg","group":"ui","fr":"Rechargez la page pour afficher les traductions.","en":"Reload the page to show the translations."},{"id":"ui_reload","group":"ui","fr":"Recharger","en":"Reload"},{"id":"ui_language","group":"ui","fr":"Langue","en":"Language"},{"id":"ui_show","group":"ui","fr":"Afficher la traduction","en":"Show the translation"},{"id":"ui_mode_ctrl","group":"ui","fr":"+ survol","en":"+ hover"},{"id":"ui_mode_hover","group":"ui","fr":"Survol","en":"Hover"},{"id":"ui_mode_off","group":"ui","fr":"Non","en":"Off"},{"id":"ui_panel","group":"ui","fr":"Panneau","en":"Panel"},{"id":"ui_settings","group":"ui","fr":"Glossaire, voix et paramètres","en":"Glossary, voice and settings"},{"id":"ui_choose","group":"ui","fr":"Quelle langue parlez-vous ?","en":"Which language do you speak?"},{"id":"ui_choose_sub","group":"ui","fr":"Langwa affichera la banque dans cette langue.","en":"Langwa will show the bank in this language."},{"id":"ui_soon","group":"ui","fr":"Bientôt","en":"Soon"},{"id":"ui_later","group":"ui","fr":"Plus tard","en":"Later"},{"id":"ui_hint_touch","group":"ui","fr":"Appuyez longuement sur un texte : sa traduction s’affiche dessous.","en":"Long press any text: its translation appears below."},{"id":"ui_hint_touch_short","group":"ui","fr":"appui long = traduction","en":"long press = translation"},{"id":"ui_missing_lang","group":"ui","fr":"Pas encore traduit en {lang}","en":"Not yet translated into {lang}"},{"id":"ui_original","group":"ui","fr":"Original","en":"Original"},{"id":"ui_n_ok","group":"ui","fr":"validées","en":"validated"},{"id":"ui_n_mt","group":"ui","fr":"non validées","en":"not validated"},{"id":"ui_n_gist","group":"ui","fr":"résumés","en":"summaries"},{"id":"ui_n_block","group":"ui","fr":"bloquées","en":"blocked"},{"id":"ui_n_none","group":"ui","fr":"non traduites","en":"not translated"},{"id":"ui_n_ok_one","group":"ui","fr":"validée","en":"validated"},{"id":"ui_n_mt_one","group":"ui","fr":"non validée","en":"not validated"},{"id":"ui_n_gist_one","group":"ui","fr":"résumé","en":"summary"},{"id":"ui_n_block_one","group":"ui","fr":"bloquée","en":"blocked"},{"id":"ui_n_none_one","group":"ui","fr":"non traduite","en":"not translated"},{"id":"ui_voice_human","group":"ui","fr":"Voix humaine","en":"Human voice"},{"id":"ui_voice_neural","group":"ui","fr":"Voix neuronale","en":"Neural voice"},{"id":"ui_voice_synth","group":"ui","fr":"Voix de synthèse","en":"Synthetic voice"},{"id":"ui_voice_local","group":"ui","fr":"Voix locale","en":"Local voice"},{"id":"ui_voice_browser","group":"ui","fr":"Voix du navigateur","en":"Browser voice"},{"id":"ui_voice_preparing","group":"ui","fr":"Voix locale, préparation…","en":"Local voice, preparing…"},{"id":"ui_voice_why_offline","group":"ui","fr":"voix locale éteinte","en":"local voice is off"},{"id":"ui_voice_why_loading","group":"ui","fr":"voix locale en chargement","en":"local voice is loading"},{"id":"ui_voice_why_slow","group":"ui","fr":"voix locale trop lente","en":"local voice too slow"},{"id":"ui_voice_why_error","group":"ui","fr":"voix locale indisponible","en":"local voice unavailable"},{"id":"ui_stop","group":"ui","fr":"Arrêter","en":"Stop"},{"id":"ui_page_mode","group":"ui","fr":"Traduire la page","en":"Translate the page"},{"id":"ui_read_all","group":"ui","fr":"Tout lire","en":"Read all"},{"id":"ui_autoread","group":"ui","fr":"Lecture automatique","en":"Read aloud automatically"},{"id":"ui_autoread_sub","group":"ui","fr":"Lit la traduction dès qu’elle s’affiche","en":"Reads the translation as soon as it appears"},{"id":"ui_space_listen","group":"ui","fr":"écouter","en":"listen"},{"id":"ui_hint_listen_touch","group":"ui","fr":"Touchez Écouter pour entendre la traduction.","en":"Tap Listen to hear the translation."},{"id":"ui_dict_words","group":"ui","fr":"Mots du dictionnaire (non validés)","en":"Dictionary words (not validated)"},{"id":"ui_online_voice","group":"ui","fr":"Voix naturelles en ligne","en":"Natural online voices"},{"id":"ui_online_voice_sub","group":"ui","fr":"Plus fluide. Le texte lu est envoyé à Microsoft ou Google.","en":"More fluent. The text read is sent to Microsoft or Google."},{"id":"ui_online_ask","group":"ui","fr":"Voix plus naturelle ?","en":"A more natural voice?"},{"id":"ui_enable","group":"ui","fr":"Activer","en":"Turn on"},{"id":"ui_no_thanks","group":"ui","fr":"Non merci","en":"No thanks"},{"id":"ui_brand","group":"ui","fr":"Nom propre, non traduit","en":"Proper name, not translated"},{"id":"ui_tab_chat","group":"ui","fr":"Assistant","en":"Ask"},{"id":"ui_tab_msgs","group":"ui","fr":"Messages","en":"Messages"},{"id":"ui_ask_placeholder","group":"ui","fr":"Posez votre question…","en":"Ask your question…"},{"id":"ui_mic","group":"ui","fr":"Parler","en":"Speak"},{"id":"ui_send","group":"ui","fr":"Envoyer","en":"Send"},{"id":"ui_listening","group":"ui","fr":"J’écoute…","en":"Listening…"},{"id":"ui_switch_to","group":"ui","fr":"Passer en {lang}","en":"Switch to {lang}"},{"id":"q_page","group":"ui","fr":"C’est quoi cette page ?","en":"What is this page?"},{"id":"q_amount","group":"ui","fr":"Combien je vais payer ?","en":"How much will I pay?"},{"id":"q_receiver","group":"ui","fr":"Qui reçoit l’argent ?","en":"Who receives the money?"},{"id":"q_warning","group":"ui","fr":"Y a-t-il un danger ?","en":"Is there any danger?"},{"id":"q_next","group":"ui","fr":"Je fais quoi maintenant ?","en":"What do I do now?"},{"id":"ans_welcome","group":"ui","fr":"Bonjour ! Posez-moi une question sur cette page, en écrivant ou à voix haute.","en":"Hello! Ask me a question about this page, by typing or out loud."},{"id":"ans_page","group":"ui","fr":"Cette page : {title}.","en":"This page: {title}."},{"id":"ans_amount","group":"ui","fr":"Montant total : {total}.","en":"Total amount: {total}."},{"id":"ans_fees","group":"ui","fr":"Frais : {fees}.","en":"Fees: {fees}."},{"id":"ans_no_amount","group":"ui","fr":"Je ne vois pas de montant sur cette page.","en":"I do not see an amount on this page."},{"id":"ans_receiver","group":"ui","fr":"L’argent va à {name}.","en":"The money goes to {name}."},{"id":"ans_no_receiver","group":"ui","fr":"Je ne vois pas encore de bénéficiaire sur cette page.","en":"I do not see a beneficiary on this page yet."},{"id":"ans_warning","group":"ui","fr":"Attention : {message}","en":"Warning: {message}"},{"id":"ans_no_warning","group":"ui","fr":"Pas d’alerte sur cette page.","en":"No warning on this page."},{"id":"ans_next","group":"ui","fr":"Ensuite, appuyez sur {button}.","en":"Next, press {button}."},{"id":"ans_no_next","group":"ui","fr":"Je ne vois pas de bouton à appuyer.","en":"I do not see a button to press."},{"id":"ans_balance","group":"ui","fr":"Argent disponible : {balance}.","en":"Money available: {balance}."},{"id":"ans_unknown","group":"ui","fr":"Je peux répondre à ces questions :","en":"I can answer these questions:"},{"id":"ans_type_instead","group":"ui","fr":"Écrivez votre question ou touchez une question ci-dessous.","en":"Type your question or tap a question below."},{"id":"ans_lang_detected","group":"ui","fr":"Vous parlez {lang} ?","en":"Are you speaking {lang}?"},{"id":"ans_speech_consent","group":"ui","fr":"Pour comprendre votre voix, le navigateur envoie l’enregistrement au service de reconnaissance de Google (français, anglais, pidgin).","en":"To understand your voice, the browser sends the recording to Google’s speech service (French, English, Pidgin)."},{"id":"ans_model_note","group":"ui","fr":"Réponse d’un modèle local, à vérifier.","en":"Answer from a local model: please check."}]},"langs":{"ewo":{"name":"Ewondo","region":"Centre","nllb":null,"mms":null,"refs":[{"name":"Wiktionnaire (éwondo)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:%C3%A9wondo"},{"name":"Wiktionary (Ewondo)","url":"https://en.wiktionary.org/wiki/Category:Ewondo_lemmas"}],"africaTts":"ewo"},"fub":{"name":"Fulfulde","region":"Adamaoua, Nord, Extrême-Nord","nllb":"fuv_Latn","mms":"ful","refs":[{"name":"Wiktionnaire (peul)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:peul"},{"name":"Wiktionary (Fula)","url":"https://en.wiktionary.org/wiki/Category:Fula_lemmas"}],"africaTts":"fub"},"wes":{"name":"Pidgin (Kamtok)","region":"Nord-Ouest, Sud-Ouest, Littoral, grandes villes","nllb":null,"mms":null,"voices":["en-NG","en-CM","en-GH","en-ZA","en"],"reading":"none","refs":[{"name":"Wikipedia: Cameroonian Pidgin","url":"https://en.wikipedia.org/wiki/Cameroonian_Pidgin_English"}],"africaTts":"pcm"},"lns":{"name":"Nso (Lamnso')","region":"Northwest Region","nllb":null,"mms":"lns","refs":[{"name":"Flagship AI Cameroon translation models (draft MT, CC BY-NC 4.0)","url":"https://huggingface.co/flagship-ai/cameroon-int8"},{"name":"Cameroon Bibles parallel text dataset (CC BY 4.0; religious text, not banking vocabulary)","url":"https://huggingface.co/datasets/flagship-ai/cameroon_bibles"},{"name":"Lamnso' text-to-speech model (CC BY-NC 4.0)","url":"https://huggingface.co/facebook/mms-tts-lns"}],"africaTts":null,"machineTranslation":true,"translationStatus":"Automatic draft; not reviewed by Lamnso' speakers"},"dua":{"name":"Duala","region":"Littoral","nllb":null,"mms":null,"refs":[{"name":"Wiktionnaire (douala)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:douala"},{"name":"Wiktionary (Duala)","url":"https://en.wiktionary.org/wiki/Category:Duala_lemmas"}],"africaTts":"dua"},"bbj":{"name":"Ghomálá'","region":"Ouest","nllb":null,"mms":null,"refs":[{"name":"Wiktionary (Ghomala')","url":"https://en.wiktionary.org/wiki/Category:Ghomala%27_lemmas"}],"africaTts":"bbj"},"bas":{"name":"Basaá","region":"Centre, Littoral","nllb":null,"mms":null,"refs":[{"name":"Wiktionnaire (bassa)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:bassa_(Cameroun)"},{"name":"Wiktionary (Basaa)","url":"https://en.wiktionary.org/wiki/Category:Basaa_lemmas"}],"africaTts":"bas"},"nge":{"name":"Mankon (Ngemba)","region":"Nord-Ouest (Bamenda)","nllb":null,"mms":null,"refs":[{"name":"Mankon Dictionary","url":"https://mankon-dictionary.vercel.app/"}],"africaTts":"nge"},"bkm":{"name":"Kom","region":"Nord-Ouest (Boyo)","nllb":null,"mms":null,"refs":[{"name":"Kom writing system (Omniglot)","url":"https://omniglot.com/writing/kom.htm"},{"name":"Wiktionary (Kom)","url":"https://en.wiktionary.org/wiki/Category:Kom_(Cameroon)_lemmas"}],"africaTts":"bkm"}},"packs":{"ewo":{"code":"ewo","validation":{"validators":[],"method":"Native-speaker review in the glossary editor (options page). Each entry stores who validated it."},"entries":{}},"fub":{"code":"fub","validation":{"validators":[],"status":"DRAFT. Written with AI assistance (Claude) from general Fula knowledge and Wiktionnaire terms. NOT validated by a native speaker: every entry is shown to users as 'Non validé'. To be reviewed by Adamawa Fulfulde speakers through the contribution page and the glossary editor.","method":"Native-speaker review in the glossary editor (options page). Each entry stores who validated it."},"entries":{"gist_error":{"t":"Ɗum ko kabaaru juumre. Golle ɗee ngasaaki.","by":"Brouillon IA, à valider"},"gist_warning":{"t":"Reentino : jangu no feewi, maa naamno goɗɗo mo a hoolii.","by":"Brouillon IA, à valider"},"gist_success":{"t":"Golle ɗee ngasii.","by":"Brouillon IA, à valider"},"gist_info":{"t":"Kabaaru.","by":"Brouillon IA, à valider"},"gist_keywords":{"t":"Konguɗi :","by":"Brouillon IA, à valider"},"test_banner":{"t":"Nokku ƴeewndagol : ceede ɗee goongaaka, neldugo goonga walaa.","by":"Brouillon IA, à valider"},"test_protocol":{"t":"Laawol ƴeewndagol","by":"Brouillon IA, à valider"},"back_hackathon":{"t":"Rutto to hackathon","by":"Brouillon IA, à valider"},"online_banking":{"t":"Banke e internet","by":"Brouillon IA, à valider"},"step_pay":{"t":"Yoɓugo","by":"Brouillon IA, à valider"},"step_costs":{"t":"Njoɓdi","by":"Brouillon IA, à valider"},"step_beneficiary":{"t":"Jaɓoowo","by":"Brouillon IA, à valider"},"step_summary":{"t":"Ƴeewndol","by":"Brouillon IA, à valider"},"step_confirmation":{"t":"Tabbitingol","by":"Brouillon IA, à valider"},"your_account":{"t":"Konte maa","by":"Brouillon IA, à valider"},"hello_name":{"t":"Jam waali, {name}","by":"Brouillon IA, à valider"},"intro_balance":{"t":"Ndaar ceede maa, nde neldaa ceede e kisal.","by":"Brouillon IA, à valider"},"available_balance":{"t":"Ceede ɗe a waawi huutorgo","by":"Brouillon IA, à valider"},"balance":{"t":"Ceede maa","by":"Brouillon IA, à valider"},"account_number":{"t":"Limre konte","by":"Brouillon IA, à valider"},"current_account":{"t":"Konte nyalaade fuu","by":"Brouillon IA, à valider"},"perform_transfer":{"t":"Nelda ceede","by":"Brouillon IA, à valider"},"view_fees":{"t":"Ndaar njoɓdi","by":"Brouillon IA, à valider"},"recent_transactions":{"t":"Golle sakkitiiɗe","by":"Brouillon IA, à valider"},"merchant_payment":{"t":"Njoɓdi to jeeyoowo","by":"Brouillon IA, à valider"},"salary_received":{"t":"Ceede golle ngarii","by":"Brouillon IA, à valider"},"transfer_received":{"t":"Ceede neldaaɗe ngarii","by":"Brouillon IA, à valider"},"electricity_bill":{"t":"Njoɓdi kuuraŋ","by":"Brouillon IA, à valider"},"security":{"t":"Kisal","by":"Brouillon IA, à valider"},"security_check_beneficiary":{"t":"Ndaar innde e limre jaɓoowo saa'i fuu, hade a tabbitina neldugo.","by":"Brouillon IA, à valider"},"secure_connection":{"t":"Jokkondiral kisal","by":"Brouillon IA, à valider"},"demo_footer":{"t":"Safinum Pay : nokku ƴeewndagol. Taa winndu kabaruuji maa goonga.","by":"Brouillon IA, à valider"},"never_share_pin":{"t":"Taa hokku goɗɗo code PIN maa, hay goɗɗo banke.","by":"Brouillon IA, à valider"},"irreversible":{"t":"Si a tabbitinii, neldugo ngo waawaa firtaade.","by":"Brouillon IA, à valider"},"transfer_fees":{"t":"Njoɓdi neldugo","by":"Brouillon IA, à valider"},"fees":{"t":"Njoɓdi","by":"Brouillon IA, à valider"},"choose_type_amount":{"t":"Suɓo no neldirta e ceede ɗe neldataa. Njoɓdi hiisoto e hoore mum.","by":"Brouillon IA, à valider"},"operation_type":{"t":"No golle ngonri","by":"Brouillon IA, à valider"},"safinum_account":{"t":"Konte Safinum","by":"Brouillon IA, à valider"},"instant_free":{"t":"Neldugo jaawngo, njoɓdi walaa","by":"Brouillon IA, à valider"},"amount_to_send":{"t":"Ceede ɗe neldataa","by":"Brouillon IA, à valider"},"amount":{"t":"Ceede","by":"Brouillon IA, à valider"},"free":{"t":"Njoɓdi walaa","by":"Brouillon IA, à valider"},"total_debited":{"t":"Ceede fuu ɗe njaltata e konte maa","by":"Brouillon IA, à valider"},"balance_after":{"t":"Ceede keddotooɗe caggal neldugo","by":"Brouillon IA, à valider"},"beneficiary":{"t":"Jaɓoowo","by":"Brouillon IA, à valider"},"beneficiary_name":{"t":"Innde jaɓoowo","by":"Brouillon IA, à valider"},"phone_number":{"t":"Limre telefon","by":"Brouillon IA, à valider"},"phone":{"t":"Telefon","by":"Brouillon IA, à valider"},"reason_for_transfer":{"t":"Sabaabu neldugo","by":"Brouillon IA, à valider"},"note_optional":{"t":"Binndol (si a yiɗii)","by":"Brouillon IA, à valider"},"enter_recipient_info":{"t":"Winndu kabaruuji jaɓoowo. Ndaar limre ndee saa'i fuu hade a nelda.","by":"Brouillon IA, à valider"},"new_beneficiary_warning":{"t":"A neldaayno ceede e jaɓoowo oo e konte maa fay. Useko, ndaar limre makko hade a jokka.","by":"Brouillon IA, à valider"},"checked_name_number":{"t":"Mi ndaarii innde e limre jaɓoowo.","by":"Brouillon IA, à valider"},"check_info_before_confirm":{"t":"Ndaar kabaruuji ɗii hade a tabbitina neldugo.","by":"Brouillon IA, à valider"},"send_amount_to":{"t":"A neldata {amount} e {name}.","by":"Brouillon IA, à valider"},"reference":{"t":"Limre golle","by":"Brouillon IA, à valider"},"operation":{"t":"Golle","by":"Brouillon IA, à valider"},"confirm_info_correct":{"t":"Mi tabbitinii kabaruuji ɗii ngoongaaji.","by":"Brouillon IA, à valider"},"modify":{"t":"Waylu","by":"Brouillon IA, à valider"},"confirm_transfer":{"t":"Tabbitin neldugo","by":"Brouillon IA, à valider"},"confirm":{"t":"Tabbitin","by":"Brouillon IA, à valider"},"cancel":{"t":"Haɗu","by":"Brouillon IA, à valider"},"back":{"t":"Rutto","by":"Brouillon IA, à valider"},"continue":{"t":"Jokku","by":"Brouillon IA, à valider"},"transfer_completed":{"t":"Neldugo gasii","by":"Brouillon IA, à valider"},"transfer_sent_success":{"t":"Ceede maa neldaama no woodi.","by":"Brouillon IA, à valider"},"status":{"t":"No ngonri","by":"Brouillon IA, à valider"},"status_success":{"t":"Gasii","by":"Brouillon IA, à valider"},"new_transfer":{"t":"Neldugo kesum","by":"Brouillon IA, à valider"},"insufficient_balance":{"t":"Ceede maa njonaa ngam golle ɗee.","by":"Brouillon IA, à valider"},"pin_incorrect_attempts":{"t":"Code PIN boni. Ko keddi ma etaaje {count}.","by":"Brouillon IA, à valider"},"pin_incorrect":{"t":"Code PIN boni.","by":"Brouillon IA, à valider"},"error":{"t":"Juumre","by":"Brouillon IA, à valider"},"warning":{"t":"Reentino","by":"Brouillon IA, à valider"},"ui_tab_chat":{"t":"Naamno","by":"Brouillon IA, à valider"},"ui_tab_msgs":{"t":"Kabaruuji","by":"Brouillon IA, à valider"},"ui_ask_placeholder":{"t":"Naamno naamne maa…","by":"Brouillon IA, à valider"},"ui_mic":{"t":"Haal","by":"Brouillon IA, à valider"},"ui_send":{"t":"Nelda","by":"Brouillon IA, à valider"},"ui_listening":{"t":"Mi heɗii…","by":"Brouillon IA, à valider"},"ui_switch_to":{"t":"Waylu e {lang}","by":"Brouillon IA, à valider"},"q_page":{"t":"Ɗoo ko honɗum?","by":"Brouillon IA, à valider"},"q_amount":{"t":"Ceede no foti mi yoɓata?","by":"Brouillon IA, à valider"},"q_receiver":{"t":"Moye jaɓata ceede ɗee?","by":"Brouillon IA, à valider"},"q_warning":{"t":"Reentino woodi na?","by":"Brouillon IA, à valider"},"q_next":{"t":"Ko mi waɗata jooni?","by":"Brouillon IA, à valider"},"ans_welcome":{"t":"Jam waali! Naamno mi ko faati e ngol hello, winndu maa haal.","by":"Brouillon IA, à valider"},"ans_page":{"t":"Ɗoo ko: {title}.","by":"Brouillon IA, à valider"},"ans_amount":{"t":"Ceede fuu ɗe njaltata: {total}.","by":"Brouillon IA, à valider"},"ans_fees":{"t":"Njoɓdi: {fees}.","by":"Brouillon IA, à valider"},"ans_no_amount":{"t":"Mi yi’aali ceede e ngol hello.","by":"Brouillon IA, à valider"},"ans_receiver":{"t":"Ceede ɗee njahan to {name}.","by":"Brouillon IA, à valider"},"ans_no_receiver":{"t":"Mi yi’aali jaɓoowo e ngol hello taho.","by":"Brouillon IA, à valider"},"ans_warning":{"t":"Reentino: {message}","by":"Brouillon IA, à valider"},"ans_no_warning":{"t":"Reentino walaa e ngol hello.","by":"Brouillon IA, à valider"},"ans_next":{"t":"Jooni, ñoƴƴu {button}.","by":"Brouillon IA, à valider"},"ans_no_next":{"t":"Mi yi’aali butoŋ.","by":"Brouillon IA, à valider"},"ans_balance":{"t":"Ceede ɗe a waawi huutorgo: {balance}.","by":"Brouillon IA, à valider"},"ans_unknown":{"t":"Mi waawi jaabaade ɗee naamne:","by":"Brouillon IA, à valider"},"ans_type_instead":{"t":"Winndu naamne maa maa suɓo naamne les.","by":"Brouillon IA, à valider"},"ans_lang_detected":{"t":"A haalata {lang}?","by":"Brouillon IA, à valider"},"ans_speech_consent":{"t":"Ngam faamde hoolo maa, browser oo nelday ɗum to Google (Farayse, Engeleere, Pidgin).","by":"Brouillon IA, à valider"},"ans_model_note":{"t":"Jaabawol ordinater: ndaar ɗum.","by":"Brouillon IA, à valider"}}},"wes":{"code":"wes","validation":{"validators":[],"status":"DRAFT. Cameroonian Pidgin English (Kamtok), written with AI assistance (Claude) in the English-based spelling common on WhatsApp. NOT validated by a native speaker: every entry is shown to users as 'Non validé' until a Cameroonian Pidgin speaker reviews it.","method":"Native-speaker review in the glossary editor (options page). Each entry stores who validated it."},"entries":{"gist_error":{"t":"Na error message dis. The thing no pass.","by":"Brouillon IA, à valider"},"gist_warning":{"t":"Warning for security: read am well well, or ask person wey you trust make e help you.","by":"Brouillon IA, à valider"},"gist_success":{"t":"The thing don pass fine.","by":"Brouillon IA, à valider"},"gist_info":{"t":"Na information message.","by":"Brouillon IA, à valider"},"gist_keywords":{"t":"Important words:","by":"Brouillon IA, à valider"},"test_banner":{"t":"Na test environment: all the data na fake, no real money di move.","by":"Brouillon IA, à valider"},"test_protocol":{"t":"How for do the test","by":"Brouillon IA, à valider"},"back_hackathon":{"t":"Go back for hackathon","by":"Brouillon IA, à valider"},"online_banking":{"t":"Bank for internet","by":"Brouillon IA, à valider"},"step_pay":{"t":"Pay","by":"Brouillon IA, à valider"},"step_costs":{"t":"Charges","by":"Brouillon IA, à valider"},"step_beneficiary":{"t":"Person wey go receive","by":"Brouillon IA, à valider"},"step_summary":{"t":"Summary","by":"Brouillon IA, à valider"},"step_confirmation":{"t":"Confirm","by":"Brouillon IA, à valider"},"your_account":{"t":"Your account","by":"Brouillon IA, à valider"},"hello_name":{"t":"Hello, {name}","by":"Brouillon IA, à valider"},"intro_balance":{"t":"Check how much money you get, and send money with security.","by":"Brouillon IA, à valider"},"available_balance":{"t":"Money wey you fit use now","by":"Brouillon IA, à valider"},"balance":{"t":"Money wey dey your account","by":"Brouillon IA, à valider"},"account_number":{"t":"Account number","by":"Brouillon IA, à valider"},"current_account":{"t":"Account for everyday","by":"Brouillon IA, à valider"},"savings_account":{"t":"Account for save money","by":"Brouillon IA, à valider"},"perform_transfer":{"t":"Send money","by":"Brouillon IA, à valider"},"view_fees":{"t":"Look the charges","by":"Brouillon IA, à valider"},"recent_transactions":{"t":"Last things wey you do for your account","by":"Brouillon IA, à valider"},"merchant_payment":{"t":"Money wey you pay for shop","by":"Brouillon IA, à valider"},"salary_received":{"t":"Salary don enter","by":"Brouillon IA, à valider"},"transfer_received":{"t":"Money wey person send you don enter","by":"Brouillon IA, à valider"},"transfer_sent":{"t":"Money wey you send","by":"Brouillon IA, à valider"},"electricity_bill":{"t":"Light bill","by":"Brouillon IA, à valider"},"water_bill":{"t":"Water bill","by":"Brouillon IA, à valider"},"cash_withdrawal":{"t":"Money wey you comot","by":"Brouillon IA, à valider"},"deposit":{"t":"Money wey you put inside","by":"Brouillon IA, à valider"},"airtime":{"t":"Buy credit","by":"Brouillon IA, à valider"},"security":{"t":"Security","by":"Brouillon IA, à valider"},"security_check_beneficiary":{"t":"Always check the name and number of the person wey go receive, before you confirm the transfer.","by":"Brouillon IA, à valider"},"secure_connection":{"t":"Connection wey get security","by":"Brouillon IA, à valider"},"demo_footer":{"t":"Safinum Pay: na test environment. No put your real personal information.","by":"Brouillon IA, à valider"},"never_share_pin":{"t":"No ever give your PIN to anybody, even person wey work for bank.","by":"Brouillon IA, à valider"},"fraud_warning":{"t":"Watch out for call or SMS wey di ask your secret code.","by":"Brouillon IA, à valider"},"irreversible":{"t":"When you don confirm, you no fit cancel the transfer again.","by":"Brouillon IA, à valider"},"check_details":{"t":"Check all the information before you confirm.","by":"Brouillon IA, à valider"},"transfer_fees":{"t":"Charges for send money","by":"Brouillon IA, à valider"},"transaction_fees":{"t":"Charges for the transaction","by":"Brouillon IA, à valider"},"fees":{"t":"Charges","by":"Brouillon IA, à valider"},"choose_type_amount":{"t":"Choose how you want send and how much. The charges go calculate by themself.","by":"Brouillon IA, à valider"},"operation_type":{"t":"Which kind operation","by":"Brouillon IA, à valider"},"safinum_account":{"t":"Safinum account","by":"Brouillon IA, à valider"},"instant_free":{"t":"The money go reach quick quick, and e free","by":"Brouillon IA, à valider"},"other_bank":{"t":"Account for another bank","by":"Brouillon IA, à valider"},"mobile_money":{"t":"Mobile Money","by":"Brouillon IA, à valider"},"amount_to_send":{"t":"How much you want send","by":"Brouillon IA, à valider"},"amount":{"t":"How much","by":"Brouillon IA, à valider"},"free":{"t":"Free","by":"Brouillon IA, à valider"},"total_debited":{"t":"All the money wey go comot for your account","by":"Brouillon IA, à valider"},"balance_after":{"t":"Money wey go remain after","by":"Brouillon IA, à valider"},"fee_rate_min":{"t":"{rate} of the money (at least {min})","by":"Brouillon IA, à valider"},"beneficiary":{"t":"Person wey go receive","by":"Brouillon IA, à valider"},"beneficiary_name":{"t":"Name of the person wey go receive","by":"Brouillon IA, à valider"},"phone_number":{"t":"Phone number","by":"Brouillon IA, à valider"},"account_or_phone":{"t":"Account number or phone number","by":"Brouillon IA, à valider"},"reason":{"t":"Why you di send","by":"Brouillon IA, à valider"},"transfer_summary":{"t":"Summary of the transfer","by":"Brouillon IA, à valider"},"send_amount_to":{"t":"You di go send {amount} give {name}.","by":"Brouillon IA, à valider"},"pin_code":{"t":"PIN code","by":"Brouillon IA, à valider"},"enter_pin":{"t":"Put your PIN","by":"Brouillon IA, à valider"},"accept_terms":{"t":"I agree with the conditions.","by":"Brouillon IA, à valider"},"terms":{"t":"Conditions","by":"Brouillon IA, à valider"},"back":{"t":"Go back","by":"Brouillon IA, à valider"},"continue":{"t":"Continue","by":"Brouillon IA, à valider"},"confirm":{"t":"Confirm","by":"Brouillon IA, à valider"},"confirm_transfer":{"t":"Confirm the transfer","by":"Brouillon IA, à valider"},"cancel":{"t":"Cancel","by":"Brouillon IA, à valider"},"reference":{"t":"Reference","by":"Brouillon IA, à valider"},"date":{"t":"Date","by":"Brouillon IA, à valider"},"status":{"t":"How e be","by":"Brouillon IA, à valider"},"transfer_success":{"t":"The transfer don pass fine.","by":"Brouillon IA, à valider"},"insufficient_balance":{"t":"Your money no reach for do this operation.","by":"Brouillon IA, à valider"},"pin_incorrect_attempts":{"t":"PIN no correct. You remain {count} try.","by":"Brouillon IA, à valider"},"pin_incorrect":{"t":"PIN no correct.","by":"Brouillon IA, à valider"},"account_locked":{"t":"Dem don block your account for small time.","by":"Brouillon IA, à valider"},"service_apology":{"t":"We sorry.","by":"Brouillon IA, à valider"},"required_field":{"t":"You must fill this place.","by":"Brouillon IA, à valider"},"invalid_amount":{"t":"This amount no correct.","by":"Brouillon IA, à valider"},"must_accept_terms":{"t":"You must agree with the conditions.","by":"Brouillon IA, à valider"},"session_expired":{"t":"Your time don finish. Log in again.","by":"Brouillon IA, à valider"},"network_error":{"t":"Network get problem. Try again.","by":"Brouillon IA, à valider"},"processing":{"t":"E di work...","by":"Brouillon IA, à valider"},"enter_recipient_info":{"t":"Put the information of the person wey go receive. Always check the number before you send.","by":"Brouillon IA, à valider"},"new_beneficiary_warning":{"t":"You never send money give this person from this account before. Abeg check the number well before you continue.","by":"Brouillon IA, à valider"},"reason_for_transfer":{"t":"Why you di send the money","by":"Brouillon IA, à valider"},"note_optional":{"t":"Small note (if you want)","by":"Brouillon IA, à valider"},"checked_name_number":{"t":"I don check the name and number of the person wey go receive.","by":"Brouillon IA, à valider"},"check_info_before_confirm":{"t":"Check the information before you confirm the transfer.","by":"Brouillon IA, à valider"},"phone":{"t":"Phone","by":"Brouillon IA, à valider"},"operation":{"t":"Operation","by":"Brouillon IA, à valider"},"confirm_info_correct":{"t":"I confirm say all the information for up na correct.","by":"Brouillon IA, à valider"},"modify":{"t":"Change am","by":"Brouillon IA, à valider"},"transfer_completed":{"t":"Transfer don finish","by":"Brouillon IA, à valider"},"transfer_sent_success":{"t":"Your money don go fine.","by":"Brouillon IA, à valider"},"status_success":{"t":"E don pass","by":"Brouillon IA, à valider"},"new_transfer":{"t":"New transfer","by":"Brouillon IA, à valider"},"services_payment":{"t":"Pay for service","by":"Brouillon IA, à valider"},"error":{"t":"Error","by":"Brouillon IA, à valider"},"warning":{"t":"Warning","by":"Brouillon IA, à valider"},"ui_translating":{"t":"E di translate…","by":"Brouillon IA, à valider"},"ui_protected":{"t":"Protected, e be same as for the page","by":"Brouillon IA, à valider"},"ui_validated":{"t":"Checked","by":"Brouillon IA, à valider"},"ui_auto":{"t":"No check yet","by":"Brouillon IA, à valider"},"ui_summary":{"t":"Safe summary","by":"Brouillon IA, à valider"},"ui_blocked":{"t":"Blocked: the money no match","by":"Brouillon IA, à valider"},"ui_missing":{"t":"No translate yet","by":"Brouillon IA, à valider"},"ui_important":{"t":"Important messages","by":"Brouillon IA, à valider"},"ui_page":{"t":"For this page","by":"Brouillon IA, à valider"},"ui_new":{"t":"NEW","by":"Brouillon IA, à valider"},"ui_listen":{"t":"Hear am","by":"Brouillon IA, à valider"},"ui_no_audio":{"t":"No voice yet","by":"Brouillon IA, à valider"},"ui_subtitles":{"t":"Subtitles","by":"Brouillon IA, à valider"},"ui_close":{"t":"Close","by":"Brouillon IA, à valider"},"ui_empty":{"t":"Nothing for translate here","by":"Brouillon IA, à valider"},"ui_mt_down":{"t":"Computer translation no dey: na summary we use","by":"Brouillon IA, à valider"},"ui_hint_hover":{"t":"Hold Ctrl and point any word: the translation go show for under.","by":"Brouillon IA, à valider"},"ui_hint_hover_short":{"t":"point = translation","by":"Brouillon IA, à valider"},"ui_hint_listen":{"t":"Then press Space for hear am.","by":"Brouillon IA, à valider"},"ui_ok":{"t":"I don understand","by":"Brouillon IA, à valider"},"ui_tagline":{"t":"Bank for we own language","by":"Brouillon IA, à valider"},"ui_active":{"t":"E dey work for this site","by":"Brouillon IA, à valider"},"ui_unsupported":{"t":"E no fit work for this page","by":"Brouillon IA, à valider"},"ui_reload_msg":{"t":"Reload the page make the translation show.","by":"Brouillon IA, à valider"},"ui_reload":{"t":"Reload","by":"Brouillon IA, à valider"},"ui_language":{"t":"Language","by":"Brouillon IA, à valider"},"ui_show":{"t":"Show the translation","by":"Brouillon IA, à valider"},"ui_mode_ctrl":{"t":"+ point","by":"Brouillon IA, à valider"},"ui_mode_hover":{"t":"Point","by":"Brouillon IA, à valider"},"ui_mode_off":{"t":"Off","by":"Brouillon IA, à valider"},"ui_panel":{"t":"Panel","by":"Brouillon IA, à valider"},"ui_settings":{"t":"Words, voice and settings","by":"Brouillon IA, à valider"},"ui_choose":{"t":"Which language you di talk?","by":"Brouillon IA, à valider"},"ui_choose_sub":{"t":"Langwa go show the bank for this language.","by":"Brouillon IA, à valider"},"ui_soon":{"t":"No translation data yet","by":"Brouillon IA, à valider"},"ui_later":{"t":"After","by":"Brouillon IA, à valider"},"ui_hint_touch":{"t":"Press any word for long: the translation go show for under.","by":"Brouillon IA, à valider"},"ui_hint_touch_short":{"t":"press long = translation","by":"Brouillon IA, à valider"},"ui_missing_lang":{"t":"Dem never translate am for {lang}","by":"Brouillon IA, à valider"},"ui_original":{"t":"Original","by":"Brouillon IA, à valider"},"ui_n_ok":{"t":"checked","by":"Brouillon IA, à valider"},"ui_n_mt":{"t":"no check yet","by":"Brouillon IA, à valider"},"ui_n_gist":{"t":"summaries","by":"Brouillon IA, à valider"},"ui_n_block":{"t":"blocked","by":"Brouillon IA, à valider"},"ui_n_none":{"t":"no translate yet","by":"Brouillon IA, à valider"},"ui_n_ok_one":{"t":"checked","by":"Brouillon IA, à valider"},"ui_n_mt_one":{"t":"no check yet","by":"Brouillon IA, à valider"},"ui_n_gist_one":{"t":"summary","by":"Brouillon IA, à valider"},"ui_n_block_one":{"t":"blocked","by":"Brouillon IA, à valider"},"ui_n_none_one":{"t":"no translate yet","by":"Brouillon IA, à valider"},"ui_voice_human":{"t":"Real person voice","by":"Brouillon IA, à valider"},"ui_voice_neural":{"t":"Computer voice (neural)","by":"Brouillon IA, à valider"},"ui_voice_synth":{"t":"Computer voice","by":"Brouillon IA, à valider"},"ui_stop":{"t":"Stop","by":"Brouillon IA, à valider"},"ui_page_mode":{"t":"Translate the page","by":"Brouillon IA, à valider"},"ui_read_all":{"t":"Read everything","by":"Brouillon IA, à valider"},"ui_autoread":{"t":"Read by itself","by":"Brouillon IA, à valider"},"ui_autoread_sub":{"t":"E go read the translation as e show","by":"Brouillon IA, à valider"},"ui_space_listen":{"t":"hear","by":"Brouillon IA, à valider"},"ui_hint_listen_touch":{"t":"Touch Hear am for hear the translation.","by":"Brouillon IA, à valider"},"ui_dict_words":{"t":"Words from dictionary (no check yet)","by":"Brouillon IA, à valider"},"ui_online_voice":{"t":"Natural voice for internet","by":"Brouillon IA, à valider"},"ui_online_voice_sub":{"t":"E sweet pass. The text go go Microsoft or Google.","by":"Brouillon IA, à valider"},"ui_online_ask":{"t":"You want voice wey sweet pass?","by":"Brouillon IA, à valider"},"ui_enable":{"t":"Put am on","by":"Brouillon IA, à valider"},"ui_no_thanks":{"t":"No, thank you","by":"Brouillon IA, à valider"},"ui_brand":{"t":"Na name, we no translate am","by":"Brouillon IA, à valider"},"ui_tab_chat":{"t":"Ask","by":"Brouillon IA, à valider"},"ui_tab_msgs":{"t":"Messages","by":"Brouillon IA, à valider"},"ui_ask_placeholder":{"t":"Ask your question…","by":"Brouillon IA, à valider"},"ui_mic":{"t":"Talk","by":"Brouillon IA, à valider"},"ui_send":{"t":"Send","by":"Brouillon IA, à valider"},"ui_listening":{"t":"I di listen…","by":"Brouillon IA, à valider"},"ui_switch_to":{"t":"Change to {lang}","by":"Brouillon IA, à valider"},"q_page":{"t":"Wetin dis page be?","by":"Brouillon IA, à valider"},"q_amount":{"t":"How much I go pay?","by":"Brouillon IA, à valider"},"q_receiver":{"t":"Who go receive the money?","by":"Brouillon IA, à valider"},"q_warning":{"t":"Any danger for here?","by":"Brouillon IA, à valider"},"q_next":{"t":"Wetin I go do now?","by":"Brouillon IA, à valider"},"ans_welcome":{"t":"Hello! Ask me anything about dis page, write am or talk am.","by":"Brouillon IA, à valider"},"ans_page":{"t":"Dis page na: {title}.","by":"Brouillon IA, à valider"},"ans_amount":{"t":"All the money wey go comot: {total}.","by":"Brouillon IA, à valider"},"ans_fees":{"t":"Charges: {fees}.","by":"Brouillon IA, à valider"},"ans_no_amount":{"t":"I no see any amount for dis page.","by":"Brouillon IA, à valider"},"ans_receiver":{"t":"The money go go give {name}.","by":"Brouillon IA, à valider"},"ans_no_receiver":{"t":"I never see the person wey go receive for dis page.","by":"Brouillon IA, à valider"},"ans_warning":{"t":"Take care: {message}","by":"Brouillon IA, à valider"},"ans_no_warning":{"t":"No warning for dis page.","by":"Brouillon IA, à valider"},"ans_next":{"t":"Now, press {button}.","by":"Brouillon IA, à valider"},"ans_no_next":{"t":"I no see any button for press.","by":"Brouillon IA, à valider"},"ans_balance":{"t":"Money wey you fit use: {balance}.","by":"Brouillon IA, à valider"},"ans_unknown":{"t":"I fit answer these questions:","by":"Brouillon IA, à valider"},"ans_type_instead":{"t":"Write your question or touch one question for down.","by":"Brouillon IA, à valider"},"ans_lang_detected":{"t":"You di talk {lang}?","by":"Brouillon IA, à valider"},"ans_speech_consent":{"t":"For understand your voice, the browser go send the recording give Google (French, English, Pidgin).","by":"Brouillon IA, à valider"},"ans_model_note":{"t":"Na computer answer: check am well.","by":"Brouillon IA, à valider"}}},"lns":{"code":"lns","validation":{"validators":[],"status":"Automatic machine translation draft. Not validated by Lamnso' speakers. Review financial and safety wording before relying on it.","method":"Local Flagship AI Cameroon French-pivot MarianMT model; native-speaker validation is still required."},"entries":{}},"dua":{"code":"dua","validation":{"validators":[],"method":"Native-speaker review in the glossary editor (options page). Each entry stores who validated it."},"entries":{}},"bbj":{"code":"bbj","validation":{"validators":[],"method":"Native-speaker review in the glossary editor (options page). Each entry stores who validated it."},"entries":{}},"bas":{"code":"bas","validation":{"validators":[],"method":"Native-speaker review in the glossary editor (options page). Each entry stores who validated it."},"entries":{}},"nge":{"code":"nge","validation":{"validators":[],"method":"Native-speaker review in the glossary editor (options page). Each entry stores who validated it."},"entries":{}},"bkm":{"code":"bkm","validation":{"validators":[],"method":"Native-speaker review in the glossary editor (options page). Each entry stores who validated it."},"entries":{}}},"lexicon":{"licence":"Words from Wiktionnaire / Wiktionary contributors, CC BY-SA 4.0 (https://fr.wiktionary.org, https://en.wiktionary.org); Lamnso words learned from the Lamnso New Testament (flagship-ai/cameroon_bibles, CC BY 4.0) aligned with the King James Version (public domain). Dictionary hints, not validated.","fr":{"ewo":{"eau":["məndím"],"bonjour":["bembekiri"]},"fub":{"non":["ala"],"merci":["adjarama","tiyaabu"],"savoir":["annduude"],"connaitre":["annduude"],"aide":["ballal"],"travail":["ballal"],"eau":["ceeɗoojam","ndiyam","ndiiam"],"voleur":["gujjo"],"personne":["goɗɗo"],"mois":["lewru"]},"dua":{"acheter":["anda"],"savoir":["bía"],"vendre":["andisɛ"],"jour":["búńa"],"changer":["cenci","tukwa"],"travail":["ebolo"],"accepter":["koa"],"lire":["lánga"],"prendre":["lámba ńolo","no̱ngo̱ jangame̱n"],"dire":["kwála"],"lettre":["kálati"],"eau":["madíbá"],"personne":["moto"],"garder":["táta"],"payer":["sáwa"],"ouvrir":["télɛ"]},"bas":{"changer":["hɛ̀ŋlà"],"eau":["malép","màlep","màlep ma ɓâs"]},"bbj":{},"nge":{"eau":["ŋkyi"]},"bkm":{"eau":["mu"]},"lns":{"argent":["mbàm"],"payer":["làʼ"],"paiement":["làʼ"],"donner":["fò"],"prendre":["lì"],"envoyer":["tùm","tumen"],"envoi":["tùm","tumen"],"nom":["yír","yir"],"jour":["kishiíy"],"mois":["ŋwee"],"année":["kiyá"],"mille":["nsə̀kì","ansə̀kì"],"cent":["wií","ghii"],"acheter":["yùn"],"achat":["yùn"],"vendre":["fiìnè"],"voleur":["shóŋ","shòŋ"],"mensonge":["kimboʼtì","bóʼti"],"mentir":["kimboʼtì","bóʼti"],"demander":["dzə̀r"],"dire":["jii"],"entendre":["yú","yù"],"écouter":["yú","yù"],"voir":["yén","yèn"],"savoir":["kì","kìíy"],"connaître":["kì","kìíy"],"écrire":["ŋwàʼ","saŋen"],"bon":["juŋ"],"bien":["juŋ"],"mal":["bi"],"vrai":["ru"],"vérité":["ru"],"nouveau":["fíy"],"nouvelle":["fíy"],"ouvrir":["mvə̀ʼ"],"appeler":["yoŋ"],"appel":["yoŋ"],"main":["kiwó","wó"],"maison":["lav"],"maintenant":["lèn"],"beaucoup":["anín"],"peu":["shishàr"],"choisir":["shòʼ"],"entrer":["nə̀ə́"],"saisir":["nə̀ə́"],"venir":["wìy"],"aller":["dù","du"],"salaire":["vilaʼày"],"prix":["káv"],"pauvre":["ŋgeʼe","kitàn"],"riche":["bùʼ"],"peur":["fàn","fan"],"non":["yòʼ","bó"],"merci":["beèrì","beerì"],"paix":["nyaáŋ"],"langue":["làm","lám"]}},"en":{"ewo":{"water":["məndím"]},"fub":{"never":["abada","abadan","muk"],"no":["alaa","aldaa","walaa"],"person":["aaden","gimɗo","neɗɗo"],"total":["adadu","kawral"],"number":["adadu"],"before":["adaade"],"take":["addugol","laatagol","naɓugol"],"know":["anndugol"],"error":["ayiibe","faljere","hakkee"],"return":["artugol"],"help":["ballal","dankata","faabaade"],"letter":["bataake"],"after":["caggal","ontuma","ɓaawo"],"price":["coggu"],"stop":["darnugol","faddagol","haaɗugol"],"work":["darnugol","ciiwdi","golle"],"year":["duuɓi"],"free":["dimo","hettaare"],"mistake":["faljere"],"call":["ewnagol","innugol","noddugol"],"lie":["fenaande","waalagol"],"look":["fewtugol","nandude","nanndugol"],"all":["fow","haddu","kala"],"finish":["gaynugol","haaɗugol","joofugol"],"end":["gaynugol","haaɗugol","kattuba"],"succeed":["gaynugol","laatagol","lontagol"],"language":["haala","ɗemŋgal"],"message":["haala","nelal"],"hide":["gurii","suumugol"],"wait":["habbagol","tijjagol"],"quickly":["heña"],"name":["innde","innugol","toɗɗagol"],"now":["jonta"],"receive":["jaɓɓagol"],"give":["jonnugol"],"read":["jangude","janngugol"],"listen":["jentagol","ɗoftagol"],"merchant":["jula","yeeyoowo"],"money":["kaalisi"],"new":["keso"],"back":["kééci","ɓaawo","ɓaawoojo"],"month":["lewru"],"sell":["marsingol","soorugo","yeeyugol"],"remain":["luttugol"],"close":["maɓɓugo","moggo","takko"],"open":["maɓɓititgo","udditugol"],"keep":["marugol"],"good":["moƴƴo","suuraare"],"enter":["naatugol"],"see":["ndaarugol"],"send":["naɓugol","nelde"],"water":["ndiyam"],"salary":["ngeenaari"],"wage":["ngeenaari"],"success":["poolal","ɓantaare"],"reason":["sababu"],"date":["ribinoore","saanga"],"pay":["rentagol"],"refuse":["saltagol"],"lack":["sannugol","ŋakkugol"],"many":["sowre","ɗuuɗugol"],"buy":["soodgo","soodugol"],"secret":["suuraare"],"security":["suuraare"],"account":["tinndol"],"little":["tokooso"],"write":["winndugol"],"change":["waylugol"],"speak":["wowlugol"],"day":["ñallal","ñalaande"],"debt":["ñamaande"],"telephone":["ɓoggol"]},"dua":{"person":["moto"],"water":["madíbá"]},"bas":{"water":["malép"]},"bbj":{"good":["bùŋ","pəpúŋ"],"all":["awɛ́"],"open":["cwaə́'"],"lie":["cwánwə̀"],"secret":["càm"],"remain":["cʉ́'"],"look":["cʉ'","lé","mcʉ̀"],"send":["cyà"],"bad":["cwə̀pùŋ"],"day":["dzʉ̌","tyə́'"],"new":["cùŋ","sə́"],"never":["dà"],"sell":["fìŋ","syàp"],"speak":["ghɔ̀m","sò"],"language":["ghɔ̀m"],"work":["fà'"],"give":["há","pà'"],"help":["hé","kwítə́"],"ask":["hə́ŋ","ló"],"take":["kwí","kə̀","lə̀"],"call":["ké"],"read":["ké"],"enter":["kó"],"wage":["ló'"],"lack":["kɔ̀m"],"close":["kə̀ŋ","vì'"],"keep":["lwɔ̀'"],"finish":["mì"],"person":["mò"],"back":["lə̂","ŋka'tə̀"],"accept":["píŋ"],"before":["nə̂"],"wait":["pyáp"],"water":["shyə"],"buy":["syàp","yó"],"pay":["syàp"],"enough":["sàk"],"hide":["pɔ̀m","tʉ̀m","tʉ̀mnyə̀"],"thousand":["shǎ'"],"thief":["shǔŋ"],"no":["sɔ̀m"],"name":["tsǒ"],"many":["yɔ́m"],"write":["və̀"],"see":["yɔ́"],"know":["zhyə","zhyə́"],"money":["ŋkap"],"yes":["ə̌ŋ"],"steal":["zhʉ̀","ŋɛ́"]},"bkm":{"water":["mu","jva"],"quickly":["nyas"],"person":["wul"]},"nge":{},"lns":{"money":["mbàm"],"pay":["làʼ"],"give":["fò"],"take":["lì"],"send":["tùm","tumen"],"name":["yír","yir"],"day":["kishiíy"],"month":["ŋwee"],"year":["kiyá"],"thousand":["nsə̀kì","ansə̀kì"],"hundred":["wií","ghii"],"buy":["yùn"],"sell":["fiìnè"],"thief":["shóŋ","shòŋ"],"lie":["kimboʼtì","bóʼti"],"ask":["dzə̀r"],"say":["jii"],"hear":["yú","yù"],"see":["yén","yèn"],"know":["kì","kìíy"],"write":["ŋwàʼ","saŋen"],"good":["juŋ"],"evil":["bi"],"true":["ru"],"new":["fíy"],"open":["mvə̀ʼ"],"call":["yoŋ"],"hand":["kiwó","wó"],"house":["lav"],"now":["lèn"],"many":["anín"],"little":["shishàr"],"choose":["shòʼ"],"enter":["nə̀ə́"],"come":["wìy"],"go":["dù","du"],"wages":["vilaʼày"],"price":["káv"],"gold":["kisha"],"poor":["ŋgeʼe","kitàn"],"rich":["bùʼ"],"fear":["fàn","fan"],"no":["yòʼ","bó"],"thanks":["beèrì","beerì"],"peace":["nyaáŋ"],"language":["làm","lám"]}}}};
+globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). Each national-language file (lang/<code>.json) maps an id to { t, verified, validator, audio }. {placeholders} are filled with the protected values from the page (amounts, names...) and MUST be kept in the translation. Strings marked \"check\": true were taken from an auto-translated view of the test page and must be compared with the page's real FR/EN text.","entries":[{"id":"gist_error","group":"safety-net","fr":"Ceci est un message d'erreur. L'opération n'a pas abouti.","en":"This is an error message. The operation did not go through.","note":"Phrase générale pour TOUTE nouvelle erreur inconnue : l’opération n’a pas marché."},{"id":"gist_warning","group":"safety-net","fr":"Avertissement de sécurité : lisez attentivement ou demandez de l'aide à une personne de confiance.","en":"Security warning: read carefully or ask someone you trust for help.","note":"Phrase générale utilisée pour TOUT nouvel avertissement de sécurité inconnu. Doit inviter à la prudence."},{"id":"gist_success","group":"safety-net","fr":"L'opération a réussi.","en":"The operation was successful."},{"id":"gist_info","group":"safety-net","fr":"Message d'information.","en":"Information message."},{"id":"gist_keywords","group":"safety-net","fr":"Mots clés :","en":"Key words:"},{"id":"test_banner","group":"test-env","fr":"Environnement de test : données fictives, aucune transaction réelle.","en":"Test environment: dummy data, no real transactions.","check":true,"variants":["Environnement de test — données fictives, aucune transaction réelle.","Test environment — dummy data, no real transactions."]},{"id":"test_protocol","group":"test-env","fr":"Protocole de test","en":"Test protocol","check":true},{"id":"back_hackathon","group":"test-env","fr":"Retour au hackathon","en":"Back to the hackathon","check":true},{"id":"online_banking","group":"test-env","fr":"Banque en ligne","en":"Online banking","check":true},{"id":"step_pay","group":"steps","fr":"Payer","en":"Pay","variants":["Paiement","Payment"],"note":"Étape 1 du parcours : payer / envoyer de l’argent. / Step 1 of the journey: paying."},{"id":"step_costs","group":"steps","fr":"Frais","en":"Fees","variants":["Costs"],"check":true,"note":"Étape où l’on voit ce que la banque prend pour l’opération. / Step showing what the bank charges."},{"id":"step_beneficiary","group":"steps","fr":"Bénéficiaire","en":"Beneficiary","note":"Étape où l’on dit qui reçoit l’argent. / Step where you say who receives the money."},{"id":"step_summary","group":"steps","fr":"Récapitulatif","en":"Summary","variants":["Résumé"]},{"id":"step_confirmation","group":"steps","fr":"Confirmation","en":"Confirmation"},{"id":"your_account","group":"balance","fr":"Votre compte","en":"Your account"},{"id":"hello_name","group":"balance","fr":"Bonjour, {name}","en":"Hello, {name}"},{"id":"intro_balance","group":"balance","fr":"Consultez votre solde et initiez un virement sécurisé.","en":"Check your balance and initiate a secure transfer.","check":true},{"id":"available_balance","group":"balance","fr":"Solde disponible","en":"Available balance","note":"L’argent que vous pouvez utiliser maintenant. / The money you can use right now."},{"id":"balance","group":"balance","fr":"Solde","en":"Balance","note":"L’argent qui est sur le compte. / The money in the account."},{"id":"account_number","group":"balance","fr":"Numéro de compte","en":"Account number","note":"Le numéro qui identifie le compte. / The number identifying the account."},{"id":"current_account","group":"balance","fr":"Compte courant","en":"Current account","note":"Le compte de tous les jours. / The everyday account."},{"id":"savings_account","group":"balance","fr":"Compte épargne","en":"Savings account"},{"id":"perform_transfer","group":"balance","fr":"Effectuer un virement","en":"Make a transfer","variants":["Perform a transfer","Faire un virement","Faire un transfert"],"check":true},{"id":"view_fees","group":"balance","fr":"Voir les frais","en":"View fees","check":true},{"id":"recent_transactions","group":"balance","fr":"Transactions récentes","en":"Recent transactions","variants":["Dernières opérations","Dernières transactions"],"check":true},{"id":"merchant_payment","group":"balance","fr":"Paiement marchand","en":"Merchant payment","check":true,"note":"Argent payé dans un magasin ou à un commerçant."},{"id":"salary_received","group":"balance","fr":"Salaire reçu","en":"Salary received","check":true,"note":"Le salaire est arrivé sur le compte (argent qui entre)."},{"id":"transfer_received","group":"balance","fr":"Virement reçu","en":"Transfer received","variants":["Transfert reçu"],"note":"Quelqu un vous a envoyé de l’argent (argent qui entre)."},{"id":"transfer_sent","group":"balance","fr":"Virement envoyé","en":"Transfer sent","variants":["Transfert envoyé"]},{"id":"electricity_bill","group":"balance","fr":"Facture d'électricité","en":"Electricity bill"},{"id":"water_bill","group":"balance","fr":"Facture d'eau","en":"Water bill"},{"id":"cash_withdrawal","group":"balance","fr":"Retrait d'espèces","en":"Cash withdrawal"},{"id":"deposit","group":"balance","fr":"Dépôt","en":"Deposit"},{"id":"airtime","group":"balance","fr":"Achat de crédit","en":"Airtime purchase"},{"id":"security","group":"security","fr":"Sécurité","en":"Security"},{"id":"security_check_beneficiary","group":"security","fr":"Vérifiez toujours le nom et le numéro du bénéficiaire avant de confirmer un virement.","en":"Always check the beneficiary's name and number before confirming a transfer.","check":true,"note":"Conseil de sécurité : regardez bien le nom et le numéro avant de valider."},{"id":"secure_connection","group":"security","fr":"Connexion sécurisée","en":"Secure connection"},{"id":"demo_footer","group":"security","fr":"Safinum Pay : environnement de démonstration. N'entrez aucune donnée personnelle réelle.","en":"Safinum Pay: demonstration environment. Do not enter any real personal data.","check":true,"variants":["Safinum Pay — environnement de démonstration. N'entrez aucune donnée personnelle réelle.","Safinum Pay — demonstration environment. Do not enter any real personal data."]},{"id":"never_share_pin","group":"security","fr":"Ne communiquez jamais votre code PIN, même à un agent de la banque.","en":"Never share your PIN, not even with a bank employee.","note":"Le code secret ne se donne à personne, même pas à quelqu’un de la banque. La négation est essentielle."},{"id":"fraud_warning","group":"security","fr":"Méfiez-vous des appels ou SMS qui vous demandent votre code secret.","en":"Beware of calls or text messages asking for your secret code.","note":"Si quelqu’un vous appelle pour demander votre code secret, c’est un voleur."},{"id":"irreversible","group":"security","fr":"Une fois confirmé, le virement ne peut pas être annulé.","en":"Once confirmed, the transfer cannot be cancelled.","note":"Après confirmation, impossible de récupérer l’argent. Le sens doit être très clair."},{"id":"check_details","group":"security","fr":"Vérifiez les informations avant de confirmer.","en":"Check the details before confirming."},{"id":"transfer_fees","group":"fees","fr":"Frais de virement","en":"Transfer fees","variants":["Frais de transfert"],"note":"Ce que la banque prend pour envoyer l’argent. / What the bank charges to send money."},{"id":"transaction_fees","group":"fees","fr":"Frais de transaction","en":"Transaction fees"},{"id":"fees","group":"fees","fr":"Frais","en":"Fees","variants":["Costs"],"note":"L’argent que la banque prend pour faire l’opération. / What the bank charges for the operation."},{"id":"choose_type_amount","group":"fees","fr":"Choisissez le type de virement et le montant. Les frais sont calculés automatiquement.","en":"Choose the transfer type and amount. Fees are calculated automatically.","check":true},{"id":"operation_type","group":"fees","fr":"Type d'opération","en":"Type of operation","variants":["Operation type"],"check":true},{"id":"safinum_account","group":"fees","fr":"Compte Safinum","en":"Safinum account","check":true},{"id":"instant_free","group":"fees","fr":"Virement instantané et gratuit","en":"Instant and free transfer","check":true,"note":"L’argent arrive tout de suite et la banque ne prend rien. / Arrives immediately, the bank charges nothing."},{"id":"other_bank","group":"fees","fr":"Compte d'une autre banque","en":"Account at another bank"},{"id":"mobile_money","group":"fees","fr":"Mobile Money","en":"Mobile Money"},{"id":"amount_to_send","group":"fees","fr":"Montant à envoyer","en":"Amount to send"},{"id":"amount","group":"fees","fr":"Montant","en":"Amount"},{"id":"free","group":"fees","fr":"Gratuit","en":"Free"},{"id":"total_debited","group":"fees","fr":"Total à débiter","en":"Total to be debited","variants":["Total débité","Total debited"],"check":true,"note":"Tout ce qui va sortir du compte : montant envoyé + frais. / Everything that will leave the account: amount + fees."},{"id":"balance_after","group":"fees","fr":"Solde après l'opération","en":"Balance after operation","variants":["Balance after the operation"],"check":true,"note":"L’argent qui restera sur le compte après cet envoi. / Money left after this transfer."},{"id":"fee_rate_min","group":"fees","fr":"{rate} du montant (minimum {min})","en":"{rate} of the amount (minimum {min})"},{"id":"beneficiary","group":"transfer","fr":"Bénéficiaire","en":"Beneficiary","note":"La personne qui va recevoir l’argent. / The person who will receive the money."},{"id":"beneficiary_name","group":"transfer","fr":"Nom du bénéficiaire","en":"Beneficiary name","variants":["Beneficiary's name","Name of the beneficiary"]},{"id":"phone_number","group":"transfer","fr":"Numéro de téléphone","en":"Phone number"},{"id":"account_or_phone","group":"transfer","fr":"Numéro de compte ou de téléphone","en":"Account or phone number"},{"id":"reason","group":"transfer","fr":"Motif","en":"Reason","variants":["Motif du virement","Purpose"]},{"id":"transfer_summary","group":"transfer","fr":"Récapitulatif du virement","en":"Transfer summary"},{"id":"send_amount_to","group":"transfer","fr":"Vous allez envoyer {amount} à {name}.","en":"You are about to send {amount} to {name}.","note":"Phrase de confirmation : qui reçoit et combien. Gardez {amount} et {name}. / Confirmation: who receives how much."},{"id":"pin_code","group":"transfer","fr":"Code PIN","en":"PIN code","variants":["PIN"],"note":"Le code secret de 4 chiffres. / The secret 4-digit code."},{"id":"enter_pin","group":"transfer","fr":"Saisissez votre code PIN","en":"Enter your PIN"},{"id":"accept_terms","group":"transfer","fr":"J'accepte les conditions générales.","en":"I accept the terms and conditions."},{"id":"terms","group":"transfer","fr":"Conditions générales","en":"Terms and conditions"},{"id":"back","group":"transfer","fr":"Retour","en":"Back"},{"id":"continue","group":"transfer","fr":"Continuer","en":"Continue"},{"id":"confirm","group":"transfer","fr":"Confirmer","en":"Confirm"},{"id":"confirm_transfer","group":"transfer","fr":"Confirmer le virement","en":"Confirm the transfer","variants":["Confirm transfer"]},{"id":"cancel","group":"transfer","fr":"Annuler","en":"Cancel"},{"id":"reference","group":"transfer","fr":"Référence","en":"Reference","note":"Le code de cette opération ; à donner si vous appelez la banque. / The code of this operation; give it if you call the bank."},{"id":"date","group":"transfer","fr":"Date","en":"Date"},{"id":"status","group":"transfer","fr":"Statut","en":"Status"},{"id":"transfer_success","group":"messages","fr":"Virement effectué avec succès.","en":"Transfer completed successfully.","variants":["Transfert effectué avec succès."]},{"id":"insufficient_balance","group":"messages","fr":"Solde insuffisant pour effectuer cette opération.","en":"Insufficient balance for this transaction.","variants":["Solde insuffisant.","Insufficient balance."],"note":"Il n’y a pas assez d’argent sur le compte pour cette opération."},{"id":"pin_incorrect_attempts","group":"messages","fr":"Code PIN incorrect. Il vous reste {count} tentatives.","en":"Incorrect PIN. You have {count} attempts left.","note":"Le code secret est faux ; dire combien d’essais restent avant blocage. Gardez {count}."},{"id":"pin_incorrect","group":"messages","fr":"Code PIN incorrect.","en":"Incorrect PIN."},{"id":"account_locked","group":"messages","fr":"Votre compte est temporairement bloqué.","en":"Your account is temporarily locked."},{"id":"service_apology","group":"messages","fr":"Nous sommes désolés.","en":"We're sorry.","variants":["We are sorry","We’re sorry"],"note":"A brief apology from the service, usually after a failed action. Keep it as an apology, not a generic information label."},{"id":"required_field","group":"messages","fr":"Ce champ est obligatoire.","en":"This field is required."},{"id":"invalid_amount","group":"messages","fr":"Montant invalide.","en":"Invalid amount."},{"id":"must_accept_terms","group":"messages","fr":"Vous devez accepter les conditions générales.","en":"You must accept the terms and conditions."},{"id":"session_expired","group":"messages","fr":"Votre session a expiré. Veuillez vous reconnecter.","en":"Your session has expired. Please log in again."},{"id":"network_error","group":"messages","fr":"Erreur réseau. Veuillez réessayer.","en":"Network error. Please try again."},{"id":"processing","group":"messages","fr":"Traitement en cours...","en":"Processing..."},{"id":"enter_recipient_info","group":"test-env","fr":"Saisissez les informations du destinataire. Vérifiez toujours le numéro avant de valider.","en":"Enter the recipient's information. Always check the number before submitting.","check":true},{"id":"new_beneficiary_warning","group":"test-env","fr":"Ce bénéficiaire n'a jamais été utilisé sur ce compte. Veuillez vérifier le numéro avant de continuer.","en":"This beneficiary has never been used on this account. Please verify the number before proceeding.","check":true,"note":"Mise en garde : vous n’avez jamais envoyé d’argent à cette personne ; vérifiez le numéro. Garder le ton d’avertissement."},{"id":"reason_for_transfer","group":"test-env","fr":"Motif du virement","en":"Reason for transfer","check":true,"note":"Pourquoi vous envoyez l’argent. / Why you are sending the money."},{"id":"note_optional","group":"test-env","fr":"Note (facultatif)","en":"Note (optional)","variants":["Note (facultative)"],"check":true},{"id":"checked_name_number","group":"test-env","fr":"J'ai vérifié le nom et le numéro du bénéficiaire.","en":"I checked the beneficiary's name and number.","check":true,"note":"La personne dit qu’elle a bien vérifié le nom et le numéro."},{"id":"check_info_before_confirm","group":"test-env","fr":"Vérifiez les informations avant de confirmer le virement.","en":"Check the information before confirming the transfer.","check":true},{"id":"phone","group":"test-env","fr":"Téléphone","en":"Phone"},{"id":"operation","group":"test-env","fr":"Opération","en":"Operation"},{"id":"confirm_info_correct","group":"test-env","fr":"Je confirme que les informations ci-dessus sont exactes.","en":"I confirm that the above information is correct.","check":true,"note":"La personne s’engage : les informations sont justes."},{"id":"modify","group":"test-env","fr":"Modifier","en":"Edit","variants":["To modify","Modify"],"check":true},{"id":"transfer_completed","group":"test-env","fr":"Virement effectué","en":"Transfer completed","check":true},{"id":"transfer_sent_success","group":"test-env","fr":"Votre virement a été envoyé avec succès.","en":"Your transfer has been sent successfully.","check":true},{"id":"status_success","group":"test-env","fr":"Succès","en":"Success","variants":["Réussi"]},{"id":"new_transfer","group":"test-env","fr":"Nouveau virement","en":"New transfer","variants":["Nouveau transfert"]},{"id":"services_payment","group":"test-env","fr":"Paiement de services","en":"Payment for services"},{"id":"error","group":"messages","fr":"Erreur","en":"Error"},{"id":"warning","group":"messages","fr":"Attention","en":"Warning"},{"id":"ui_translating","group":"ui","fr":"Traduction en cours…","en":"Translating…"},{"id":"ui_protected","group":"ui","fr":"Valeur protégée, identique à la page","en":"Protected value, same as on the page"},{"id":"ui_validated","group":"ui","fr":"Validé","en":"Validated"},{"id":"ui_auto","group":"ui","fr":"Non validé","en":"Not validated"},{"id":"ui_summary","group":"ui","fr":"Résumé sûr","en":"Safe summary"},{"id":"ui_blocked","group":"ui","fr":"Bloqué : montant différent","en":"Blocked: amount mismatch"},{"id":"ui_missing","group":"ui","fr":"Pas encore traduit","en":"Not translated yet"},{"id":"ui_important","group":"ui","fr":"Messages importants","en":"Important messages"},{"id":"ui_page","group":"ui","fr":"Sur cette page","en":"On this page"},{"id":"ui_new","group":"ui","fr":"NOUVEAU","en":"NEW"},{"id":"ui_listen","group":"ui","fr":"Écouter","en":"Listen"},{"id":"ui_no_audio","group":"ui","fr":"Pas encore d’audio","en":"No audio yet"},{"id":"ui_subtitles","group":"ui","fr":"Sous-titres","en":"Subtitles"},{"id":"ui_close","group":"ui","fr":"Fermer","en":"Close"},{"id":"ui_drag_hint","group":"ui","fr":"Glisser pour déplacer · double-clic pour replacer","en":"Drag to move · double-click to reset"},{"id":"ui_empty","group":"ui","fr":"Rien à traduire ici","en":"Nothing to translate here"},{"id":"ui_mt_down","group":"ui","fr":"Traduction automatique indisponible : le texte reste non traduit","en":"Machine translation unavailable: unmatched text remains untranslated"},{"id":"ui_hint_hover","group":"ui","fr":"Maintenez Ctrl et pointez un texte : sa traduction s’affiche dessous.","en":"Hold Ctrl and point at any text: its translation appears below."},{"id":"ui_hint_hover_short","group":"ui","fr":"survol = traduction","en":"hover = translation"},{"id":"ui_hint_listen","group":"ui","fr":"Puis appuyez sur Espace pour écouter.","en":"Then press Space to listen."},{"id":"ui_ok","group":"ui","fr":"Compris","en":"Got it"},{"id":"ui_tagline","group":"ui","fr":"Banque en langues nationales","en":"Banking in national languages"},{"id":"ui_active","group":"ui","fr":"Actif sur ce site","en":"Active on this site"},{"id":"ui_unsupported","group":"ui","fr":"Page non prise en charge","en":"Page not supported"},{"id":"ui_reload_msg","group":"ui","fr":"Rechargez la page pour afficher les traductions.","en":"Reload the page to show the translations."},{"id":"ui_reload","group":"ui","fr":"Recharger","en":"Reload"},{"id":"ui_language","group":"ui","fr":"Langue","en":"Language"},{"id":"ui_show","group":"ui","fr":"Afficher la traduction","en":"Show the translation"},{"id":"ui_mode_ctrl","group":"ui","fr":"+ survol","en":"+ hover"},{"id":"ui_mode_hover","group":"ui","fr":"Survol","en":"Hover"},{"id":"ui_mode_off","group":"ui","fr":"Non","en":"Off"},{"id":"ui_panel","group":"ui","fr":"Panneau","en":"Panel"},{"id":"ui_settings","group":"ui","fr":"Glossaire, voix et paramètres","en":"Glossary, voice and settings"},{"id":"ui_choose","group":"ui","fr":"Quelle langue parlez-vous ?","en":"Which language do you speak?"},{"id":"ui_choose_sub","group":"ui","fr":"Langwa affichera la banque dans cette langue.","en":"Langwa will show the bank in this language."},{"id":"ui_soon","group":"ui","fr":"Bientôt","en":"Soon"},{"id":"ui_later","group":"ui","fr":"Plus tard","en":"Later"},{"id":"ui_hint_touch","group":"ui","fr":"Appuyez longuement sur un texte : sa traduction s’affiche dessous.","en":"Long press any text: its translation appears below."},{"id":"ui_hint_touch_short","group":"ui","fr":"appui long = traduction","en":"long press = translation"},{"id":"ui_missing_lang","group":"ui","fr":"Pas encore traduit en {lang}","en":"Not yet translated into {lang}"},{"id":"ui_original","group":"ui","fr":"Original","en":"Original"},{"id":"ui_n_ok","group":"ui","fr":"validées","en":"validated"},{"id":"ui_n_mt","group":"ui","fr":"non validées","en":"not validated"},{"id":"ui_n_gist","group":"ui","fr":"résumés","en":"summaries"},{"id":"ui_n_block","group":"ui","fr":"bloquées","en":"blocked"},{"id":"ui_n_none","group":"ui","fr":"non traduites","en":"not translated"},{"id":"ui_n_ok_one","group":"ui","fr":"validée","en":"validated"},{"id":"ui_n_mt_one","group":"ui","fr":"non validée","en":"not validated"},{"id":"ui_n_gist_one","group":"ui","fr":"résumé","en":"summary"},{"id":"ui_n_block_one","group":"ui","fr":"bloquée","en":"blocked"},{"id":"ui_n_none_one","group":"ui","fr":"non traduite","en":"not translated"},{"id":"ui_voice_human","group":"ui","fr":"Voix humaine","en":"Human voice"},{"id":"ui_voice_neural","group":"ui","fr":"Voix neuronale","en":"Neural voice"},{"id":"ui_voice_synth","group":"ui","fr":"Voix de synthèse","en":"Synthetic voice"},{"id":"ui_voice_local","group":"ui","fr":"Voix locale","en":"Local voice"},{"id":"ui_voice_browser","group":"ui","fr":"Voix du navigateur","en":"Browser voice"},{"id":"ui_voice_preparing","group":"ui","fr":"Voix locale, préparation…","en":"Local voice, preparing…"},{"id":"ui_voice_why_offline","group":"ui","fr":"voix locale éteinte","en":"local voice is off"},{"id":"ui_voice_why_loading","group":"ui","fr":"voix locale en chargement","en":"local voice is loading"},{"id":"ui_voice_installing","group":"ui","fr":"voix naturelle","en":"natural voice"},{"id":"ui_voice_natural","group":"ui","fr":"Voix naturelle","en":"Natural voice"},{"id":"ui_voice_hint","group":"ui","fr":"Voix du navigateur. Pour une voix plus naturelle, lancez « Start Langwa voice » sur cet ordinateur.","en":"Browser voice. For a more natural voice, start “Start Langwa voice” on this computer."},{"id":"ui_voice_starting","group":"ui","fr":"voix naturelle, démarrage…","en":"natural voice starting…"},{"id":"ui_voice_why_slow","group":"ui","fr":"voix locale trop lente","en":"local voice too slow"},{"id":"ui_voice_why_error","group":"ui","fr":"voix locale indisponible","en":"local voice unavailable"},{"id":"ui_stop","group":"ui","fr":"Arrêter","en":"Stop"},{"id":"ui_page_mode","group":"ui","fr":"Traduire la page","en":"Translate the page"},{"id":"ui_read_all","group":"ui","fr":"Tout lire","en":"Read all"},{"id":"ui_autoread","group":"ui","fr":"Lecture automatique","en":"Read aloud automatically"},{"id":"ui_autoread_sub","group":"ui","fr":"Lit la traduction dès qu’elle s’affiche","en":"Reads the translation as soon as it appears"},{"id":"ui_space_listen","group":"ui","fr":"écouter","en":"listen"},{"id":"ui_hint_listen_touch","group":"ui","fr":"Touchez Écouter pour entendre la traduction.","en":"Tap Listen to hear the translation."},{"id":"ui_dict_words","group":"ui","fr":"Mots du dictionnaire (non validés)","en":"Dictionary words (not validated)"},{"id":"ui_online_voice","group":"ui","fr":"Voix naturelles en ligne","en":"Natural online voices"},{"id":"ui_online_voice_sub","group":"ui","fr":"Plus fluide. Le texte lu est envoyé à Microsoft ou Google.","en":"More fluent. The text read is sent to Microsoft or Google."},{"id":"ui_online_ask","group":"ui","fr":"Voix plus naturelle ?","en":"A more natural voice?"},{"id":"ui_enable","group":"ui","fr":"Activer","en":"Turn on"},{"id":"ui_no_thanks","group":"ui","fr":"Non merci","en":"No thanks"},{"id":"ui_brand","group":"ui","fr":"Nom propre, non traduit","en":"Proper name, not translated"},{"id":"ui_tab_chat","group":"ui","fr":"Assistant","en":"Ask"},{"id":"ui_tab_msgs","group":"ui","fr":"Messages","en":"Messages"},{"id":"ui_ask_placeholder","group":"ui","fr":"Posez votre question…","en":"Ask your question…"},{"id":"ui_mic","group":"ui","fr":"Parler","en":"Speak"},{"id":"ui_send","group":"ui","fr":"Envoyer","en":"Send"},{"id":"ui_listening","group":"ui","fr":"J’écoute…","en":"Listening…"},{"id":"ui_switch_to","group":"ui","fr":"Passer en {lang}","en":"Switch to {lang}"},{"id":"q_page","group":"ui","fr":"C’est quoi cette page ?","en":"What is this page?"},{"id":"q_amount","group":"ui","fr":"Combien je vais payer ?","en":"How much will I pay?"},{"id":"q_receiver","group":"ui","fr":"Qui reçoit l’argent ?","en":"Who receives the money?"},{"id":"q_warning","group":"ui","fr":"Y a-t-il un danger ?","en":"Is there any danger?"},{"id":"q_next","group":"ui","fr":"Je fais quoi maintenant ?","en":"What do I do now?"},{"id":"ans_welcome","group":"ui","fr":"Bonjour ! Posez-moi une question sur cette page, en écrivant ou à voix haute.","en":"Hello! Ask me a question about this page, by typing or out loud."},{"id":"ans_page","group":"ui","fr":"Cette page : {title}.","en":"This page: {title}."},{"id":"ans_page_account","group":"ui","fr":"Voici le récapitulatif du compte : solde disponible et opérations récentes.","en":"This is your account overview. It shows your available balance and recent transactions."},{"id":"ans_page_costs","group":"ui","fr":"Vous êtes à l’étape des frais. Choisissez le type et le montant, puis vérifiez les frais avant de continuer.","en":"This is the costs step. Choose the transfer type and amount, then check the fee before continuing."},{"id":"ans_page_beneficiary","group":"ui","fr":"Vous êtes à l’étape du bénéficiaire. Saisissez puis vérifiez son nom et son numéro avant de continuer.","en":"This is the beneficiary step. Enter and check the recipient’s name and number before continuing."},{"id":"ans_page_summary","group":"ui","fr":"Voici le récapitulatif du virement. Vérifiez le montant, les frais, le bénéficiaire et son numéro avant de confirmer.","en":"This is the transfer summary. Check the amount, fees, recipient, and phone number before confirming."},{"id":"ans_page_confirmation","group":"ui","fr":"Vous êtes à l’étape de confirmation. Relisez les détails et confirmez seulement s’ils sont corrects.","en":"This is the confirmation step. Review the transfer details, then confirm only if they are correct."},{"id":"ans_page_complete","group":"ui","fr":"Le virement est terminé. Cette page indique son montant, son bénéficiaire et son statut.","en":"The transfer is complete. This page shows its amount, recipient, and status."},{"id":"ans_transfer_steps","group":"ui","fr":"Un virement comporte cinq étapes : payer, frais, bénéficiaire, récapitulatif et confirmation. Vérifiez chaque information avant de confirmer.","en":"A transfer has five steps: Pay, Costs, Beneficiary, Summary, and Confirmation. Check each detail before confirming."},{"id":"ans_amount","group":"ui","fr":"Montant total : {total}.","en":"Total amount: {total}."},{"id":"ans_fees","group":"ui","fr":"Frais : {fees}.","en":"Fees: {fees}."},{"id":"ans_no_amount","group":"ui","fr":"Je ne vois pas de montant sur cette page.","en":"I do not see an amount on this page."},{"id":"ans_receiver","group":"ui","fr":"L’argent va à {name}.","en":"The money goes to {name}."},{"id":"ans_no_receiver","group":"ui","fr":"Je ne vois pas encore de bénéficiaire sur cette page.","en":"I do not see a beneficiary on this page yet."},{"id":"ans_warning","group":"ui","fr":"Attention : {message}","en":"Warning: {message}"},{"id":"ans_no_warning","group":"ui","fr":"Pas d’alerte sur cette page.","en":"No warning on this page."},{"id":"ans_next","group":"ui","fr":"Ensuite, appuyez sur {button}.","en":"Next, press {button}."},{"id":"ans_no_next","group":"ui","fr":"Je ne vois pas de bouton à appuyer.","en":"I do not see a button to press."},{"id":"ans_balance","group":"ui","fr":"Argent disponible : {balance}.","en":"Money available: {balance}."},{"id":"ans_unknown","group":"ui","fr":"Je peux répondre à ces questions :","en":"I can answer these questions:"},{"id":"ans_type_instead","group":"ui","fr":"Écrivez votre question ou touchez une question ci-dessous.","en":"Type your question or tap a question below."},{"id":"ans_lang_detected","group":"ui","fr":"Vous parlez {lang} ?","en":"Are you speaking {lang}?"},{"id":"ans_speech_consent","group":"ui","fr":"Pour comprendre votre voix, le navigateur envoie l’enregistrement au service de reconnaissance de Google (français, anglais, pidgin).","en":"To understand your voice, the browser sends the recording to Google’s speech service (French, English, Pidgin)."},{"id":"ans_model_note","group":"ui","fr":"Réponse d’un modèle local, à vérifier.","en":"Answer from a local model: please check."},{"id":"ui_preparing","group":"ui","fr":"Préparation…","en":"Preparing…"},{"id":"ui_still_preparing","group":"ui","fr":"Encore un instant…","en":"Almost ready…"},{"id":"ui_no_voice","group":"ui","fr":"Aucune voix disponible sur cet appareil","en":"No voice available on this device"},{"id":"ui_no_voice_short","group":"ui","fr":"Pas de voix","en":"No voice"},{"id":"ui_voice_why_none","group":"ui","fr":"aucune voix sur cet appareil","en":"no voice on this device"},{"id":"ui_thinking","group":"ui","fr":"Je réfléchis…","en":"Thinking…"},{"id":"ui_model_loading","group":"ui","fr":"Le modèle local démarre : la première réponse peut prendre une minute.","en":"The local model is starting: the first answer can take a minute."},{"id":"ui_transcribing","group":"ui","fr":"Je transcris votre voix…","en":"Transcribing your voice…"},{"id":"ui_transcribing_slow","group":"ui","fr":"Je transcris votre voix… (le modèle vocal démarre)","en":"Transcribing your voice… (the speech model is starting)"},{"id":"ui_listening_stop","group":"ui","fr":"J’écoute… touchez pour arrêter","en":"Listening… tap to stop"},{"id":"ans_model_timeout","group":"ui","fr":"Le modèle local met trop de temps. Voici ce que je peux dire sans lui :","en":"The local model is taking too long. Here is what I can tell you without it:"},{"id":"ans_no_speech","group":"ui","fr":"Je n’ai rien entendu. Touchez le micro et parlez, ou écrivez votre question.","en":"I did not hear anything. Tap the microphone and speak, or type your question."},{"id":"ans_mic_blocked","group":"ui","fr":"Le micro est bloqué. Autorisez-le dans la barre d’adresse du navigateur, ou écrivez votre question.","en":"The microphone is blocked. Allow it in the browser address bar, or type your question."},{"id":"ans_speech_network","group":"ui","fr":"La reconnaissance vocale a besoin d’internet. Écrivez votre question ou réessayez.","en":"Speech recognition needs the internet. Type your question or try again."},{"id":"ans_asr_down","group":"ui","fr":"Je n’ai pas pu transcrire votre voix (serveur vocal local éteint ?). Écrivez votre question.","en":"I could not transcribe your voice (is the local speech server off?). Type your question."},{"id":"tour_welcome_t","group":"ui","fr":"Bienvenue dans Langwa","en":"Welcome to Langwa"},{"id":"tour_welcome_b","group":"ui","fr":"Langwa vous montre cette page en {lang}, à lire et à écouter. Une visite rapide : moins d’une minute.","en":"Langwa shows you this page in {lang}, to read and to hear. A quick tour: less than a minute."},{"id":"tour_start","group":"ui","fr":"Commencer la visite","en":"Start the tour"},{"id":"tour_point_t","group":"ui","fr":"Maintenez Ctrl et pointez un texte","en":"Hold Ctrl and point at a text"},{"id":"tour_point_touch_t","group":"ui","fr":"Appuyez longuement sur un texte","en":"Press and hold a text"},{"id":"tour_point_b","group":"ui","fr":"Sa traduction s’affiche juste dessous, avec le bouton Écouter. Les montants et les noms restent exactement ceux de la page.","en":"Its translation appears right below, with a Listen button. Amounts and names stay exactly as on the page."},{"id":"tour_fab_t","group":"ui","fr":"Le bouton Langwa","en":"The Langwa button"},{"id":"tour_fab_b","group":"ui","fr":"Il ouvre le panneau. Le chiffre rouge compte les messages importants de la page.","en":"It opens the panel. The red number counts the important messages on the page."},{"id":"tour_ask_t","group":"ui","fr":"Posez votre question","en":"Ask your question"},{"id":"tour_ask_b","group":"ui","fr":"Touchez une question toute prête, écrivez, ou touchez le micro et parlez. Langwa répond dans votre langue, avec les montants de la page.","en":"Tap a ready-made question, type, or tap the microphone and speak. Langwa answers in your language, with the page’s own amounts."},{"id":"tour_read_t","group":"ui","fr":"Écoutez toute la page","en":"Listen to the whole page"},{"id":"tour_read_b","group":"ui","fr":"Langwa lit la page à voix haute, les messages importants d’abord.","en":"Langwa reads the page aloud, important messages first."},{"id":"tour_page_t","group":"ui","fr":"Traduisez toute la page","en":"Translate the whole page"},{"id":"tour_page_b","group":"ui","fr":"La traduction s’affiche sur chaque texte de la page. Touchez encore pour revenir à l’original.","en":"The translation appears over every text on the page. Tap again to go back to the original."},{"id":"tour_voice_t","group":"ui","fr":"Qui lit à voix haute","en":"Who reads aloud"},{"id":"tour_voice_b","group":"ui","fr":"La voix du navigateur, ou la voix naturelle si elle est installée sur cet ordinateur. Son installation s’affiche ici en direct.","en":"The browser voice, or the natural voice if it is installed on this computer. Its installation shows here, live."},{"id":"tour_lang_t","group":"ui","fr":"Changez de langue","en":"Change language"},{"id":"tour_lang_b","group":"ui","fr":"À tout moment, ici. Les langues les plus complètes sont en premier.","en":"Any time, here. The most complete languages come first."},{"id":"tour_done_t","group":"ui","fr":"C’est prêt !","en":"You are ready!"},{"id":"tour_done_b","group":"ui","fr":"Pour revoir ce guide : le bouton Guide en bas du panneau, ou la fenêtre Langwa dans la barre du navigateur.","en":"To see this guide again: the Guide button at the bottom of the panel, or the Langwa window in the browser toolbar."},{"id":"tour_finish","group":"ui","fr":"Terminer","en":"Finish"},{"id":"tour_next","group":"ui","fr":"Suivant","en":"Next"},{"id":"tour_back","group":"ui","fr":"Retour","en":"Back"},{"id":"tour_skip","group":"ui","fr":"Passer le guide","en":"Skip the guide"},{"id":"tour_replay","group":"ui","fr":"Revoir le guide","en":"See the guide again"},{"id":"tour_guide","group":"ui","fr":"Guide","en":"Guide"}]},"langs":{"ewo":{"name":"Ewondo (Beti)","region":"Centre · Yaoundé, Mbalmayo","nllb":null,"mms":null,"refs":[{"name":"Wiktionnaire (éwondo)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:%C3%A9wondo"},{"name":"Wiktionary (Ewondo)","url":"https://en.wiktionary.org/wiki/Category:Ewondo_lemmas"}],"africaTts":"ewo","search":"ewondo beti yaounde yaoundé mbalmayo centre"},"fub":{"name":"Fulfulde (Peul / Fulani)","region":"Nord, Adamaoua, Extrême-Nord · Garoua, Ngaoundéré, Maroua","nllb":"fuv_Latn","mms":"ful","refs":[{"name":"Wiktionnaire (peul)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:peul"},{"name":"Wiktionary (Fula)","url":"https://en.wiktionary.org/wiki/Category:Fula_lemmas"}],"africaTts":"fub","search":"fulfulde foulfoulde foulfouldé peul peuhl fula fulani pulaar mbororo bororo garoua ngaoundere maroua nord adamaoua"},"wes":{"name":"Pidgin (Kamtok)","region":"Nord-Ouest, Sud-Ouest, Littoral · Bamenda, Buea, Douala, et dans tout le pays","nllb":null,"mms":null,"voices":["en-NG","en-CM","en-GH","en-ZA","en"],"reading":"none","refs":[{"name":"Wikipedia: Cameroonian Pidgin","url":"https://en.wikipedia.org/wiki/Cameroonian_Pidgin_English"}],"africaTts":"pcm","search":"pidgin pidgin english kamtok broken english bamenda buea limbe douala anglophone"},"lns":{"name":"Lamnso' (Nso / Banso)","region":"Nord-Ouest · Kumbo, Bui","nllb":null,"mms":null,"voices":["ln","sw"],"reading":"none","refs":[{"name":"Flagship AI Cameroon translation models (draft MT, CC BY-NC 4.0)","url":"https://huggingface.co/flagship-ai/cameroon-int8"},{"name":"Cameroon Bibles parallel text dataset (CC BY 4.0; religious text, not banking vocabulary)","url":"https://huggingface.co/datasets/flagship-ai/cameroon_bibles"},{"name":"Lamnso' text-to-speech model (CC BY-NC 4.0; pronunciation model, not translation)","url":"https://huggingface.co/facebook/mms-tts-lns"}],"africaTts":null,"machineTranslation":true,"translationStatus":"Local LLM + corpus service required; unvalidated.","search":"lamnso lamso nso banso bansoa kumbo bui"},"dua":{"name":"Duala (Douala)","region":"Littoral · Douala","nllb":null,"mms":null,"refs":[{"name":"Wiktionnaire (douala)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:douala"},{"name":"Wiktionary (Duala)","url":"https://en.wiktionary.org/wiki/Category:Duala_lemmas"}],"africaTts":"dua","search":"duala douala sawa littoral"},"bbj":{"name":"Ghomálá' (Bamiléké)","region":"Ouest · Bafoussam, Bandjoun, Baham","nllb":null,"mms":null,"refs":[{"name":"Wiktionary (Ghomala')","url":"https://en.wiktionary.org/wiki/Category:Ghomala%27_lemmas"}],"africaTts":"bbj","search":"ghomala ghomálá bamileke bamiléké bandjoun bafoussam baham ouest"},"bas":{"name":"Basaá (Bassa)","region":"Centre, Littoral · Édéa, Eséka","nllb":null,"mms":null,"refs":[{"name":"Wiktionnaire (bassa)","url":"https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:bassa_(Cameroun)"},{"name":"Wiktionary (Basaa)","url":"https://en.wiktionary.org/wiki/Category:Basaa_lemmas"}],"africaTts":"bas","search":"basaa bassa basa edea édéa eseka eséka"},"nge":{"name":"Mankon (Ngemba)","region":"Nord-Ouest · Bamenda, Mankon","nllb":null,"mms":null,"refs":[{"name":"Mankon Dictionary","url":"https://mankon-dictionary.vercel.app/"}],"africaTts":"nge","search":"mankon ngemba bamenda nord-ouest"},"bkm":{"name":"Kom","region":"Nord-Ouest · Fundong, Njinikom, Belo","nllb":null,"mms":null,"refs":[{"name":"Kom writing system (Omniglot)","url":"https://omniglot.com/writing/kom.htm"},{"name":"Wiktionary (Kom)","url":"https://en.wiktionary.org/wiki/Category:Kom_(Cameroon)_lemmas"}],"africaTts":"bkm","search":"kom itanghi fundong njinikom belo boyo"}},"packs":{"ewo":{"code":"ewo","validation":{"validators":[],"method":"Native-speaker review in the glossary editor (options page). Each entry stores who validated it."},"entries":{}},"fub":{"code":"fub","validation":{"validators":[],"status":"DRAFT. Written with AI assistance (Claude) from general Fula knowledge and Wiktionnaire terms. NOT validated by a native speaker: every entry is shown to users as 'Non validé'. To be reviewed by Adamawa Fulfulde speakers through the contribution page and the glossary editor.","method":"Native-speaker review in the glossary editor (options page). Each entry stores who validated it."},"entries":{"gist_error":{"t":"Ɗum ko kabaaru juumre. Golle ɗee ngasaaki.","by":"Brouillon IA, à valider"},"gist_warning":{"t":"Reentino : jangu no feewi, maa naamno goɗɗo mo a hoolii.","by":"Brouillon IA, à valider"},"gist_success":{"t":"Golle ɗee ngasii.","by":"Brouillon IA, à valider"},"gist_info":{"t":"Kabaaru.","by":"Brouillon IA, à valider"},"gist_keywords":{"t":"Konguɗi :","by":"Brouillon IA, à valider"},"test_banner":{"t":"Nokku ƴeewndagol : ceede ɗee goongaaka, neldugo goonga walaa.","by":"Brouillon IA, à valider"},"test_protocol":{"t":"Laawol ƴeewndagol","by":"Brouillon IA, à valider"},"back_hackathon":{"t":"Rutto to hackathon","by":"Brouillon IA, à valider"},"online_banking":{"t":"Banke e internet","by":"Brouillon IA, à valider"},"step_pay":{"t":"Yoɓugo","by":"Brouillon IA, à valider"},"step_costs":{"t":"Njoɓdi","by":"Brouillon IA, à valider"},"step_beneficiary":{"t":"Jaɓoowo","by":"Brouillon IA, à valider"},"step_summary":{"t":"Ƴeewndol","by":"Brouillon IA, à valider"},"step_confirmation":{"t":"Tabbitingol","by":"Brouillon IA, à valider"},"your_account":{"t":"Konte maa","by":"Brouillon IA, à valider"},"hello_name":{"t":"Jam waali, {name}","by":"Brouillon IA, à valider"},"intro_balance":{"t":"Ndaar ceede maa, nde neldaa ceede e kisal.","by":"Brouillon IA, à valider"},"available_balance":{"t":"Ceede ɗe a waawi huutorgo","by":"Brouillon IA, à valider"},"balance":{"t":"Ceede maa","by":"Brouillon IA, à valider"},"account_number":{"t":"Limre konte","by":"Brouillon IA, à valider"},"current_account":{"t":"Konte nyalaade fuu","by":"Brouillon IA, à valider"},"perform_transfer":{"t":"Nelda ceede","by":"Brouillon IA, à valider"},"view_fees":{"t":"Ndaar njoɓdi","by":"Brouillon IA, à valider"},"recent_transactions":{"t":"Golle sakkitiiɗe","by":"Brouillon IA, à valider"},"merchant_payment":{"t":"Njoɓdi to jeeyoowo","by":"Brouillon IA, à valider"},"salary_received":{"t":"Ceede golle ngarii","by":"Brouillon IA, à valider"},"transfer_received":{"t":"Ceede neldaaɗe ngarii","by":"Brouillon IA, à valider"},"electricity_bill":{"t":"Njoɓdi kuuraŋ","by":"Brouillon IA, à valider"},"security":{"t":"Kisal","by":"Brouillon IA, à valider"},"security_check_beneficiary":{"t":"Ndaar innde e limre jaɓoowo saa'i fuu, hade a tabbitina neldugo.","by":"Brouillon IA, à valider"},"secure_connection":{"t":"Jokkondiral kisal","by":"Brouillon IA, à valider"},"demo_footer":{"t":"Safinum Pay : nokku ƴeewndagol. Taa winndu kabaruuji maa goonga.","by":"Brouillon IA, à valider"},"never_share_pin":{"t":"Taa hokku goɗɗo code PIN maa, hay goɗɗo banke.","by":"Brouillon IA, à valider"},"irreversible":{"t":"Si a tabbitinii, neldugo ngo waawaa firtaade.","by":"Brouillon IA, à valider"},"transfer_fees":{"t":"Njoɓdi neldugo","by":"Brouillon IA, à valider"},"fees":{"t":"Njoɓdi","by":"Brouillon IA, à valider"},"choose_type_amount":{"t":"Suɓo no neldirta e ceede ɗe neldataa. Njoɓdi hiisoto e hoore mum.","by":"Brouillon IA, à valider"},"operation_type":{"t":"No golle ngonri","by":"Brouillon IA, à valider"},"safinum_account":{"t":"Konte Safinum","by":"Brouillon IA, à valider"},"instant_free":{"t":"Neldugo jaawngo, njoɓdi walaa","by":"Brouillon IA, à valider"},"amount_to_send":{"t":"Ceede ɗe neldataa","by":"Brouillon IA, à valider"},"amount":{"t":"Ceede","by":"Brouillon IA, à valider"},"free":{"t":"Njoɓdi walaa","by":"Brouillon IA, à valider"},"total_debited":{"t":"Ceede fuu ɗe njaltata e konte maa","by":"Brouillon IA, à valider"},"balance_after":{"t":"Ceede keddotooɗe caggal neldugo","by":"Brouillon IA, à valider"},"beneficiary":{"t":"Jaɓoowo","by":"Brouillon IA, à valider"},"beneficiary_name":{"t":"Innde jaɓoowo","by":"Brouillon IA, à valider"},"phone_number":{"t":"Limre telefon","by":"Brouillon IA, à valider"},"phone":{"t":"Telefon","by":"Brouillon IA, à valider"},"reason_for_transfer":{"t":"Sabaabu neldugo","by":"Brouillon IA, à valider"},"note_optional":{"t":"Binndol (si a yiɗii)","by":"Brouillon IA, à valider"},"enter_recipient_info":{"t":"Winndu kabaruuji jaɓoowo. Ndaar limre ndee saa'i fuu hade a nelda.","by":"Brouillon IA, à valider"},"new_beneficiary_warning":{"t":"A neldaayno ceede e jaɓoowo oo e konte maa fay. Useko, ndaar limre makko hade a jokka.","by":"Brouillon IA, à valider"},"checked_name_number":{"t":"Mi ndaarii innde e limre jaɓoowo.","by":"Brouillon IA, à valider"},"check_info_before_confirm":{"t":"Ndaar kabaruuji ɗii hade a tabbitina neldugo.","by":"Brouillon IA, à valider"},"send_amount_to":{"t":"A neldata {amount} e {name}.","by":"Brouillon IA, à valider"},"reference":{"t":"Limre golle","by":"Brouillon IA, à valider"},"operation":{"t":"Golle","by":"Brouillon IA, à valider"},"confirm_info_correct":{"t":"Mi tabbitinii kabaruuji ɗii ngoongaaji.","by":"Brouillon IA, à valider"},"modify":{"t":"Waylu","by":"Brouillon IA, à valider"},"confirm_transfer":{"t":"Tabbitin neldugo","by":"Brouillon IA, à valider"},"confirm":{"t":"Tabbitin","by":"Brouillon IA, à valider"},"cancel":{"t":"Haɗu","by":"Brouillon IA, à valider"},"back":{"t":"Rutto","by":"Brouillon IA, à valider"},"continue":{"t":"Jokku","by":"Brouillon IA, à valider"},"transfer_completed":{"t":"Neldugo gasii","by":"Brouillon IA, à valider"},"transfer_sent_success":{"t":"Ceede maa neldaama no woodi.","by":"Brouillon IA, à valider"},"status":{"t":"No ngonri","by":"Brouillon IA, à valider"},"status_success":{"t":"Gasii","by":"Brouillon IA, à valider"},"new_transfer":{"t":"Neldugo kesum","by":"Brouillon IA, à valider"},"insufficient_balance":{"t":"Ceede maa njonaa ngam golle ɗee.","by":"Brouillon IA, à valider"},"pin_incorrect_attempts":{"t":"Code PIN boni. Ko keddi ma etaaje {count}.","by":"Brouillon IA, à valider"},"pin_incorrect":{"t":"Code PIN boni.","by":"Brouillon IA, à valider"},"error":{"t":"Juumre","by":"Brouillon IA, à valider"},"warning":{"t":"Reentino","by":"Brouillon IA, à valider"},"ui_tab_chat":{"t":"Naamno","by":"Brouillon IA, à valider"},"ui_tab_msgs":{"t":"Kabaruuji","by":"Brouillon IA, à valider"},"ui_ask_placeholder":{"t":"Naamno naamne maa…","by":"Brouillon IA, à valider"},"ui_mic":{"t":"Haal","by":"Brouillon IA, à valider"},"ui_send":{"t":"Nelda","by":"Brouillon IA, à valider"},"ui_listening":{"t":"Mi heɗii…","by":"Brouillon IA, à valider"},"ui_switch_to":{"t":"Waylu e {lang}","by":"Brouillon IA, à valider"},"q_page":{"t":"Ɗoo ko honɗum?","by":"Brouillon IA, à valider"},"q_amount":{"t":"Ceede no foti mi yoɓata?","by":"Brouillon IA, à valider"},"q_receiver":{"t":"Moye jaɓata ceede ɗee?","by":"Brouillon IA, à valider"},"q_warning":{"t":"Reentino woodi na?","by":"Brouillon IA, à valider"},"q_next":{"t":"Ko mi waɗata jooni?","by":"Brouillon IA, à valider"},"ans_welcome":{"t":"Jam waali! Naamno mi ko faati e ngol hello, winndu maa haal.","by":"Brouillon IA, à valider"},"ans_page":{"t":"Ɗoo ko: {title}.","by":"Brouillon IA, à valider"},"ans_page_account":{"t":"Doo ko kontu maa. E hollata ceede ɗe ngon-ɗaa jogii e kontu maa e transaksyon kesɗitɗi maa.","by":"Brouillon IA, à valider"},"ans_page_costs":{"t":"Ngon-ɗaa e njoɓdi. Suɓo sifaa neldude e adadu ceede, tee ƴeew njoɓdi hade maa yaahude yeeso.","by":"Brouillon IA, à valider"},"ans_page_beneficiary":{"t":"Ngon-ɗaa e jaɓoowo ceede. Winndu innde e tonngoode telefoon mum, tee ƴeew ɗum fuu hade maa yaahude yeeso.","by":"Brouillon IA, à valider"},"ans_page_summary":{"t":"Doo ko yeewndo neldude ceede. Ƴeew adadu ceede, njoɓdi, innde jaɓoowo e tonngoode mum hade maa tabbitinde.","by":"Brouillon IA, à valider"},"ans_page_confirmation":{"t":"Ngon-ɗaa e tabbitingol. Ƴeew kabaaruuji neldude ceede kadi, tee tabbitin so ɗi fuu feewi tan.","by":"Brouillon IA, à valider"},"ans_page_complete":{"t":"Neldude ceede timmi. Ngol hello hollata adadu ceede, jaɓoowo e ngonka mum.","by":"Brouillon IA, à valider"},"ans_transfer_steps":{"t":"Neldude ceede woodi jawdi 5: Yobugo, Njoɓdi, Jaɓoowo, Yeewndo, Tabbintingol. Ƴeew kabaaruuji fuu hade maa tabbitinde.","by":"Brouillon IA, à valider"},"ans_amount":{"t":"Ceede fuu ɗe njaltata: {total}.","by":"Brouillon IA, à valider"},"ans_fees":{"t":"Njoɓdi: {fees}.","by":"Brouillon IA, à valider"},"ans_no_amount":{"t":"Mi yi’aali ceede e ngol hello.","by":"Brouillon IA, à valider"},"ans_receiver":{"t":"Ceede ɗee njahan to {name}.","by":"Brouillon IA, à valider"},"ans_no_receiver":{"t":"Mi yi’aali jaɓoowo e ngol hello taho.","by":"Brouillon IA, à valider"},"ans_warning":{"t":"Reentino: {message}","by":"Brouillon IA, à valider"},"ans_no_warning":{"t":"Reentino walaa e ngol hello.","by":"Brouillon IA, à valider"},"ans_next":{"t":"Jooni, ñoƴƴu {button}.","by":"Brouillon IA, à valider"},"ans_no_next":{"t":"Mi yi’aali butoŋ.","by":"Brouillon IA, à valider"},"ans_balance":{"t":"Ceede ɗe a waawi huutorgo: {balance}.","by":"Brouillon IA, à valider"},"ans_unknown":{"t":"Mi waawi jaabaade ɗee naamne:","by":"Brouillon IA, à valider"},"ans_type_instead":{"t":"Winndu naamne maa maa suɓo naamne les.","by":"Brouillon IA, à valider"},"ans_lang_detected":{"t":"A haalata {lang}?","by":"Brouillon IA, à valider"},"ans_speech_consent":{"t":"Ngam faamde hoolo maa, browser oo nelday ɗum to Google (Farayse, Engeleere, Pidgin).","by":"Brouillon IA, à valider"},"ans_model_note":{"t":"Jaabawol ordinater: ndaar ɗum.","by":"Brouillon IA, à valider"}}},"wes":{"code":"wes","validation":{"validators":[],"status":"DRAFT. Cameroonian Pidgin English (Kamtok), written with AI assistance (Claude) in the English-based spelling common on WhatsApp. NOT validated by a native speaker: every entry is shown to users as 'Non validé' until a Cameroonian Pidgin speaker reviews it.","method":"Native-speaker review in the glossary editor (options page). Each entry stores who validated it."},"entries":{"gist_error":{"t":"Na error message dis. The thing no pass.","by":"Brouillon IA, à valider"},"gist_warning":{"t":"Warning for security: read am well well, or ask person wey you trust make e help you.","by":"Brouillon IA, à valider"},"gist_success":{"t":"The thing don pass fine.","by":"Brouillon IA, à valider"},"gist_info":{"t":"Na information message.","by":"Brouillon IA, à valider"},"gist_keywords":{"t":"Important words:","by":"Brouillon IA, à valider"},"test_banner":{"t":"Na test environment: all the data na fake, no real money di move.","by":"Brouillon IA, à valider"},"test_protocol":{"t":"How for do the test","by":"Brouillon IA, à valider"},"back_hackathon":{"t":"Go back for hackathon","by":"Brouillon IA, à valider"},"online_banking":{"t":"Bank for internet","by":"Brouillon IA, à valider"},"step_pay":{"t":"Pay","by":"Brouillon IA, à valider"},"step_costs":{"t":"See charges","by":"Brouillon IA, à valider"},"step_beneficiary":{"t":"Person wey go receive am","by":"Brouillon IA, à valider"},"step_summary":{"t":"Check all tindem","by":"Brouillon IA, à valider"},"step_confirmation":{"t":"Confirm","by":"Brouillon IA, à valider"},"your_account":{"t":"Your account","by":"Brouillon IA, à valider"},"hello_name":{"t":"Hello, {name}","by":"Brouillon IA, à valider"},"intro_balance":{"t":"Check how much money you get, and send money with security.","by":"Brouillon IA, à valider"},"available_balance":{"t":"Money wey you fit use now","by":"Brouillon IA, à valider"},"balance":{"t":"Money wey dey your account","by":"Brouillon IA, à valider"},"account_number":{"t":"Account number","by":"Brouillon IA, à valider"},"current_account":{"t":"Account for everyday","by":"Brouillon IA, à valider"},"savings_account":{"t":"Account for save money","by":"Brouillon IA, à valider"},"perform_transfer":{"t":"Send money","by":"Brouillon IA, à valider"},"view_fees":{"t":"Look the charges","by":"Brouillon IA, à valider"},"recent_transactions":{"t":"Last things wey you do for your account","by":"Brouillon IA, à valider"},"merchant_payment":{"t":"Money wey you pay for shop","by":"Brouillon IA, à valider"},"salary_received":{"t":"Salary don enter","by":"Brouillon IA, à valider"},"transfer_received":{"t":"Money wey person send you don enter","by":"Brouillon IA, à valider"},"transfer_sent":{"t":"Money wey you send","by":"Brouillon IA, à valider"},"electricity_bill":{"t":"Light bill","by":"Brouillon IA, à valider"},"water_bill":{"t":"Water bill","by":"Brouillon IA, à valider"},"cash_withdrawal":{"t":"Money wey you comot","by":"Brouillon IA, à valider"},"deposit":{"t":"Money wey you put inside","by":"Brouillon IA, à valider"},"airtime":{"t":"Buy credit","by":"Brouillon IA, à valider"},"security":{"t":"Security","by":"Brouillon IA, à valider"},"security_check_beneficiary":{"t":"Always check the name and number of the person wey go receive am, before you confirm the transfer.","by":"Brouillon IA, à valider"},"secure_connection":{"t":"Connection wey get security","by":"Brouillon IA, à valider"},"demo_footer":{"t":"Safinum Pay: na test environment. No put your real personal information.","by":"Brouillon IA, à valider"},"never_share_pin":{"t":"No ever give your PIN to anybody, even person wey work for bank.","by":"Brouillon IA, à valider"},"fraud_warning":{"t":"Watch out for call or SMS wey di ask your secret code.","by":"Brouillon IA, à valider"},"irreversible":{"t":"When you don confirm, you no fit cancel the transfer again.","by":"Brouillon IA, à valider"},"check_details":{"t":"Check all the information before you confirm.","by":"Brouillon IA, à valider"},"transfer_fees":{"t":"Charges for send money","by":"Brouillon IA, à valider"},"transaction_fees":{"t":"Charges for the transaction","by":"Brouillon IA, à valider"},"fees":{"t":"Charges","by":"Brouillon IA, à valider"},"choose_type_amount":{"t":"Choose how you want send and how much. The charges go calculate by ei self.","by":"Locuteur natif (Cameroun)","verified":true,"validator":"Locuteur natif camerounais (équipe Langwa)","date":"2026-11-12"},"operation_type":{"t":"Which kind operation","by":"Brouillon IA, à valider"},"safinum_account":{"t":"Safinum account","by":"Brouillon IA, à valider"},"instant_free":{"t":"The money go reach quick quick, and e free","by":"Brouillon IA, à valider"},"other_bank":{"t":"Account for another bank","by":"Brouillon IA, à valider"},"mobile_money":{"t":"Mobile Money","by":"Brouillon IA, à valider"},"amount_to_send":{"t":"How much you want send","by":"Brouillon IA, à valider"},"amount":{"t":"How much","by":"Brouillon IA, à valider"},"free":{"t":"Free","by":"Brouillon IA, à valider"},"total_debited":{"t":"All the money wey go comot for your account","by":"Brouillon IA, à valider"},"balance_after":{"t":"Money wey go remain after","by":"Brouillon IA, à valider"},"fee_rate_min":{"t":"{rate} of the money (at least {min})","by":"Brouillon IA, à valider"},"beneficiary":{"t":"Person wey go receive am","by":"Brouillon IA, à valider"},"beneficiary_name":{"t":"Name of the person wey go receive am","by":"Brouillon IA, à valider"},"phone_number":{"t":"Phone number","by":"Brouillon IA, à valider"},"account_or_phone":{"t":"Account number or phone number","by":"Brouillon IA, à valider"},"reason":{"t":"Why you di send","by":"Brouillon IA, à valider"},"transfer_summary":{"t":"All tindem wey you don enter for the transfer, so you fit confirm am","by":"Brouillon IA, à valider"},"send_amount_to":{"t":"You di go send {amount} give {name}.","by":"Brouillon IA, à valider"},"pin_code":{"t":"PIN code","by":"Brouillon IA, à valider"},"enter_pin":{"t":"Put your PIN","by":"Brouillon IA, à valider"},"accept_terms":{"t":"I agree with the conditions.","by":"Brouillon IA, à valider"},"terms":{"t":"Conditions","by":"Brouillon IA, à valider"},"back":{"t":"Go back","by":"Brouillon IA, à valider"},"continue":{"t":"Continue","by":"Brouillon IA, à valider"},"confirm":{"t":"Confirm","by":"Brouillon IA, à valider"},"confirm_transfer":{"t":"Confirm the transfer","by":"Brouillon IA, à valider"},"cancel":{"t":"Cancel","by":"Brouillon IA, à valider"},"reference":{"t":"Reference","by":"Brouillon IA, à valider"},"date":{"t":"Date","by":"Brouillon IA, à valider"},"status":{"t":"How e be","by":"Brouillon IA, à valider"},"transfer_success":{"t":"The transfer don pass fine.","by":"Brouillon IA, à valider"},"insufficient_balance":{"t":"Your money no reach for do this operation.","by":"Brouillon IA, à valider"},"pin_incorrect_attempts":{"t":"PIN no correct. You remain {count} try.","by":"Brouillon IA, à valider"},"pin_incorrect":{"t":"PIN no correct.","by":"Brouillon IA, à valider"},"account_locked":{"t":"Dem don block your account for small time.","by":"Brouillon IA, à valider"},"service_apology":{"t":"We sorry.","by":"Brouillon IA, à valider"},"required_field":{"t":"You must fill this place.","by":"Brouillon IA, à valider"},"invalid_amount":{"t":"This amount no correct.","by":"Brouillon IA, à valider"},"must_accept_terms":{"t":"You must agree with the conditions.","by":"Brouillon IA, à valider"},"session_expired":{"t":"Your time don finish. Log in again.","by":"Brouillon IA, à valider"},"network_error":{"t":"Network get problem. Try again.","by":"Brouillon IA, à valider"},"processing":{"t":"E di work...","by":"Brouillon IA, à valider"},"enter_recipient_info":{"t":"Put the information of the person wey go receive am. Always check the number before you send.","by":"Brouillon IA, à valider"},"new_beneficiary_warning":{"t":"You never send money give this person from this account before. Abeg check the number well before you continue.","by":"Brouillon IA, à valider"},"reason_for_transfer":{"t":"Why you di send the money","by":"Brouillon IA, à valider"},"note_optional":{"t":"Small note (if you want)","by":"Brouillon IA, à valider"},"checked_name_number":{"t":"I don check the name and number of the person wey go receive am.","by":"Brouillon IA, à valider"},"check_info_before_confirm":{"t":"Check the information before you confirm the transfer.","by":"Brouillon IA, à valider"},"phone":{"t":"Phone","by":"Brouillon IA, à valider"},"operation":{"t":"Operation","by":"Brouillon IA, à valider"},"confirm_info_correct":{"t":"I confirm say all the information for up na correct.","by":"Brouillon IA, à valider"},"modify":{"t":"Change am","by":"Brouillon IA, à valider"},"transfer_completed":{"t":"Transfer don finish","by":"Brouillon IA, à valider"},"transfer_sent_success":{"t":"Your money don go fine.","by":"Brouillon IA, à valider"},"status_success":{"t":"E don pass","by":"Brouillon IA, à valider"},"new_transfer":{"t":"New transfer","by":"Brouillon IA, à valider"},"services_payment":{"t":"Pay for service","by":"Brouillon IA, à valider"},"error":{"t":"Error","by":"Brouillon IA, à valider"},"warning":{"t":"Warning","by":"Brouillon IA, à valider"},"ui_translating":{"t":"E di translate…","by":"Brouillon IA, à valider"},"ui_protected":{"t":"Protected, e be same as for the page","by":"Brouillon IA, à valider"},"ui_validated":{"t":"Checked","by":"Brouillon IA, à valider"},"ui_auto":{"t":"No check yet","by":"Brouillon IA, à valider"},"ui_summary":{"t":"Safe summary","by":"Brouillon IA, à valider"},"ui_blocked":{"t":"Blocked: the money no match","by":"Brouillon IA, à valider"},"ui_missing":{"t":"No translate yet","by":"Brouillon IA, à valider"},"ui_important":{"t":"Important messages","by":"Brouillon IA, à valider"},"ui_page":{"t":"For this page","by":"Brouillon IA, à valider"},"ui_new":{"t":"NEW","by":"Brouillon IA, à valider"},"ui_listen":{"t":"Hear am","by":"Brouillon IA, à valider"},"ui_no_audio":{"t":"No voice yet","by":"Brouillon IA, à valider"},"ui_subtitles":{"t":"Subtitles","by":"Brouillon IA, à valider"},"ui_close":{"t":"Close","by":"Brouillon IA, à valider"},"ui_empty":{"t":"Nothing for translate here","by":"Brouillon IA, à valider"},"ui_mt_down":{"t":"Machine translation no dey available; text wey no get translation go stay as e be","by":"Brouillon IA, à valider"},"ui_hint_hover":{"t":"Hold Ctrl and point any word: the translation go show for under.","by":"Brouillon IA, à valider"},"ui_hint_hover_short":{"t":"point = translation","by":"Brouillon IA, à valider"},"ui_hint_listen":{"t":"Then press Space for hear am.","by":"Brouillon IA, à valider"},"ui_ok":{"t":"I don understand","by":"Brouillon IA, à valider"},"ui_tagline":{"t":"Bank for we own language","by":"Brouillon IA, à valider"},"ui_active":{"t":"E dey work for this site","by":"Brouillon IA, à valider"},"ui_unsupported":{"t":"E no fit work for this page","by":"Brouillon IA, à valider"},"ui_reload_msg":{"t":"Reload the page make the translation show.","by":"Brouillon IA, à valider"},"ui_reload":{"t":"Reload","by":"Brouillon IA, à valider"},"ui_language":{"t":"Language","by":"Brouillon IA, à valider"},"ui_show":{"t":"Show the translation","by":"Brouillon IA, à valider"},"ui_mode_ctrl":{"t":"+ point","by":"Brouillon IA, à valider"},"ui_mode_hover":{"t":"Point","by":"Brouillon IA, à valider"},"ui_mode_off":{"t":"Off","by":"Brouillon IA, à valider"},"ui_panel":{"t":"Panel","by":"Brouillon IA, à valider"},"ui_settings":{"t":"Words, voice and settings","by":"Brouillon IA, à valider"},"ui_choose":{"t":"Which language you di talk?","by":"Brouillon IA, à valider"},"ui_choose_sub":{"t":"Langwa go show the bank for this language.","by":"Brouillon IA, à valider"},"ui_soon":{"t":"No translation data yet","by":"Brouillon IA, à valider"},"ui_later":{"t":"After","by":"Brouillon IA, à valider"},"ui_hint_touch":{"t":"Press any word for long: the translation go show for under.","by":"Brouillon IA, à valider"},"ui_hint_touch_short":{"t":"press long = translation","by":"Brouillon IA, à valider"},"ui_missing_lang":{"t":"Dem never translate am for {lang}","by":"Brouillon IA, à valider"},"ui_original":{"t":"Original","by":"Brouillon IA, à valider"},"ui_n_ok":{"t":"checked","by":"Brouillon IA, à valider"},"ui_n_mt":{"t":"no check yet","by":"Brouillon IA, à valider"},"ui_n_gist":{"t":"summaries","by":"Brouillon IA, à valider"},"ui_n_block":{"t":"blocked","by":"Brouillon IA, à valider"},"ui_n_none":{"t":"no translate yet","by":"Brouillon IA, à valider"},"ui_n_ok_one":{"t":"checked","by":"Brouillon IA, à valider"},"ui_n_mt_one":{"t":"no check yet","by":"Brouillon IA, à valider"},"ui_n_gist_one":{"t":"summary","by":"Brouillon IA, à valider"},"ui_n_block_one":{"t":"blocked","by":"Brouillon IA, à valider"},"ui_n_none_one":{"t":"no translate yet","by":"Brouillon IA, à valider"},"ui_voice_human":{"t":"Real person voice","by":"Brouillon IA, à valider"},"ui_voice_neural":{"t":"Computer voice (neural)","by":"Brouillon IA, à valider"},"ui_voice_synth":{"t":"Computer voice","by":"Brouillon IA, à valider"},"ui_stop":{"t":"Stop","by":"Brouillon IA, à valider"},"ui_page_mode":{"t":"Translate the page","by":"Brouillon IA, à valider"},"ui_read_all":{"t":"Read everything","by":"Brouillon IA, à valider"},"ui_autoread":{"t":"Read by ei self","by":"Brouillon IA, à valider"},"ui_autoread_sub":{"t":"E go read the translation as e show","by":"Brouillon IA, à valider"},"ui_space_listen":{"t":"hear","by":"Brouillon IA, à valider"},"ui_hint_listen_touch":{"t":"Touch Hear am for hear the translation.","by":"Brouillon IA, à valider"},"ui_dict_words":{"t":"Words from dictionary (no check yet)","by":"Brouillon IA, à valider"},"ui_online_voice":{"t":"Natural voice for internet","by":"Brouillon IA, à valider"},"ui_online_voice_sub":{"t":"E sweet pass. The text go go Microsoft or Google.","by":"Brouillon IA, à valider"},"ui_online_ask":{"t":"You want voice wey sweet pass?","by":"Brouillon IA, à valider"},"ui_enable":{"t":"Put am on","by":"Brouillon IA, à valider"},"ui_no_thanks":{"t":"No, thank you","by":"Brouillon IA, à valider"},"ui_brand":{"t":"Na name, we no translate am","by":"Brouillon IA, à valider"},"ui_tab_chat":{"t":"Ask","by":"Brouillon IA, à valider"},"ui_tab_msgs":{"t":"Messages","by":"Brouillon IA, à valider"},"ui_ask_placeholder":{"t":"Ask your question…","by":"Brouillon IA, à valider"},"ui_mic":{"t":"Talk","by":"Brouillon IA, à valider"},"ui_send":{"t":"Send","by":"Brouillon IA, à valider"},"ui_listening":{"t":"I di listen…","by":"Brouillon IA, à valider"},"ui_switch_to":{"t":"Change to {lang}","by":"Brouillon IA, à valider"},"q_page":{"t":"Wetin dis page be?","by":"Brouillon IA, à valider"},"q_amount":{"t":"How much I go pay?","by":"Brouillon IA, à valider"},"q_receiver":{"t":"Who go receive the money?","by":"Brouillon IA, à valider"},"q_warning":{"t":"Any danger for here?","by":"Brouillon IA, à valider"},"q_next":{"t":"Wetin I go do now?","by":"Brouillon IA, à valider"},"ans_welcome":{"t":"Hello! Ask me anything about dis page, write am or talk am.","by":"Brouillon IA, à valider"},"ans_page":{"t":"Dis page na: {title}.","by":"Brouillon IA, à valider"},"ans_amount":{"t":"All the money wey go comot: {total}.","by":"Brouillon IA, à valider"},"ans_fees":{"t":"Charges: {fees}.","by":"Brouillon IA, à valider"},"ans_no_amount":{"t":"I no see any amount for dis page.","by":"Brouillon IA, à valider"},"ans_receiver":{"t":"The money go go give {name}.","by":"Brouillon IA, à valider"},"ans_no_receiver":{"t":"I never see the person wey go receive am for dis page.","by":"Brouillon IA, à valider"},"ans_warning":{"t":"Take care: {message}","by":"Brouillon IA, à valider"},"ans_no_warning":{"t":"No warning for dis page.","by":"Brouillon IA, à valider"},"ans_next":{"t":"Now, press {button}.","by":"Brouillon IA, à valider"},"ans_no_next":{"t":"I no see any button for press.","by":"Brouillon IA, à valider"},"ans_balance":{"t":"Money wey you fit use: {balance}.","by":"Brouillon IA, à valider"},"ans_unknown":{"t":"I fit answer these questions:","by":"Brouillon IA, à valider"},"ans_type_instead":{"t":"Write your question or touch one question for down.","by":"Brouillon IA, à valider"},"ans_lang_detected":{"t":"You di talk {lang}?","by":"Brouillon IA, à valider"},"ans_speech_consent":{"t":"For understand your voice, the browser go send the recording give Google (French, English, Pidgin).","by":"Brouillon IA, à valider"},"ans_model_note":{"t":"Na computer answer: check am well.","by":"Brouillon IA, à valider"}}},"lns":{"code":"lns","validation":{"validators":[],"status":"Automatic machine translation draft. Not validated by Lamnso' speakers. Review financial and safety wording before relying on it.","method":"Local Flagship AI Cameroon French-pivot MarianMT model; native-speaker validation is still required."},"entries":{}},"dua":{"code":"dua","validation":{"validators":[],"method":"Native-speaker review in the glossary editor (options page). Each entry stores who validated it."},"entries":{}},"bbj":{"code":"bbj","validation":{"validators":[],"method":"Native-speaker review in the glossary editor (options page). Each entry stores who validated it."},"entries":{}},"bas":{"code":"bas","validation":{"validators":[],"method":"Native-speaker review in the glossary editor (options page). Each entry stores who validated it."},"entries":{}},"nge":{"code":"nge","validation":{"validators":[],"method":"Native-speaker review in the glossary editor (options page). Each entry stores who validated it."},"entries":{}},"bkm":{"code":"bkm","validation":{"validators":[],"method":"Native-speaker review in the glossary editor (options page). Each entry stores who validated it."},"entries":{}}},"lexicon":{"licence":"Words from Wiktionnaire / Wiktionary contributors, CC BY-SA 4.0 (https://fr.wiktionary.org, https://en.wiktionary.org); Lamnso words learned from the Lamnso New Testament (flagship-ai/cameroon_bibles, CC BY 4.0) aligned with the King James Version (public domain). Dictionary hints, not validated.","fr":{"ewo":{"eau":["məndím"],"bonjour":["bembekiri"]},"fub":{"non":["ala"],"merci":["adjarama","tiyaabu"],"savoir":["annduude"],"connaitre":["annduude"],"aide":["ballal"],"travail":["ballal"],"eau":["ceeɗoojam","ndiyam","ndiiam"],"voleur":["gujjo"],"personne":["goɗɗo"],"mois":["lewru"]},"dua":{"acheter":["anda"],"savoir":["bía"],"vendre":["andisɛ"],"jour":["búńa"],"changer":["cenci","tukwa"],"travail":["ebolo"],"accepter":["koa"],"lire":["lánga"],"prendre":["lámba ńolo","no̱ngo̱ jangame̱n"],"dire":["kwála"],"lettre":["kálati"],"eau":["madíbá"],"personne":["moto"],"garder":["táta"],"payer":["sáwa"],"ouvrir":["télɛ"]},"bas":{"changer":["hɛ̀ŋlà"],"eau":["malép","màlep","màlep ma ɓâs"]},"bbj":{},"nge":{"eau":["ŋkyi"]},"bkm":{"eau":["mu"]},"lns":{"argent":["mbàm"],"payer":["làʼ"],"paiement":["làʼ"],"donner":["fò"],"prendre":["lì"],"envoyer":["tùm","tumen"],"envoi":["tùm","tumen"],"nom":["yír","yir"],"jour":["kishiíy"],"mois":["ŋwee"],"année":["kiyá"],"mille":["nsə̀kì","ansə̀kì"],"cent":["wií","ghii"],"acheter":["yùn"],"achat":["yùn"],"vendre":["fiìnè"],"voleur":["shóŋ","shòŋ"],"mensonge":["kimboʼtì","bóʼti"],"mentir":["kimboʼtì","bóʼti"],"demander":["dzə̀r"],"dire":["jii"],"entendre":["yú","yù"],"écouter":["yú","yù"],"voir":["yén","yèn"],"savoir":["kì","kìíy"],"connaître":["kì","kìíy"],"écrire":["ŋwàʼ","saŋen"],"bon":["juŋ"],"bien":["juŋ"],"mal":["bi"],"vrai":["ru"],"vérité":["ru"],"nouveau":["fíy"],"nouvelle":["fíy"],"ouvrir":["mvə̀ʼ"],"appeler":["yoŋ"],"appel":["yoŋ"],"main":["kiwó","wó"],"maison":["lav"],"maintenant":["lèn"],"beaucoup":["anín"],"peu":["shishàr"],"choisir":["shòʼ"],"entrer":["nə̀ə́"],"saisir":["nə̀ə́"],"venir":["wìy"],"aller":["dù","du"],"salaire":["vilaʼày"],"prix":["káv"],"pauvre":["ŋgeʼe","kitàn"],"riche":["bùʼ"],"peur":["fàn","fan"],"non":["yòʼ","bó"],"merci":["beèrì","beerì"],"paix":["nyaáŋ"],"langue":["làm","lám"]}},"en":{"ewo":{"water":["məndím"]},"fub":{"never":["abada","abadan","muk"],"no":["alaa","aldaa","walaa"],"person":["aaden","gimɗo","neɗɗo"],"total":["adadu","kawral"],"number":["adadu"],"before":["adaade"],"take":["addugol","laatagol","naɓugol"],"know":["anndugol"],"error":["ayiibe","faljere","hakkee"],"return":["artugol"],"help":["ballal","dankata","faabaade"],"letter":["bataake"],"after":["caggal","ontuma","ɓaawo"],"price":["coggu"],"stop":["darnugol","faddagol","haaɗugol"],"work":["darnugol","ciiwdi","golle"],"year":["duuɓi"],"free":["dimo","hettaare"],"mistake":["faljere"],"call":["ewnagol","innugol","noddugol"],"lie":["fenaande","waalagol"],"look":["fewtugol","nandude","nanndugol"],"all":["fow","haddu","kala"],"finish":["gaynugol","haaɗugol","joofugol"],"end":["gaynugol","haaɗugol","kattuba"],"succeed":["gaynugol","laatagol","lontagol"],"language":["haala","ɗemŋgal"],"message":["haala","nelal"],"hide":["gurii","suumugol"],"wait":["habbagol","tijjagol"],"quickly":["heña"],"name":["innde","innugol","toɗɗagol"],"now":["jonta"],"receive":["jaɓɓagol"],"give":["jonnugol"],"read":["jangude","janngugol"],"listen":["jentagol","ɗoftagol"],"merchant":["jula","yeeyoowo"],"money":["kaalisi"],"new":["keso"],"back":["kééci","ɓaawo","ɓaawoojo"],"month":["lewru"],"sell":["marsingol","soorugo","yeeyugol"],"remain":["luttugol"],"close":["maɓɓugo","moggo","takko"],"open":["maɓɓititgo","udditugol"],"keep":["marugol"],"good":["moƴƴo","suuraare"],"enter":["naatugol"],"see":["ndaarugol"],"send":["naɓugol","nelde"],"water":["ndiyam"],"salary":["ngeenaari"],"wage":["ngeenaari"],"success":["poolal","ɓantaare"],"reason":["sababu"],"date":["ribinoore","saanga"],"pay":["rentagol"],"refuse":["saltagol"],"lack":["sannugol","ŋakkugol"],"many":["sowre","ɗuuɗugol"],"buy":["soodgo","soodugol"],"secret":["suuraare"],"security":["suuraare"],"account":["tinndol"],"little":["tokooso"],"write":["winndugol"],"change":["waylugol"],"speak":["wowlugol"],"day":["ñallal","ñalaande"],"debt":["ñamaande"],"telephone":["ɓoggol"]},"dua":{"person":["moto"],"water":["madíbá"]},"bas":{"water":["malép"]},"bbj":{"good":["bùŋ","pəpúŋ"],"all":["awɛ́"],"open":["cwaə́'"],"lie":["cwánwə̀"],"secret":["càm"],"remain":["cʉ́'"],"look":["cʉ'","lé","mcʉ̀"],"send":["cyà"],"bad":["cwə̀pùŋ"],"day":["dzʉ̌","tyə́'"],"new":["cùŋ","sə́"],"never":["dà"],"sell":["fìŋ","syàp"],"speak":["ghɔ̀m","sò"],"language":["ghɔ̀m"],"work":["fà'"],"give":["há","pà'"],"help":["hé","kwítə́"],"ask":["hə́ŋ","ló"],"take":["kwí","kə̀","lə̀"],"call":["ké"],"read":["ké"],"enter":["kó"],"wage":["ló'"],"lack":["kɔ̀m"],"close":["kə̀ŋ","vì'"],"keep":["lwɔ̀'"],"finish":["mì"],"person":["mò"],"back":["lə̂","ŋka'tə̀"],"accept":["píŋ"],"before":["nə̂"],"wait":["pyáp"],"water":["shyə"],"buy":["syàp","yó"],"pay":["syàp"],"enough":["sàk"],"hide":["pɔ̀m","tʉ̀m","tʉ̀mnyə̀"],"thousand":["shǎ'"],"thief":["shǔŋ"],"no":["sɔ̀m"],"name":["tsǒ"],"many":["yɔ́m"],"write":["və̀"],"see":["yɔ́"],"know":["zhyə","zhyə́"],"money":["ŋkap"],"yes":["ə̌ŋ"],"steal":["zhʉ̀","ŋɛ́"]},"bkm":{"water":["mu","jva"],"quickly":["nyas"],"person":["wul"]},"nge":{},"lns":{"money":["mbàm"],"pay":["làʼ"],"give":["fò"],"take":["lì"],"send":["tùm","tumen"],"name":["yír","yir"],"day":["kishiíy"],"month":["ŋwee"],"year":["kiyá"],"thousand":["nsə̀kì","ansə̀kì"],"hundred":["wií","ghii"],"buy":["yùn"],"sell":["fiìnè"],"thief":["shóŋ","shòŋ"],"lie":["kimboʼtì","bóʼti"],"ask":["dzə̀r"],"say":["jii"],"hear":["yú","yù"],"see":["yén","yèn"],"know":["kì","kìíy"],"write":["ŋwàʼ","saŋen"],"good":["juŋ"],"evil":["bi"],"true":["ru"],"new":["fíy"],"open":["mvə̀ʼ"],"call":["yoŋ"],"hand":["kiwó","wó"],"house":["lav"],"now":["lèn"],"many":["anín"],"little":["shishàr"],"choose":["shòʼ"],"enter":["nə̀ə́"],"come":["wìy"],"go":["dù","du"],"wages":["vilaʼày"],"price":["káv"],"gold":["kisha"],"poor":["ŋgeʼe","kitàn"],"rich":["bùʼ"],"fear":["fàn","fan"],"no":["yòʼ","bó"],"thanks":["beèrì","beerì"],"peace":["nyaáŋ"],"language":["làm","lám"]}}}};
 /*
  * Langwa: protection of financial information.
  *
@@ -389,7 +389,11 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
     /** Pre-validated, meaning-safe summary of a message we cannot translate fully. */
     function gist(original, literals = []) {
       const clean = norm(original);
-      const kind = classify(clean) || 'info';
+      // A generic "info" gist is not a translation and can easily mislead users
+      // on arbitrary pages. Keep safe summaries for classified warnings/errors,
+      // but leave ordinary unknown text explicitly untranslated.
+      const kind = classify(clean);
+      if (!kind) return null;
       const head = byId.get('gist_' + kind);
       if (!head || !head.t) return null;
       const m = P.mask(clean, { literals });
@@ -666,26 +670,43 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
       if (session) {
         session.stopped = true;
         if (session.audio) session.audio.pause();
-        if (session.onStop) session.onStop();
+        if (session.onStop) session.onStop({ stopped: true, spoke: !!session.spoke });
       }
       if (root.speechSynthesis) root.speechSynthesis.cancel();
       session = null;
     }
 
+    /** Plays an audio file. Resolves true if sound actually started, false otherwise. */
     const playUrl = (url, s) => new Promise(res => {
       const a = new Audio(url);
       s.audio = a;
-      a.onended = a.onerror = () => res();
-      a.play().catch(() => res());
+      let started = false;
+      a.onplaying = () => { started = true; s.spoke = true; };
+      a.onended = () => res(true);
+      a.onerror = () => res(started);
+      a.play().catch(() => res(false));
     });
 
+    /**
+     * Speaks with a device or online voice. Resolves true if speech started. Two safety nets:
+     * if nothing starts within 5 s (a voice that never loads) it gives up, and online Chrome
+     * voices are nudged every 10 s (they otherwise go silent mid-sentence on long text).
+     */
     const say = (text, voice, s) => new Promise(res => {
-      if (!root.speechSynthesis || s.stopped || !text.trim()) return res();
+      if (!root.speechSynthesis || s.stopped || !text.trim()) return res(false);
       const u = new SpeechSynthesisUtterance(text);
       if (voice) { u.voice = voice; u.lang = voice.lang; } else u.lang = 'fr-FR';
       u.rate = 1;     // natural pace
       u.pitch = 1;
-      u.onend = u.onerror = () => res();
+      let started = false, done = false;
+      const finish = ok => { if (done) return; done = true; clearTimeout(watch); clearInterval(nudge); res(ok); };
+      const watch = setTimeout(() => { if (!started) { root.speechSynthesis.cancel(); finish(false); } }, 5000);
+      const nudge = voice && voice.localService === false
+        ? setInterval(() => { if (root.speechSynthesis.speaking) { root.speechSynthesis.pause(); root.speechSynthesis.resume(); } }, 10000)
+        : 0;
+      u.onstart = () => { started = true; s.spoke = true; };
+      u.onend = () => finish(true);
+      u.onerror = () => finish(started);
       root.speechSynthesis.speak(u);
     });
 
@@ -757,23 +778,50 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
         if (piece && prev && prev.voice === piece.voice && !prev.audio && !prev.tts) { prev.text += ` ${piece.text}`; prev.national = prev.national || piece.national; }
         else runs.push(piece || step);
       }
-      // Ask the local model for every piece at once: the next one is ready while one plays.
-      const pending = runs.map(r => (r.tts && tts ? Promise.resolve(tts(r.tts)).catch(() => null) : null));
-      for (const [i, r] of runs.entries()) {
+      // Long model text is cut at sentence ends so the first words play quickly: the first
+      // sentence alone, then parts of about 160 characters.
+      const parts = [];
+      for (const r of runs) {
+        if (!(r.tts && r.tts.length > 160)) { parts.push(r); continue; }
+        const sentences = r.tts.match(/[^.!?]+[.!?]+["»”)]*\s*|[^.!?]+$/g) || [r.tts];
+        let cur = '';
+        let first = true;
+        for (const piece of sentences) {
+          cur += piece;
+          if (first || cur.length >= 160) { parts.push({ tts: cur.trim() }); cur = ''; first = false; }
+        }
+        if (cur.trim()) parts.push({ tts: cur.trim() });
+      }
+      // The local model answers one request at a time: ask in reading order, one after the other,
+      // so the part being played is never queued behind a later one, and the next part is made
+      // while the current one plays. After Stop, the remaining parts are not asked for.
+      let chain = Promise.resolve();
+      const pending = parts.map(r => {
+        if (!(r.tts && tts)) return null;
+        const p = chain.then(() => (s.stopped ? null : tts(r.tts))).catch(() => null);
+        chain = p;
+        return p;
+      });
+      for (const [i, r] of parts.entries()) {
         if (s.stopped) break;
         if (r.audio) { report('human'); await playUrl(r.audio, s); }
         else if (r.tts && tts) {
           report('wait');
           const got = await pending[i];
           if (s.stopped) break;
-          if (typeof got === 'string') { report('local'); await playUrl(got, s); }
+          if (typeof got === 'string') {
+            report('local');
+            if (!(await playUrl(got, s)) && !s.stopped) { report('browser', 'error'); await say(nat.adapt(r.tts), nat.voice, s); }
+          }
           else { report('browser', (got && got.fail) || 'offline'); await say(nat.adapt(r.tts), nat.voice, s); }
         } else if (r.text !== undefined) {
           if (r.national) report('browser');
           await say(r.text, r.voice, s);
         }
       }
-      if (session === s) { session = null; if (onStop) onStop(); }
+      // onStop({ spoke }): spoke = false means nothing could be heard (no voice on this device,
+      // audio blocked): the button says so instead of failing silently.
+      if (session === s) { session = null; if (onStop) onStop({ stopped: false, spoke: !!s.spoke }); }
     }
 
     return { play, stop, prepare, isPlaying: () => !!session };
@@ -807,7 +855,7 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
   // Keywords in French, English, Pidgin and Fulfulde (draft) for each built-in question.
   const INTENTS = [
     ['balance', /\b(solde|balance|il me reste|combien j.?ai|how much (money )?(i get|i have|i remain)|money wey i get|money wey dey|ceede am|ceede maa)\b/],
-    ['receiver', /\b(qui|who|benefici\w*|receive|recoit|recevra|pesin|person|jaboowo|moye|nom|name|innde)\b/],
+    ['receiver', /\b(qui|who|benefici\w*|receive|collect|recoit|recevra|pesin|person|jaboowo|moye|nom|name|innde)\b/],
     ['steps', /\b(steps?|stages?|process|etapes?|how (?:does|do) (?:the )?(?:transfer|payment) work|what happens next)\b/],
     ['next', /\b(next|ensuite|apres|faire|fais|maintenant|now|do now|go do|continue[rz]?|bouton|button|click|cliquer|press|jokku|wad\w*|jooni)\b/],
     ['warning', /\b(danger|attention|warning|alerte?|risk|risque|safe|secur\w*|reentino|kisal|probleme?|problem|erreur|error|wahala)\b/],
@@ -853,7 +901,8 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
         }
         return null;
       };
-      const currencyValue = u => u && u.result && u.result.value && /(?:FCFA|CFA|XAF|XOF)/i.test(u.text) ? u.text.trim() : null;
+      // A money value has digits: the bare currency label next to an input ("FCFA") is not one.
+      const currencyValue = u => u && u.result && u.result.value && /(?:FCFA|CFA|XAF|XOF)/i.test(u.text) && /\d/.test(u.text) ? u.text.trim() : null;
       // Financial labels and values are often separate, deeply nested DOM blocks. Search
       // nearby protected values instead of assuming the amount is one of the next three units.
       const moneyNear = ids => {
@@ -917,46 +966,46 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
       const f = facts();
       const out = [];
       const say = (id, fr, vars = {}) => out.push(fill(ui(id, fr), vars));
+      const isLns = state.pack.code === 'lns';
       if (intent === 'page') {
-        const en = /^en/i.test(navigator.language || '');
-        const descriptions = {
-          account: en ? 'This is your account overview. It shows your available balance and recent transactions.' : 'Voici le récapitulatif de votre compte : solde disponible et transactions récentes.',
-          costs: en ? 'This is the costs step. Choose the transfer type and amount; the fee and total are shown before you continue.' : 'Vous êtes à l’étape des frais. Choisissez le type de virement et le montant ; les frais et le total sont affichés avant de continuer.',
-          beneficiary: en ? 'This is the beneficiary step. Enter the recipient’s name and phone number, then check both before continuing.' : 'Vous êtes à l’étape du bénéficiaire. Saisissez son nom et son numéro de téléphone, puis vérifiez-les avant de continuer.',
-          summary: en ? 'This is the transfer summary. Check the amount, fees, recipient, and phone number before confirming.' : 'Voici le récapitulatif du virement. Vérifiez le montant, les frais, le bénéficiaire et son numéro avant de confirmer.',
-          confirmation: en ? 'This is the confirmation step. Review the transfer details, then confirm only if they are correct.' : 'Vous êtes à l’étape de confirmation. Relisez les détails et confirmez seulement s’ils sont corrects.',
-          complete: en ? 'The transfer is complete. This page shows its amount, recipient, and status.' : 'Le virement est terminé. Cette page indique son montant, son bénéficiaire et son statut.',
+        const pages = {
+          account: ['ans_page_account', 'This is your account overview. It shows your available balance and recent transactions.'],
+          costs: ['ans_page_costs', 'This is the costs step. Choose the transfer type and amount; check the fee and total before continuing.'],
+          beneficiary: ['ans_page_beneficiary', 'This is the beneficiary step. Enter the recipient name and phone number, then check both before continuing.'],
+          summary: ['ans_page_summary', 'This is the transfer summary. Check the amount, fees, recipient, and phone number before confirming.'],
+          confirmation: ['ans_page_confirmation', 'This is the confirmation step. Review the transfer details, then confirm only if they are correct.'],
+          complete: ['ans_page_complete', 'The transfer is complete. This page shows its amount, recipient, and status.'],
         };
-        out.push(descriptions[f.pageKind] || descriptions.account);
-        if (f.pageKind !== 'complete') out.push(en
-          ? 'The five steps are Pay, Costs, Beneficiary, Summary, and Confirmation.'
-          : 'Les cinq étapes sont : payer, frais, bénéficiaire, récapitulatif et confirmation.');
+        const [id, en] = pages[f.pageKind] || pages.account;
+        if (isLns) out.push(en);
+        else say(id, en);
+        if (f.pageKind !== 'complete') out.push('Steps: Pay, Costs, Beneficiary, Summary, Confirmation. Check each detail before confirming.');
         const total = [f.total, f.amount].find(v => v && /(?:FCFA|CFA|XAF|XOF)/i.test(v));
-        if (total) say('ans_amount', 'Montant total : {total}.', { total });
-        if (f.receiver) say('ans_receiver', "L'argent va à {name}.", { name: f.receiver });
+        if (total) isLns ? out.push(`Total amount: ${total}.`) : say('ans_amount', 'Total amount: {total}.', { total });
+        if (f.receiver) isLns ? out.push(`Recipient: ${f.receiver}.`) : say('ans_receiver', 'The money goes to {name}.', { name: f.receiver });
+        if (f.pageKind === 'account' && f.balance) isLns ? out.push(`Available account balance: ${f.balance}.`) : say('ans_balance', 'Money available: {balance}.', { balance: f.balance });
       } else if (intent === 'amount') {
-        const total = [f.total, f.amount].find(v => v && /(?:FCFA|CFA|XAF|XOF)/i.test(v));
-        const fees = f.fees && /(?:FCFA|CFA|XAF|XOF)/i.test(f.fees) ? f.fees : null;
-        if (total) say('ans_amount', 'Montant total : {total}.', { total });
-        if (fees) say('ans_fees', 'Frais : {fees}.', { fees });
-        if (!out.length) say('ans_no_amount', 'Je ne vois pas de montant à payer sur cette page.');
+        const total = [f.total, f.amount].find(v => v && /(?:FCFA|CFA|XAF|XOF)/i.test(v) && /\d/.test(v));
+        const fees = f.fees && /(?:FCFA|CFA|XAF|XOF)/i.test(f.fees) && /\d/.test(f.fees) ? f.fees : null;
+        if (total) isLns ? out.push(`Total amount: ${total}.`) : say('ans_amount', 'Total amount: {total}.', { total });
+        if (fees) isLns ? out.push(`Transfer fee: ${fees}.`) : say('ans_fees', 'Fees: {fees}.', { fees });
+        if (!out.length) out.push(isLns ? 'No amount to pay is shown on this page.' : 'I do not see an amount to pay on this page.');
       } else if (intent === 'receiver') {
-        if (f.receiver) say('ans_receiver', "L'argent va à {name}.", { name: f.receiver });
-        else say('ans_no_receiver', 'Je ne vois pas encore de bénéficiaire sur cette page.');
+        if (f.receiver) isLns ? out.push(`Recipient: ${f.receiver}.`) : say('ans_receiver', 'The money goes to {name}.', { name: f.receiver });
+        else out.push(isLns ? 'No beneficiary is shown on this page yet.' : 'I do not see a beneficiary on this page yet.');
       } else if (intent === 'warning') {
-        if (f.warnings.length) f.warnings.slice(0, 2).forEach(m => say('ans_warning', 'Attention : {message}', { message: m }));
-        else say('ans_no_warning', "Pas d'alerte sur cette page.");
+        if (isLns) out.push('Before confirming, check the beneficiary name and phone number carefully.');
+        else if (f.warnings.length) f.warnings.slice(0, 2).forEach(m => say('ans_warning', 'Warning: {message}', { message: m }));
+        else out.push('No warning is shown on this page.');
       } else if (intent === 'next') {
-        if (f.next) say('ans_next', 'Ensuite, appuyez sur {button}.', { button: f.next });
-        else say('ans_no_next', 'Je ne vois pas de bouton à appuyer.');
+        if (f.next) isLns ? out.push(`After checking the details, press ${f.next}.`) : say('ans_next', 'Next, press {button}.', { button: f.next });
+        else out.push(isLns ? 'No next-step button is visible on this page.' : 'I do not see a button to press.');
       } else if (intent === 'balance') {
-        if (f.balance) say('ans_balance', 'Argent disponible : {balance}.', { balance: f.balance });
-        else say('ans_no_amount', 'Je ne vois pas de montant à payer sur cette page.');
+        if (f.balance) isLns ? out.push(`Available account balance: ${f.balance}.`) : say('ans_balance', 'Available balance: {balance}.', { balance: f.balance });
+        else out.push(isLns ? 'No available balance is shown on this page.' : 'I do not see an available balance on this page.');
       } else if (intent === 'steps') {
-        const en = /^en/i.test(navigator.language || '');
-        out.push(en
-          ? 'A transfer has five steps: 1) Pay: start the transfer. 2) Costs: choose the type and amount, then review the fee. 3) Beneficiary: enter and check the recipient’s name and number. 4) Summary: review all details. 5) Confirmation: confirm only when everything is correct.'
-          : 'Un virement comporte cinq étapes : 1) Payer : démarrer le virement. 2) Frais : choisir le type et le montant, puis vérifier les frais. 3) Bénéficiaire : saisir et vérifier son nom et son numéro. 4) Récapitulatif : relire les informations. 5) Confirmation : confirmer seulement si tout est correct.');
+        const steps = 'A transfer has five steps. Pay starts the transfer. Costs lets you choose the type and amount and check the fee. Beneficiary asks for the recipient name and phone number. Summary lets you review the details. Confirmation sends it only after you confirm.';
+        out.push(steps);
       }
       return out.join(' ');
     }
@@ -967,7 +1016,8 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
       const f = facts();
       // A bare step number can be mistaken for the transfer amount when a page
       // has several stages. Only report values that visibly carry the currency.
-      const money = value => value && /(?:FCFA|CFA|XAF|F\s*CFA)/i.test(value) ? value : null;
+      const money = value => value && /(?:FCFA|CFA|XAF|F\s*CFA)/i.test(value) && /\d/.test(value) ? value : null;
+      const isFree = value => /^[0\s.,]+(?:F\s*)?(?:FCFA|CFA|XAF)$/i.test(value.trim());
       const amount = money(f.amount) || (f.amountNumber ? `${f.amountNumber} FCFA` : null);
       const total = money(f.total);
       const fees = money(f.fees);
@@ -975,20 +1025,20 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
       const out = [];
       if (intent === 'page') {
         const page = {
-          account: 'Dis na your account page. E show the money wey dey your account and your recent transactions. To send money, follow the five transfer steps: Pay, Costs, Beneficiary, Summary, Confirmation.',
-          costs: 'You dey the Costs step. Choose the transfer type and amount here; check the charges and total before you continue. The full steps na Pay, Costs, Beneficiary, Summary, Confirmation.',
-          beneficiary: 'You dey the Beneficiary step. Put the receiver name and phone number, then check them well before you continue. The full steps na Pay, Costs, Beneficiary, Summary, Confirmation.',
-          summary: 'You dey the Summary step. Check the amount, charges, receiver name, and phone number before you confirm. The full steps na Pay, Costs, Beneficiary, Summary, Confirmation.',
-          confirmation: 'You dey the Confirmation step. Read the transfer details again and confirm only if everything correct.',
+          account: 'Dis na your account page. E show the money wey dey your account and your recent transactions. To send the money, follow the five transfer steps: Pay, See charges, Person wey go receive am, Check all tindem, Confirm.',
+          costs: 'You dey the step for see the charges. Choose the transfer type and amount here; check the charges and total before you continue. The full steps na Pay, See charges, Person wey go receive am, Check all tindem, Confirm.',
+          beneficiary: 'You dey the step for the person wey go receive am. Put the receiver name and phone number, then check them well before you continue. The full steps na Pay, See charges, Person wey go receive am, Check all tindem, Confirm.',
+          summary: 'You dey the step wey show all tindem wey you don enter, so you fit confirm am. Check the amount, charges, receiver name, and phone number before you confirm. The full steps na Pay, See charges, Person wey go receive am, Check all tindem, Confirm.',
+          confirmation: 'You dey the Confirm step. Read the transfer details again and confirm only if everything correct.',
           complete: 'The transfer don complete. Dis page show the amount, who receive am, and the status.',
         };
         out.push(page[f.pageKind] || page.account);
         if (amount && f.pageKind !== 'costs') out.push(`You wan send ${amount}.`);
-        if (fees && f.pageKind === 'costs') out.push(fees === '0 FCFA' ? 'The transfer charge na free.' : `The transfer charge na ${fees}.`);
+        if (fees && f.pageKind === 'costs') out.push(isFree(fees) ? 'The transfer charge na free (0 FCFA).' : `The transfer charge na ${fees}.`);
         if (total && f.pageKind === 'summary') out.push(`The total wey go comot your account na ${total}.`);
         if (f.receiver && ['beneficiary', 'summary', 'complete'].includes(f.pageKind)) out.push(`Na ${f.receiver} go receive the money.`);
       } else if (intent === 'steps') {
-        out.push('Transfer get five steps: 1) Pay: start the transfer. 2) Costs: choose the type and amount, then check the charges. 3) Beneficiary: put and check the receiver name and number. 4) Summary: review everything. 5) Confirmation: confirm only when all the details correct.');
+        out.push('Transfer get five steps: 1) Pay: start the transfer. 2) See charges: choose the type and amount, then check the charges. 3) Person wey go receive am: put and check the receiver name and number. 4) Check all tindem: look all wetin you don enter one more time. 5) Confirm: confirm only when all the details correct.');
       } else if (intent === 'amount') {
         if (total || amount) out.push(`All the money wey go comot for your account na ${total || amount}.`);
         if (fees) out.push(`The charges na ${fees}.`);
@@ -1014,12 +1064,15 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
       for (const t of m.tokens) {
         const [before, after] = rest.split(t.key);
         if (/\p{L}/u.test(before)) steps.push({ missing: true, text: before.trim() });
-        if (['wes', 'lns'].includes(state.pack.code) && t.type === 'money') {
+        if (t.type === 'money' && ['wes', 'lns'].includes(state.pack.code)) {
           // Keep the exact numeric value, but send it through the selected language voice.
-          // Lamnso' uses its local MMS voice; CFA is a familiar French loanword in the region.
           const rawNumber = (t.value.match(/\d[\d\s.,]*\d|\d/) || [''])[0];
           const number = root.LangwaSpeech ? root.LangwaSpeech.spokenNumber(rawNumber) : rawNumber.replace(/[\s.,]/g, '');
           steps.push({ missing: true, text: state.pack.code === 'lns' ? `${number} francs CFA` : `${number} CFA francs` });
+        } else if (t.type === 'money' && (state.pack.africaTts || state.pack.mms)) {
+          // Let the selected language's local speech model pronounce the amount, instead of
+          // routing every non-Pidgin amount through the French number voice.
+          steps.push({ missing: true, text: t.value });
         } else steps.push({ value: t.value, type: t.type });
         rest = after || '';
       }
@@ -1038,14 +1091,33 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
       if (!q) return;
       push({ role: 'me', text: q });
       const intent = intentHint || detectIntent(q);
-      if (intent) return reply(answerKamtok(intent) || answer(intent));
+      if (intent) {
+        const grounded = answerKamtok(intent) || answer(intent);
+        if (state.pack.code !== 'lns') return reply(grounded);
+        const thinking = waitFor('think');
+        let translated = '';
+        try {
+          const masked = P.mask(grounded, { brands: state.brands || [] });
+          const result = await timed(send({ type: 'translateBatch', lang: 'lns', items: [{ masked: masked.masked }] }), 60000);
+          const draft = result && !result.timeout && result.results && result.results[0];
+          if (draft && draft.text) {
+            const restored = P.unmask(draft.text, masked.tokens);
+            if (restored.ok) translated = restored.text;
+          }
+        } catch { /* show the grounded fallback below */ }
+        done(thinking);
+        return translated
+          ? reply(translated, { model: true })
+          : reply(`English fallback (Lamnso draft unavailable): ${grounded}`);
+      }
       // Free question: local open-source model, if set up.
-      if (state.settings.mt && state.settings.mt.mode === 'openai') {
-        const thinking = push({ role: 'bot', text: '…', pending: true });
+      if ((state.settings.mt && state.settings.mt.mode === 'openai') || state.pack.code === 'lns') {
+        const thinking = waitFor('think');
         const context = state.units.filter(u => u.result).slice(0, 80).map(u => (u.result.value ? u.text : `${shownText(u)} (${u.text})`));
         let res = null;
-        try { res = await send({ type: 'chat', lang: state.pack.code, question: q, context }); } catch { res = null; }
-        chat.splice(chat.indexOf(thinking), 1);
+        try { res = await timed(send({ type: 'chat', lang: state.pack.code, question: q, context }), 60000); } catch { res = null; }
+        done(thinking);
+        if (res && res.timeout) { reply(ui('ans_model_timeout', 'Le modèle local met trop de temps. Voici ce que je peux dire sans lui :'), { chips: true }); return; }
         if (res && res.text && numbersAreFromPage(res.text)) {
           // Do not show unconstrained model prose as Kamtok: many local models only know
           // Nigerian Pidgin or produce literal English word order. Keep the grounded path.
@@ -1065,6 +1137,33 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
     }
 
     function push(m) { chat.push(m); render(); return m; }
+
+    // ---------------- waiting feedback ----------------
+    const timed = (p, ms) => Promise.race([p, new Promise(r => setTimeout(() => r({ timeout: true }), ms))]);
+    /** A "working" bubble: dots + what is happening; after 8 s, why it takes time. */
+    function waitFor(kind) {
+      const m = push({ role: 'bot', text: '…', pending: true, kind, since: Date.now() });
+      setBusy(true);
+      setTimeout(() => { if (chat.includes(m)) render(); }, 8050);
+      return m;
+    }
+    function done(m) {
+      const i = chat.indexOf(m);
+      if (i >= 0) chat.splice(i, 1);
+      setBusy(false);
+      render();
+    }
+    function setBusy(on) {
+      if (!els) return;
+      els.send.disabled = on;
+      els.log.setAttribute('aria-busy', String(on));
+      els.chips.querySelectorAll('button').forEach(b => { b.disabled = on; });
+    }
+    function waitText(m) {
+      const slow = Date.now() - m.since > 8000;
+      if (m.kind === 'asr') return slow ? ui('ui_transcribing_slow', 'Je transcris votre voix… (le modèle vocal démarre)') : ui('ui_transcribing', 'Je transcris votre voix…');
+      return slow ? ui('ui_model_loading', 'Le modèle local démarre : la première réponse peut prendre une minute.') : ui('ui_thinking', 'Je réfléchis…');
+    }
 
     // ---------------- voice questions ----------------
     let rec = null;
@@ -1089,14 +1188,20 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
       rec = { stop: () => r.stop() };
       setMic(true);
       r.onresult = e => { const t = e.results[0][0].transcript; ask(t); };
-      r.onerror = () => {};
+      r.onerror = e => {
+        const why = e && e.error;
+        if (why === 'no-speech') reply(ui('ans_no_speech', 'Je n’ai rien entendu. Touchez le micro et parlez, ou écrivez votre question.'));
+        else if (why === 'not-allowed' || why === 'service-not-allowed') reply(ui('ans_mic_blocked', 'Le micro est bloqué. Autorisez-le dans la barre d’adresse du navigateur, ou écrivez votre question.'));
+        else if (why === 'network') reply(ui('ans_speech_network', 'La reconnaissance vocale a besoin d’internet. Écrivez votre question ou réessayez.'));
+        else if (why && why !== 'aborted') reply(ui('ans_type_instead', 'Écrivez votre question ou touchez une question ci-dessous.'));
+      };
       r.onend = () => { rec = null; setMic(false); };
       r.start();
     }
 
     async function listenLocal() {
       let stream;
-      try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); } catch { return reply(ui('ans_type_instead', 'Écrivez votre question ou touchez une question ci-dessous.')); }
+      try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); } catch { return reply(ui('ans_mic_blocked', 'Le micro est bloqué. Autorisez-le dans la barre d’adresse du navigateur, ou écrivez votre question.')); }
       const chunks = [];
       const mr = new MediaRecorder(stream);
       rec = { stop: () => mr.state !== 'inactive' && mr.stop() };
@@ -1108,12 +1213,17 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
         stream.getTracks().forEach(t => t.stop());
         rec = null;
         setMic(false);
-        const wav = await toWav16k(new Blob(chunks, { type: mr.mimeType }));
-        const thinking = push({ role: 'bot', text: '…', pending: true });
+        const thinking = waitFor('asr');
+        if (els) els.mic.classList.add('busy');
         let res = null;
-        try { res = await send({ type: 'asr', audio: wav, hint: state.pack.code }); } catch { res = null; }
-        chat.splice(chat.indexOf(thinking), 1);
-        if (!res || !res.text) { reply(ui('ans_type_instead', 'Écrivez votre question ou touchez une question ci-dessous.')); return; }
+        try {
+          const wav = await toWav16k(new Blob(chunks, { type: mr.mimeType }));
+          res = await timed(send({ type: 'asr', audio: wav, hint: state.pack.code }), 45000);
+        } catch { res = null; }
+        if (els) els.mic.classList.remove('busy');
+        done(thinking);
+        const heardNothing = res && !res.timeout && typeof res.text === 'string' && !res.text.trim();
+        if (!res || res.timeout || !res.text) { reply(heardNothing ? ui('ans_no_speech', 'Je n’ai rien entendu. Touchez le micro et parlez, ou écrivez votre question.') : ui('ans_asr_down', 'Je n’ai pas pu transcrire votre voix (serveur vocal local éteint ?). Écrivez votre question.')); return; }
         if (res.lang && res.lang !== state.pack.code && state.langs && state.langs[res.lang]) offerLanguage(res.lang);
         ask(res.text);
       };
@@ -1155,7 +1265,15 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
       push({ role: 'bot', text: ui('ans_speech_consent', 'Pour comprendre votre voix, le navigateur envoie l’enregistrement au service de reconnaissance de Google (français, anglais, pidgin).'), action: { label: ui('ui_enable', 'Activer'), run: () => { setLight({ onlineSpeech: true }); then(); } } });
     }
 
-    function setMic(on) { if (els) { els.mic.classList.toggle('on', on); els.mic.setAttribute('aria-pressed', on); els.input.placeholder = on ? ui('ui_listening', 'J’écoute…') : ui('ui_ask_placeholder', 'Posez votre question…'); } }
+    function setMic(on) {
+      if (!els) return;
+      const label = on ? ui('ui_listening_stop', 'J’écoute… touchez pour arrêter') : ui('ui_mic', 'Parler');
+      els.mic.classList.toggle('on', on);
+      els.mic.setAttribute('aria-pressed', String(on));
+      els.mic.setAttribute('aria-label', label);
+      els.mic.title = label;
+      els.input.placeholder = on ? ui('ui_listening_stop', 'J’écoute… touchez pour arrêter') : ui('ui_ask_placeholder', 'Posez votre question…');
+    }
 
     // ---------------- view ----------------
     const QUESTIONS = [
@@ -1169,6 +1287,21 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
 
     function mount() {
       const log = h('div', { class: 'log', 'aria-live': 'polite' });
+      // One quiet line that never pushes the conversation away: details on tap, × hides it for good.
+      let pidginCoverage = null;
+      if (state.pack.code === 'wes' && (!state.settings.mt || state.settings.mt.mode === 'none') && !state.coverageHidden) {
+        const close = h('button', { type: 'button', class: 'cn-x', 'aria-label': ui('ui_close', 'Fermer'), title: ui('ui_close', 'Fermer') }, icon('x'));
+        pidginCoverage = h('details', { class: 'coverage-note' },
+          h('summary', {}, icon('info'), h('span', {}, 'Limited Pidgin translation'), h('span', { class: 'cn-more' }, 'Details'), close),
+          h('p', {}, 'No general Pidgin translation model is connected, and machine translation is off. Page translation relies on phrase matches, so unfamiliar text may stay in English or appear as not translated.'));
+        close.addEventListener('click', e => {
+          e.preventDefault();
+          state.coverageHidden = true;
+          pidginCoverage.remove();
+          try { api.storage.local.set({ coverageHidden: true }); } catch { /* not critical */ }
+        });
+        api.storage.local.get('coverageHidden').then(r => { if (r && r.coverageHidden) { state.coverageHidden = true; pidginCoverage.remove(); } }).catch(() => {});
+      }
       const chips = h('div', { class: 'qchips' }, QUESTIONS.map(([intent, id, fr]) => h('button', { type: 'button', class: 'qchip', onclick: () => ask(ui(id, fr), intent) }, ui(id, fr))));
       const input = h('input', { type: 'text', class: 'askin', placeholder: ui('ui_ask_placeholder', 'Posez votre question…'), 'aria-label': ui('ui_ask_placeholder', 'Posez votre question…'), enterkeyhint: 'send' });
       const mic = h('button', { type: 'button', class: 'mic', title: ui('ui_mic', 'Parler'), 'aria-label': ui('ui_mic', 'Parler'), onclick: listen }, icon('mic'));
@@ -1176,8 +1309,8 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
       const form = h('form', { class: 'askrow' }, mic, input, sendBtn);
       form.addEventListener('submit', e => { e.preventDefault(); const v = input.value; input.value = ''; ask(v); });
       input.addEventListener('keydown', e => e.stopPropagation()); // typing never triggers page shortcuts
-      const view = h('div', { class: 'chat' }, log, chips, form);
-      els = { view, log, chips, input, mic };
+      const view = h('div', { class: 'chat' }, pidginCoverage, log, chips, form);
+      els = { view, log, chips, input, mic, send: sendBtn };
       render();
       return view;
     }
@@ -1189,7 +1322,9 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
         if (m.role === 'me') return h('div', { class: 'msg me' }, m.text);
         const steps = !m.pending && stepsOf(m.text);
         return h('div', { class: `msg bot${m.pending ? ' pending' : ''}` },
-          h('div', { class: 'mrow' }, h('div', { class: 'mtext' }, m.pending ? h('span', { class: 'dots' }, h('i'), h('i'), h('i')) : m.text),
+          h('div', { class: 'mrow' }, h('div', { class: 'mtext' }, m.pending
+            ? h('span', { class: 'mwait', role: 'status' }, h('span', { class: 'dots', 'aria-hidden': 'true' }, h('i'), h('i'), h('i')), h('span', { class: 'mwt' }, waitText(m)))
+            : m.text),
             steps ? ctx.sayButton(steps, ui('ui_listen', 'Écouter'), { compact: true }) : null),
           m.model ? h('div', { class: 'mnote' }, ui('ans_model_note', 'Réponse d’un modèle local, à vérifier.')) : null,
           m.action ? h('button', { class: 'maction', type: 'button', onclick: e => { e.stopPropagation(); m.action.run(); m.action = null; render(); } }, m.action.label) : null);
@@ -1228,7 +1363,11 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
 
   // Translated phrases per language (the chooser marks empty languages "Soon").
   const count = code => Object.values((D.packs[code] || {}).entries || {}).filter(e => e && e.t).length;
-  const langs = () => Object.fromEntries(Object.entries(D.langs).map(([c, l]) => [c, { ...l, count: count(c) }]));
+  const TOTAL = Math.max(1, ((D.source && D.source.entries) || []).length);
+  const langs = () => Object.fromEntries(Object.entries(D.langs).map(([c, l]) => {
+    const n = count(c);
+    return [c, { ...l, count: n, total: TOTAL, pct: Math.min(100, Math.round((100 * n) / TOTAL)) }];
+  }));
 
   function settings() {
     const s = store.get('settings') || {};
@@ -1302,10 +1441,16 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
 (() => {
   'use strict';
   if (window.__langwa) return;
-  window.__langwa = true;
 
-  // Extension APIs, or the standalone runtime when running as a userscript on phones.
-  const api = globalThis.LangwaRuntime ?? globalThis.browser ?? globalThis.chrome;
+  // Extension APIs, or the standalone runtime when running as a userscript on phones. Only an
+  // object with working runtime and storage counts: a page element with id="browser" shows up as
+  // window.browser, and while the extension is being reloaded or updated Chrome hands a starting
+  // script a cut-down chrome object without storage. Then this copy stays silent; the next page
+  // load gets a working one.
+  const api = [globalThis.LangwaRuntime, globalThis.browser, globalThis.chrome]
+    .find(a => a && a.runtime && a.storage && a.storage.local && a.storage.onChanged);
+  if (!api) return;
+  window.__langwa = true;
   const P = globalThis.LangwaProtect;
   const E = globalThis.LangwaEngine;
 
@@ -1360,6 +1505,7 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
     if (tabsBar) for (const b of tabsBar.children) { const on = b.dataset.tab === id; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); }
     if (id === 'list') renderPanel();
   }
+  let panelVoice; // live voice line in the panel header (browser voice / natural voice 42 % / ready)
   let host, shadow, tip, tipBody, tipArrow, panel, panelList, panelStatus, toastBox, hl, subLayer, fab, fabDot, fabCount;
 
   function h(tag, attrs = {}, ...kids) {
@@ -1372,6 +1518,8 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
     for (const kid of kids.flat()) if (kid != null && kid !== false) el.append(kid.nodeType ? kid : String(kid));
     return el;
   }
+  /** replaceChildren without empty slots: the browser would write a null child as the text "null". */
+  const fill = (el, ...kids) => el.replaceChildren(...kids.flat().filter(k => k != null && k !== false));
 
   /*
    * Theme: warm ebony and ivory surfaces, kente gold accent, forest green for
@@ -1399,30 +1547,34 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
 
   /* ---------- hover card ---------- */
   .tip { position: fixed; z-index: 2147483647; width: max-content; max-width: min(440px, calc(100vw - 16px)); pointer-events: auto;
-    background: var(--ebony); color: var(--ivory); border-radius: 16px; padding: 14px 16px;
-    box-shadow: 0 20px 50px rgba(20,12,4,.45), 0 0 0 1px rgba(255,240,220,.07);
-    font-size: 15px; line-height: 1.42; visibility: hidden; opacity: 0; transform: translateY(4px);
+    min-width: min(290px, calc(100vw - 16px)); box-sizing: border-box;
+    background: var(--ebony); color: var(--ivory); border-radius: 18px; padding: 16px 18px 14px;
+    box-shadow: 0 24px 60px rgba(20,12,4,.42), 0 2px 8px rgba(20,12,4,.25), 0 0 0 1px rgba(255,240,220,.08);
+    font-size: 15px; line-height: 1.4; visibility: hidden; opacity: 0; transform: translateY(4px);
     transition: opacity .14s ease, transform .14s ease, visibility 0s .14s; }
   .tip.show { visibility: visible; opacity: 1; transform: none; transition: opacity .14s ease, transform .14s ease; }
   .tip.passthru { pointer-events: none; }
   .arrow { position: absolute; width: 14px; height: 14px; background: var(--ebony); transform: rotate(45deg); top: -6px; border-radius: 3px; }
   .tip.above .arrow { top: auto; bottom: -6px; }
-  .block + .block { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--ebony-3); }
+  .block + .block { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--ebony-3); }
   .tr .i.kind { margin-right: 7px; }
   .tr .i.err { color: #ec8a6c; } .tr .i.warn { color: var(--gold); } .tr .i.okk { color: #6fd29d; }
   .tr.missing { font-size: 15px; font-weight: 600; color: var(--sand); }
-  .row { display: flex; align-items: flex-start; gap: 12px; }
-  .tr { flex: 1; font-size: 19px; font-weight: 650; letter-spacing: -.005em; overflow-wrap: anywhere; }
+  .row { display: flex; align-items: flex-start; gap: 14px; }
+  .tr { flex: 1; min-width: 0; font-size: 19px; line-height: 1.3; font-weight: 700; letter-spacing: -.01em; overflow-wrap: break-word; padding-top: 6px; }
   .tr .i { color: var(--sand); margin-right: 6px; }
-  .explain { display: flex; gap: 8px; margin-top: 7px; font-size: 14px; color: #efe3d1; }
+  .explain { display: flex; gap: 8px; margin-top: 10px; font-size: 14px; color: #efe3d1; }
   .explain .i { color: var(--gold); margin-top: 2px; }
-  .orig { margin-top: 7px; font-size: 13px; color: var(--sand); opacity: .85; overflow-wrap: anywhere; }
-  .orig b { font-size: 9.5px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; margin-right: 7px; opacity: .7; }
-  .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 10px; }
-  .chip { display: inline-flex; align-items: center; gap: 5px; font: 700 13px "Cascadia Mono", ui-monospace, Consolas, monospace;
-    background: var(--gold-soft); color: #3b2604; padding: 3px 8px; border-radius: 8px; }
+  .orig { margin-top: 4px; font-size: 13.5px; color: var(--sand); opacity: .82; overflow-wrap: break-word; }
+  .orig b { font-size: 9.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; margin-right: 8px; opacity: .6; }
+  /* Footer: voice, protected values and validation status as one row of matching chips. */
+  .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 12px; padding-top: 11px;
+    border-top: 1px solid color-mix(in srgb, currentColor 10%, transparent); }
+  .meta:empty { display: none; }
+  .chip { display: inline-flex; align-items: center; gap: 5px; height: 24px; box-sizing: border-box; font: 700 12px "Cascadia Mono", ui-monospace, Consolas, monospace;
+    background: var(--gold-soft); color: #3b2604; padding: 0 8px; border-radius: 7px; }
   .chip .i { font-size: 12px; }
-  .pill { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; padding: 3px 9px 3px 7px; border-radius: 999px; }
+  .pill { display: inline-flex; align-items: center; gap: 5px; height: 24px; box-sizing: border-box; font-size: 11.5px; font-weight: 650; padding: 0 10px 0 8px; border-radius: 999px; white-space: nowrap; }
   .pill.ok { background: rgba(47,158,102,.18); color: #7fd9a8; } .pill.mt { background: rgba(227,162,26,.18); color: #f3c460; }
   .pill.gist { background: rgba(143,160,230,.18); color: #b9c5f3; } .pill.block { background: rgba(194,80,46,.22); color: #f2a58d; }
   .pill.none { background: rgba(217,201,180,.14); color: var(--sand); }
@@ -1431,23 +1583,32 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
   .spin { animation: spin 1s linear infinite; } @keyframes spin { to { transform: rotate(360deg); } }
 
   /* listen button */
-  .say.wide { width: auto; height: 40px; padding: 0 14px 0 12px; display: inline-flex; gap: 8px; align-items: center; font-size: 18px; }
-  .say .lbl { font-size: 14px; font-weight: 700; white-space: nowrap; }
+  .say.wide { width: auto; height: 38px; padding: 0 15px 0 12px; display: inline-flex; gap: 7px; align-items: center; font-size: 17px; }
+  .say .lbl { font-size: 13.5px; font-weight: 700; white-space: nowrap; }
   .bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 16px; }
   .bars i { width: 3px; height: 6px; border-radius: 2px; background: currentColor; animation: eq .8s ease-in-out infinite; }
   .bars i:nth-child(2) { animation-delay: .15s; } .bars i:nth-child(3) { animation-delay: .3s; }
   @keyframes eq { 50% { height: 16px; } }
   .voice { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 12px; color: var(--sand); opacity: .85; }
   /* Voice chip: who is speaking, live (local model, browser voice, human recording). */
-  .vchip { --c: var(--sand); display: inline-flex; align-items: center; gap: 7px; max-width: 100%; margin-top: 9px; padding: 4px 11px 4px 9px;
-    border-radius: 999px; font-size: 12px; font-weight: 600; line-height: 1.3; color: var(--c);
+  .vchip { --c: var(--sand); display: inline-flex; align-items: center; gap: 6px; max-width: 100%; height: 24px; box-sizing: border-box; padding: 0 10px 0 8px;
+    border-radius: 999px; font-size: 11.5px; font-weight: 650; line-height: 1; color: var(--c);
     background: color-mix(in srgb, var(--c) 13%, transparent); border: 1px solid color-mix(in srgb, var(--c) 30%, transparent);
     transition: color .2s ease, background .2s ease, border-color .2s ease; }
-  .vchip .i { font-size: 14px; flex: none; }
+  .vchip .i { font-size: 13px; flex: none; }
   .vchip .vt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .vchip .why { font-weight: 500; opacity: .8; }
-  .vchip .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex: none; display: none; }
-  .vchip.live .dot { display: block; animation: pulse 1.1s ease-in-out infinite; }
+  .vchip .dot { position: static; width: 7px; height: 7px; border: 0; box-shadow: none; border-radius: 50%; background: currentColor; flex: none; display: none; }
+  .vchip.live .dot, .vchip.warm .dot { display: block; animation: pulse 1.1s ease-in-out infinite; }
+  .vchip.warm .dot { color: var(--gold); }
+  .pvoice { display: flex; align-items: center; gap: 6px; margin-top: 3px; font-size: 12px; font-weight: 600; color: var(--indigo-2); min-width: 0; }
+  .pvoice svg { width: 13px; height: 13px; }
+  .pvoice .vt { display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .pvoice .vt::first-letter { text-transform: uppercase; }
+  .pvoice[data-s="ready"] { color: #7fd9a8; }
+  .pvoice[data-s="installing"], .pvoice[data-s="loading"] { color: var(--gold); }
+  .vprog { flex: none; width: 48px; height: 5px; border-radius: 99px; overflow: hidden; background: color-mix(in srgb, currentColor 22%, transparent); }
+  .vprog i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #7fe0ad, var(--gold)); transition: width 3s linear; }
   .vchip[data-src="local"], .vchip[data-src="wait"] { --c: #7fe0ad; }
   .vchip[data-src="browser"] { --c: var(--indigo-2); }
   .vchip[data-src="human"] { --c: var(--gold); }
@@ -1462,7 +1623,25 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
     background: var(--forest); color: #fff; box-shadow: 0 4px 14px rgba(30,122,76,.45); transition: transform .1s ease, background .15s ease; }
   .say:hover { transform: scale(1.06); background: var(--forest-2); }
   .say:active { transform: scale(.95); }
+  /* Every control answers the touch: a quick press, a hover lift, a busy cursor when working. */
+  .tab, .qchip, .mic, .sendq, .icon-btn, .lang-btn, .maction, .cyes, .cno { transition: transform .1s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease, opacity .15s ease; }
+  .tab:active, .qchip:active, .mic:active, .sendq:active, .icon-btn:active, .lang-btn:active, .maction:active, .cyes:active, .cno:active, .fab:active { transform: scale(.95); }
+  .qchip:hover { border-color: var(--gold); }
+  .mic:hover, .sendq:hover { box-shadow: 0 4px 12px rgba(20,12,4,.18); }
+  .icon-btn:hover { border-color: var(--gold); }
+  .sendq:disabled, .qchip:disabled { opacity: .45; cursor: progress; transform: none; }
+  [aria-busy="true"] { cursor: progress; }
+  .mic.busy { background: var(--ebony-3); color: var(--ivory); animation: none; cursor: progress; }
+  .mwait { display: inline-flex; align-items: center; gap: 10px; }
+  .mwt { font-size: 13px; color: var(--card-muted); }
+  .mhint { margin-top: 6px; font-size: 12px; color: var(--card-muted); display: flex; align-items: center; gap: 6px; }
+  .mhint .i { font-size: 13px; }
   .say.on { background: var(--terracotta); animation: ring 1.2s ease-out infinite; }
+  /* preparing: calm, no pulsing ring yet (the ring means "sound is playing") */
+  .say.on[data-phase="prep"], .say.on[data-phase="slow"] { background: color-mix(in srgb, var(--forest) 72%, var(--ebony)); animation: none; cursor: progress; }
+  .say.on[data-phase="slow"] .lbl { opacity: .9; }
+  .say.fail { background: var(--terracotta); animation: shake .32s ease; }
+  @keyframes shake { 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
   .say:disabled { background: var(--ebony-3); color: #9c8b78; box-shadow: none; cursor: not-allowed; transform: none; }
   @keyframes ring { from { box-shadow: 0 0 0 0 rgba(194,80,46,.55); } to { box-shadow: 0 0 0 12px rgba(194,80,46,0); } }
 
@@ -1491,6 +1670,16 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
   .mtext { flex: 1; }
   .msg .say { width: 32px; height: 32px; font-size: 15px; box-shadow: none; }
   .mnote { margin-top: 6px; font-size: 11.5px; color: var(--card-muted); }
+  .coverage-note { flex: none; margin: 8px 14px 0; border: 1px solid var(--line); border-radius: 10px; background: var(--soft); color: var(--card-muted); font-size: 12px; line-height: 1.4; }
+  .coverage-note summary { display: flex; align-items: center; gap: 7px; padding: 5px 6px 5px 10px; cursor: pointer; list-style: none; font-weight: 600; }
+  .coverage-note summary::-webkit-details-marker { display: none; }
+  .coverage-note summary .i { flex: none; font-size: 13px; opacity: .8; }
+  .coverage-note .cn-more { margin-left: auto; font-weight: 500; text-decoration: underline; text-underline-offset: 2px; opacity: .8; }
+  .coverage-note[open] .cn-more { display: none; }
+  .coverage-note[open] summary > span:nth-of-type(1) { flex: 1; }
+  .coverage-note .cn-x { flex: none; display: grid; place-items: center; width: 24px; height: 24px; border: 0; border-radius: 6px; background: transparent; color: inherit; font-size: 13px; }
+  .coverage-note .cn-x:hover { background: color-mix(in srgb, currentColor 10%, transparent); }
+  .coverage-note p { margin: 0; padding: 0 12px 9px 30px; }
   .maction { margin-top: 8px; border: 0; border-radius: 10px; padding: 7px 12px; background: var(--gold); color: var(--ebony); font-weight: 800; font-size: 13px; }
   .dots { display: inline-flex; gap: 4px; } .dots i { width: 6px; height: 6px; border-radius: 99px; background: var(--card-muted); animation: pulse 1s infinite; }
   .dots i:nth-child(2) { animation-delay: .2s; } .dots i:nth-child(3) { animation-delay: .4s; }
@@ -1536,6 +1725,13 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
   .panel.show { visibility: visible; opacity: 1; transform: none; transition: opacity .16s ease, transform .16s ease; }
   .panel { height: min(72vh, 680px); height: min(72dvh, 680px); }
   .band { height: 6px; background: var(--kente); flex: none; }
+  /* Drag to move: the panel header and the floating button (they move together). */
+  .ph { cursor: grab; touch-action: none; user-select: none; }
+  .ph button, .ph select { cursor: pointer; }
+  .fab { touch-action: none; }
+  .layer.dragging .ph, .layer.dragging .fab { cursor: grabbing; }
+  .layer.dragging .panel, .layer.dragging .fab { transition: none; }
+  .layer.dragging .fab { transform: scale(1.03); box-shadow: 0 20px 40px rgba(20,12,4,.45), 0 0 0 2px var(--gold); }
   .ph { display: flex; align-items: center; gap: 10px; padding: 14px 14px 12px 16px; background: var(--ebony); color: var(--ivory); }
   .ph .logo { width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; background: var(--gold); color: var(--ebony); font-size: 19px; flex: none; }
   .ph .title { flex: 1; min-width: 0; }
@@ -1600,7 +1796,7 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
   /* ---------- page highlight, subtitles, first-run hint ---------- */
   .hl { display: none !important; }
   .subs { position: fixed; inset: 0; pointer-events: none; z-index: 2147483644; }
-  .sub { position: fixed; padding: 0 2px; border-radius: 4px; box-sizing: border-box; overflow-wrap: anywhere;
+  .sub { position: fixed; padding: 0 2px; border-radius: 4px; box-sizing: border-box; overflow-wrap: normal; word-break: normal; hyphens: none;
     text-decoration: underline dotted rgba(227,162,26,.75); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
 
   .hint { position: fixed; right: 18px; bottom: 86px; z-index: 2147483647; width: min(330px, calc(100vw - 36px)); background: var(--ebony); color: var(--ivory); pointer-events: auto;
@@ -1631,6 +1827,60 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
   .lang-btn small { min-width: 0; font-size: 11.5px; color: var(--sand); line-height: 1.35; overflow-wrap: anywhere; }
   .lang-btn { justify-items: start; align-content: start; }
   .lang-btn .soon { position: static; justify-self: start; max-width: 100%; font-size: 10px; font-weight: 800; letter-spacing: .035em; text-transform: uppercase; color: var(--gold); line-height: 1.35; overflow-wrap: anywhere; }
+  /* guided tour: dimmed page, a ring around the control, a card beside it */
+  .tour { position: fixed; inset: 0; z-index: 2147483646; pointer-events: auto; }
+  .tip.intour { z-index: 2147483647; }
+  .pf-guide { margin-left: auto; display: inline-flex; align-items: center; gap: 5px; border: 0; background: none; color: inherit; font: 600 12.5px inherit; font-family: inherit; padding: 4px 8px; border-radius: 8px; }
+  .pf-guide:hover { background: var(--soft); color: var(--card-fg); }
+  .pf-guide .i { font-size: 14px; }
+  .tspot { position: fixed; border-radius: 14px; box-shadow: 0 0 0 200vmax rgba(15,10,6,.62), 0 0 0 3px var(--gold), 0 0 24px 6px rgba(227,162,26,.45);
+    transition: left .32s cubic-bezier(.2,.8,.2,1), top .32s cubic-bezier(.2,.8,.2,1), width .32s cubic-bezier(.2,.8,.2,1), height .32s cubic-bezier(.2,.8,.2,1);
+    pointer-events: none; animation: tglow 2.2s ease-in-out infinite; }
+  @keyframes tglow { 50% { box-shadow: 0 0 0 200vmax rgba(15,10,6,.62), 0 0 0 3px var(--gold), 0 0 36px 12px rgba(227,162,26,.62); } }
+  .tcontent.fwd { animation: tinR .3s cubic-bezier(.2,.8,.2,1); } .tcontent.bwd { animation: tinL .3s cubic-bezier(.2,.8,.2,1); }
+  @keyframes tinR { from { opacity: 0; transform: translateX(14px); } } @keyframes tinL { from { opacity: 0; transform: translateX(-14px); } }
+  .tdone { width: 44px; height: 44px; border-radius: 99px; display: grid; place-items: center; margin-bottom: 10px; background: var(--forest-2); color: #fff; font-size: 22px; animation: tpop .45s cubic-bezier(.2,1.4,.4,1); }
+  .tdone[hidden] { display: none; }
+  @keyframes tpop { from { opacity: 0; transform: scale(.4); } 70% { transform: scale(1.12); } }
+  .tour.nospot { background: rgba(15,10,6,.62); } .tour.nospot .tspot { display: none; }
+  .tcard { position: fixed; width: min(360px, calc(100vw - 24px)); background: var(--ebony); color: var(--ivory); border-radius: 18px; padding: 16px 18px 14px;
+    box-shadow: 0 24px 60px rgba(0,0,0,.45), 0 0 0 1px rgba(255,240,220,.1); transition: left .28s ease, top .28s ease; animation: drop .25s ease; }
+  .tcard::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 5px; border-radius: 18px 18px 0 0; background: var(--kente); }
+  .thead { display: flex; align-items: center; gap: 10px; margin: 4px 0 10px; }
+  .tstep { font-size: 12px; font-weight: 800; color: var(--gold); font-variant-numeric: tabular-nums; }
+  .tdots { display: flex; gap: 4px; }
+  .tdots i { width: 6px; height: 6px; border-radius: 99px; background: var(--ebony-3); transition: background .25s ease, width .25s ease; }
+  .tdots i.on { background: color-mix(in srgb, var(--gold) 55%, var(--ebony-3)); }
+  .tdots i.cur { width: 18px; background: var(--gold); }
+  .tskip { margin-left: auto; border: 0; background: none; color: var(--sand); font-size: 13px; padding: 4px 6px; border-radius: 8px; text-decoration: underline; text-underline-offset: 3px; }
+  .tskip:hover { color: #fff; background: var(--ebony-2); }
+  .tcard h4 { font-size: 18px; font-weight: 800; line-height: 1.3; margin: 0 0 6px; }
+  .tcard p { font-size: 14.5px; line-height: 1.5; color: #efe3d1; margin: 0; }
+  .tbtns { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+  .tback, .tnext { border: 0; border-radius: 12px; padding: 10px 16px; font-size: 14.5px; font-weight: 700; transition: transform .1s ease, filter .15s ease, background .15s ease; }
+  .tback:active, .tnext:active, .tskip:active { transform: scale(.95); }
+  .tback { background: var(--ebony-2); color: var(--ivory); box-shadow: inset 0 0 0 1px var(--ebony-3); }
+  .tnext { background: var(--gold); color: var(--ebony); min-width: 112px; }
+  .tback:hover { background: var(--ebony-3); } .tnext:hover { filter: brightness(1.06); }
+  @media (max-width: 640px) {
+    .tcard { left: 0 !important; right: 0; bottom: 0; top: auto !important; width: 100vw; border-radius: 22px 22px 0 0; padding: 18px 18px max(16px, env(safe-area-inset-bottom)); }
+    .tcard::before { border-radius: 22px 22px 0 0; }
+    .tcard.top { top: 0 !important; bottom: auto; border-radius: 0 0 22px 22px; padding-top: max(18px, env(safe-area-inset-top)); }
+    .tcard.top::before { top: auto; bottom: 0; border-radius: 0 0 22px 22px; }
+    .tbtns .tnext { flex: 1; }
+  }
+  .lsearch-wrap { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; padding: 0 12px; height: 42px; border-radius: 12px;
+    border: 1px solid var(--ebony-3); background: var(--ebony-2); color: var(--sand); transition: border-color .12s ease, box-shadow .12s ease; }
+  .lsearch-wrap:focus-within { border-color: var(--gold); box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 25%, transparent); }
+  .lsearch-wrap .i { flex: none; font-size: 16px; }
+  .lsearch { flex: 1; min-width: 0; height: 100%; border: 0; outline: 0; background: transparent; color: var(--ivory); font: inherit; font-size: 14.5px; }
+  .lsearch::placeholder { color: var(--sand); opacity: .7; }
+  .lang-btn[hidden], .nolang[hidden] { display: none; }
+  .nolang { margin: 4px 2px 0; font-size: 13px; color: var(--sand); text-align: center; padding: 14px 8px; border: 1px dashed var(--ebony-3); border-radius: 12px; }
+  .lang-btn .cov { display: flex; align-items: center; gap: 8px; width: 100%; margin-top: 2px; font-size: 11px; font-weight: 800; color: #7fd9a8; font-variant-numeric: tabular-nums; }
+  .lang-btn .covbar { flex: 1; height: 5px; border-radius: 99px; background: var(--ebony-3); overflow: hidden; }
+  .lang-btn .covbar i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--forest-2), #7fd9a8); }
+  .lang-btn.unavail b { opacity: .82; } .lang-btn.unavail small { opacity: .7; }
   .chooser .later { display: block; margin: 10px auto 0; border: 0; background: none; color: var(--sand); font-size: 13px; padding: 6px 10px; border-radius: 8px; }
   .chooser .later:hover { color: #fff; background: var(--ebony-2); }
 
@@ -1709,6 +1959,8 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
     mic: '<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><path d="M12 18v4"/>',
     send: '<path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/>',
     list: '<path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/>',
+    search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+    help: '<circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>',
   };
   function icon(name, extra = '') {
     const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -1730,6 +1982,7 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
     makeHost();
     shadow = host.attachShadow({ mode: 'open' });
     const layer = h('div', { class: 'layer notranslate', translate: 'no' });
+    layerEl = layer;
     shadow.append(h('style', {}, CSS), layer);
 
     tipArrow = h('div', { class: 'arrow' });
@@ -1743,10 +1996,11 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
     toastBox = h('div', { class: 'toasts', 'aria-live': 'assertive' });
 
     panelStatus = h('div', { class: 'status' });
+    panelVoice = h('div', { class: 'pvoice', role: 'status' });
     panelList = h('div', { class: 'list' });
     pageBtn = h('button', { class: `icon-btn${state.subtitles ? ' on' : ''}`, title: `${ui('ui_page_mode', 'Traduire la page')} (Alt+Shift+T)`, 'aria-label': ui('ui_page_mode', 'Traduire la page') }, icon('languages'));
     pageBtn.addEventListener('click', () => setSubtitles(!state.subtitles, true));
-    const readBtn = h('button', { class: 'icon-btn', title: `${ui('ui_read_all', 'Tout lire')} (Alt+Shift+L)`, 'aria-label': ui('ui_read_all', 'Tout lire') }, icon('volume'));
+    const readBtn = h('button', { class: 'icon-btn', 'data-tour': 'read', title: `${ui('ui_read_all', 'Tout lire')} (Alt+Shift+L)`, 'aria-label': ui('ui_read_all', 'Tout lire') }, icon('volume'));
     readBtn.addEventListener('click', () => readAll(readBtn));
     const ccBtn = h('span', { style: 'display:flex;gap:8px' }, pageBtn, readBtn);
     // Two tabs: Assistant (ask about the page, by text or voice) and Messages (translated page).
@@ -1760,9 +2014,9 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
     views = { chat: chatView, list: panelList };
     panel = h('div', { class: 'panel', role: 'dialog', 'aria-label': `Langwa, ${state.pack.name}` },
       h('div', { class: 'band' }),
-      h('div', { class: 'ph' },
+      h('div', { class: 'ph', title: ui('ui_drag_hint', 'Glisser pour déplacer · double-clic pour replacer') },
         h('div', { class: 'logo' }, icon('languages')),
-        h('div', { class: 'title' }, langPicker(), panelStatus),
+        h('div', { class: 'title' }, langPicker(), panelStatus, panelVoice),
         ccBtn,
         h('button', { class: 'icon-btn', title: ui('ui_close', 'Fermer'), 'aria-label': ui('ui_close', 'Fermer'), onclick: () => togglePanel(false) }, icon('x'))),
       tabsBar,
@@ -1770,27 +2024,94 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
       panelList,
       h('div', { class: 'pf' }, ...(isTouch
         ? [icon('pointer'), ui('ui_hint_touch_short', 'appui long = traduction')]
-        : [h('kbd', {}, 'Ctrl'), '+', icon('pointer'), ui('ui_hint_hover_short', 'survol = traduction')])));
+        : [h('kbd', {}, 'Ctrl'), '+', icon('pointer'), ui('ui_hint_hover_short', 'survol = traduction')]),
+        h('button', { class: 'pf-guide', type: 'button', title: ui('tour_replay', 'Revoir le guide'), onclick: () => startTour() }, icon('help'), ui('tour_guide', 'Guide'))));
 
     fabDot = h('span', { class: 'dot busy' });
     fabCount = h('span', { class: 'count' });
-    fab = h('button', { class: 'fab', title: 'Alt+Shift+M', 'aria-label': `Langwa, ${state.pack.name}`, onclick: () => togglePanel() },
+    fab = h('button', { class: 'fab', title: `Alt+Shift+M · ${ui('ui_drag_hint', 'Glisser pour déplacer · double-clic pour replacer')}`, 'aria-label': `Langwa, ${state.pack.name}`, onclick: () => { if (Date.now() - lastDragEnd > 350) togglePanel(); } },
       h('span', { class: 'logo' }, icon('languages'), fabDot), state.pack.name, fabCount);
 
     layer.append(subLayer, hl, tip, panel, fab, toastBox);
     document.documentElement.append(host);
+    draggable(panel.querySelector('.ph'));
+    draggable(fab);
+    panel.querySelector('.ph').addEventListener('dblclick', e => {
+      if (e.target.closest('button, select')) return;
+      dock = { ...DOCK_HOME }; placeDock(); saveDock();
+    });
+    try {
+      api.storage.local.get('dock').then(r => { if (r && r.dock) dock = { ...DOCK_HOME, ...r.dock }; placeDock(); }).catch(() => placeDock());
+    } catch { placeDock(); }
+  }
+
+  // ---------------- move the panel and its button anywhere on screen ----------------
+  // dock = distance of the floating button from the right and bottom edges. The panel follows
+  // the button: above it when there is room, else below, always fully on screen. On phones the
+  // panel stays a bottom sheet; only the button moves.
+  const DOCK_HOME = { right: 18, bottom: 18 };
+  let dock = { ...DOCK_HOME }, layerEl = null, lastDragEnd = 0;
+  const isPhone = () => innerWidth <= 640;
+  const saveDock = () => { try { api.storage.local.set({ dock }); } catch { /* not critical */ } };
+  function placeDock() {
+    if (!fab || !panel) return;
+    const m = 8, fw = fab.offsetWidth || 160, fh = fab.offsetHeight || 50;
+    dock.right = Math.round(Math.min(Math.max(dock.right, m), Math.max(m, innerWidth - fw - m)));
+    dock.bottom = Math.round(Math.min(Math.max(dock.bottom, m), Math.max(m, innerHeight - fh - m)));
+    fab.style.right = `${dock.right}px`;
+    fab.style.bottom = `${dock.bottom}px`;
+    if (isPhone()) { panel.style.right = panel.style.top = panel.style.bottom = panel.style.transformOrigin = ''; return; }
+    const pw = panel.offsetWidth, ph = panel.offsetHeight;
+    panel.style.right = `${Math.min(Math.max(dock.right, m), Math.max(m, innerWidth - pw - m))}px`;
+    const fabTop = innerHeight - dock.bottom - fh, aboveTop = fabTop - 10 - ph, belowTop = innerHeight - dock.bottom + 10;
+    const top = aboveTop >= m ? aboveTop : belowTop + ph <= innerHeight - m ? belowTop : Math.max(m, innerHeight - ph - m);
+    panel.style.top = `${top}px`;
+    panel.style.bottom = 'auto';
+    panel.style.transformOrigin = top > fabTop ? 'top right' : 'bottom right';
+  }
+  addEventListener('resize', () => placeDock());
+  /** Pointer drag (mouse, pen, touch). Under 6 px it is still a click. */
+  function draggable(handle) {
+    let st = null;
+    handle.addEventListener('pointerdown', e => {
+      if (e.button !== 0) return;
+      if (handle !== fab && e.target.closest('button, select, input, textarea, a, label')) return;
+      if (handle !== fab && isPhone()) return; // the bottom sheet does not move
+      st = { x: e.clientX, y: e.clientY, r: dock.right, b: dock.bottom, id: e.pointerId, moved: false };
+    });
+    handle.addEventListener('pointermove', e => {
+      if (!st || e.pointerId !== st.id) return;
+      const dx = e.clientX - st.x, dy = e.clientY - st.y;
+      if (!st.moved && Math.hypot(dx, dy) < 6) return;
+      if (!st.moved) { st.moved = true; try { handle.setPointerCapture(e.pointerId); } catch { /* ok */ } layerEl.classList.add('dragging'); hideTipSoon(); }
+      dock.right = st.r - dx;
+      dock.bottom = st.b - dy;
+      placeDock();
+      e.preventDefault();
+    });
+    const end = () => {
+      if (!st) return;
+      if (st.moved) { lastDragEnd = Date.now(); layerEl.classList.remove('dragging'); saveDock(); }
+      st = null;
+    };
+    handle.addEventListener('pointerup', end);
+    handle.addEventListener('pointercancel', end);
   }
 
   /** Language switcher in the panel header (the only way to switch on phones). */
+  // Languages, most complete first: translated share, then automatic drafts, then by name.
+  const rankLangs = langs => Object.entries(langs || {}).sort(([, a], [, b]) =>
+    (b.count || 0) - (a.count || 0) || (b.machineTranslation ? 1 : 0) - (a.machineTranslation ? 1 : 0) || a.name.localeCompare(b.name));
+  const coverageText = l => (l.count ? `${l.pct ?? 0} %` : l.machineTranslation
+    ? (BASE === 'en' ? 'Automatic draft' : 'Brouillon automatique') : ui('ui_soon', BASE === 'en' ? 'Soon' : 'Bientôt'));
+  const fold = s => (s || '').normalize('NFD').replace(/[̀-ͯ'’ʼ]/g, '').toLowerCase();
+
   function langPicker() {
-    const langs = Object.entries(state.langs || {});
+    const langs = rankLangs(state.langs);
     if (langs.length < 2) return h('div', { class: 'lang' }, state.pack.name);
     const sel = h('select', { class: 'lang lang-select', 'aria-label': ui('ui_language', 'Langue') },
       langs.map(([code, l]) => {
-        const suffix = l.machineTranslation
-          ? (BASE === 'en' ? ' (MT draft, unvalidated)' : ' (Brouillon MT, non validé)')
-          : ` (${ui('ui_soon', BASE === 'en' ? 'Soon' : 'Bientôt')})`;
-        const o = h('option', { value: code }, l.count || code === state.pack.code ? l.name : `${l.name}${suffix}`);
+        const o = h('option', { value: code }, code === state.pack.code ? l.name : `${l.name} · ${coverageText(l)}`);
         o.selected = code === state.pack.code;
         return o;
       }));
@@ -1817,18 +2138,39 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
       const cur = await send({ type: 'getSettings' });
       await api.storage.local.set({ settings: { ...cur, lang: code } }); // storage change restarts Langwa
     };
-    const langs = Object.entries(state.langs || {}).sort((a, b) => ((b[1].count > 0 || b[1].machineTranslation) - (a[1].count > 0 || a[1].machineTranslation)));
+    const langs = rankLangs(state.langs);
+    // Search: names, other names, regions, towns; accents and apostrophes ignored. Filtering only
+    // shows or hides the buttons already built, so it answers on every keystroke.
+    const buttons = langs.map(([code, l]) => {
+      const meter = l.count
+        ? h('span', { class: 'cov' }, h('span', { class: 'covbar', 'aria-hidden': 'true' }, h('i', { style: `width:${l.pct ?? 0}%` })), h('span', {}, coverageText(l)))
+        : h('span', { class: 'soon' }, coverageText(l));
+      const b = h('button', {
+        class: `lang-btn${l.count || l.machineTranslation ? '' : ' unavail'}`, onclick: () => choose(code),
+        title: l.count ? `${l.count} / ${l.total} ${BASE === 'en' ? 'phrases translated' : 'phrases traduites'}${l.verified ? ` · ${l.verified} ${BASE === 'en' ? 'validated by a speaker' : 'validées par un locuteur'}` : ''}` : '',
+      }, h('b', {}, l.name), h('small', {}, l.region || ''), meter);
+      b.dataset.q = fold(`${code} ${l.name} ${l.region || ''} ${l.search || ''}`);
+      return b;
+    });
+    const none = h('p', { class: 'nolang', hidden: true }, BASE === 'en' ? 'No language found. Try another name or a town.' : 'Aucune langue trouvée. Essayez un autre nom ou une ville.');
+    const search = h('input', { type: 'search', class: 'lsearch', placeholder: BASE === 'en' ? 'Search: Pidgin, Fulani, Bamiléké, Kumbo…' : 'Rechercher : pidgin, peul, bamiléké, Kumbo…', 'aria-label': BASE === 'en' ? 'Search a language' : 'Rechercher une langue', autocomplete: 'off', spellcheck: 'false' });
+    search.addEventListener('input', () => {
+      const words = fold(search.value).split(/\s+/).filter(Boolean);
+      let shown = 0;
+      for (const b of buttons) { const ok = words.every(w => b.dataset.q.includes(w)); b.hidden = !ok; shown += ok; }
+      none.hidden = shown > 0;
+    });
+    search.addEventListener('keydown', e => {
+      e.stopPropagation(); // typing never triggers page shortcuts
+      if (e.key === 'Enter') { const first = buttons.find(b => !b.hidden); if (first) first.click(); }
+    });
     const card = h('div', { class: 'chooser', role: 'dialog', 'aria-label': ui('ui_choose', 'Quelle langue parlez-vous ?') },
       h('div', { class: 'head' },
         h('div', { class: 'logo' }, icon('languages')),
         h('div', {}, h('h3', {}, ui('ui_choose', 'Quelle langue parlez-vous ?')), h('p', {}, ui('ui_choose_sub', 'Langwa affichera la banque dans cette langue.')))),
-      h('div', { class: 'langs' }, langs.map(([code, l]) =>
-        h('button', { class: `lang-btn${l.count || l.machineTranslation ? '' : ' empty'}`, onclick: () => choose(code) },
-          h('b', {}, l.name),
-          h('small', {}, l.region || ''),
-          l.count ? null : h('span', { class: 'soon' }, l.machineTranslation
-            ? (BASE === 'en' ? 'MT draft - unvalidated' : 'Brouillon MT - non validé')
-            : ui('ui_soon', BASE === 'en' ? 'Soon' : 'Bientôt'))))),
+      h('label', { class: 'lsearch-wrap' }, icon('search'), search),
+      h('div', { class: 'langs' }, buttons),
+      none,
       h('button', { class: 'later', onclick: () => { card.hidden = true; fab.hidden = false; } }, ui('ui_later', 'Plus tard')));
     const fab = h('button', { class: 'fab', hidden: true, 'aria-label': ui('ui_choose', 'Quelle langue parlez-vous ?'), onclick: () => { card.hidden = false; fab.hidden = true; } },
       h('span', { class: 'logo' }, icon('languages')), 'Langwa');
@@ -1886,7 +2228,53 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
   async function refreshVoice() {
     if (!state.active || document.hidden) return;
     const v = await send({ type: 'voiceStatus' }).catch(() => null);
+    const was = state.localVoice;
     state.localVoice = !!(v && v.ready);
+    // Installing or starting: the cards show it live, checked every 3 s until the voice is ready.
+    state.voice = v && !v.ready && v.info ? v.info : null;
+    const key = `${state.localVoice}|${state.voice ? `${state.voice.status}${Math.round(state.voice.progress * 100)}` : ''}`;
+    if (key !== state.voiceKey || was !== state.localVoice) { state.voiceKey = key; refreshChips(); }
+    clearTimeout(state.voiceTimer);
+    if (state.voice) state.voiceTimer = setTimeout(refreshVoice, 3000);
+  }
+  /**
+   * Panel header: which voice reads, live, for the assistant and the translations alike.
+   * Built again only when the state changes; while installing only the numbers move.
+   */
+  function renderPanelVoice() {
+    if (!panelVoice) return;
+    const mode = state.settings && state.settings.tts && state.settings.tts.mode;
+    panelVoice.hidden = mode === 'none';
+    const natural = !!(state.pack && state.pack.africaTts) && mode !== 'mms';
+    const v = natural && !state.localVoice ? state.voice : null;
+    const s = natural && state.localVoice ? 'ready' : v ? v.status : 'browser';
+    const pct = v ? Math.max(1, Math.round((v.progress || 0) * 100)) : 0;
+    const label = s === 'ready' ? `✓ ${ui('ui_voice_natural', 'Voix naturelle')}`
+      : s === 'installing' ? `${ui('ui_voice_natural', 'Voix naturelle')} · ${pct} %`
+        : s === 'loading' ? ui('ui_voice_starting', 'voix naturelle, démarrage…') : voiceName('synthetic');
+    const eta = v && v.etaSec != null ? (v.etaSec < 60 ? ' · <1 min' : ` · ~${Math.round(v.etaSec / 60)} min`) : '';
+    if (s === 'installing' && panelVoice.dataset.s === 'installing') {
+      panelVoice.querySelector('.vt').textContent = label + eta;
+      panelVoice.querySelector('.vprog i').style.width = `${pct}%`;
+      return;
+    }
+    panelVoice.dataset.s = s;
+    panelVoice.setAttribute('aria-live', s === 'installing' ? 'off' : 'polite');
+    let prog = null;
+    if (s === 'installing') { const i = h('i'); i.style.width = `${pct}%`; prog = h('span', { class: 'vprog', 'aria-hidden': 'true' }, i); }
+    const ic = s === 'ready' ? icon('cpu') : s === 'loading' ? icon('loader', 'spin') : s === 'installing' ? icon('loader', 'spin') : icon('monitor');
+    panelVoice.replaceChildren(ic, h('span', { class: 'vt' }, label + eta), ...(prog ? [prog] : []));
+    panelVoice.title = s === 'browser' && natural
+      ? ui('ui_voice_hint', 'Voix du navigateur. Pour une voix plus naturelle, lancez « Start Langwa voice » sur cet ordinateur.')
+      : panelVoice.textContent;
+  }
+  /** Idle voice chips follow the local voice: progress while it installs, then "Local voice". */
+  function refreshChips() {
+    renderPanelVoice();
+    if (!shadow) return;
+    for (const chip of shadow.querySelectorAll('.vchip:not(.live)')) {
+      if (chip.dataset.src === 'browser' || chip.dataset.src === 'local') setChip(chip, ttsOn() ? 'local' : 'browser');
+    }
   }
   setInterval(refreshVoice, 20000);
   document.addEventListener('visibilitychange', refreshVoice);
@@ -1900,9 +2288,10 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
     loading: ['ui_voice_why_loading', 'voix locale en chargement'],
     slow: ['ui_voice_why_slow', 'voix locale trop lente'],
     error: ['ui_voice_why_error', 'voix locale indisponible'],
+    none: ['ui_voice_why_none', 'aucune voix sur cet appareil'],
   };
   const SRC = {
-    local: ['cpu', () => [voiceName('neural'), modelName()].filter(Boolean).join(' · ')],
+    local: ['cpu', () => ui('ui_voice_natural', 'Voix naturelle')], // model name in the tooltip
     wait: ['loader', () => ui('ui_voice_preparing', 'Voix locale, préparation…')],
     browser: ['monitor', () => voiceName('synthetic')],
     human: ['user', () => voiceName('human')],
@@ -1919,11 +2308,28 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
   }
   function setChip(chip, src, why, live = false) {
     const [ic, text] = SRC[src] || SRC.browser;
+    // Browser voice for now, natural voice on its way: say so, with its progress.
+    const v = src === 'browser' && !why && !live && state.voice && state.pack && state.pack.africaTts ? state.voice : null;
+    const installing = !!v && v.status === 'installing';
+    const pct = v ? Math.max(1, Math.round((v.progress || 0) * 100)) : 0;
+    const note = !v ? '' : installing ? ` · ${ui('ui_voice_installing', 'voix naturelle')} ${pct} %` : ` · ${ui('ui_voice_starting', 'voix naturelle, démarrage…')}`;
+    const bar = chip.querySelector('.vprog i');
+    if (installing && bar && chip.dataset.src === src) { // update in place, so the bar glides
+      bar.style.width = `${pct}%`;
+      chip.querySelector('.why').textContent = note;
+      chip.title = chip.textContent;
+      return;
+    }
     chip.dataset.src = src;
     chip.classList.toggle('live', live && src !== 'wait');
+    chip.classList.toggle('warm', !!v);
+    chip.setAttribute('aria-live', v ? 'off' : 'polite'); // no announcement every 3 s
     const w = why && WHY[why];
-    chip.replaceChildren(h('span', { class: 'dot' }), icon(ic), h('span', { class: 'vt' }, text(), w ? h('span', { class: 'why' }, ` · ${ui(w[0], w[1])}`) : null));
-    chip.title = chip.textContent;
+    const extra = w ? ` · ${ui(w[0], w[1])}` : note;
+    let prog = null;
+    if (installing) { const i = h('i'); i.style.width = `${pct}%`; prog = h('span', { class: 'vprog', 'aria-hidden': 'true' }, i); }
+    chip.replaceChildren(h('span', { class: 'dot' }), icon(ic), h('span', { class: 'vt' }, text(), extra ? h('span', { class: 'why' }, extra) : null), ...(prog ? [prog] : []));
+    chip.title = src === 'local' && modelName() ? `${chip.textContent} · ${modelName()}` : chip.textContent;
   }
   const chipFor = b => { const host = b && (b.closest('.block') || b.closest('.item') || b.closest('.tip')); return host && host.querySelector('.vchip'); };
 
@@ -1934,7 +2340,7 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
     const b = h('button', { class: `say${compact ? '' : ' wide'}`, title: `${label} · ${voiceName(steps.voice)}`, 'aria-label': label }, ...idle());
     b.addEventListener('click', ev => {
       ev.stopPropagation();
-      if (b.classList.contains('on')) { player.stop(); if (!player.isPlaying()) { b.classList.remove('on'); b.replaceChildren(...idle()); } return; }
+      if (b.classList.contains('on')) { player.stop(); if (!player.isPlaying()) { b.classList.remove('on'); fill(b, ...idle()); } return; }
       if (askOnlineVoice(b, () => speak(steps, b, idle))) return;
       speak(steps, b, idle);
     });
@@ -1971,21 +2377,65 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
   }
 
   /** Plays steps, animating the button that started it (if any). */
+  /**
+   * Plays steps and keeps the user informed at every moment, on the button that started it:
+   * preparing (spinner, "Préparation…", "Encore un instant…" after 4 s), playing (bars,
+   * "Arrêter"), and a short, clear failure state when nothing could be heard.
+   */
   async function speak(planned, b, idle) {
     if (!planned) return;
-    if (b) { b.classList.add('on'); b.replaceChildren(bars(), compact(b) ? null : h('span', { class: 'lbl' }, ui('ui_stop', 'Arrêter'))); }
+    const wide = b && !compact(b);
+    const label = text => (wide ? h('span', { class: 'lbl' }, text) : null);
+    const phase = (name, text) => {
+      if (!b) return;
+      b.dataset.phase = name;
+      b.setAttribute('aria-busy', String(name !== 'play'));
+      b.setAttribute('aria-label', text);
+      b.title = text;
+      fill(b, name === 'play' ? bars() : icon('loader', 'spin'), label(text));
+    };
+    if (b) b.classList.add('on');
+    phase('prep', ui('ui_preparing', 'Préparation…'));
+    let playing = false;
+    const slow = setTimeout(() => { if (!playing) phase('slow', ui('ui_still_preparing', 'Encore un instant…')); }, 4000);
     // The voice is decided now, not when the card or chat bubble was drawn: the local voice
     // may have started (or stopped) since. The check is cached, so this takes milliseconds.
     if (state.settings && state.settings.tts && state.settings.tts.mode === 'auto') await refreshVoice();
     const steps = (planned.raw && player.prepare(planned.raw, voiceOpts())) || planned;
-    if (b && !b.classList.contains('on')) return; // stopped while checking
+    if (b && !b.classList.contains('on')) { clearTimeout(slow); return; } // stopped while checking
     const chip = chipFor(b);
     player.play(steps,
-      () => { if (b) { b.classList.remove('on'); b.replaceChildren(...idle()); } if (chip) chip.classList.remove('live'); },
+      endInfo => {
+        clearTimeout(slow);
+        if (chip) chip.classList.remove('live');
+        if (!b) return;
+        b.classList.remove('on');
+        delete b.dataset.phase;
+        b.removeAttribute('aria-busy');
+        b.setAttribute('aria-label', listenLabel());
+        fill(b, ...idle());
+        if (endInfo && !endInfo.spoke && !endInfo.stopped) noVoice(b, chip, idle, wide);
+      },
       (src, why) => {
         if (src === 'local') state.localVoice = true;
         if (why === 'offline' || why === 'loading') state.localVoice = false;
-        if (chip) setChip(chip, src, why, true); if (b) b.title = `${listenLabel()} · ${(SRC[src] || SRC.browser)[1]()}`; });
+        if (chip) setChip(chip, src, why, true);
+        if (src === 'wait') { if (!playing) phase(b && b.dataset.phase === 'slow' ? 'slow' : 'prep', b && b.dataset.phase === 'slow' ? ui('ui_still_preparing', 'Encore un instant…') : ui('ui_voice_preparing', 'Voix locale, préparation…')); return; }
+        playing = true;
+        clearTimeout(slow);
+        phase('play', ui('ui_stop', 'Arrêter'));
+        if (b) b.title = `${ui('ui_stop', 'Arrêter')} · ${(SRC[src] || SRC.browser)[1]()}`;
+      });
+  }
+  /** Nothing could be heard (no voice on this device, audio blocked): say it, briefly. */
+  function noVoice(b, chip, idle, wide) {
+    const text = ui('ui_no_voice', 'Aucune voix disponible sur cet appareil');
+    b.classList.add('fail');
+    b.setAttribute('aria-label', text);
+    b.title = text;
+    fill(b, icon('mute'), wide ? h('span', { class: 'lbl' }, ui('ui_no_voice_short', 'Pas de voix')) : null);
+    if (chip) setChip(chip, 'browser', 'none');
+    setTimeout(() => { if (b.classList.contains('fail')) { b.classList.remove('fail'); b.setAttribute('aria-label', listenLabel()); fill(b, ...idle()); } }, 2800);
   }
   const compact = b => !b.classList.contains('wide');
   const listenLabel = () => ui('ui_listen', 'Écouter');
@@ -2039,11 +2489,12 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
           ? h('div', { class: 'tr' }, isNew ? h('span', { class: 'new' }, ui('ui_new', 'NOUVEAU')) : null, kindIcon, shownText(u))
           : h('div', { class: 'tr missing' }, isNew ? h('span', { class: 'new' }, ui('ui_new', 'NOUVEAU')) : null, kindIcon, missing),
         (r.status === 'ok' || r.status === 'gist') ? sayButton(stepsFor(r), listenLabel()) : null),
+      // Original right under the translation (they read as a pair), then help, then one footer
+      // row with the voice and the validation status.
+      shown && shownText(u).trim() === u.text.trim() ? null : h('div', { class: 'orig' }, h('b', {}, ui('ui_original', 'Original')), u.text),
       r.explain ? h('div', { class: 'explain' }, icon('bulb'), h('span', {}, r.explain)) : null,
-      shown ? voiceChip(stepsFor(r)) : null,
-      h('div', { class: 'orig' }, h('b', {}, ui('ui_original', 'Original')), u.text),
       shown ? null : wordsRow(r),
-      h('div', { class: 'meta' }, chipsFor(u.text), shown || r.status === 'blocked' ? pillFor(r) : null));
+      h('div', { class: 'meta' }, shown ? voiceChip(stepsFor(r)) : null, chipsFor(u.text), shown || r.status === 'blocked' ? pillFor(r) : null));
   }
 
   // ======================================================================================
@@ -2243,8 +2694,9 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
     state.panelOpen = force ?? !state.panelOpen;
     if (state.panelOpen) clearToasts();
     panel.classList.toggle('show', state.panelOpen);
+    if (state.panelOpen) placeDock();
     fab.classList.toggle('hidden-under-sheet', state.panelOpen && innerWidth <= 640);
-    if (state.panelOpen) { setTab(state.tab || 'chat'); hideHint(); }
+    if (state.panelOpen) { setTab(state.tab || 'chat'); hideHint(); refreshVoice(); }
   }
 
   let panelTimer = null;
@@ -2356,9 +2808,26 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
       const light = (rgb[0] * 299 + rgb[1] * 587 + rgb[2] * 114) / 1000 > 150;
       bg = light ? 'rgb(24,18,40)' : 'rgb(255,255,255)'; // fully opaque: no trace of the original
     }
-    l = { font: cs.fontFamily, size: parseFloat(cs.fontSize) || 15, weight: cs.fontWeight, color: cs.color, align: cs.textAlign, bg, lh: cs.lineHeight };
+    l = { font: cs.fontFamily, size: parseFloat(cs.fontSize) || 15, weight: cs.fontWeight, color: cs.color, align: cs.textAlign, bg, lh: cs.lineHeight,
+      tt: cs.textTransform, ls: parseFloat(cs.letterSpacing) || 0 };
     lookCache.set(el, l);
     return l;
+  }
+
+  /** Width of a text in the page's font, at 1px (cached: measured once per text and font). */
+  const measureCtx = document.createElement('canvas').getContext('2d');
+  const widthCache = new Map();
+  function textWidth(text, l) {
+    const t = l.tt === 'uppercase' ? text.toUpperCase() : text;
+    const k = `${l.weight}|${l.font}|${t}`;
+    let w = widthCache.get(k);
+    if (w == null) {
+      measureCtx.font = `${l.weight} 100px ${l.font}`;
+      w = measureCtx.measureText(t).width / 100;
+      if (widthCache.size > 3000) widthCache.clear();
+      widthCache.set(k, w);
+    }
+    return w;
   }
 
   let subRaf = 0;
@@ -2383,12 +2852,23 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
           if (sr.width && sr.left >= b.right - 1 && sr.top < b.bottom && sr.bottom > b.top) { right = Math.min(right, sr.left - 8); break; }
         }
         const avail = Math.max(b.width, Math.min(right, innerWidth - 4) - b.left);
-        // Longer translations get a slightly smaller font so they stay in their place.
-        const ratio = Math.min(1, Math.max(0.78, Math.sqrt(u.text.length / Math.max(1, r.text.length))));
+        // One-line originals (labels, tabs, buttons) stay on one line: the font shrinks just enough
+        // to fit (down to 70 %), never breaking a word. Longer, multi-line texts wrap between words.
+        let ratio;
+        // One line if the original itself fits on one line in its box (buttons have padding: height alone misleads).
+        let oneLine = b.height <= l.size * 4 && textWidth(u.text, l) * l.size + l.ls * u.text.length <= b.width + 4;
+        if (oneLine) {
+          const need = textWidth(r.text, l) * l.size + l.ls * r.text.length + 4; // +4: padding
+          ratio = Math.min(1, avail / need);
+          if (ratio < 0.7) { ratio = 0.78; oneLine = false; } // far too long: wrap between words instead
+        } else {
+          ratio = Math.min(1, Math.max(0.78, Math.sqrt(u.text.length / Math.max(1, r.text.length))));
+        }
         const isButton = /^(BUTTON|A)$/.test(u.el.tagName) || u.el.getAttribute('role') === 'button';
         const s = h('div', { class: 'sub' }, r.text);
         Object.assign(s.style, {
-          top: `${b.top}px`, left: `${b.left}px`, minWidth: `${b.width}px`, maxWidth: `${avail}px`, width: 'max-content', minHeight: `${b.height}px`,
+          whiteSpace: oneLine ? 'nowrap' : 'normal', textTransform: l.tt, letterSpacing: l.ls ? `${l.ls}px` : '',
+          top: `${b.top}px`, left: `${b.left}px`, minWidth: `${b.width}px`, maxWidth: oneLine ? 'none' : `${avail}px`, width: 'max-content', minHeight: `${b.height}px`,
           display: 'flex', alignItems: 'center',
           justifyContent: isButton || l.align === 'center' ? 'center' : l.align === 'right' || l.align === 'end' ? 'flex-end' : 'flex-start',
           textAlign: isButton ? 'center' : l.align,
@@ -2478,6 +2958,149 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
     host.shadowRoot.querySelector('.layer').append(hintEl);
   }
   function hideHint() { if (hintEl) { hintEl.remove(); hintEl = null; } }
+
+  // ======================================================================================
+  // Guided tour: first time after choosing a language, or again from "?" / the popup.
+  // Points at the real controls one by one (spotlight + card), Back / Next / Skip, keyboard
+  // (Esc, arrows, Enter). Steps whose control is not on screen are skipped. Nothing exists
+  // until it runs; everything is removed when it ends.
+  // ======================================================================================
+  let tourEl = null;
+  function tourSteps() {
+    const lang = state.pack ? state.pack.name : '';
+    // A translated sentence in the page's main content (not a banner or top bar), headings first.
+    const shown = state.units.filter(u => u.result && (u.result.status === 'ok' || u.result.status === 'gist') && !u.result.value
+      && !u.attr && u.el.getBoundingClientRect().width > 40 && visible(u.el)
+      && !u.el.closest('nav, header, footer, [role="banner"], [role="navigation"]')
+      && getComputedStyle(u.el).position !== 'fixed' && u.el.getBoundingClientRect().top + scrollY > 120);
+    const sample = shown.find(u => /^H[1-3]$/.test(u.el.tagName)) || shown.find(u => u.el.closest('main')) || shown[0];
+    const inPanel = sel => () => { if (!state.panelOpen) togglePanel(true); setTab('chat'); return panel && panel.querySelector(sel); };
+    return [
+      { title: ui('tour_welcome_t', 'Bienvenue dans Langwa'), body: ui('tour_welcome_b', 'Langwa vous montre cette page en {lang}, à lire et à écouter. Une visite rapide : moins d’une minute.').replace('{lang}', lang), next: ui('tour_start', 'Commencer la visite') },
+      sample && { target: () => {
+        if (state.panelOpen) togglePanel(false);
+        sample.el.scrollIntoView({ block: 'center', behavior: 'instant' });
+        const both = () => { const a = sample.el.getBoundingClientRect(); const b = tip.classList.contains('show') ? tip.getBoundingClientRect() : a;
+          const left = Math.min(a.left, b.left); const top = Math.min(a.top, b.top); const right = Math.max(a.right, b.right); const bottom = Math.max(a.bottom, b.bottom);
+          return { left, top, right, bottom, width: right - left, height: bottom - top }; };
+        return { isConnected: true, getBoundingClientRect: both };
+      },
+        // Once the scroll has settled (scrolling closes cards), open the real translation card.
+        after: place => setTimeout(() => { if (!tourEl) return; showTip([sample], sample.el); tip.classList.add('intour'); place(); }, 120),
+        title: isTouch ? ui('tour_point_touch_t', 'Appuyez longuement sur un texte') : ui('tour_point_t', 'Maintenez Ctrl et pointez un texte'),
+        body: ui('tour_point_b', 'Sa traduction s’affiche juste dessous, avec le bouton Écouter. Les montants et les noms restent exactement ceux de la page.') },
+      { target: () => { if (state.panelOpen) togglePanel(false); return fab; }, title: ui('tour_fab_t', 'Le bouton Langwa'), body: ui('tour_fab_b', 'Il ouvre le panneau. Le chiffre rouge compte les messages importants de la page.') },
+      { target: inPanel('.askrow'), title: ui('tour_ask_t', 'Posez votre question'), body: ui('tour_ask_b', 'Touchez une question toute prête, écrivez, ou touchez le micro et parlez. Langwa répond dans votre langue, avec les montants de la page.') },
+      { target: () => (state.panelOpen || togglePanel(true), panel && panel.querySelector('[data-tour="read"]')), title: ui('tour_read_t', 'Écoutez toute la page'), body: ui('tour_read_b', 'Langwa lit la page à voix haute, les messages importants d’abord.') },
+      { target: () => (state.panelOpen || togglePanel(true), pageBtn), title: ui('tour_page_t', 'Traduisez toute la page'), body: ui('tour_page_b', 'La traduction s’affiche sur chaque texte de la page. Touchez encore pour revenir à l’original.') },
+      { target: () => (state.panelOpen || togglePanel(true), panelVoice && !panelVoice.hidden ? panelVoice : null), title: ui('tour_voice_t', 'Qui lit à voix haute'), body: ui('tour_voice_b', 'La voix du navigateur, ou la voix naturelle si elle est installée sur cet ordinateur. Son installation s’affiche ici en direct.') },
+      { target: () => (state.panelOpen || togglePanel(true), panel && panel.querySelector('.lang-select')), title: ui('tour_lang_t', 'Changez de langue'), body: ui('tour_lang_b', 'À tout moment, ici. Les langues les plus complètes sont en premier.') },
+      { title: ui('tour_done_t', 'C’est prêt !'), body: ui('tour_done_b', 'Pour revoir ce guide : le bouton Guide en bas du panneau, ou la fenêtre Langwa dans la barre du navigateur.'), next: ui('tour_finish', 'Terminer') },
+    ].filter(Boolean);
+  }
+
+  function endTour(done = true) {
+    if (!tourEl) return;
+    tourEl._off();
+    tourEl.remove();
+    if (tip) tip.classList.remove('intour', 'show');
+    tourEl = null;
+    if (done) api.storage.local.set({ tourDone: true }).catch(() => {});
+  }
+
+  function startTour() {
+    if (!host || !state.active) return;
+    endTour(false);
+    hideHint();
+    hideTipSoon();
+    const steps = tourSteps();
+    let i = 0;
+    let target = null;
+    const spot = h('div', { class: 'tspot' });
+    const count = h('span', { class: 'tstep' });
+    const dots = h('span', { class: 'tdots', 'aria-hidden': 'true' }, steps.map(() => h('i')));
+    const title = h('h4', { id: 'langwa-tour-title' });
+    const body = h('p');
+    const back = h('button', { class: 'tback', type: 'button' }, ui('tour_back', 'Retour'));
+    const next = h('button', { class: 'tnext', type: 'button' });
+    const skip = h('button', { class: 'tskip', type: 'button' }, ui('tour_skip', 'Passer le guide'));
+    const doneMark = h('div', { class: 'tdone', hidden: true }, icon('check'));
+    const content = h('div', { class: 'tcontent', 'aria-live': 'polite' }, doneMark, title, body);
+    const card = h('div', { class: 'tcard', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'langwa-tour-title' },
+      h('div', { class: 'thead' }, count, dots, skip), content, h('div', { class: 'tbtns' }, back, next));
+    tourEl = h('div', { class: 'tour' }, spot, card);
+    shadow.querySelector('.layer').append(tourEl);
+
+    const place = () => {
+      const pad = 8;
+      const vw = innerWidth;
+      const vh = innerHeight;
+      const r = target && target.isConnected ? target.getBoundingClientRect() : null;
+      const has = r && r.width > 0 && r.height > 0;
+      tourEl.classList.toggle('nospot', !has);
+      if (has) Object.assign(spot.style, { left: `${r.left - pad}px`, top: `${r.top - pad}px`, width: `${r.width + 2 * pad}px`, height: `${r.height + 2 * pad}px` });
+      if (vw <= 640) { // phones: a sheet at the bottom, or at the top when the control is in the lower half
+        card.style.left = card.style.top = '';
+        card.classList.toggle('top', !!has && (r.top + r.bottom) / 2 > vh / 2);
+        return;
+      }
+      const cw = card.offsetWidth;
+      const ch = card.offsetHeight;
+      let left;
+      let top;
+      if (!has) { left = (vw - cw) / 2; top = (vh - ch) / 2; } else if (r.bottom + pad + 14 + ch < vh) { top = r.bottom + pad + 14; left = r.left; } else if (r.top - pad - 14 - ch > 0) { top = r.top - pad - 14 - ch; left = r.left; } else if (r.left - pad - 14 - cw > 0) { left = r.left - pad - 14 - cw; top = r.top; } else { left = r.right + pad + 14; top = r.top; }
+      card.style.left = `${Math.max(12, Math.min(left, vw - cw - 12))}px`;
+      card.style.top = `${Math.max(12, Math.min(top, vh - ch - 12))}px`;
+    };
+    const go = (n, dir = 1) => {
+      if (n < 0) return;
+      if (n >= steps.length) { endTour(true); return; }
+      i = n;
+      const st = steps[i];
+      if (tip) tip.classList.remove('intour', 'show');
+      let t = null;
+      try { t = st.target ? st.target() : null; } catch { t = null; }
+      if (st.target && !t) { go(n + dir, dir); return; } // control not on screen: skip this step
+      target = t;
+      count.textContent = `${i + 1} / ${steps.length}`;
+      [...dots.children].forEach((d, k) => { d.classList.toggle('on', k < i); d.classList.toggle('cur', k === i); });
+      content.classList.remove('fwd', 'bwd');
+      void content.offsetWidth; // restart the slide-in
+      content.classList.add(dir > 0 ? 'fwd' : 'bwd');
+      doneMark.hidden = i !== steps.length - 1;
+      title.textContent = st.title;
+      body.textContent = st.body;
+      next.textContent = st.next || (i === steps.length - 1 ? ui('tour_finish', 'Terminer') : ui('tour_next', 'Suivant'));
+      back.hidden = i === 0;
+      skip.hidden = i === steps.length - 1;
+      requestAnimationFrame(() => { place(); next.focus({ preventScroll: true }); if (st.after) st.after(place); });
+    };
+    let raf = 0;
+    const onMove = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(place); };
+    const onKey = e => {
+      if (!tourEl) return;
+      if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); endTour(true); }
+      else if (e.key === 'ArrowRight' || (e.key === 'Enter' && e.composedPath()[0] !== skip && e.composedPath()[0] !== back)) { e.preventDefault(); e.stopPropagation(); go(i + 1); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); e.stopPropagation(); go(i - 1, -1); }
+    };
+    addEventListener('resize', onMove, { passive: true });
+    addEventListener('scroll', onMove, { passive: true, capture: true });
+    addEventListener('keydown', onKey, true);
+    tourEl._off = () => { removeEventListener('resize', onMove); removeEventListener('scroll', onMove, { capture: true }); removeEventListener('keydown', onKey, true); cancelAnimationFrame(raf); };
+    next.onclick = () => go(i + 1);
+    back.onclick = () => go(i - 1, -1);
+    skip.onclick = () => endTour(true);
+    go(0);
+  }
+
+  /** First time on a page after choosing a language: the tour, once (skip counts as seen). */
+  async function maybeTour() {
+    try {
+      const { tourDone } = await api.storage.local.get('tourDone');
+      if (tourDone) return;
+    } catch { return; }
+    setTimeout(() => { if (state.active && !tourEl) startTour(); }, 900); // let the page be read first
+  }
 
   // ======================================================================================
   // Collecting interface text
@@ -2779,6 +3402,7 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
     state.mtError = false;
     destroyUI();
     buildUI();
+    renderPanelVoice(); // last known voice state at once; refreshVoice() below brings the live one
     if (state.panelOpen) togglePanel(true);
     state.active = true;
     state.startedAt = Date.now();
@@ -2786,7 +3410,7 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
     listen(true);
     scan();
     if (settings.pageMode) setSubtitles(true); // page translation stays on between pages
-    showFirstRunHint();
+    maybeTour(); // first time: the guided tour (replaces the one-line hint)
     if (!observer) {
       observer = new MutationObserver(muts => {
         // Ignore our own layer being attached.
@@ -2831,6 +3455,7 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
     if (msg.type === 'togglePanel') togglePanel();
     if (msg.type === 'toggleSubtitles' || msg.type === 'togglePage') setSubtitles(!state.subtitles, true);
     if (msg.type === 'readAll') readAll(pageBtn && pageBtn.nextSibling);
+    if (msg.type === 'startTour') startTour();
   });
 
   start();

@@ -3,7 +3,7 @@
 Africa TTS is a small open text-to-speech model (built on Kyutai's Pocket TTS, ~100M
 parameters, fast on an ordinary CPU) trained on African speech, including Ewondo, Duala and
 Basaa. Fulfulde, Ghomala', Ngemba and Kom are experimental (closest trained voice). Pidgin is
-read with the English voice. Audio never leaves this computer.
+read with Krio, the closest trained creole. Audio never leaves this computer.
 
     pip install -r requirements-africa-tts.txt
     python africa_tts_server.py --download   # once: fetch the ~440 MB model (resumes after drops)
@@ -25,6 +25,7 @@ import argparse
 import io
 import json
 import os
+import re
 import sys
 import threading
 import time
@@ -35,13 +36,52 @@ from pathlib import Path
 
 HOST, PORT = "127.0.0.1", 8770
 MAX_TEXT = 600            # characters per request (a card or an answer)
-CACHE_MAX = 300           # recent phrases kept in memory
-# Africa TTS language codes Langwa uses (Pidgin is sent as "eng").
+CACHE_BYTES = 24 * 2**20  # recent phrases kept in memory (WAV bytes), about 4 minutes of speech
+# Africa TTS language codes Langwa uses (Pidgin "pcm" is read as Krio, see below).
 LANGS = {"ewo", "dua", "bas", "eng", "pcm", "fub", "bbj", "nge", "bkm"}
 
-# Cameroonian Pidgin ("pcm") is read by the English voice, but English pronunciation rules
+# Cameroonian Pidgin ("pcm") has no model of its own. It is read with Krio, the English-based
+# creole of Sierra Leone the model was trained on (about 5 hours): its pronunciation rules and
+# its own Krio speaker. Krio shares Pidgin's words and West African sound (una, wetin, pikin,
+# sabi), and a Cameroonian listener chose it over the English voice in a side-by-side test.
+PIDGIN_LANG = "kri"
+
+# Pidgin text mixes Pidgin spellings (una, wetin, pikin: read well by Krio rules) with English
+# words written the English way (type, page, check): Krio rules read those letter by letter
+# ("tepe", "pegeh"). Krio is spelled as it sounds and never uses silent e, th, ck, ph, ou, ee,
+# a final y..., so those patterns mark an English word: it gets English pronunciation, while the
+# Krio speaker's voice keeps the accent. Pidgin words that look English stay Krio.
+ENGLISH_SPELLING = re.compile(
+    r"th|ck|ph|ou|ow|ea|ee|oo|ai|ay|oa|eo|igh|tion|sion|qu|x|wh|kn|wr|c(?!h)|[^aeiou]y|y$|[^aeiou]es$|er$|[aeiouy][bcdfgklmnprstvz]e$")
+PIDGIN_NATIVE = {"dey", "wey", "sey", "shey", "una", "wuna", "wetin", "pikin", "comot", "abeg", "wahala"}
+
+
+def pidgin_ipa(text: str) -> str:
+    """Pidgin text -> model phonetics: English-spelled words in English, the rest with Krio rules."""
+    from africa_g2p import g2p
+    from africa_tts.frontend import _PUNCT, _load_codeswitch_lexicon
+    lexicon = _load_codeswitch_lexicon()
+    out = []
+    for word in text.split():
+        lead, core, trail = _PUNCT.match(word).groups()
+        w = core.lower()
+        if not core:
+            out.append(word)
+            continue
+        if w in PIDGIN_NATIVE:
+            ipa = g2p(re.sub(r"c(?!h)", "k", w), "kri", output="ipa")
+        elif w in lexicon:  # the model's own English list (what it did before)
+            ipa = lexicon[w]
+        elif w.isascii() and w.isalpha() and ENGLISH_SPELLING.search(w):
+            ipa = g2p(core, "eng", output="ipa").replace(" ", "")
+        else:  # Pidgin spelling: Krio rules; a lone c is a k sound in Pidgin ("comot"), never "ch"
+            ipa = g2p(re.sub(r"c(?!h)", "k", core), "kri", output="ipa")
+        out.append(lead + ipa + trail)
+    return " ".join(out)
+
+# Fallback only (LANGWA_PIDGIN=eng): read Pidgin with English rules. English pronunciation rules
 # (American, in eSpeak) get Pidgin words wrong: "una" -> "yoo-na", "am" -> "am" as in "ham",
-# "e" -> "ee". Common Pidgin words are respelled so the English rules land on the Pidgin sound.
+# "e" -> "ee". Common Pidgin words are then respelled so the English rules land on the Pidgin sound.
 PIDGIN = {
     "una": "oona", "wuna": "woona", "am": "ahm", "e": "eh", "don": "dawn", "di": "dee",
     "dis": "deess", "dat": "daht", "dey": "day", "wey": "way", "na": "nah", "comot": "kaw mot",
@@ -62,7 +102,9 @@ def pidgin_respell(text: str) -> str:
             return w
         return r.capitalize() if w[0].isupper() else r
     return _WORD.sub(sub, text)
-WARM = ["eng", "ewo", "dua", "bas", "fub"]  # voices prepared ahead
+if os.environ.get("LANGWA_PIDGIN") == "eng":
+    PIDGIN_LANG = "eng"
+WARM = ["eng", PIDGIN_LANG, "ewo", "dua", "bas", "fub"]  # voices prepared ahead
 # Voice timbre. "default" = the language's own recorded speaker. "female" = a clear female
 # speaker from the model's voices (pronunciation still follows the language). Any voice id
 # from models/africa-tts/voices (e.g. "hau", "yor") can also be asked for.
@@ -73,7 +115,6 @@ MODEL_DIR = Path(__file__).resolve().parent / "models" / "africa-tts"
 NEEDED = ("config.yaml", "model.safetensors", "tokenizer.json")
 
 STATE = {"status": "starting", "detail": "", "since": time.time()}
-MODEL = None
 LOCK = threading.Lock()
 CACHE: "OrderedDict[tuple, bytes]" = OrderedDict()
 
@@ -110,9 +151,10 @@ def model_ready(folder: Path) -> bool:
     return all((folder / f).is_file() for f in NEEDED) and any((folder / "voices").glob("*.wav"))
 
 
-def download(folder: Path = MODEL_DIR) -> None:
+def download(folder: Path = MODEL_DIR, progress=None) -> None:
     """Resumable download with the standard library: a dropped connection continues where it
-    stopped, so even a slow or unstable line gets there."""
+    stopped, so even a slow or unstable line gets there. progress(done_bytes, total_bytes), if
+    given, is called as bytes arrive (voice_setup.py shows it live) instead of logging."""
     import urllib.request
 
     def get(url, headers=None):
@@ -125,7 +167,8 @@ def download(folder: Path = MODEL_DIR) -> None:
     files = [f for f in tree if f.get("type") == "file" and (
         f["path"] in NEEDED or (f["path"].startswith("voices/") and f["path"].endswith((".wav", ".json"))))]
     total = sum(f["size"] for f in files)
-    log(f"{len(files)} files, {total / 1e6:.0f} MB -> {folder}")
+    if not progress:
+        log(f"{len(files)} files, {total / 1e6:.0f} MB -> {folder}")
     done_bytes = 0
     for f in files:
         dest = folder / f["path"]
@@ -133,6 +176,8 @@ def download(folder: Path = MODEL_DIR) -> None:
         part = dest.with_name(dest.name + ".part")
         if dest.is_file() and dest.stat().st_size == f["size"]:
             done_bytes += f["size"]
+            if progress:
+                progress(done_bytes, total)
             continue
         url = f"https://huggingface.co/{REPO}/resolve/main/{f['path']}"
         tries, last = 0, time.time()
@@ -147,7 +192,9 @@ def download(folder: Path = MODEL_DIR) -> None:
                     while chunk := r.read(1 << 16):
                         out.write(chunk)
                         have += len(chunk)
-                        if time.time() - last > 5:
+                        if progress:
+                            progress(done_bytes + have, total)
+                        elif time.time() - last > 5:
                             last = time.time()
                             pct = 100 * (done_bytes + have) / total
                             log(f"{f['path']}: {have / 1e6:.0f}/{f['size'] / 1e6:.0f} MB  (all: {pct:.0f}%)")
@@ -159,44 +206,174 @@ def download(folder: Path = MODEL_DIR) -> None:
                 time.sleep(wait)
         part.replace(dest)
         done_bytes += f["size"]
-    log(f"model ready in {folder}")
+    if progress:
+        progress(total, total)
+    else:
+        log(f"model ready in {folder}")
 
 
-def load_model(folder: Path) -> None:
-    """Runs in the background: the HTTP port is already open while this works."""
-    global MODEL, VOICE_DIR
+def total_ram_gb() -> float:
     try:
-        set_state("loading", "importing PyTorch")
+        if os.name == "nt":
+            import ctypes
+
+            class MS(ctypes.Structure):
+                _fields_ = [("len", ctypes.c_ulong), ("load", ctypes.c_ulong)] + [
+                    (n, ctypes.c_ulonglong) for n in ("total", "avail", "ptotal", "pavail", "vtotal", "vavail", "ext")]
+            m = MS()
+            m.len = ctypes.sizeof(MS)
+            ctypes.windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(m))
+            return m.total / 2**30
+        return os.sysconf("SC_PAGE_SIZE") * os.sysconf("SC_PHYS_PAGES") / 2**30
+    except Exception:  # noqa: BLE001
+        return 8.0
+
+
+def worker_main(conn, folder: str, nthreads: int, quantize: bool) -> None:
+    """The model lives in this separate process. Closing it gives ALL its memory back to the
+    system, which a single process cannot do (the C allocator keeps freed memory)."""
+    try:
+        conn.send(("status", "loading", "importing PyTorch"))
+        import numpy as np
+        import soundfile as sf
         import torch
-        torch.set_num_threads(threads())
+        torch.set_num_threads(nthreads)
         torch.set_grad_enabled(False)
-        warnings.filterwarnings("ignore", message=".*experimental.*")
+        warnings.filterwarnings("ignore")
         use_bundled_espeak()
         from africa_tts import AfricaTTS
 
-        if not model_ready(folder):
-            set_state("error", f"model not found in {folder}: run  python africa_tts_server.py --download")
-            return
-        set_state("loading", f"loading the model on CPU ({threads()} threads)")
-        t0 = time.time()
-        model = AfricaTTS.load(name=str(folder), download=False, threads=threads())
-        set_state("loading", "preparing the voices")
+        conn.send(("status", "loading", f"loading the model on CPU ({nthreads} threads)"))
+        model = AfricaTTS.load(name=folder, download=False, threads=nthreads)
+        if quantize:
+            # Kyutai's recommended int8 for the transformer (attention + feed-forward). The flow
+            # network and the Mimi audio decoder, which shape the sound, stay in full precision.
+            try:
+                from pocket_tts.quantization import RECOMMENDED_CONFIG, apply_dynamic_int8
+                tts = next(v for v in (getattr(model.engine, a, None) for a in dir(model.engine))
+                           if v is not None and hasattr(v, "flow_lm"))
+                apply_dynamic_int8(tts.flow_lm, RECOMMENDED_CONFIG)
+            except Exception as exc:  # noqa: BLE001  full precision still works
+                quantize = False
+                conn.send(("log", f"int8 not applied ({exc}); using full precision"))
+        conn.send(("status", "loading", "preparing the voices"))
+        voices = Path(folder) / "voices"
         for lang in WARM:  # one short phrase per voice: the first real request is then quick
             try:
                 model.generate("Ok.", lang=lang)
-                model.generate("Ok.", lang=lang, voice=str(folder / "voices" / f"{FEMALE}.wav"))
+                model.generate("Ok.", lang=lang, voice=str(voices / f"{FEMALE}.wav"))
+            except Exception:  # noqa: BLE001
+                pass
+        conn.send(("status", "ready", "int8" if quantize else "full precision"))
+        while True:
+            req = conn.recv()
+            if req is None:
+                break
+            text, lang, vpath = req
+            try:
+                if lang == "pcm":  # Pidgin: phonetics built word by word, read by the Krio speaker
+                    audio = model.generate(pidgin_ipa(text), lang="kri", voice=vpath, ipa=True)
+                else:
+                    audio = model.generate(text, lang=lang, voice=vpath)
+                buf = io.BytesIO()
+                sf.write(buf, np.clip(audio, -1.0, 1.0), model.sample_rate, format="WAV", subtype="PCM_16")
+                conn.send(("ok", buf.getvalue()))
             except Exception as exc:  # noqa: BLE001
-                log(f"voice {lang} not ready: {exc}")
-        VOICE_DIR = folder / "voices"
-        MODEL = model
-        set_state("ready", f"model loaded in {time.time() - t0:.0f}s")
+                conn.send(("err", str(exc)))
+    except (EOFError, KeyboardInterrupt, BrokenPipeError):
+        pass
     except Exception as exc:  # noqa: BLE001
-        set_state("error", str(exc))
+        try:
+            conn.send(("status", "error", str(exc)))
+        except Exception:  # noqa: BLE001
+            pass
+
+
+class Voice:
+    """Starts the model when it is needed and puts it to sleep when it is not: on a computer
+    with little memory, the voice costs almost nothing between uses."""
+
+    def __init__(self, folder: Path, idle_min: float, quantize: bool):
+        self.folder, self.idle, self.quantize = folder, idle_min * 60, quantize
+        self.proc = self.conn = None
+        self.last = time.time()
+        self.boot_lock = threading.Lock()
+        threading.Thread(target=self._sleeper, daemon=True).start()
+
+    def wake(self) -> None:
+        with self.boot_lock:
+            if self.proc is not None and self.proc.is_alive():
+                return
+            if not model_ready(self.folder):
+                set_state("error", f"model not found in {self.folder}: run  python africa_tts_server.py --download")
+                return
+            import multiprocessing as mp
+            ctx = mp.get_context("spawn")
+            parent, child = ctx.Pipe()
+            self.proc = ctx.Process(target=worker_main, args=(child, str(self.folder), threads(), self.quantize), daemon=True)
+            self.proc.start()
+            self.conn, self.last = parent, time.time()
+            set_state("loading", "starting the voice")
+            threading.Thread(target=self._boot, args=(parent,), daemon=True).start()
+
+    def _boot(self, conn) -> None:
+        t0 = time.time()
+        try:
+            while True:
+                msg = conn.recv()
+                if msg[0] == "log":
+                    log(msg[1])
+                    continue
+                _, status, detail = msg
+                if status == "ready":
+                    self.last = time.time()
+                    set_state("ready", f"model loaded in {time.time() - t0:.0f}s ({detail})")
+                    return
+                set_state(status, detail)
+                if status == "error":
+                    return
+        except (EOFError, OSError):
+            set_state("error", "the voice process stopped")
+
+    def speak(self, text: str, lang: str, vpath) -> bytes:
+        with LOCK:  # one synthesis at a time: predictable CPU use
+            self.last = time.time()
+            self.conn.send((text, lang, vpath))
+            if not self.conn.poll(90):
+                raise TimeoutError("the voice took too long")
+            kind, data = self.conn.recv()
+            self.last = time.time()
+        if kind != "ok":
+            raise RuntimeError(data)
+        return data
+
+    def sleep(self) -> None:
+        with self.boot_lock, LOCK:
+            if self.proc is None:
+                return
+            try:
+                self.conn.send(None)
+                self.proc.join(5)
+            except Exception:  # noqa: BLE001
+                pass
+            if self.proc.is_alive():
+                self.proc.terminate()
+            self.proc = self.conn = None
+            set_state("sleeping", "asleep to save memory; wakes up on the next request")
+
+    def _sleeper(self) -> None:
+        while True:
+            time.sleep(15)
+            if self.idle > 0 and STATE["status"] == "ready" and time.time() - self.last > self.idle:
+                self.sleep()
+
+
+VOICE = None
 
 
 # Languages whose own recorded speaker is already female: "female" keeps it, because a voice
-# trained on the language's own speech sounds more natural than a borrowed one. English (used
-# for Pidgin) is a native Ghanaian English speaker.
+# trained on the language's own speech sounds more natural than a borrowed one. English is a
+# native Ghanaian English speaker; Pidgin always keeps the Krio speaker (the one people chose).
 OWN_FEMALE = {"eng", "pcm"}
 
 
@@ -219,23 +396,24 @@ def synthesize(text: str, lang: str, voice: str = "") -> bytes:
     if key in CACHE:
         CACHE.move_to_end(key)
         return CACHE[key]
-    import numpy as np
-    import soundfile as sf
-
-    with LOCK:  # one synthesis at a time: predictable CPU use
-        if lang == "pcm":
-            text, lang = pidgin_respell(text), "eng"
-        audio = MODEL.generate(text[:MAX_TEXT], lang=lang, voice=vpath)
-    buf = io.BytesIO()
-    sf.write(buf, np.clip(audio, -1.0, 1.0), MODEL.sample_rate, format="WAV", subtype="PCM_16")
-    wav = buf.getvalue()
+    if lang == "pcm":  # Krio rules read Pidgin spelling as written; English rules need respelling
+        model_text, model_lang = (text, "pcm") if PIDGIN_LANG == "kri" else (pidgin_respell(text), "eng")
+    else:
+        model_text, model_lang = text, lang
+    wav = VOICE.speak(model_text[:MAX_TEXT], model_lang, vpath)
     CACHE[key] = wav
-    if len(CACHE) > CACHE_MAX:
+    while len(CACHE) > 1 and sum(len(v) for v in CACHE.values()) > CACHE_BYTES:
         CACHE.popitem(last=False)
     return wav
 
 
 class Handler(BaseHTTPRequestHandler):
+    def handle(self):
+        try:
+            super().handle()
+        except (ConnectionAbortedError, ConnectionResetError, BrokenPipeError):
+            pass  # the browser stopped waiting (page closed, time limit): harmless, keep the window clean
+
     def _headers(self, status: int, content_type: str):
         self.send_response(status)
         self.send_header("Content-Type", content_type)
@@ -253,14 +431,16 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if self.path == "/health":
-            return self._json(200, {**STATE, "cached": len(CACHE), "threads": threads()})
+            return self._json(200, {**STATE, "cached": len(CACHE), "threads": threads(),
+                                    "idleMinutes": VOICE.idle / 60, "int8": VOICE.quantize})
         self._json(404, {"error": "not found"})
 
     def do_POST(self):
+        if self.path == "/wake":  # Langwa opens a page: get ready before the first Listen
+            VOICE.wake()
+            return self._json(200, STATE)
         if self.path != "/tts":
             return self._json(404, {"error": "not found"})
-        if MODEL is None:  # still loading: the extension uses another voice meanwhile
-            return self._json(503, {"error": STATE["status"], "detail": STATE["detail"]})
         try:
             size = int(self.headers.get("Content-Length", "0"))
             if size <= 0 or size > 32_000:
@@ -270,6 +450,11 @@ class Handler(BaseHTTPRequestHandler):
             voice = str(body.get("voice") or "")
             if not isinstance(text, str) or not text.strip():
                 raise ValueError("text is required")
+            cached = CACHE.get((lang, voice or "default", text.strip()))
+            if cached is None and STATE["status"] != "ready":
+                # asleep or loading: wake up, and the extension uses another voice meanwhile
+                VOICE.wake()
+                return self._json(503, {"error": "loading", "detail": STATE["detail"]})
             t0 = time.time()
             wav = synthesize(text.strip(), lang, voice)
             self._headers(200, "audio/wav")
@@ -288,6 +473,10 @@ def main() -> None:
     ap.add_argument("--model", type=Path, default=Path(os.environ.get("LANGWA_TTS_MODEL", MODEL_DIR)),
                     help="folder holding a copy of the model (default: server/models/africa-tts)")
     ap.add_argument("--port", type=int, default=PORT)
+    ap.add_argument("--idle", type=float, default=None,
+                    help="minutes without use before the model sleeps (0 = never); "
+                         "default: 10 with 8 GB of RAM or less, else 60")
+    ap.add_argument("--full-precision", action="store_true", help="do not use int8 for the transformer")
     args = ap.parse_args()
 
     if args.download:
@@ -302,8 +491,14 @@ def main() -> None:
     except OSError:
         log(f"port {args.port} is already in use: Langwa's voice is probably already running")
         sys.exit(1)
-    threading.Thread(target=load_model, args=(args.model,), daemon=True).start()
+    global VOICE, VOICE_DIR
+    ram = total_ram_gb()
+    idle = args.idle if args.idle is not None else (10 if ram <= 8.5 else 60)
+    VOICE_DIR = args.model / "voices"
+    VOICE = Voice(args.model, idle, quantize=not args.full_precision)
+    VOICE.wake()
     log(f"listening on http://{HOST}:{args.port}/tts  (status: GET /health)")
+    log(f"{ram:.0f} GB of RAM: the model sleeps after {idle:g} min without use" if idle else "the model stays loaded")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

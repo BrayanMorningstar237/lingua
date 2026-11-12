@@ -74,12 +74,25 @@
   .vstat .led { flex: none; width: 10px; height: 10px; margin-top: 5px; border-radius: 50%; background: var(--muted); box-shadow: 0 0 0 4px color-mix(in srgb, var(--muted) 18%, transparent); }
   .vstat[data-s="ready"] .led { background: var(--ok); box-shadow: 0 0 0 4px color-mix(in srgb, var(--ok) 20%, transparent); }
   .vstat[data-s="loading"] .led { background: var(--warn); box-shadow: 0 0 0 4px color-mix(in srgb, var(--warn) 22%, transparent); animation: vpulse 1.1s ease-in-out infinite; }
-  .vstat[data-s="error"] .led, .vstat[data-s="offline"] .led { background: var(--err); box-shadow: 0 0 0 4px color-mix(in srgb, var(--err) 18%, transparent); }
+  .vstat[data-s="error"] .led { background: var(--err); box-shadow: 0 0 0 4px color-mix(in srgb, var(--err) 18%, transparent); }
   .vstat b { display: block; font-size: 14px; }
   .vstat small { display: block; color: var(--muted); margin-top: 2px; }
   .vstat code { display: inline-block; margin-top: 6px; padding: 4px 8px; border-radius: 6px; background: var(--card); border: 1px solid var(--line); font-size: 12px; user-select: all; overflow-wrap: anywhere; }
+  .vstat[data-s="installing"] .led { background: var(--warn); box-shadow: 0 0 0 4px color-mix(in srgb, var(--warn) 22%, transparent); animation: vpulse 1.1s ease-in-out infinite; }
+  .vstat > div { flex: 1; min-width: 0; }
+  .vchips { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 10px; }
+  .chip { font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 99px; border: 1px solid var(--line); background: var(--card); }
+  .chip.ok { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 45%, transparent); }
+  .chip.wait { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 50%, transparent); }
+  .vprog { position: relative; height: 10px; margin: 2px 0 8px; border-radius: 99px; background: var(--line); overflow: hidden; }
+  .vprog i { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: inherit; background: linear-gradient(90deg, var(--forest), var(--gold)); transition: width 3s linear; overflow: hidden; }
+  .vprog i::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgb(255 255 255 / .5), transparent); animation: vshine 1.6s ease-in-out infinite; }
+  .vprog.ind i { width: 35%; transition: none; animation: vind 1.3s ease-in-out infinite; }
+  .vpct { font-variant-numeric: tabular-nums; }
   @keyframes vpulse { 50% { opacity: .35; } }
-  @media (prefers-reduced-motion: reduce) { .vstat .led { animation: none !important; } }
+  @keyframes vshine { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+  @keyframes vind { from { left: -35%; } to { left: 100%; } }
+  @media (prefers-reduced-motion: reduce) { .vstat .led, .vprog i, .vprog i::after { animation: none !important; transition: none !important; } .vprog.ind i { width: 100%; opacity: .5; } }
   @media (max-width: 600px) {
     .hwrap { padding: 12px; gap: 10px; }
     header h1 { min-width: 0; flex: 1; }
@@ -175,11 +188,12 @@
 
   <section>
     <h2><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/></svg>Traduction automatique locale (open source, optionnelle)</h2>
-    <p class="muted">Utilisée pour les phrases absentes du glossaire. Lamnso’ utilise automatiquement son modèle local lorsque cette langue est sélectionnée. Seul le texte <b>masqué</b> est envoyé (les montants, noms et numéros sont remplacés par ⟦A⟧, ⟦B⟧…), et seulement à un serveur sur cet ordinateur. Sans serveur, l'extension affiche un résumé sûr : type de message, mots clés et montants exacts.</p>
+    <p class="muted">Sert au texte absent du glossaire. Seul le texte masqué de la page part vers des services de cet ordinateur : montants, noms et numéros restent protégés. Pour le lamnso, Langwa cherche dans un corpus local trois phrases parallèles proches et les donne au modèle comme exemples de la langue. Les résultats restent des brouillons non validés.</p>
     <div class="grid2">
       <label>Mode
         <select id="mtMode">
-          <option value="none">Désactivée (sauf le modèle Lamnso’ dédié)</option>
+          <option value="none">Disabled (unless enabled by a local translation mode)</option>
+          <option value="turaco">Turaco local pour Pidgin Kamtok (Ollama requis, anglais vers Pidgin)</option>
           <option value="openai">LLM local compatible OpenAI (Ollama, llama.cpp, LM Studio)</option>
           <option value="nllb">Serveur NLLB-200 local (server/nllb_server.py)</option>
           <option value="cameroon">Serveur local de traduction du Cameroun (Lamnso’, brouillon)</option>
@@ -188,15 +202,16 @@
       <label>Adresse<input type="url" id="mtEndpoint"></label>
       <label>Modèle (mode LLM)<input type="text" id="mtModel"></label>
     </div>
-    <p class="muted">La première traduction télécharge les seuls fichiers nécessaires (anglais → français et français → Lamnso’). Les résultats automatiques sont des brouillons non validés. Licence du modèle : CC BY-NC 4.0 (usage non commercial).</p>
+    <p id="turacoHelp" class="muted" hidden>Turaco traduit l’anglais vers le pidgin camerounais. Installez Ollama, libérez au moins 5 Go, puis exécutez <code>ollama run hf.co/mradermacher/Turaco-E2B-it-mt-en-wes-GGUF:Q4_K_M</code>. Laissez Ollama actif. Langwa n’envoie que le texte masqué à ce serveur local. Le modèle pèse environ 3,43 Go.</p>
+    <div class="vstat" id="mtStatus" hidden></div>
+    <p class="muted">Pour le lamnso, lancez <code>server\start-lamnso.cmd</code> : il télécharge une fois un petit modèle libre (1,1 Go), puis démarre le corpus et le modèle sur cet ordinateur. Langwa les utilise tout seul pour le lamnso. Les exemples bibliques donnent seulement le style de la langue ; ce ne sont pas des traductions bancaires validées.</p>
 
     <h2 style="margin-top:18px"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg>Voix</h2>
-    <p class="muted">Ordre de lecture : d'abord les <b>enregistrements du locuteur natif</b> (voix humaine), puis la <b>voix locale</b> si elle est activée, sinon la voix du navigateur. Les montants, noms et numéros sont toujours lus exactement. Africa TTS (open source) tourne sur cet ordinateur, hors ligne, après un téléchargement unique de 440 Mo : entraîné pour l'ewondo, le duala, le basaá et le pidgin, expérimental pour les autres langues. Licence du modèle : CC-BY-NC-4.0.</p>
     <div class="grid2">
       <label>Voix locale
         <select id="ttsMode">
           <option value="auto">Automatique : la voix locale si elle tourne, sinon le navigateur (recommandé)</option>
-          <option value="none">Désactivée (voix humaines et navigateur seulement)</option>
+          <option value="none">Disabled (unless enabled by a local translation mode)</option>
           <option value="africa">Africa TTS local (server/africa_tts_server.py), multilingue</option>
           <option value="mms">MMS-TTS local (server/tts_server.py), Fulfulde et Lamnso’</option>
         </select>
@@ -214,7 +229,7 @@
         <select id="asrMode">
           <option value="browser">Navigateur, avec accord (français, anglais, pidgin)</option>
           <option value="local">Serveur local MMS (server/asr_server.py) : détecte la langue, toutes les langues</option>
-          <option value="none">Désactivées</option>
+          <option value="none">Disabled (unless enabled by a local translation mode)</option>
         </select>
       </label>
       <label>Adresse du serveur vocal<input type="url" id="asrEndpoint"></label>
