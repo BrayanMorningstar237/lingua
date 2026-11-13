@@ -1,5 +1,5 @@
 // Builds the mp4 from the recorded frames (variable timing) and the audio timeline:
-// narration at each scene start, Pidgin clips where Listen was pressed.
+// narration and the national-language readings, each at its moment.
 import { spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -27,7 +27,7 @@ run(['-y', '-f', 'concat', '-safe', '0', '-i', join(dir, 'frames.txt'), '-vf', `
   '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-movflags', '+faststart', silentFile]);
 
 // audio: every clip delayed to its moment, mixed, then muxed
-const clips = [...tl.scenes.map(s => ({ file: s.file, t: s.t, vol: 1.0 })), ...tl.cues.map(c => ({ file: c.file, t: c.t, vol: 1.15 }))];
+const clips = [...tl.scenes.map(s => ({ file: s.file, t: s.t, vol: 1.0 })), ...tl.cues.map(c => ({ file: c.file, t: c.t, vol: c.vol ?? 1.15 }))];
 const inputs = clips.flatMap(c => ['-i', join(dir, 'audio', c.file)]);
 const chains = clips.map((c, i) => `[${i + 1}:a]aresample=48000,volume=${c.vol},adelay=${Math.round(c.t)}|${Math.round(c.t)}[a${i}]`);
 const mix = `${clips.map((_, i) => `[a${i}]`).join('')}amix=inputs=${clips.length}:normalize=0:duration=longest,apad,atrim=0:${end.toFixed(2)}[aout]`;
