@@ -78,6 +78,7 @@
     if (id === 'list') renderPanel();
   }
   let panelVoice; // live voice line in the panel header (browser voice / natural voice 42 % / ready)
+  let voiceFix;   // the choice shown when the natural voice is not on this computer
   let host, shadow, tip, tipBody, tipArrow, panel, panelList, panelStatus, toastBox, hl, subLayer, fab, fabDot, fabCount;
 
   function h(tag, attrs = {}, ...kids) {
@@ -179,6 +180,18 @@
   .pvoice .vt::first-letter { text-transform: uppercase; }
   .pvoice[data-s="ready"] { color: #7fd9a8; }
   .pvoice[data-s="notready"] { color: #f3c460; }
+  .pvoice[data-s="online"] { color: #8fd3e6; }
+  .vfix { margin: 0 14px 10px; padding: 12px; border-radius: 16px; background: var(--ebony-2); box-shadow: inset 0 0 0 1px var(--ebony-3); color: var(--ivory); display: grid; gap: 8px; animation: drop .2s ease; }
+  .vfix[hidden] { display: none; }
+  .vf-head { display: flex; align-items: center; justify-content: space-between; font-size: 14px; }
+  .vf-x { border: 0; background: none; color: var(--sand); width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; }
+  .vf-x:hover { background: var(--ebony-3); color: #fff; }
+  .vf-opt { display: flex; align-items: flex-start; gap: 10px; width: 100%; text-align: left; border: 0; border-radius: 12px; padding: 10px 12px; background: var(--ebony-3); color: var(--ivory); cursor: pointer; }
+  .vf-opt .i { flex: none; font-size: 18px; margin-top: 2px; color: var(--gold); }
+  .vf-opt b { display: block; font-size: 14px; } .vf-opt small { display: block; font-size: 12.5px; color: var(--sand); margin-top: 2px; }
+  .vf-opt.primary { background: var(--forest); } .vf-opt.primary .i { color: #fff; } .vf-opt.primary small { color: #d8f2e3; }
+  .vf-opt:hover { filter: brightness(1.08); }
+  .vf-note { margin: 0; font-size: 12.5px; color: var(--sand); }
   .pv-setup { flex: none; border: 0; background: rgba(243,196,96,.16); color: #f3c460; font: 700 11.5px inherit; font-family: inherit; padding: 2px 8px; border-radius: 99px; cursor: pointer; }
   .pv-setup:hover { background: rgba(243,196,96,.3); }
   .pvoice[data-s="installing"], .pvoice[data-s="loading"] { color: var(--gold); }
@@ -186,6 +199,7 @@
   .vprog i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #7fe0ad, var(--gold)); transition: width 3s linear; }
   .vchip[data-src="local"], .vchip[data-src="wait"] { --c: #7fe0ad; }
   .vchip[data-src="browser"] { --c: var(--indigo-2); }
+  .vchip[data-src="online"] { --c: #8fd3e6; }
   .vchip[data-src="human"] { --c: var(--gold); }
   .vchip[data-src="wait"] .i { animation: spin 1s linear infinite; }
   .item .vchip { --c: var(--card-muted); }
@@ -535,6 +549,7 @@
     send: '<path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/>',
     list: '<path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/>',
     search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+    cloud: '<path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>',
     help: '<circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>',
   };
   function icon(name, extra = '') {
@@ -594,6 +609,7 @@
         h('div', { class: 'title' }, langPicker(), panelStatus, panelVoice),
         ccBtn,
         h('button', { class: 'icon-btn', title: ui('ui_close', 'Fermer'), 'aria-label': ui('ui_close', 'Fermer'), onclick: () => togglePanel(false) }, icon('x'))),
+      voiceFix = h('div', { class: 'vfix', hidden: true }),
       tabsBar,
       chatView,
       panelList,
@@ -824,36 +840,72 @@
     const v = natural && !state.localVoice ? state.voice : null;
     const s = natural && state.localVoice ? 'ready' : v ? v.status : 'browser';
     const pct = v ? Math.max(1, Math.round((v.progress || 0) * 100)) : 0;
-    // The natural voice is the default; when it is not running yet, say so (and how to get it)
-    // rather than silently reading with another voice.
+    // The natural voice is the default; when it is not running yet, say so and offer the two ways
+    // to get a natural voice: online now (Microsoft/Google), or the offline one on this computer.
     const notReady = s === 'browser' && natural;
+    const onlineNow = notReady && onlineOn();
     const label = s === 'ready' ? `✓ ${ui('ui_voice_natural', 'Voix naturelle')}`
       : s === 'installing' ? `${ui('ui_voice_natural', 'Voix naturelle')} · ${pct} %`
         : s === 'loading' ? ui('ui_voice_starting', 'voix naturelle, démarrage…')
-          : notReady ? ui('ui_voice_not_ready', 'Voix pas prête') : voiceName('synthetic');
+          : onlineNow ? ui('ui_voice_online_short', 'Voix en ligne')
+            : notReady ? ui('ui_voice_not_ready', 'Voix pas prête') : voiceName('synthetic');
     const eta = v && v.etaSec != null ? (v.etaSec < 60 ? ' · <1 min' : ` · ~${Math.round(v.etaSec / 60)} min`) : '';
     if (s === 'installing' && panelVoice.dataset.s === 'installing') {
       panelVoice.querySelector('.vt').textContent = label + eta;
       panelVoice.querySelector('.vprog i').style.width = `${pct}%`;
       return;
     }
-    panelVoice.dataset.s = notReady ? 'notready' : s;
+    panelVoice.dataset.s = onlineNow ? 'online' : notReady ? 'notready' : s;
     panelVoice.setAttribute('aria-live', s === 'installing' ? 'off' : 'polite');
     let prog = null;
     if (s === 'installing') { const i = h('i'); i.style.width = `${pct}%`; prog = h('span', { class: 'vprog', 'aria-hidden': 'true' }, i); }
-    const ic = s === 'ready' ? icon('cpu') : s === 'loading' ? icon('loader', 'spin') : s === 'installing' ? icon('loader', 'spin') : icon('monitor');
-    const setup = notReady ? h('button', { class: 'pv-setup', type: 'button', onclick: () => send({ type: 'openOptions' }) }, ui('ui_voice_setup', 'Installer')) : null;
+    const ic = onlineNow ? icon('cloud') : s === 'ready' ? icon('cpu') : s === 'loading' ? icon('loader', 'spin') : s === 'installing' ? icon('loader', 'spin') : icon('monitor');
+    const setup = notReady ? h('button', { class: 'pv-setup', type: 'button', 'aria-expanded': String(!!voiceFix && !voiceFix.hidden), onclick: () => toggleVoiceFix() }, ui('ui_voice_choose', 'Choisir')) : null;
+    if (!notReady && voiceFix) voiceFix.hidden = true;
     panelVoice.replaceChildren(ic, h('span', { class: 'vt' }, label + eta), ...(prog ? [prog] : []), ...(setup ? [setup] : []));
     panelVoice.title = s === 'browser' && natural
       ? ui('ui_voice_hint', 'Voix du navigateur. Pour une voix plus naturelle, lancez « Start Langwa voice » sur cet ordinateur.')
       : panelVoice.textContent;
+  }
+
+  /** An online natural voice (Microsoft in Edge, Google in Chrome) exists for this language. */
+  function onlineVoiceAvailable() {
+    const L = globalThis.LangwaSpeech;
+    if (!L || !L.pickVoice) return false;
+    const prefs = [...((state.pack && state.pack.voices) || []).map(x => x.toLowerCase()), 'en', 'fr'];
+    const on = L.pickVoice(prefs, true);
+    return !!on && on.localService === false;
+  }
+  const onlineOn = () => !!(state.settings && state.settings.onlineVoice) && onlineVoiceAvailable();
+  const idleSrc = () => (onlineOn() ? 'online' : 'browser');
+
+  /** The two ways to a natural voice when it is not on this computer: online now, or offline. */
+  function toggleVoiceFix(force) {
+    if (!voiceFix) return;
+    const open = force ?? voiceFix.hidden;
+    voiceFix.hidden = !open;
+    const btn = panelVoice && panelVoice.querySelector('.pv-setup');
+    if (btn) btn.setAttribute('aria-expanded', String(open));
+    if (!open) return;
+    const on = !!(state.settings && state.settings.onlineVoice);
+    const opt = (ic, title, sub, onclick, cls = '') => h('button', { class: `vf-opt ${cls}`, type: 'button', onclick }, icon(ic), h('span', {}, h('b', {}, title), h('small', {}, sub)));
+    const done = () => { toggleVoiceFix(false); renderPanelVoice(); refreshChips(); };
+    voiceFix.replaceChildren(
+      h('div', { class: 'vf-head' }, h('b', {}, ui('ui_vfix_title', 'Une voix plus naturelle')),
+        h('button', { class: 'vf-x', type: 'button', 'aria-label': ui('ui_close', 'Fermer'), onclick: () => toggleVoiceFix(false) }, icon('x'))),
+      onlineVoiceAvailable()
+        ? (on
+          ? opt('cloud', ui('ui_vfix_stop', 'Arrêter la voix en ligne'), ui('ui_vfix_stop_sub', 'Revenir à la voix intégrée de cet appareil.'), () => { setLight({ onlineVoice: false }); done(); })
+          : opt('cloud', ui('ui_vfix_online', 'Utiliser la voix naturelle en ligne'), ui('ui_vfix_online_sub', 'Tout de suite. Le texte lu est envoyé à Microsoft ou Google.'), () => { setLight({ onlineVoice: true }); done(); }, 'primary'))
+        : h('p', { class: 'vf-note' }, ui('ui_vfix_no_online', 'Ce navigateur n’a pas de voix en ligne. Edge en propose de très naturelles.')),
+      opt('cpu', ui('ui_vfix_offline', 'Installer la voix naturelle hors ligne'), ui('ui_vfix_offline_sub', 'Privée, sur cet ordinateur. Environ 700 Mo, une seule fois.'), () => { send({ type: 'openOptions' }); toggleVoiceFix(false); }));
   }
   /** Idle voice chips follow the local voice: progress while it installs, then "Local voice". */
   function refreshChips() {
     renderPanelVoice();
     if (!shadow) return;
     for (const chip of shadow.querySelectorAll('.vchip:not(.live)')) {
-      if (chip.dataset.src === 'browser' || chip.dataset.src === 'local') setChip(chip, ttsOn() ? 'local' : 'browser');
+      if (/^(browser|local|online)$/.test(chip.dataset.src)) setChip(chip, ttsOn() ? 'local' : idleSrc());
     }
   }
   setInterval(refreshVoice, 20000);
@@ -874,6 +926,7 @@
     local: ['cpu', () => ui('ui_voice_natural', 'Voix naturelle')], // model name in the tooltip
     wait: ['loader', () => ui('ui_voice_preparing', 'Voix locale, préparation…')],
     browser: ['monitor', () => voiceName('synthetic')],
+    online: ['cloud', () => ui('ui_voice_online', 'Voix naturelle en ligne')],
     human: ['user', () => voiceName('human')],
   };
   /**
@@ -883,7 +936,7 @@
   function voiceChip(steps) {
     if (!steps) return null;
     const chip = h('div', { class: 'vchip', role: 'status', 'aria-live': 'polite' });
-    setChip(chip, steps.voice === 'neural' ? 'local' : steps.voice === 'human' ? 'human' : 'browser');
+    setChip(chip, steps.voice === 'neural' ? 'local' : steps.voice === 'human' ? 'human' : idleSrc());
     return chip;
   }
   function setChip(chip, src, why, live = false) {

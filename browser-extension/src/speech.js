@@ -238,6 +238,8 @@
         if (k !== last && onSource && !s.stopped) { last = k; try { onSource(src, why); } catch { /* UI gone */ } }
       };
       session = s;
+      // Which kind of device voice speaks: an online natural voice (Microsoft, Google) or a built-in one.
+      const srcOf = v => (v && v.localService === false ? 'online' : 'browser');
       // Consecutive pieces read by the same voice become ONE utterance: the sentence flows
       // instead of being spoken word group by word group.
       const allow = !!online();
@@ -301,11 +303,11 @@
           if (s.stopped) break;
           if (typeof got === 'string') {
             report('local');
-            if (!(await playUrl(got, s)) && !s.stopped) { report('browser', 'error'); await say(nat.adapt(r.tts), nat.voice, s); }
+            if (!(await playUrl(got, s)) && !s.stopped) { report(srcOf(nat.voice), 'error'); await say(nat.adapt(r.tts), nat.voice, s); }
           }
-          else { report('browser', (got && got.fail) || 'offline'); await say(nat.adapt(r.tts), nat.voice, s); }
+          else { report(srcOf(nat.voice), (got && got.fail) || 'offline'); await say(nat.adapt(r.tts), nat.voice, s); }
         } else if (r.text !== undefined) {
-          if (r.national) report('browser');
+          if (r.national) report(srcOf(r.voice));
           await say(r.text, r.voice, s);
         }
       }

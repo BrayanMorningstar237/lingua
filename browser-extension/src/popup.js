@@ -131,7 +131,7 @@ async function save(patch) {
   $('autoRead').checked = !!settings.autoRead;
   $('autoRead').onchange = () => save({ autoRead: $('autoRead').checked });
   $('onlineVoice').checked = !!settings.onlineVoice;
-  $('onlineVoice').onchange = () => save({ onlineVoice: $('onlineVoice').checked });
+  $('onlineVoice').onchange = () => { settings.onlineVoice = $('onlineVoice').checked; save({ onlineVoice: settings.onlineVoice }); };
   $('opts').onclick = () => api.runtime.openOptionsPage();
   // The guided tour runs on the page itself (where the controls are).
   $('guide').disabled = !loaded;
@@ -139,8 +139,8 @@ async function save(patch) {
 
   // ---------- local natural voice: live status while the popup is open (hidden when not running) ----------
   const V = BASE === 'en'
-    ? { inst: (p, m) => `Natural voice: installing ${p}%${m}`, min: n => ` · ~${n} min`, soon: ' · <1 min', start: 'Natural voice: starting…', ready: '✓ Natural voice ready', sleep: 'Natural voice: resting, wakes on use', notReady: 'Natural voice: not ready', setup: 'Set up' }
-    : { inst: (p, m) => `Voix naturelle : installation ${p} %${m}`, min: n => ` · ~${n} min`, soon: ' · <1 min', start: 'Voix naturelle : démarrage…', ready: '✓ Voix naturelle prête', sleep: 'Voix naturelle en veille, se réveille à l’usage', notReady: 'Voix naturelle : pas prête', setup: 'Installer' };
+    ? { inst: (p, m) => `Natural voice: installing ${p}%${m}`, min: n => ` · ~${n} min`, soon: ' · <1 min', start: 'Natural voice: starting…', ready: '✓ Natural voice ready', sleep: 'Natural voice: resting, wakes on use', notReady: 'Natural voice: not ready', setup: 'Set up', online: 'Online natural voice in use' }
+    : { inst: (p, m) => `Voix naturelle : installation ${p} %${m}`, min: n => ` · ~${n} min`, soon: ' · <1 min', start: 'Voix naturelle : démarrage…', ready: '✓ Voix naturelle prête', sleep: 'Voix naturelle en veille, se réveille à l’usage', notReady: 'Voix naturelle : pas prête', setup: 'Installer', online: 'Voix naturelle en ligne utilisée' };
   async function voiceLine() {
     const tts = settings.tts || {};
     if (tts.mode === 'none' || document.hidden) return;
@@ -157,7 +157,8 @@ async function save(patch) {
     if (!j && natural) {
       line.hidden = false;
       line.dataset.s = 'notready';
-      $('vlineText').textContent = V.notReady;
+      $('vlineText').textContent = settings.onlineVoice ? V.online : V.notReady;
+      line.dataset.s = settings.onlineVoice ? 'ready' : 'notready';
       $('vlineSet').hidden = false;
       $('vlineSet').textContent = V.setup;
       $('vlineSet').onclick = () => api.runtime.openOptionsPage();

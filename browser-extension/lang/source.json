@@ -1750,6 +1750,72 @@
    "group": "ui",
    "fr": "Installer",
    "en": "Set up"
+  },
+  {
+   "id": "ui_voice_online",
+   "group": "ui",
+   "fr": "Voix naturelle en ligne",
+   "en": "Online natural voice"
+  },
+  {
+   "id": "ui_voice_online_short",
+   "group": "ui",
+   "fr": "Voix en ligne",
+   "en": "Online voice"
+  },
+  {
+   "id": "ui_voice_choose",
+   "group": "ui",
+   "fr": "Choisir",
+   "en": "Choose"
+  },
+  {
+   "id": "ui_vfix_title",
+   "group": "ui",
+   "fr": "Une voix plus naturelle",
+   "en": "A more natural voice"
+  },
+  {
+   "id": "ui_vfix_online",
+   "group": "ui",
+   "fr": "Utiliser la voix naturelle en ligne",
+   "en": "Use the online natural voice"
+  },
+  {
+   "id": "ui_vfix_online_sub",
+   "group": "ui",
+   "fr": "Tout de suite. Le texte lu est envoyé à Microsoft ou Google.",
+   "en": "Right away. The text read aloud is sent to Microsoft or Google."
+  },
+  {
+   "id": "ui_vfix_stop",
+   "group": "ui",
+   "fr": "Arrêter la voix en ligne",
+   "en": "Stop the online voice"
+  },
+  {
+   "id": "ui_vfix_stop_sub",
+   "group": "ui",
+   "fr": "Revenir à la voix intégrée de cet appareil.",
+   "en": "Go back to this device's built-in voice."
+  },
+  {
+   "id": "ui_vfix_offline",
+   "group": "ui",
+   "fr": "Installer la voix naturelle hors ligne",
+   "en": "Install the offline natural voice"
+  },
+  {
+   "id": "ui_vfix_offline_sub",
+   "group": "ui",
+   "fr": "Privée, sur cet ordinateur. Environ 700 Mo, une seule fois.",
+   "en": "Private, on this computer. About 700 MB, once."
+  },
+  {
+   "id": "ui_vfix_no_online",
+   "group": "ui",
+   "fr": "Ce navigateur n’a pas de voix en ligne. Edge en propose de très naturelles.",
+   "en": "This browser has no online voices. Edge offers very natural ones."
   }
  ]
 }
