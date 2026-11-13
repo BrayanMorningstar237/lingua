@@ -1816,6 +1816,84 @@
    "group": "ui",
    "fr": "Ce navigateur n’a pas de voix en ligne. Edge en propose de très naturelles.",
    "en": "This browser has no online voices. Edge offers very natural ones."
+  },
+  {
+   "id": "tour_v_install",
+   "group": "ui",
+   "fr": "Installer la voix hors ligne",
+   "en": "Install the offline voice"
+  },
+  {
+   "id": "tour_v_hear",
+   "group": "ui",
+   "fr": "Écouter",
+   "en": "Hear it"
+  },
+  {
+   "id": "tour_v_ready_t",
+   "group": "ui",
+   "fr": "Voix naturelle prête",
+   "en": "Natural voice ready"
+  },
+  {
+   "id": "tour_v_ready_b",
+   "group": "ui",
+   "fr": "Langwa lit avec la voix naturelle installée sur cet ordinateur.",
+   "en": "Langwa reads with the natural voice installed on this computer."
+  },
+  {
+   "id": "tour_v_inst_t",
+   "group": "ui",
+   "fr": "La voix naturelle s’installe",
+   "en": "The natural voice is installing"
+  },
+  {
+   "id": "tour_v_inst_b",
+   "group": "ui",
+   "fr": "En attendant, la voix intégrée lit.",
+   "en": "Meanwhile the built-in voice reads."
+  },
+  {
+   "id": "tour_v_builtin_b",
+   "group": "ui",
+   "fr": "La voix de cet appareil lit les traductions.",
+   "en": "This device's voice reads the translations."
+  },
+  {
+   "id": "tour_v_online_t",
+   "group": "ui",
+   "fr": "Voix naturelle en ligne activée",
+   "en": "Online natural voice on"
+  },
+  {
+   "id": "tour_v_online_b",
+   "group": "ui",
+   "fr": "Une voix naturelle de Microsoft ou Google lit les traductions. Pour une voix privée, installez la voix hors ligne.",
+   "en": "A natural Microsoft or Google voice reads the translations. For a private voice, install the offline one."
+  },
+  {
+   "id": "tour_v_choose_t",
+   "group": "ui",
+   "fr": "Choisissez la voix",
+   "en": "Choose the voice"
+  },
+  {
+   "id": "tour_v_choose_b",
+   "group": "ui",
+   "fr": "La voix naturelle n’est pas encore sur cet ordinateur. Écoutez la voix en ligne : elle marche tout de suite, le texte lu est envoyé à Microsoft ou Google. Ou installez la voix privée.",
+   "en": "The natural voice is not on this computer yet. Hear the online voice: it works right away, and the text read aloud is sent to Microsoft or Google. Or install the private voice."
+  },
+  {
+   "id": "tour_v_none_t",
+   "group": "ui",
+   "fr": "Voix intégrée pour l’instant",
+   "en": "Built-in voice for now"
+  },
+  {
+   "id": "tour_v_none_b",
+   "group": "ui",
+   "fr": "Ce navigateur n’a pas de voix en ligne (Edge en a). Installez la voix naturelle hors ligne pour un son naturel.",
+   "en": "This browser has no online voices (Edge has). Install the offline natural voice for a natural sound."
   }
  ]
 }

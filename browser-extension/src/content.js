@@ -446,6 +446,12 @@
   .tcard h4 { font-size: 18px; font-weight: 800; line-height: 1.3; margin: 0 0 6px; }
   .tcard p { font-size: 14.5px; line-height: 1.5; color: #efe3d1; margin: 0; }
   .tbtns { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+  .tacts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .tacts[hidden] { display: none; }
+  .tact { border: 0; border-radius: 10px; padding: 8px 12px; font-size: 13.5px; font-weight: 700; background: var(--ebony-2); color: var(--ivory); box-shadow: inset 0 0 0 1px var(--ebony-3); cursor: pointer; }
+  .tact:hover { background: var(--ebony-3); }
+  .tact.primary { background: var(--forest); box-shadow: none; }
+  .tact.on { background: var(--terracotta); box-shadow: none; }
   .tback, .tnext { border: 0; border-radius: 12px; padding: 10px 16px; font-size: 14.5px; font-weight: 700; transition: transform .1s ease, filter .15s ease, background .15s ease; }
   .tback:active, .tnext:active, .tskip:active { transform: scale(.95); }
   .tback { background: var(--ebony-2); color: var(--ivory); box-shadow: inset 0 0 0 1px var(--ebony-3); }
@@ -1624,12 +1630,49 @@
         body: ui('tour_point_b', 'Sa traduction s’affiche juste dessous, avec le bouton Écouter. Les montants et les noms restent exactement ceux de la page.') },
       { target: () => { if (state.panelOpen) togglePanel(false); return fab; }, title: ui('tour_fab_t', 'Le bouton Langwa'), body: ui('tour_fab_b', 'Il ouvre le panneau. Le chiffre rouge compte les messages importants de la page.') },
       { target: inPanel('.askrow'), title: ui('tour_ask_t', 'Posez votre question'), body: ui('tour_ask_b', 'Touchez une question toute prête, écrivez, ou touchez le micro et parlez. Langwa répond dans votre langue, avec les montants de la page.') },
+      // The voice, adapted to this computer: ready, installing, or a choice (hear the online voice,
+      // use it, or install the private offline one). Moved early: it is what makes Langwa speak well.
+      { target: () => (state.panelOpen || togglePanel(true), panelVoice && !panelVoice.hidden ? panelVoice : null),
+        title: () => voiceTour().t, body: () => voiceTour().b, actions: redo => voiceTour(redo).a },
       { target: () => (state.panelOpen || togglePanel(true), panel && panel.querySelector('[data-tour="read"]')), title: ui('tour_read_t', 'Écoutez toute la page'), body: ui('tour_read_b', 'Langwa lit la page à voix haute, les messages importants d’abord.') },
       { target: () => (state.panelOpen || togglePanel(true), pageBtn), title: ui('tour_page_t', 'Traduisez toute la page'), body: ui('tour_page_b', 'La traduction s’affiche sur chaque texte de la page. Touchez encore pour revenir à l’original.') },
-      { target: () => (state.panelOpen || togglePanel(true), panelVoice && !panelVoice.hidden ? panelVoice : null), title: ui('tour_voice_t', 'Qui lit à voix haute'), body: ui('tour_voice_b', 'La voix du navigateur, ou la voix naturelle si elle est installée sur cet ordinateur. Son installation s’affiche ici en direct.') },
       { target: () => (state.panelOpen || togglePanel(true), panel && panel.querySelector('.lang-select')), title: ui('tour_lang_t', 'Changez de langue'), body: ui('tour_lang_b', 'À tout moment, ici. Les langues les plus complètes sont en premier.') },
       { title: ui('tour_done_t', 'C’est prêt !'), body: ui('tour_done_b', 'Pour revoir ce guide : le bouton Guide en bas du panneau, ou la fenêtre Langwa dans la barre du navigateur.'), next: ui('tour_finish', 'Terminer') },
     ].filter(Boolean);
+  }
+
+
+  /** The tour's voice step: what this computer has, and what to do about it. */
+  function voiceTour(redo = () => {}) {
+    const natural = !!(state.pack && state.pack.africaTts);
+    const act = (label, onclick, cls = '') => h('button', { class: `tact ${cls}`, type: 'button', onclick }, label);
+    const install = act(ui('tour_v_install', 'Installer la voix hors ligne'), () => send({ type: 'openOptions' }));
+    const L = globalThis.LangwaSpeech;
+    const prefs = [...((state.pack && state.pack.voices) || []).map(x => x.toLowerCase()), 'en', 'fr'];
+    // A short sample in the online voice, so people hear the difference before choosing.
+    const sample = act(`▶ ${ui('tour_v_hear', 'Écouter')}`, e => {
+      const voice = L && L.pickVoice(prefs, true);
+      if (!voice || !globalThis.speechSynthesis) return;
+      const u = new SpeechSynthesisUtterance(ui('ans_welcome', 'Bonjour ! Posez-moi une question sur cette page.'));
+      u.voice = voice; u.lang = voice.lang;
+      const b = e.currentTarget;
+      b.classList.add('on');
+      u.onend = u.onerror = () => b.classList.remove('on');
+      speechSynthesis.cancel();
+      speechSynthesis.speak(u);
+    });
+    const useOnline = act(ui('ui_vfix_online', 'Utiliser la voix naturelle en ligne'), () => {
+      setLight({ onlineVoice: true }); renderPanelVoice(); refreshChips(); redo();
+    }, 'primary');
+    if (natural && state.localVoice) return { t: ui('tour_v_ready_t', 'Voix naturelle prête'), b: ui('tour_v_ready_b', 'Langwa lit avec la voix naturelle installée sur cet ordinateur.'), a: [] };
+    if (natural && state.voice) {
+      const pct = Math.max(1, Math.round((state.voice.progress || 0) * 100));
+      return { t: ui('tour_v_inst_t', 'La voix naturelle s’installe'), b: `${ui('ui_voice_natural', 'Voix naturelle')} · ${pct} %. ${ui('tour_v_inst_b', 'En attendant, la voix intégrée lit.')}`, a: [] };
+    }
+    if (!natural) return { t: ui('tour_voice_t', 'Qui lit à voix haute'), b: ui('tour_v_builtin_b', 'La voix de cet appareil lit les traductions.'), a: [] };
+    if (onlineOn()) return { t: ui('tour_v_online_t', 'Voix naturelle en ligne activée'), b: ui('tour_v_online_b', 'Une voix naturelle de Microsoft ou Google lit les traductions. Pour une voix privée, installez la voix hors ligne.'), a: [sample, install] };
+    if (onlineVoiceAvailable()) return { t: ui('tour_v_choose_t', 'Choisissez la voix'), b: ui('tour_v_choose_b', 'La voix naturelle n’est pas encore sur cet ordinateur. Écoutez la voix en ligne : elle marche tout de suite, le texte lu est envoyé à Microsoft ou Google. Ou installez la voix privée.'), a: [sample, useOnline, install] };
+    return { t: ui('tour_v_none_t', 'Voix intégrée pour l’instant'), b: ui('tour_v_none_b', 'Ce navigateur n’a pas de voix en ligne (Edge en a). Installez la voix naturelle hors ligne pour un son naturel.'), a: [install] };
   }
 
   function endTour(done = true) {
@@ -1658,7 +1701,8 @@
     const next = h('button', { class: 'tnext', type: 'button' });
     const skip = h('button', { class: 'tskip', type: 'button' }, ui('tour_skip', 'Passer le guide'));
     const doneMark = h('div', { class: 'tdone', hidden: true }, icon('check'));
-    const content = h('div', { class: 'tcontent', 'aria-live': 'polite' }, doneMark, title, body);
+    const acts = h('div', { class: 'tacts' });
+    const content = h('div', { class: 'tcontent', 'aria-live': 'polite' }, doneMark, title, body, acts);
     const card = h('div', { class: 'tcard', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'langwa-tour-title' },
       h('div', { class: 'thead' }, count, dots, skip), content, h('div', { class: 'tbtns' }, back, next));
     tourEl = h('div', { class: 'tour' }, spot, card);
@@ -1701,8 +1745,10 @@
       void content.offsetWidth; // restart the slide-in
       content.classList.add(dir > 0 ? 'fwd' : 'bwd');
       doneMark.hidden = i !== steps.length - 1;
-      title.textContent = st.title;
-      body.textContent = st.body;
+      title.textContent = typeof st.title === 'function' ? st.title() : st.title;
+      body.textContent = typeof st.body === 'function' ? st.body() : st.body;
+      acts.replaceChildren(...(st.actions ? st.actions(() => go(i, 1)) : []));
+      acts.hidden = !acts.children.length;
       next.textContent = st.next || (i === steps.length - 1 ? ui('tour_finish', 'Terminer') : ui('tour_next', 'Suivant'));
       back.hidden = i === 0;
       skip.hidden = i === steps.length - 1;
