@@ -41,7 +41,8 @@
    "check": true,
    "variants": [
     "Environnement de test — données fictives, aucune transaction réelle.",
-    "Test environment — dummy data, no real transactions."
+    "Test environment — dummy data, no real transactions.",
+    "Test environment — fictional data, no real transaction."
    ]
   },
   {
@@ -56,7 +57,10 @@
    "group": "test-env",
    "fr": "Retour au hackathon",
    "en": "Back to the hackathon",
-   "check": true
+   "check": true,
+   "variants": [
+    "Back to hackathon"
+   ]
   },
   {
    "id": "online_banking",
@@ -126,7 +130,10 @@
    "group": "balance",
    "fr": "Consultez votre solde et initiez un virement sécurisé.",
    "en": "Check your balance and initiate a secure transfer.",
-   "check": true
+   "check": true,
+   "variants": [
+    "Check your balance and start a secure transfer."
+   ]
   },
   {
    "id": "available_balance",
@@ -170,7 +177,8 @@
    "variants": [
     "Perform a transfer",
     "Faire un virement",
-    "Faire un transfert"
+    "Faire un transfert",
+    "Effectuer un transfert"
    ],
    "check": true
   },
@@ -179,7 +187,10 @@
    "group": "balance",
    "fr": "Voir les frais",
    "en": "View fees",
-   "check": true
+   "check": true,
+   "variants": [
+    "Consulter les frais"
+   ]
   },
   {
    "id": "recent_transactions",
@@ -231,7 +242,10 @@
    "id": "electricity_bill",
    "group": "balance",
    "fr": "Facture d'électricité",
-   "en": "Electricity bill"
+   "en": "Electricity bill",
+   "variants": [
+    "Facture électricité"
+   ]
   },
   {
    "id": "water_bill",
@@ -269,7 +283,10 @@
    "fr": "Vérifiez toujours le nom et le numéro du bénéficiaire avant de confirmer un virement.",
    "en": "Always check the beneficiary's name and number before confirming a transfer.",
    "check": true,
-   "note": "Conseil de sécurité : regardez bien le nom et le numéro avant de valider."
+   "note": "Conseil de sécurité : regardez bien le nom et le numéro avant de valider.",
+   "variants": [
+    "Always verify the beneficiary name and number before confirming a transfer."
+   ]
   },
   {
    "id": "secure_connection",
@@ -285,7 +302,9 @@
    "check": true,
    "variants": [
     "Safinum Pay — environnement de démonstration. N'entrez aucune donnée personnelle réelle.",
-    "Safinum Pay — demonstration environment. Do not enter any real personal data."
+    "Safinum Pay — demonstration environment. Do not enter any real personal data.",
+    "Safinum Pay — environnement de démonstration. Ne saisissez aucune donnée personnelle réelle.",
+    "Safinum Pay — demonstration environment. Do not enter real personal data."
    ]
   },
   {
@@ -337,7 +356,8 @@
    "fr": "Frais",
    "en": "Fees",
    "variants": [
-    "Costs"
+    "Costs",
+    "Fee"
    ],
    "note": "L’argent que la banque prend pour faire l’opération. / What the bank charges for the operation."
   },
@@ -346,7 +366,10 @@
    "group": "fees",
    "fr": "Choisissez le type de virement et le montant. Les frais sont calculés automatiquement.",
    "en": "Choose the transfer type and amount. Fees are calculated automatically.",
-   "check": true
+   "check": true,
+   "variants": [
+    "Choisissez le type de transfert et le montant. Les frais sont calculés automatiquement."
+   ]
   },
   {
    "id": "operation_type",
@@ -371,13 +394,21 @@
    "fr": "Virement instantané et gratuit",
    "en": "Instant and free transfer",
    "check": true,
-   "note": "L’argent arrive tout de suite et la banque ne prend rien. / Arrives immediately, the bank charges nothing."
+   "note": "L’argent arrive tout de suite et la banque ne prend rien. / Arrives immediately, the bank charges nothing.",
+   "variants": [
+    "Transfert instantané et gratuit",
+    "Instant, free transfer"
+   ]
   },
   {
    "id": "other_bank",
    "group": "fees",
    "fr": "Compte d'une autre banque",
-   "en": "Account at another bank"
+   "en": "Account at another bank",
+   "variants": [
+    "Autre banque",
+    "Other bank"
+   ]
   },
   {
    "id": "mobile_money",
@@ -410,7 +441,8 @@
    "en": "Total to be debited",
    "variants": [
     "Total débité",
-    "Total debited"
+    "Total debited",
+    "Total to debit"
    ],
    "check": true,
    "note": "Tout ce qui va sortir du compte : montant envoyé + frais. / Everything that will leave the account: amount + fees."
@@ -421,7 +453,9 @@
    "fr": "Solde après l'opération",
    "en": "Balance after operation",
    "variants": [
-    "Balance after the operation"
+    "Balance after the operation",
+    "Solde après opération",
+    "Balance after transfer"
    ],
    "check": true,
    "note": "L’argent qui restera sur le compte après cet envoi. / Money left after this transfer."
@@ -536,7 +570,8 @@
    "fr": "Confirmer le virement",
    "en": "Confirm the transfer",
    "variants": [
-    "Confirm transfer"
+    "Confirm transfer",
+    "Confirmer le transfert"
    ]
   },
   {
@@ -655,7 +690,10 @@
    "group": "test-env",
    "fr": "Saisissez les informations du destinataire. Vérifiez toujours le numéro avant de valider.",
    "en": "Enter the recipient's information. Always check the number before submitting.",
-   "check": true
+   "check": true,
+   "variants": [
+    "Enter the recipient details. Always verify the number before confirming."
+   ]
   },
   {
    "id": "new_beneficiary_warning",
@@ -671,7 +709,11 @@
    "fr": "Motif du virement",
    "en": "Reason for transfer",
    "check": true,
-   "note": "Pourquoi vous envoyez l’argent. / Why you are sending the money."
+   "note": "Pourquoi vous envoyez l’argent. / Why you are sending the money.",
+   "variants": [
+    "Motif du transfert",
+    "Transfer reason"
+   ]
   },
   {
    "id": "note_optional",
@@ -679,7 +721,8 @@
    "fr": "Note (facultatif)",
    "en": "Note (optional)",
    "variants": [
-    "Note (facultative)"
+    "Note (facultative)",
+    "Note (optionnel)"
    ],
    "check": true
   },
@@ -689,14 +732,21 @@
    "fr": "J'ai vérifié le nom et le numéro du bénéficiaire.",
    "en": "I checked the beneficiary's name and number.",
    "check": true,
-   "note": "La personne dit qu’elle a bien vérifié le nom et le numéro."
+   "note": "La personne dit qu’elle a bien vérifié le nom et le numéro.",
+   "variants": [
+    "I have verified the beneficiary name and phone number."
+   ]
   },
   {
    "id": "check_info_before_confirm",
    "group": "test-env",
    "fr": "Vérifiez les informations avant de confirmer le virement.",
    "en": "Check the information before confirming the transfer.",
-   "check": true
+   "check": true,
+   "variants": [
+    "Vérifiez les informations avant de confirmer le transfert.",
+    "Check the details before confirming the transfer."
+   ]
   },
   {
    "id": "phone",
@@ -716,7 +766,11 @@
    "fr": "Je confirme que les informations ci-dessus sont exactes.",
    "en": "I confirm that the above information is correct.",
    "check": true,
-   "note": "La personne s’engage : les informations sont justes."
+   "note": "La personne s’engage : les informations sont justes.",
+   "variants": [
+    "Je confirme que les informations ci-dessus sont correctes.",
+    "I confirm the information above is correct."
+   ]
   },
   {
    "id": "modify",
@@ -734,7 +788,10 @@
    "group": "test-env",
    "fr": "Virement effectué",
    "en": "Transfer completed",
-   "check": true
+   "check": true,
+   "variants": [
+    "Transfert effectué"
+   ]
   },
   {
    "id": "transfer_sent_success",

@@ -992,6 +992,7 @@
   let askedOnline = false;
   function askOnlineVoice(b, then) {
     if (askedOnline || (state.settings && state.settings.onlineVoice)) return false;
+    if (ttsOn()) return false; // the offline natural voice is running: never offer to send text online
     const L = globalThis.LangwaSpeech;
     const prefs = [...((state.pack && state.pack.voices) || []).map(x => x.toLowerCase()), 'sw', 'fr'];
     const local = L.pickVoice(prefs, false);
