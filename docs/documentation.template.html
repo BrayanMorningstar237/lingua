@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Langwa · Technical documentation</title>
+<title>Langwa · Description and technical documentation</title>
 <style>
   @page { size: A4; margin: 16mm 16mm 18mm; }
   :root { --ebony: #1d1712; --ivory: #fbf6ee; --sand: #d9c9b4; --gold: #e3a21a; --gold-soft: #f6dfa6; --forest: #1e7a4c; --terracotta: #c2502e; --indigo: #3d4a8a;
@@ -59,6 +59,24 @@
   .flow .arrow { text-align: center; color: var(--gold); font-weight: 900; line-height: 1; font-size: 11pt; padding-left: 34mm; }
   .chips span { display: inline-block; font: 600 8.6pt "Cascadia Mono", Consolas, monospace; background: var(--gold-soft); border-radius: 6px; padding: 1px 6px; margin: 2px 3px 0 0; }
   .ok { color: var(--forest); font-weight: 700; }
+  /* figures (screenshots) */
+  figure { margin: 8px 0 12px; break-inside: avoid; }
+  figure img { display: block; width: 100%; border: 1px solid var(--line); border-radius: 8px; }
+  figcaption { font-size: 8.8pt; color: var(--muted); margin-top: 5px; line-height: 1.4; }
+  figcaption b { color: var(--fg); }
+  .grid2 figure { margin: 0; }
+  .grid2 { margin: 8px 0 12px; }
+  figure.narrow img { width: 100%; }
+  figure.tall img { max-height: 120mm; width: auto; max-width: 100%; margin: 0 auto; }
+  .cover-shot { margin: 16px 0 4px; }
+  .cover-shot img { border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.12); max-height: 78mm; width: auto; max-width: 100%; margin: 0 auto; }
+  .cover { height: 255mm; overflow: hidden; }
+  .cover .top, .cover .pillars, .cover .foot { flex: none; }
+  .cover-shot { flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: center; }
+  .cover-shot img { max-height: 100%; }
+  .keep table, table.keep { break-inside: avoid; }
+  .grid2 { break-inside: avoid; }
+  h2 { break-after: avoid; }
 </style>
 </head>
 <body>
@@ -73,36 +91,74 @@
     <div class="meta">
       <div>Team<b>{{team}}</b></div>
       <div>City<b>{{city}}</b></div>
-      <div>National language<b>{{languageName}}</b></div>
+      <div>National languages<b>{{languageName}}</b></div>
       <div>Linguistic validation<b>{{validators}}</b></div>
       <div>Source code<b>{{repoUrl}}</b></div>
+      <div>Website and downloads<b>{{websiteUrl}}</b></div>
       <div>Demo video<b>{{videoUrl}}</b></div>
     </div>
   </div>
+  <figure class="cover-shot"><img src="../docs/screenshots/07-pidgin-card-fees.png" alt="Langwa explains the fees step of the SAFINUM test page in Cameroon Pidgin"></figure>
   <div class="pillars">
-    <div class="pillar"><i style="background:var(--forest)"></i><b>Understand</b><span>Any text, button or message shown in the national language, by hover, long press or reading panel, and heard in a native speaker's voice.</span></div>
-    <div class="pillar"><i style="background:var(--gold)"></i><b>Protect</b><span>Amounts, signs, fees, beneficiaries and references are locked before translation and verified after. A mismatch blocks the translation.</span></div>
-    <div class="pillar"><i style="background:var(--indigo)"></i><b>Adapt</b><span>New messages are detected live and translated, or summarised safely with validated words and the exact amounts.</span></div>
+    <div class="pillar"><i style="background:var(--forest)"></i><b>Understand</b><span>Any text, button or message, in the national language, by pointing, by panel or by asking the assistant. Read aloud by a natural voice.</span></div>
+    <div class="pillar"><i style="background:var(--gold)"></i><b>Protect</b><span>Amounts, signs, fees, names and references are locked before translation and verified after. A mismatch blocks the translation.</span></div>
+    <div class="pillar"><i style="background:var(--indigo)"></i><b>Adapt</b><span>New messages are caught live and explained, or summarised safely with validated words and the exact amounts.</span></div>
   </div>
-  <div class="foot">SAFINUM Innovate Challenge · Prototype submission · Technical documentation · {{date}}</div>
+  <div class="foot">SAFINUM Innovate Challenge · Prototype submission · Description and technical documentation · {{date}}</div>
 </section>
 
-<!-- ============ 1 ============ -->
+<!-- ============ CONTENTS ============ -->
 <section class="section page-break">
-<h2><span class="n">1</span>Problem and proposed solution</h2>
-<p>Banking, payment and microfinance interfaces in Cameroon are in French or English. People who read or speak a national language more comfortably can misread a balance, a fee, a beneficiary or a security warning, and some avoid digital services altogether.</p>
-<p><b>Langwa</b> is a layer that sits on top of an <b>unchanged</b> digital financial service and makes it understandable in a national language. It reads the page in the browser, never modifies it, and shows the translation next to the original: under the element the user points at, in a reading panel, as subtitles, or as an alert when a new message appears. Each translation can be heard in a native speaker's voice.</p>
-<div class="callout green"><b>Design principle.</b> In finance, a wrong translation is worse than no translation. Langwa never lets a translation alter an amount, a sign, a fee, a beneficiary or a warning. When it cannot translate safely, it says what kind of message it is in the national language and shows the exact values.</div>
-
-<h3>Coverage of the minimum expected functionalities</h3>
+<h2>What this document contains</h2>
+<p>It answers each deliverable of section 6 of the challenge:</p>
 <table>
-  <tr><th style="width:28%">Requirement</th><th>How Langwa meets it</th></tr>
-  <tr><td>1. Interface language adaptation</td><td>Texts, buttons, labels, placeholders and messages are translated from a glossary validated by native speakers, with templates for sentences containing values (<code>Vous allez envoyer {amount} à {name}.</code>). The extension's own interface is also translatable.</td></tr>
-  <tr><td>2. Transaction journey</td><td>The full Safinum Pay journey is covered: balance, fees, beneficiary, summary, confirmation, plus common errors and security warnings. The reading panel lists the whole page with important messages first.</td></tr>
-  <tr><td>3. Preservation of financial information</td><td>Amounts with their sign, fees, percentages, phone and account numbers, references, dates and beneficiary names are masked before translation, restored verbatim and verified. Any mismatch blocks the translation.</td></tr>
-  <tr><td>4. Independent operation</td><td>Browser extension and userscript. No change to the service's code, data or requests. Works on any website, activated per site.</td></tr>
-  <tr><td>5. Adaptation to new content</td><td>A live observer detects new messages, translates them through templates or optional local machine translation, or shows a safe summary. New errors and warnings pop up as alerts.</td></tr>
+  <tr><th style="width:46%">Deliverable</th><th>Where</th></tr>
+  <tr><td>Brief description of the solution and the problem it addresses</td><td>Part 1</td></tr>
+  <tr><td>Functional prototype or reproducible demonstration</td><td>Part 8 (installation and test) · source code and builds in the repository · <code>tools/demo/</code> reproduces the video</td></tr>
+  <tr><td>Demonstration video (3 minutes or less)</td><td>Link on the cover</td></tr>
+  <tr><td>Technical document: architecture, integration approach, main dependencies, known limitations</td><td>Parts 2, 3, 9 and 10 (security in 4, new content in 5, user experience in 6)</td></tr>
+  <tr><td>National languages supported and method used to validate linguistic accuracy</td><td>Part 7</td></tr>
 </table>
+
+<!-- ============ 1 ============ -->
+<h2><span class="n">1</span>Brief description</h2>
+<h3>The problem</h3>
+<p>Banking, payment and microfinance interfaces in Cameroon are in French or English. Many people read and speak a national language more comfortably. A misread balance, fee, beneficiary or security warning can cost money, and some people avoid digital services for that reason.</p>
+<h3>The solution</h3>
+<p><b>Langwa</b> is a browser extension that sits on top of an <b>unchanged</b> digital financial service and makes it understandable in a national language: today <b>Cameroon Pidgin English (Kamtok)</b> and <b>Fulfulde</b>, with seven more languages prepared. It reads the page, never modifies it, and explains it four ways:</p>
+<ul>
+  <li><b>Point at any text</b> (hold Ctrl, or no key in "Point" mode): the translation opens just under it, with a Listen button.</li>
+  <li><b>The panel</b> (round Langwa button, bottom right) slides open: it translates the <b>whole page</b> at once and lists every message, important ones first.</li>
+  <li><b>The assistant</b> in the panel answers questions about what is on screen ("How much will I pay?") with the exact amounts.</li>
+  <li><b>Alerts</b>: a new error or security warning is caught the moment it appears.</li>
+</ul>
+<p>Every translation can be <b>heard</b> in a natural voice that runs offline on the computer. Amounts, fees, names and references are <b>locked</b>: no translation can change them.</p>
+<div class="callout green"><b>Design principle.</b> In finance, a wrong translation is worse than no translation. When Langwa cannot translate safely, it says in the national language what kind of message it is (error, warning, confirmation) and shows the exact values, instead of guessing.</div>
+<div class="keep"><h3>What is delivered</h3>
+<table>
+  <tr><th style="width:30%">Part</th><th>What it is</th></tr>
+  <tr><td>Browser extension</td><td>Chrome, Edge, Brave, Opera (<code>langwa-chromium.zip</code>, 425 KB) and Firefox (<code>.xpi</code>). A phone version runs as a userscript (Firefox for Android, Safari on iPhone).</td></tr>
+  <tr><td>Offline natural voice (optional)</td><td>A 55 KB download. One double-click installs it the first time (about 660 MB, once, with a live progress page and a Cancel button), then it starts in about 20 seconds and works without internet.</td></tr>
+  <tr><td>Website</td><td>{{websiteUrl}}: presentation, downloads and install steps, in English or French.</td></tr>
+  <tr><td>Contribution page</td><td>Native speakers translate the banking sentences on their phone and send them to the team on WhatsApp. A script merges them; nothing is published until a speaker validates it.</td></tr>
+</table></div>
+</section>
+
+<!-- ============ requirements ============ -->
+<section class="section">
+<h2>Minimum expected functionalities (section 4) at a glance</h2>
+<table>
+  <tr><th style="width:27%">Requirement</th><th>How Langwa meets it</th><th style="width:16%">Shown in</th></tr>
+  <tr><td>1. Interface language adaptation</td><td>Texts, buttons, labels, placeholders, instructions and messages are translated from a glossary of 291 banking sentences (French and English), with templates for sentences that contain values (<code>Vous allez envoyer {amount} à {name}.</code>). Langwa's own interface is translated too.</td><td>Fig. 4, 5, 7, 8</td></tr>
+  <tr><td>2. Transaction journey</td><td>The SAFINUM test journey is covered at every step, French and English pages: balance, fees, beneficiary, summary, confirmation. The assistant answers "what is this page", "what are the steps", "how much will I pay", "who receives the money", "what do I do now".</td><td>Fig. 4, 5, 7, 9</td></tr>
+  <tr><td>3. Preservation of financial information</td><td>Amounts with their sign, fees, phone and account numbers, references, dates and beneficiary names are masked before translation, restored character for character and verified. Any mismatch blocks the translation. Warnings keep their full force.</td><td>Fig. 9, 11, 13</td></tr>
+  <tr><td>4. Independent operation</td><td>No change to the service's code, data, styles or requests. Langwa draws in its own isolated layer. Switch it off and the page is exactly as before. Nothing in the code is specific to one bank.</td><td>Fig. 1, 6</td></tr>
+  <tr><td>5. Adaptation to new content</td><td>A live observer catches any new message. Known sentences are translated with their new values; unknown ones get a safe summary in the national language with validated key words and the exact amounts.</td><td>Fig. 10, 11</td></tr>
+</table>
+<div class="grid2">
+  <figure><img src="../docs/screenshots/01-bank-page-original.png" alt=""><figcaption><b>Fig. 1</b> The SAFINUM test page as the bank shows it. Langwa never changes it.</figcaption></figure>
+  <figure><img src="../docs/screenshots/02-language-chooser.png" alt=""><figcaption><b>Fig. 2</b> First visit: the user searches "fulani" and picks Fulfulde. Languages are named so locals recognise them (regions and towns).</figcaption></figure>
+</div>
 </section>
 
 <!-- ============ 2 ============ -->
@@ -111,24 +167,26 @@
 <div class="flow keep">
   <div class="row"><div class="k">Bank page</div><div class="v">Unchanged financial service (French or English). Langwa only <b>reads</b> its text, labels, placeholders and buttons.</div></div>
   <div class="arrow">↓</div>
-  <div class="row"><div class="k">Collect</div><div class="v">Text is grouped by the browser's own layout (paragraph, button, cell). A MutationObserver picks up new content. Scans are grouped and run when the browser is idle.</div></div>
+  <div class="row"><div class="k">Collect</div><div class="v">Text is grouped by the browser's own layout (paragraph, button, cell). A MutationObserver picks up new content; scans are grouped and run when the browser is idle.</div></div>
   <div class="arrow">↓</div>
-  <div class="row"><div class="k">Protect</div><div class="v">Financial values are replaced by tokens: <span class="chips"><span>-12,500 FCFA → ⟦A⟧</span><span>+237 6 99 12 34 56 → ⟦B⟧</span><span>SAF-2026-WX13I2 → ⟦C⟧</span><span>Jean-Paul Mbarga → ⟦D⟧</span></span></div></div>
+  <div class="row"><div class="k">Protect</div><div class="v">Financial values are replaced by tokens: <span class="chips"><span>-12 500 FCFA → ⟦A⟧</span><span>+237 6 99 12 34 56 → ⟦B⟧</span><span>SAF-2026-WX13I2 → ⟦C⟧</span><span>Jean-Paul Mbarga → ⟦D⟧</span></span></div></div>
   <div class="arrow">↓</div>
-  <div class="row"><div class="k">Translate</div><div class="v">1. Validated glossary and templates · 2. "Label : value" (label translated, value kept) · 3. Optional local open-source MT on masked text · 4. Safe summary.</div></div>
+  <div class="row"><div class="k">Translate</div><div class="v">1. Glossary and templates written with native speakers · 2. "Label : value" (label translated, value kept) · 3. Optional local open-source translation of the masked text · 4. Safe summary.</div></div>
   <div class="arrow">↓</div>
   <div class="row"><div class="k">Verify</div><div class="v">Every original value must be present character for character, with no new digit. Otherwise the translation is blocked.</div></div>
   <div class="arrow">↓</div>
-  <div class="row"><div class="k">Show &amp; speak</div><div class="v">Isolated Shadow DOM layer: card under the element (Ctrl + hover on computer, long press on phone), reading panel, alerts, subtitles, listen button.</div></div>
+  <div class="row"><div class="k">Show &amp; speak</div><div class="v">Isolated Shadow DOM layer: card under the pointed element, panel (whole page, messages, assistant), alerts, guided tour. Voice: native-speaker recording if any, otherwise the offline natural voice, otherwise the browser's voice.</div></div>
 </div>
 <table>
-  <tr><th style="width:26%">Component</th><th>Role</th></tr>
+  <tr><th style="width:28%">Component</th><th>Role</th></tr>
   <tr><td><code>protect.js</code></td><td>Detection, masking, restoring and integrity check of financial values</td></tr>
-  <tr><td><code>engine.js</code></td><td>Glossary and template matching, label/value split, message classification (error, warning, success), safe summary, speech plan</td></tr>
-  <tr><td><code>speech.js</code></td><td>Plays native-speaker recordings and reads protected values exactly</td></tr>
-  <tr><td><code>content.js</code></td><td>Page reading, display layer, gestures, panel, alerts, lifecycle</td></tr>
-  <tr><td><code>background.js</code></td><td>Language packs, optional local translation and voice adapters, cache</td></tr>
-  <tr><td><code>options</code> page</td><td>Glossary editor for native speakers: translation, explanation, validation, recording, test bench</td></tr>
+  <tr><td><code>engine.js</code></td><td>Glossary and template matching, label/value split, message classification (error, security warning, success, information), safe summary, speech plan</td></tr>
+  <tr><td><code>assistant.js</code></td><td>Questions about the page (typed, tapped or spoken), answered from what is on screen with exact values</td></tr>
+  <tr><td><code>speech.js</code></td><td>Plays recordings, the offline voice or the browser voice; reads protected values exactly; first sentence first so speech starts fast</td></tr>
+  <tr><td><code>content.js</code></td><td>Page reading, display layer, pointing, panel, whole-page mode, alerts, guided tour</td></tr>
+  <tr><td><code>background.js</code></td><td>Language packs, voice status, optional local translation adapters, cache</td></tr>
+  <tr><td>Popup and settings pages</td><td>Language, display mode, voice; glossary editor for native speakers, import of contributions, safety test</td></tr>
+  <tr><td><code>server/</code> (optional)</td><td>Offline voice: Africa TTS on <code>127.0.0.1:8770</code>, installed by <code>Start Langwa voice</code> with a progress page</td></tr>
   <tr><td><code>standalone.js</code></td><td>Runtime for the phone version (userscript), same code as the extension</td></tr>
 </table>
 </section>
@@ -137,11 +195,12 @@
 <section class="section">
 <h2><span class="n">3</span>Integration approach and independence</h2>
 <ul>
-  <li><b>No modification of the target service.</b> Text, attributes, styles, form values and network requests are never changed. All of Langwa's interface lives in one isolated Shadow DOM element. Disabling it leaves the page exactly as it was.</li>
-  <li><b>Not tied to one bank.</b> There is no site-specific selector. Recognition rules cover common Cameroonian formats (FCFA, +237 numbers, CM account numbers), and new formats can be added as rules.</li>
-  <li><b>Dynamic pages.</b> Step changes in single-page applications and injected messages are handled live.</li>
-  <li><b>Portable.</b> One Manifest V3 package for Chrome, Edge, Brave, Opera and Firefox (desktop and Android), Safari through Apple's converter, and a userscript for phone browsers without extension support (Tampermonkey, Violentmonkey, Userscripts for iPhone).</li>
-  <li><b>Lightweight.</b> No dependencies. About 150 KB for the extension, 98 KB for the userscript. Nothing runs on sites where it is switched off.</li>
+  <li><b>No modification of the target service.</b> Its text, attributes, styles, form values and network requests are never changed. All of Langwa lives in one isolated Shadow DOM element. Switching Langwa off for the site (popup, Fig. 6) leaves the page exactly as it was.</li>
+  <li><b>Not tied to one bank.</b> No site-specific selector. Recognition rules cover common Cameroonian formats (FCFA, +237 numbers, CM account numbers); new formats are added as rules.</li>
+  <li><b>Dynamic pages.</b> Step changes in single-page applications and messages added by the jury are handled live.</li>
+  <li><b>Portable.</b> One Manifest V3 package for Chrome, Edge, Brave and Opera, a Firefox package, and a userscript for phones. <code>node tools/build.mjs</code> builds all of them with no dependencies.</li>
+  <li><b>Light.</b> No npm packages. 425 KB for the extension with its language files. Nothing runs on sites where it is off.</li>
+  <li><b>Permissions.</b> <code>storage</code>, <code>activeTab</code>, and network access to <code>localhost</code> only (the optional offline voice and translation servers).</li>
 </ul>
 </section>
 
@@ -150,109 +209,152 @@
 <h2><span class="n">4</span>Security and preservation of financial information</h2>
 <table>
   <tr><th style="width:30%">Risk</th><th>Measure</th></tr>
-  <tr><td>A translation alters an amount, fee or number</td><td>Values are masked before translation and restored after. The integrity check requires every original value and rejects any extra digit. On failure: blocked, safe summary shown.</td></tr>
-  <tr><td>A lost sign turns a debit into a credit</td><td>The sign is part of the protected value (<code>-12,500 FCFA</code>, <code>+180,000 FCFA</code>). Covered by unit tests.</td></tr>
+  <tr><td>A translation alters an amount, fee or number</td><td>Values are masked before translation and restored after. The integrity check requires every original value and rejects any extra digit. On failure the translation is blocked and a safe summary is shown.</td></tr>
+  <tr><td>A lost sign turns a debit into a credit</td><td>The sign is part of the protected value (<code>-12 500 FCFA</code>, <code>+180 000 FCFA</code>). Covered by unit tests.</td></tr>
   <tr><td>Beneficiary name altered</td><td>Names after "à / to / pour / vers", values next to a label, values typed by the user and standalone proper names are kept verbatim.</td></tr>
-  <tr><td>A gesture triggers a bank action</td><td>On phones, the click that follows a long press is cancelled. A long press on "Confirm" never confirms.</td></tr>
-  <tr><td>Wrong meaning in a security warning</td><td>Warnings and errors are detected, shown first and pushed as alerts. Unknown warnings are never guessed: a validated warning sentence is shown with validated key words.</td></tr>
-  <tr><td>Partial audio changes the meaning</td><td>The listen button plays only when every part of the sentence is recorded. A missing "never" can therefore never be skipped.</td></tr>
-  <tr><td>Personal data leaving the device</td><td>The glossary works offline. Optional machine translation receives only masked text and only on <code>localhost</code>. Typed values stay in memory for the page session. No analytics, no account.</td></tr>
+  <tr><td>Wrong meaning in a security warning</td><td>Warnings are detected, shown first and pushed as alerts. A message that calls itself a security alert stays a warning even if it also says something was blocked. Unknown warnings are never guessed: a validated warning sentence is shown with validated key words.</td></tr>
+  <tr><td>Partial audio changes the meaning</td><td>A recording is only played when every part of the sentence is recorded, so a missing "never" can never be skipped.</td></tr>
+  <tr><td>A gesture triggers a bank action</td><td>On phones, the tap that follows a long press is cancelled: a long press on "Confirm" never confirms.</td></tr>
+  <tr><td>Data leaving the device</td><td>The glossary, the assistant and the offline voice work on the computer. Optional machine translation only receives masked text, only on <code>localhost</code>. No account, no analytics, no data stored about the page. The only ways text can leave the computer are two browser features the user must switch on (see part 9), each labelled in the interface.</td></tr>
   <tr><td>Code injection from the page</td><td>Page text is always inserted as plain text, never as HTML.</td></tr>
-  <tr><td>Permissions</td><td><code>storage</code>, <code>activeTab</code> and <code>localhost</code> only.</td></tr>
+  <tr><td>A website stopping the voice setup</td><td>The setup's Cancel request is accepted only from the local progress page; a website gets "403 refused".</td></tr>
 </table>
-<p>Every translation is labelled: <b>Validated</b> (native speaker), <b>Automatic translation</b>, <b>Safe summary</b> or <b>Blocked</b>. Protected values are shown as locked chips next to it.</p>
+<p>Every translation is labelled: <b>Validated</b> (native speaker), <b>Not validated</b> (draft), <b>Unvalidated summary</b> or <b>Blocked</b>. Protected values are shown as locked chips next to it.</p>
+<figure class="narrow"><img src="../docs/screenshots/13-safety-test.png" alt=""><figcaption><b>Fig. 13</b> The safety test in Langwa's settings: what is masked, the protected values, how the sentence is split, and "Integrity check: OK".</figcaption></figure>
 </section>
 
 <!-- ============ 5 ============ -->
 <section class="section">
 <h2><span class="n">5</span>Adaptation to new content</h2>
 <ol>
-  <li>The observer detects the new message. Errors, warnings and confirmations appear as an alert marked <b>NEW</b>, read aloud when recorded.</li>
-  <li>If the sentence matches a template, it is translated with the new values (for example <code>Il vous reste {count} tentatives</code>).</li>
-  <li>Otherwise, optional local open-source machine translation translates the masked text, then the integrity check runs.</li>
-  <li>Otherwise, the safe summary is shown: a validated sentence for the message type, validated key words, and the exact amounts.</li>
+  <li>The observer catches the new message. Errors, warnings and confirmations appear as an alert, read aloud on request.</li>
+  <li>If it matches a template, it is translated with its new values (<code>Il vous reste {count} tentatives</code>).</li>
+  <li>Otherwise, optional local machine translation translates the masked text, then the integrity check runs.</li>
+  <li>Otherwise, the safe summary: a validated sentence for the message type, validated key words, and the exact amounts.</li>
 </ol>
-<p>The test bench in the glossary editor shows each step for any sentence, including what would leave the page (only masked text).</p>
+<p>The test page was checked step by step, French and English: every text is covered in Pidgin; Fulfulde misses only two dropdown options ("Mobile Money", "Autre banque"), which wait for a speaker. <code>tools/demo/check-test-page.mjs</code> repeats this check.</p>
+<div class="grid2">
+  <figure><img src="../docs/screenshots/10-new-message-alert.png" alt=""><figcaption><b>Fig. 10</b> A security alert added after the page loaded, as the jury does. Langwa catches it at once and marks it "Security warning".</figcaption></figure>
+  <figure><img src="../docs/screenshots/11-new-message-card.png" alt=""><figcaption><b>Fig. 11</b> Never seen before: a safe summary in Pidgin ("read am well well, or ask person wey you trust make e help you"), key words, and <b>150 000 FCFA</b> locked.</figcaption></figure>
+</div>
 </section>
 
 <!-- ============ 6 ============ -->
 <section class="section">
 <h2><span class="n">6</span>Accessibility and user experience</h2>
 <ul>
-  <li><b>One gesture.</b> Ctrl + point on a computer, long press on a phone. A visual hint shows it once. The card opens right under the element.</li>
-  <li><b>Natural voice.</b> National-language text is played from recordings by the native speaker, not a synthetic voice. Amounts and names are read exactly by the device's most natural French voice, as amounts are commonly spoken in Cameroon. Sentences with values chain the recorded pieces with the real values.</li>
-  <li><b>Meaning, not words.</b> Translators write the idea as they would explain it to a relative, guided by context notes on each financial term. An optional short explanation (for example what "fees" means) is shown under the translation.</li>
-  <li><b>Visual language.</b> Colour and icons carry meaning before words: terracotta for errors, gold for warnings, green for validated, indigo for information, a lock on protected values. WCAG AA contrast, keyboard and screen-reader support, reduced-motion support.</li>
-  <li><b>Phones.</b> The panel becomes a full-width bottom sheet with large touch targets.</li>
+  <li><b>Guided first visit.</b> The user picks a language by name, region or town (Fig. 2); a short guided tour with a Skip button shows the gestures and says whether the natural voice is ready (Fig. 3).</li>
+  <li><b>Point at text.</b> Hold Ctrl and point, or choose "Point" in the popup to need no key; on phones, a long press. The card opens under the text with the original, the status and a Listen button (Fig. 4, 5, 7).</li>
+  <li><b>Panel and whole page.</b> The round Langwa button slides the panel open: one tap translates the entire page (Fig. 8); the Messages tab lists everything, important messages first.</li>
+  <li><b>Ask about the screen.</b> The assistant answers from what is displayed, with exact values (Fig. 9). Questions can be tapped, typed or spoken.</li>
+  <li><b>Natural voice.</b> Human recordings come first. Otherwise an offline neural voice reads Pidgin, Fulfulde, Ewondo, Duala, Basaá and more; Pidgin is read with the Krio speaker, the closest trained West African creole. Amounts are read exactly.</li>
+  <li><b>Meaning, not words.</b> Translators write the idea as they would explain it to a relative; optional one-line explanations of hard words appear under the translation.</li>
+  <li><b>Visual language and access.</b> Colour and icons carry meaning before words (terracotta errors, gold warnings, green validated, lock on protected values). Keyboard and screen-reader support, reduced-motion support. Interface in English, or in French when the browser is in French.</li>
 </ul>
+<div class="grid2">
+  <figure><img src="../docs/screenshots/03-guided-tour.png" alt=""><figcaption><b>Fig. 3</b> The guided tour (9 short steps, skippable).</figcaption></figure>
+  <figure><img src="../docs/screenshots/04-fulfulde-card-balance.png" alt=""><figcaption><b>Fig. 4</b> Ctrl + point: "Available balance" in Fulfulde, with Listen and the natural voice ready.</figcaption></figure>
+  <figure><img src="../docs/screenshots/05-fulfulde-card-fees.png" alt=""><figcaption><b>Fig. 5</b> Fees step in Fulfulde: "choose the type of transfer and the amount; the fees are calculated automatically".</figcaption></figure>
+  <figure><img src="../docs/screenshots/07-pidgin-card-fees.png" alt=""><figcaption><b>Fig. 7</b> Same step in Pidgin, in Point mode (no key): "Choose how you want send and how much. The charges go calculate by ei self." (validated by a native speaker).</figcaption></figure>
+  <figure><img src="../docs/screenshots/08-whole-page-pidgin.png" alt=""><figcaption><b>Fig. 8</b> One tap in the panel: the whole page in Pidgin, amounts unchanged.</figcaption></figure>
+  <figure><img src="../docs/screenshots/09-assistant-answer.png" alt=""><figcaption><b>Fig. 9</b> The assistant on the summary step: "How much I go pay?" → "All the money wey go comot for your account na 25 000 FCFA."</figcaption></figure>
+</div>
+<div class="grid2 keep">
+  <figure class="tall"><img src="../docs/screenshots/06-popup.png" alt=""><figcaption><b>Fig. 6</b> The Langwa button at the top of the browser: on/off for the site, language, display mode (Ctrl + point, Point, Off), whole page, voice status.</figcaption></figure>
+  <figure class="tall"><img src="../docs/screenshots/16-contribute-phone.png" alt=""><figcaption><b>Fig. 16</b> The contribution page on a phone: a native speaker picks a language and translates; progress per language.</figcaption></figure>
+</div>
 </section>
 
 <!-- ============ 7 ============ -->
 <section class="section">
-<h2><span class="n">7</span>National language and linguistic validation</h2>
+<h2><span class="n">7</span>National languages and linguistic validation</h2>
 <table>
-  <tr><th style="width:30%">Language supported</th><td>{{languageName}}</td></tr>
+  <tr><th style="width:28%">Languages supported</th><td>{{languageName}}</td></tr>
   <tr><th>Validated by</th><td>{{validators}}</td></tr>
-  <tr><th>Coverage</th><td>{{coverage}}</td></tr>
-  <tr><th>Ready to add</th><td>Ewondo, Fulfulde, Duala, Ghomálá', Basaá (one JSON file each)</td></tr>
+  <tr><th>Coverage (computed from the language files)</th><td>{{coverage}}</td></tr>
 </table>
+<h3>All languages in the extension</h3>
+<table>
+  <tr><th>Language</th><th>Where it is spoken</th><th>Translated</th><th>Validated</th><th>Offline voice</th><th>Status</th></tr>
+  {{langTable}}
+</table>
+<h3>How translations are made</h3>
+<p>The first drafts of the Pidgin and Fulfulde glossaries were written with AI assistance (Claude, Anthropic) and are shown to users as <b>"Not validated"</b> until a native speaker approves them. Cameroonian native speakers then corrected the Pidgin (for example "by ei self" for one thing, "Person wey go receive am" for the beneficiary). Nothing machine-made is ever marked as validated.</p>
 <h3>Validation method</h3>
 <ol>
-  <li>A native speaker writes each translation in the glossary editor, in the standard orthography (General Alphabet of Cameroon Languages), guided by the context note of each term.</li>
-  <li>Each entry is validated individually. The validator's name and the date are stored with the entry and exported in the language file.</li>
-  <li>Placeholders (<code>{amount}</code>, <code>{name}</code>, <code>{count}</code>) are checked automatically: a translation that drops or adds one cannot be validated.</li>
-  <li>Warnings are reviewed for full strength: negations and irreversibility ("never", "cannot be cancelled") must be explicit.</li>
-  <li>The same speaker records the audio. Changing a text deletes its recordings, so audio and text always match.</li>
-  <li>Machine output is never marked as validated and always carries a warning label.</li>
+  <li><b>Write.</b> A native speaker writes or corrects each sentence in Langwa's settings (Fig. 12), or on the contribution page on a phone (Fig. 16), guided by a context note for each financial term. Rule: translate the meaning, as you would explain it to a relative.</li>
+  <li><b>Collect.</b> Contributors send their file on WhatsApp. <code>tools/merge-contributions.mjs</code> merges them: it never replaces a validated sentence, lists disagreements between contributors for the validator, and rejects any translation whose <code>{amount}</code>, <code>{name}</code> markers differ from the French.</li>
+  <li><b>Validate.</b> A second speaker ticks "Validated" sentence by sentence. Their name and the date are stored with the sentence and exported in the language file.</li>
+  <li><b>Check the force of warnings.</b> Negations and irreversibility ("never", "cannot be cancelled") must stay explicit.</li>
+  <li><b>Record.</b> Speakers can record each sentence; changing a text deletes its recordings, so audio and text always match.</li>
+  <li><b>Measure.</b> <code>tools/demo/check-test-page.mjs</code> walks the test journey and lists any text left untranslated.</li>
 </ol>
+<figure><img src="../docs/screenshots/12-settings-page.png" alt=""><figcaption><b>Fig. 12</b> Langwa's settings: what the page is for, then the three validation steps (name, read, tick "Validated"), the voice, and the safety test.</figcaption></figure>
 </section>
 
 <!-- ============ 8 ============ -->
 <section class="section">
 <h2><span class="n">8</span>Installation and test for the jury</h2>
 <div class="grid2">
-  <div class="callout keep"><b>Chrome, Edge, Brave, Opera</b>
+  <div class="callout keep"><b>Extension (Chrome, Edge, Brave, Opera)</b>
     <ol style="margin-top:6px">
-      <li>Unzip the submitted file <code>langwa-chromium.zip</code>.</li>
-      <li>Open <code>chrome://extensions</code> (Edge: <code>edge://extensions</code>) and turn on <b>Developer mode</b>.</li>
-      <li>Click <b>Load unpacked</b> and select the unzipped folder.</li>
-      <li>Open the test page, or reload it if it was already open.</li>
+      <li>Download <code>langwa-chromium.zip</code> from {{websiteUrl}} and extract it.</li>
+      <li>Open <code>chrome://extensions</code> (Edge: <code>edge://extensions</code>), turn on <b>Developer mode</b>.</li>
+      <li><b>Load unpacked</b> → choose the extracted folder.</li>
+      <li>Firefox: <code>about:debugging</code> → This Firefox → Load Temporary Add-on → the <code>.xpi</code>.</li>
     </ol>
   </div>
-  <div class="callout keep"><b>Firefox</b>
+  <div class="callout keep"><b>Offline natural voice (optional, computer)</b>
     <ol style="margin-top:6px">
-      <li><code>about:debugging#/runtime/this-firefox</code> → <b>Load Temporary Add-on</b>.</li>
-      <li>Select the file <code>langwa-firefox.xpi</code> (from the repository's <code>collect/downloads</code> folder or the website).</li>
-      <li>In <code>about:addons</code>, allow the extension on the test site.</li>
+      <li>Download "Natural voice" from the website and extract it.</li>
+      <li>Double-click <b>Start Langwa voice</b>. A progress page opens in the browser (no terminal window).</li>
+      <li>First time: about 660 MB, once, 10 to 30 minutes, with a Cancel button. Then it starts in about 20 seconds.</li>
+      <li>Without it, Langwa reads with the browser's voice.</li>
     </ol>
-    <b>Phone</b>: install Tampermonkey (Android) or Userscripts (iPhone), then open <code>langwa.user.js</code> from the repository.
   </div>
 </div>
-<h3>Suggested test</h3>
+<h3>Suggested test on https://safinum.cm/hackathon-test</h3>
 <ol>
-  <li>Open <code>https://safinum.cm/hackathon-test</code> with the browser's own page translation turned off. Langwa is active on this site by default.</li>
-  <li>Hold <b>Ctrl</b> and point at the balance, a fee, a button, a warning. The translation appears below, with the values locked.</li>
-  <li>Click the round <b>{{languageName}}</b> button at the bottom right to open the reading panel. Press 🔊 to listen.</li>
-  <li>Go through fees, beneficiary, summary and confirmation. Check that amounts, the beneficiary and the reference are identical.</li>
-  <li>Introduce a new message: it appears as a translated alert, or as a safe summary with the exact amounts.</li>
+  <li>Turn off the browser's own page translation. Open the test page: Langwa asks the language. Search "pidgin" or "fulani".</li>
+  <li>Hold <b>Ctrl</b> and point at the balance, the fees, a button, the security note. Press Listen.</li>
+  <li>Go through fees, beneficiary, summary, confirmation. Check that amounts, the beneficiary and the reference are identical.</li>
+  <li>Open the panel (round button, bottom right): translate the whole page; ask "How much I go pay?".</li>
+  <li>Add a new message to the page: it appears as an alert, translated or safely summarised with the exact amounts.</li>
+  <li>Switch Langwa off in the popup: the page is unchanged.</li>
 </ol>
+<div class="grid2">
+  <figure><img src="../docs/screenshots/15-website-install.png" alt=""><figcaption><b>Fig. 15</b> Install steps on the website; the natural voice step is opened directly from Langwa.</figcaption></figure>
+  <figure><img src="../docs/screenshots/17-voice-progress.png" alt=""><figcaption><b>Fig. 17</b> The voice setup progress page: steps, size, time left, Cancel.</figcaption></figure>
+</div>
 </section>
 
 <!-- ============ 9 ============ -->
 <section class="section">
-<h2><span class="n">9</span>Dependencies, tools and disclosure</h2>
+<h2><span class="n">9</span>Main dependencies, external services and disclosure</h2>
+<h3>Components</h3>
 <table>
   <tr><th style="width:36%">Component</th><th>Use</th><th style="width:22%">Licence</th></tr>
-  <tr><td>Browser extension APIs</td><td>Runtime</td><td>Built into the browser</td></tr>
-  <tr><td>Vanilla JavaScript, no npm packages</td><td>Extension and userscript</td><td>Team's code</td></tr>
+  <tr><td>Browser extension APIs (Manifest V3)</td><td>Runtime</td><td>Built into the browser</td></tr>
+  <tr><td>Vanilla JavaScript, no npm packages</td><td>Extension, userscript, website</td><td>Team's code</td></tr>
   <tr><td>Icon shapes in the style of Lucide</td><td>Interface icons</td><td>ISC</td></tr>
-  <tr><td>Node.js (<code>node:test</code>)</td><td>Unit tests and build script</td><td>MIT</td></tr>
-  <tr><td>Optional: Ollama with an open model (e.g. Qwen2.5)</td><td>Local machine translation fallback</td><td>MIT / Apache-2.0</td></tr>
-  <tr><td>Optional: Meta NLLB-200 (distilled 600M), Transformers, PyTorch</td><td>Local machine translation for Fulfulde</td><td>Weights CC-BY-NC-4.0</td></tr>
-  <tr><td>Optional: Meta MMS-TTS (<code>mms-tts-ful</code>)</td><td>Local voice for Fulfulde</td><td>Weights CC-BY-NC-4.0</td></tr>
+  <tr><td>Node.js (<code>node:test</code>)</td><td>Unit tests (28) and build</td><td>MIT</td></tr>
+  <tr><td>Africa TTS 0.5.2 (AfriSpeech, on Kyutai Pocket TTS, about 100M parameters), espeak-ng</td><td>Optional offline natural voice</td><td>Weights CC-BY-NC-4.0; code MIT; espeak-ng GPL-3.0</td></tr>
+  <tr><td>uv (Astral) and a private Python 3.12</td><td>Installs the voice inside its own folder</td><td>MIT / Apache-2.0; PSF</td></tr>
+  <tr><td>Optional: Turaco (Pidgin) through Ollama; NLLB-200; Qwen2.5 through llama.cpp (Lamnso')</td><td>Local machine translation of masked text, drafts only</td><td>Various open licences; NLLB weights CC-BY-NC-4.0</td></tr>
+  <tr><td>Photos on the website</td><td>Illustration</td><td>Unsplash licence, credited</td></tr>
 </table>
+<div class="keep"><h3>External services</h3>
+<table>
+  <tr><th style="width:34%">Service</th><th>When</th><th style="width:30%">What is sent</th></tr>
+  <tr><td>Browser online voices (Microsoft in Edge, Google in Chrome)</td><td>Only if the user switches on "Online natural voices" (off by default; the switch says it)</td><td>The translated sentence being read aloud</td></tr>
+  <tr><td>Browser speech recognition (Google, Microsoft)</td><td>Only when the user speaks a question to the assistant, after a consent prompt</td><td>The recorded question</td></tr>
+  <tr><td>GitHub, PyPI, Hugging Face</td><td>Once, when the voice is installed</td><td>Download requests only</td></tr>
+  <tr><td>Vercel (website hosting)</td><td>When the website is opened</td><td>Nothing from the bank page</td></tr>
+  <tr><td>WhatsApp</td><td>When a contributor chooses to send translations</td><td>The contributor's own translations</td></tr>
+</table></div>
+<p>The demo video and the screenshots use neither online voices nor online recognition.</p>
 <h3>Development tools</h3>
-<p>Visual Studio Code, Git and GitHub, Microsoft Edge and Google Chrome for testing. <b>Claude Code (Anthropic), an AI coding assistant, was used to help write and test the code and documentation.</b> No external service is used at run time.</p>
+<p>Visual Studio Code, Git and GitHub, Microsoft Edge and Google Chrome, Node.js, Python, ffmpeg (demo video). <b>Claude Code (Anthropic), an AI coding assistant, helped write and test the code, the documentation and the first translation drafts.</b> Every translation draft is labelled "Not validated" until a native speaker approves it.</p>
 <h3>Team's own contribution</h3>
 <p>{{teamContribution}}</p>
 </section>
@@ -261,10 +363,13 @@
 <section class="section">
 <h2><span class="n">10</span>Known limitations</h2>
 <ul>
-  <li>Translation quality depends on the glossary. Open machine translation for Ewondo, Duala, Ghomálá' and Basaá is weak or does not exist, which is why the safe summary exists. NLLB-200 covers Nigerian Fulfulde, which differs from Adamawa Fulfulde.</li>
-  <li>Text drawn on <code>&lt;canvas&gt;</code>, inside cross-origin iframes, in closed Shadow DOM, or inside images cannot be read.</li>
-  <li>The phone version has no glossary editor: translations are prepared on a computer and built into the userscript.</li>
-  <li>Publication on browser stores (Chrome Web Store, Edge Add-ons, Firefox Add-ons) requires their review; the prototype is installed in developer mode.</li>
+  <li><b>Validation is in progress.</b> Most Pidgin and Fulfulde sentences are drafts awaiting a native speaker; the interface labels them "Not validated" (coverage in part 7). Fulfulde misses two dropdown options of the test page.</li>
+  <li><b>Machine translation is weak for these languages.</b> Open models for Ewondo, Duala, Ghomálá', Basaá and Kom are weak or absent; NLLB-200 covers Nigerian Fulfulde, not Adamawa Fulfulde. This is why unknown sentences get a safe summary instead.</li>
+  <li><b>Voice.</b> Africa TTS is trained for Ewondo, Duala, Basaá and English. Pidgin is read with the Krio speaker and rules; Fulfulde, Ghomálá', Ngemba and Kom are experimental, so pronunciation varies. The model is non-commercial (CC-BY-NC-4.0). Until the voice is installed and running, Langwa reads with the browser's voice.</li>
+  <li><b>Windows.</b> "Start Langwa voice" is a Windows script file (.vbs); Microsoft plans to retire VBScript in a future Windows version, and <code>start-voice.cmd</code> is kept as a fallback.</li>
+  <li><b>Pages Langwa cannot read:</b> text drawn on <code>&lt;canvas&gt;</code>, inside cross-origin iframes or closed Shadow DOM, or inside images.</li>
+  <li><b>Phones.</b> Chrome on Android cannot run extensions: the phone version needs Firefox (Tampermonkey) or Safari (Userscripts). It has no glossary editor.</li>
+  <li><b>Distribution.</b> Store publication (Chrome Web Store, Edge Add-ons, Firefox Add-ons) needs their review; the prototype installs in developer mode.</li>
 </ul>
 <div class="band" style="margin-top:22px"></div>
 </section>

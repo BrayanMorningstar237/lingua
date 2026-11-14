@@ -46,8 +46,14 @@
    * Message kind. Short labels are headings, not messages: "Security" or "Success" alone is a
    * title or a status, so a warning/success needs 3+ words and an error 2+ ("Solde insuffisant").
    */
+  // A message that calls itself a security alert, or tells the user never to share a code, is a
+  // warning even when it also says something was blocked: "Alerte de sécurité : un transfert …
+  // a été bloqué. Ne communiquez jamais votre code" must be read as a warning, not an error.
+  const STRONG_WARNING = /(alerte\s+(?:de\s+)?sécurité|avertissement|attention\s*:|security\s+(?:alert|warning)|warning\s*:|ne\s+(?:communiquez|partagez|donnez|divulguez)\s+jamais|never\s+(?:share|give|tell|disclose)|fraude|arnaque|fraud|scam)/iu;
+
   function classify(text) {
     const words = (String(text).match(/\p{L}+/gu) || []).length;
+    if (words >= 3 && STRONG_WARNING.test(text)) return 'warning';
     if (words >= 2 && KIND_RES.error.test(text)) return 'error';
     if (words >= 3 && KIND_RES.warning.test(text)) return 'warning';
     if (words >= 3 && KIND_RES.success.test(text)) return 'success';

@@ -108,6 +108,15 @@ test('security warning from the test page is classified as warning', () => {
   assert.equal(E.classify('Your transfer has been sent successfully.'), 'success');
 });
 
+test('a security alert that mentions a blocked transfer stays a warning, real errors stay errors', () => {
+  assert.equal(E.classify('Alerte de sécurité : un transfert de 150 000 FCFA vers un nouveau bénéficiaire a été bloqué. Ne communiquez jamais votre code secret.'), 'warning');
+  assert.equal(E.classify('Security alert: a transfer to a new beneficiary was blocked.'), 'warning');
+  assert.equal(E.classify('Never share your PIN, even if the transfer is blocked.'), 'warning');
+  assert.equal(E.classify('Solde insuffisant pour effectuer ce transfert.'), 'error');
+  assert.equal(E.classify('Votre compte est bloqué après trois tentatives.'), 'error');
+  assert.equal(E.classify('Transaction failed. Please try again.'), 'error');
+});
+
 test('machine translation output that alters an amount is blocked', () => {
   const p = engine.plan('Le transfert de 25 000 FCFA est en attente de validation.');
   const part = p.parts[0];

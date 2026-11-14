@@ -2,12 +2,13 @@
   "prototype": "Langwa",
   "team": "",
   "city": "",
-  "language": {
-    "code": "fub",
-    "name": "Fulfulde (Adamawa)"
-  },
+  "languages": [
+    { "code": "wes", "name": "Cameroon Pidgin English (Kamtok)" },
+    { "code": "fub", "name": "Fulfulde (Adamawa, Peul / Fulani)" }
+  ],
   "validators": [],
   "videoUrl": "",
   "repoUrl": "https://github.com/BrayanMorningstar237/lingua",
-  "teamContribution": "Problem analysis and product design, choice of the safety approach (protected values, safe summary, human recordings), linguistic work and validation with native speakers, testing on the Safinum Pay test environment, demo and documentation."
+  "websiteUrl": "https://langwa-five.vercel.app",
+  "teamContribution": "Problem analysis and product design; the safety approach (values locked before translation and verified after, safe summary for unknown messages, human recordings first); the reading engine, interface, assistant and voice integration; the offline voice setup; the Pidgin and Fulfulde glossaries with native-speaker review; the contribution workflow for native speakers; testing on the SAFINUM test environment; the demo and this documentation."
 }

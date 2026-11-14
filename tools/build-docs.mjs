@@ -3,7 +3,7 @@
 // then prints it with the installed Edge or Chrome (headless). Empty fields print as
 // a red "TO COMPLETE" box so nothing is submitted unfinished.
 // Usage: node tools/build-docs.mjs
-import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync, copyFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { execFileSync } from 'node:child_process';
@@ -17,27 +17,36 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;',
 const todo = label => `<span class="todo">TO COMPLETE: ${esc(label)}</span>`;
 const val = (v, label) => (v && String(v).trim() ? esc(v) : todo(label));
 
-// Coverage of the chosen language, computed from its language file.
-let coverage = todo('language file');
-const code = cfg.language && cfg.language.code;
-if (code) {
-  try {
-    const source = JSON.parse(readFileSync(join(ROOT, 'browser-extension/lang/source.json'), 'utf8')).entries;
-    const entries = JSON.parse(readFileSync(join(ROOT, `browser-extension/lang/${code}.json`), 'utf8')).entries || {};
-    const n = source.length;
-    const tr = source.filter(e => entries[e.id] && entries[e.id].t).length;
-    const ver = source.filter(e => entries[e.id] && entries[e.id].t && entries[e.id].verified).length;
-    const audio = source.filter(e => entries[e.id] && (entries[e.id].audio || (entries[e.id].audioParts || []).some(Boolean))).length;
-    coverage = `${ver} of ${n} phrases validated by a native speaker, ${tr - ver} translated awaiting validation, ${audio} with recorded voice.`;
-  } catch { /* keep TO COMPLETE */ }
-}
+// Coverage of every language, computed from the language files (never typed by hand).
+const source = JSON.parse(readFileSync(join(ROOT, 'browser-extension/lang/source.json'), 'utf8')).entries;
+const langs = JSON.parse(readFileSync(join(ROOT, 'browser-extension/lang/languages.json'), 'utf8'));
+const stats = code => {
+  let entries = {};
+  try { entries = JSON.parse(readFileSync(join(ROOT, `browser-extension/lang/${code}.json`), 'utf8')).entries || {}; } catch { /* no file yet */ }
+  const has = e => entries[e.id] && entries[e.id].t;
+  return {
+    n: source.length,
+    tr: source.filter(has).length,
+    ver: source.filter(e => has(e) && entries[e.id].verified).length,
+    audio: source.filter(e => entries[e.id] && (entries[e.id].audio || (entries[e.id].audioParts || []).some(Boolean))).length,
+  };
+};
+const primary = (cfg.languages || []).map(l => l.code);
+const coverage = primary.map(c => { const s = stats(c); return `<b>${esc(langs[c].name)}</b>: ${s.tr} of ${s.n} phrases translated (${Math.round(100 * s.tr / s.n)} %), ${s.ver} validated by a native speaker, ${s.tr - s.ver} awaiting validation, ${s.audio} with a human recording.`; }).join('<br>') || todo('languages');
+const langTable = Object.entries(langs).map(([c, l]) => {
+  const s = stats(c);
+  const state = primary.includes(c) ? '<span class="ok">Supported</span>' : l.machineTranslation ? 'Automatic drafts only' : s.tr ? 'In progress' : 'Structure ready, needs translators';
+  return `<tr><td>${esc(l.name)}</td><td>${esc((l.region || '').split('·')[0].trim())}</td><td>${s.tr} / ${s.n}</td><td>${s.ver}</td><td>${['ewo', 'dua', 'bas', 'wes'].includes(c) ? (c === 'wes' ? 'Yes (Krio speaker)' : 'Yes') : l.africaTts ? 'Experimental' : 'Browser voice'}</td><td>${state}</td></tr>`;
+}).join('');
 
 const fill = {
   team: val(cfg.team, 'team name'),
   city: val(cfg.city, 'city'),
-  languageName: val(cfg.language && cfg.language.name, 'language'),
+  languageName: val((cfg.languages || []).map(l => l.name).join(' and '), 'languages'),
+  langTable,
   validators: cfg.validators && cfg.validators.length ? esc(cfg.validators.join(', ')) : todo('validator names'),
   repoUrl: val(cfg.repoUrl, 'GitHub link'),
+  websiteUrl: val(cfg.websiteUrl, 'website'),
   videoUrl: val(cfg.videoUrl, 'video link'),
   teamContribution: val(cfg.teamContribution, 'team contribution'),
   coverage,
@@ -64,6 +73,7 @@ if (!browser) {
   execFileSync(browser, ['--headless=new', '--disable-gpu', '--no-pdf-header-footer', `--print-to-pdf=${pdf}`,
     `--user-data-dir=${join(DIST, '.pdf-profile')}`, pathToFileURL(htmlOut).href], { stdio: 'ignore', timeout: 60000 });
   console.log(`dist/Langwa-Documentation.pdf  ${(statSync(pdf).size / 1024).toFixed(0)} KB`);
+  copyFileSync(pdf, join(ROOT, 'docs', 'Langwa-Documentation.pdf')); // also in the repository, next to the description
 }
 const missing = (html.match(/TO COMPLETE: [^<]+/g) || []).map(s => s.replace('TO COMPLETE: ', ''));
 if (missing.length) console.log(`Still to complete in docs/submission.json: ${[...new Set(missing)].join(', ')}`);

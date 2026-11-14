@@ -217,6 +217,8 @@ mkdirSync(join(SITE, 'img'), { recursive: true });
 for (const f of readdirSync(join(ROOT, 'tools', 'site-assets'))) writeFileSync(join(SITE, 'img', f), readFileSync(join(ROOT, 'tools', 'site-assets', f)));
 writeFileSync(join(SITE, 'downloads', 'langwa-chromium.zip'), readFileSync(join(DIST, 'langwa-chromium.zip')));
 writeFileSync(join(SITE, 'downloads', 'langwa-firefox.xpi'), readFileSync(join(DIST, 'langwa-firefox.xpi')));
+// The submission documentation (built by tools/build-docs.mjs into docs/), linked from the site.
+if (existsSync(join(ROOT, 'docs', 'Langwa-Documentation.pdf'))) writeFileSync(join(SITE, 'downloads', 'Langwa-Documentation.pdf'), readFileSync(join(ROOT, 'docs', 'Langwa-Documentation.pdf')));
 writeFileSync(join(SITE, 'downloads', 'langwa.user.js'), readFileSync(join(DIST, 'langwa.user.js')));
 writeFileSync(join(SITE, 'downloads', 'langwa-voice.zip'), readFileSync(join(DIST, 'langwa-voice.zip')));
 
