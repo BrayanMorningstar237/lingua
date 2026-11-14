@@ -1,3 +1,4 @@
 # Windows batch files need CRLF (labels and goto can break with LF only); shell scripts need LF.
 *.cmd text eol=crlf
 *.sh text eol=lf
+*.vbs text eol=crlf

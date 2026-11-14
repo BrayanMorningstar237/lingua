@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Langwa voice</title>
+<style>
+  :root { --ebony: #1d1712; --ivory: #fbf6ee; --sand: #e9dccb; --gold: #e3a21a; --gold-soft: #f6dfa6; --forest: #1e7a4c; --muted: #6f6256; --red: #b3261e; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: linear-gradient(180deg, #c7ebe6, #e4f3e8 45%, #f8efd9); font: 16px/1.5 "Segoe UI", system-ui, sans-serif; color: var(--ebony); padding: 16px; }
+  .card { width: min(560px, 100%); background: #fff; border-radius: 22px; box-shadow: 0 24px 60px rgba(29,23,18,.14); padding: 30px 30px 24px; }
+  .head { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+  .logo { width: 52px; height: 52px; border-radius: 15px; background: var(--gold); display: grid; place-items: center; box-shadow: 0 5px 0 #b7800f; flex: none; }
+  .logo svg { width: 30px; height: 30px; stroke: var(--ebony); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  h1 { font-size: 22px; margin: 0; }
+  .sub { color: var(--muted); font-size: 14px; }
+  .steps { list-style: none; padding: 0; margin: 0 0 20px; display: grid; gap: 10px; }
+  .steps li { display: flex; align-items: center; gap: 12px; color: var(--muted); }
+  .dot { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--sand); display: grid; place-items: center; font-size: 13px; font-weight: 700; flex: none; transition: all .3s; }
+  .steps li.now { color: var(--ebony); font-weight: 600; }
+  .steps li.now .dot { border-color: var(--gold); background: var(--gold-soft); animation: pulse 1.4s ease-in-out infinite; }
+  .steps li.done .dot { border-color: var(--forest); background: var(--forest); color: #fff; }
+  @keyframes pulse { 50% { box-shadow: 0 0 0 6px rgba(227,162,26,.18); } }
+  .bar { height: 12px; border-radius: 99px; background: var(--sand); overflow: hidden; position: relative; }
+  .bar i { position: absolute; inset: 0 auto 0 0; width: 0; background: linear-gradient(90deg, var(--gold), #f0b93c); border-radius: 99px; transition: width .6s ease; }
+  .bar.wait i { width: 30%; animation: slide 1.4s ease-in-out infinite; }
+  @keyframes slide { 0% { left: -30%; } 100% { left: 100%; } }
+  .bar.ok i { width: 100% !important; background: var(--forest); }
+  .info { display: flex; justify-content: space-between; gap: 12px; margin-top: 8px; font-size: 14px; color: var(--muted); }
+  .msg { margin-top: 18px; padding: 14px 16px; border-radius: 14px; background: var(--ivory); font-size: 15px; }
+  .msg b { display: block; margin-bottom: 2px; }
+  .msg.ok { background: #e6f4ec; color: #145c38; }
+  .msg.warn { background: #fdecea; color: var(--red); }
+  .fr { color: var(--muted); font-size: 13.5px; margin-top: 4px; }
+  .msg.ok .fr, .msg.warn .fr { color: inherit; opacity: .8; }
+  button { margin-top: 14px; border: 0; border-radius: 12px; padding: 11px 18px; font: 600 15px "Segoe UI", system-ui, sans-serif; background: var(--ebony); color: var(--ivory); cursor: pointer; }
+  button:disabled { opacity: .6; cursor: progress; }
+  .foot { margin-top: 18px; font-size: 12.5px; color: var(--muted); text-align: center; }
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="head">
+    <div class="logo"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></div>
+    <div><h1>Langwa natural voice</h1><div class="sub">Voix naturelle Langwa · runs on this computer, offline</div></div>
+  </div>
+  <ol class="steps">
+    <li id="s1"><span class="dot">1</span><span>Preparing · Préparation</span></li>
+    <li id="s2"><span class="dot">2</span><span>Voice engine · Moteur de voix</span></li>
+    <li id="s3"><span class="dot">3</span><span>Voice model · Modèle de voix</span></li>
+    <li id="s4"><span class="dot">4</span><span>Starting · Démarrage</span></li>
+  </ol>
+  <div class="bar wait" id="bar"><i id="fill"></i></div>
+  <div class="info"><span id="left">Starting…</span><span id="right"></span></div>
+  <div class="msg" id="msg"><b id="mtitle">Getting ready</b><span id="mtext">Text translation already works in Langwa while the voice gets ready.</span><div class="fr" id="mfr">La traduction du texte marche déjà pendant que la voix se prépare.</div></div>
+  <button id="test" hidden>▶ Hear it · Écouter</button>
+  <div class="foot">You can close this page at any time: the voice keeps getting ready in the background.<br>Vous pouvez fermer cette page : la voix continue de se préparer.</div>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const URL_HEALTH = 'http://127.0.0.1:8770/health';
+const t0 = Date.now();
+let ready = false;
+const mins = s => s < 60 ? `${Math.max(1, Math.round(s))} s` : `${Math.round(s / 60)} min`;
+function steps(n, allDone) {
+  for (let i = 1; i <= 4; i++) { const li = $('s' + i); li.className = allDone || i < n ? 'done' : i === n ? 'now' : ''; li.querySelector('.dot').textContent = allDone || i < n ? '✓' : i; }
+}
+function say(cls, title, text, fr) { $('msg').className = 'msg ' + cls; $('mtitle').textContent = title; $('mtext').textContent = text; $('mfr').textContent = fr; }
+async function tick() {
+  let h = null;
+  try { h = await (await fetch(URL_HEALTH, { cache: 'no-store' })).json(); } catch { /* not started yet */ }
+  const bar = $('bar');
+  if (!h) {
+    const waited = (Date.now() - t0) / 1000;
+    steps(1); bar.className = 'bar wait'; $('left').textContent = 'Preparing the installer (about 40 MB)…'; $('right').textContent = '';
+    if (waited > 600) say('warn', 'Still waiting', 'Nothing has changed for 10 minutes. Check the internet connection, then double-click “Start Langwa voice” again: it continues where it stopped.', 'Rien ne bouge depuis 10 minutes. Vérifiez la connexion, puis relancez « Start Langwa voice » : elle reprend où elle s’est arrêtée.');
+    else say('', 'Getting ready', 'Text translation already works in Langwa while the voice gets ready.', 'La traduction du texte marche déjà pendant que la voix se prépare.');
+  } else if (h.status === 'installing') {
+    const pct = Math.round((h.progress || 0) * 100);
+    steps(h.step === 'model' ? 3 : 2);
+    bar.className = 'bar'; $('fill').style.width = pct + '%';
+    $('left').textContent = `${pct} %` + (h.totalMB ? ` · ${h.doneMB} / ${h.totalMB} MB` : '');
+    $('right').textContent = h.etaSec ? `about ${mins(h.etaSec)} left` : '';
+    say('', 'Downloading, only this once', 'Keep the computer on and connected. If the connection drops, it resumes where it stopped.', 'Une seule fois. Gardez l’ordinateur allumé et connecté ; en cas de coupure, ça reprend.');
+  } else if (h.status === 'loading') {
+    steps(4); bar.className = 'bar wait'; $('left').textContent = 'Starting the voice (about 20 s)…'; $('right').textContent = '';
+    say('', 'Almost there', 'Loading the voice into memory.', 'Chargement de la voix en mémoire.');
+  } else if (h.status === 'ready' || h.status === 'sleeping') {
+    if (!ready) {
+      ready = true; steps(4, true); bar.className = 'bar ok'; $('left').textContent = 'Ready'; $('right').textContent = '';
+      say('ok', '✓ Natural voice ready', 'Langwa now reads aloud with this voice. Press Listen on any translation. You can close this page.', 'Voix naturelle prête. Langwa lit maintenant avec cette voix. Vous pouvez fermer cette page.');
+      $('test').hidden = false;
+    }
+  }
+  setTimeout(tick, ready ? 5000 : 1000);
+}
+$('test').onclick = async () => {
+  const b = $('test'); b.disabled = true;
+  try {
+    const r = await fetch('http://127.0.0.1:8770/tts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: 'Hello! Langwa go read your bank page for your own language.', lang: 'pcm' }) });
+    const a = new Audio(URL.createObjectURL(await r.blob())); a.onended = () => { b.disabled = false; }; await a.play();
+  } catch { b.disabled = false; }
+};
+tick();
+</script>
+</body>
+</html>

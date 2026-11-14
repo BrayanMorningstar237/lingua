@@ -116,32 +116,43 @@ const firefoxFiles = files.map(f => (f.name === 'manifest.json'
 writeFileSync(join(DIST, 'langwa-firefox.xpi'), zip(firefoxFiles));
 
 // ---------- natural voice for the computer (a few KB; everything heavy downloads on first start) ----------
-// Unzip, double-click "Start Langwa voice.cmd". No Python needed beforehand: the launcher brings its own.
+// Unzip, double-click "Start Langwa voice" (a .vbs: no terminal window, progress shows in Langwa,
+// a clear message if something fails). No Python needed beforehand: the launcher brings its own.
+// server\start-voice.cmd stays as a fallback with a visible window.
 const SRV = join(ROOT, 'server');
 const voiceFiles = [
-  { name: 'Langwa voice/Start Langwa voice.cmd', data: Buffer.from('@echo off\r\ncall "%~dp0server\\start-voice.cmd"\r\n') },
+  { name: 'Langwa voice/Start Langwa voice.vbs', data: Buffer.from([
+    "' Langwa natural voice: double-click. No window; progress shows in Langwa.",
+    'Dim fs: Set fs = CreateObject("Scripting.FileSystemObject")',
+    'CreateObject("WScript.Shell").Run "wscript.exe """ & fs.GetParentFolderName(WScript.ScriptFullName) & "\\server\\start-voice.vbs""", 1, False',
+    '',
+  ].join('\r\n')) },
   { name: 'Langwa voice/README.txt', data: Buffer.from([
     'Langwa natural voice',
     '',
-    'Windows: double-click "Start Langwa voice.cmd".',
+    'Windows: double-click "Start Langwa voice". A progress page opens in your browser (also shown in Langwa',
+    '(click the Langwa button in the browser). It shows "Natural voice ready" when it can read aloud.',
     'Mac / Linux: open a terminal in this folder and run:  sh server/start-voice.sh',
     '',
     'The first time, it downloads about 700 MB once (it resumes if the connection drops) and asks',
-    'whether to start with the computer. Keep its window open; Langwa then reads with this voice.',
-    'Everything stays in this folder and runs on this computer, offline. To remove it, delete the folder.',
+    'whether to start with the computer. It sleeps when unused. If something fails, a message says so;',
+    'details are in server\\models\\voice.log. Fallback: double-click server\\start-voice.cmd.',
+    'Everything stays in this folder and runs on this computer, offline. To remove it, delete the folder',
+    '(and "Langwa voice" in Win+R, shell:startup, if you chose to start it with the computer).',
     '',
     'Voix naturelle Langwa',
     '',
-    'Windows : double-cliquez sur "Start Langwa voice.cmd".',
+    'Windows : double-cliquez sur "Start Langwa voice". Une page de progression s ouvre dans le navigateur (aussi dans Langwa',
+    '(bouton Langwa du navigateur). Il affiche "Voix naturelle prete" quand elle peut lire.',
     'Mac / Linux : ouvrez un terminal dans ce dossier et lancez :  sh server/start-voice.sh',
     '',
     'La premiere fois, environ 700 Mo sont telecharges une seule fois (reprise si la connexion coupe).',
-    'Gardez la fenetre ouverte ; Langwa lit alors avec cette voix. Tout reste dans ce dossier, hors ligne.',
+    'En cas de probleme, un message le dit ; details dans server\\models\\voice.log. Tout reste ici, hors ligne.',
     '',
     'Model and voices: Africa TTS, CC-BY-NC-4.0 (AfriSpeech). Code: MIT.',
     '',
   ].join('\r\n')) },
-  ...['start-voice.cmd', 'start-voice.sh', 'voice_setup.py', 'africa_tts_server.py', 'requirements-africa-tts.txt']
+  ...['start-voice.vbs', 'progress.html', 'start-voice.cmd', 'start-voice.sh', 'voice_setup.py', 'africa_tts_server.py', 'requirements-africa-tts.txt']
     .map(f => ({ name: `Langwa voice/server/${f}`, data: readFileSync(join(SRV, f)) })),
 ];
 writeFileSync(join(DIST, 'langwa-voice.zip'), zip(voiceFiles));
