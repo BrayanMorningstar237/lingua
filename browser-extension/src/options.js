@@ -49,6 +49,8 @@ async function loadAll() {
   // Most complete first, with the share of phrases already translated.
   const ranked = Object.entries(langs).sort(([, a], [, b]) => (b.count || 0) - (a.count || 0)
     || (b.machineTranslation ? 1 : 0) - (a.machineTranslation ? 1 : 0) || a.name.localeCompare(b.name));
+  // No language chosen yet (fresh install): show the most complete one, as the menu does.
+  if (!code || !langs[code]) code = ranked[0][0];
   $('lang').replaceChildren(...ranked.map(([c, l]) => {
     const o = new Option(`${l.name} · ${l.count ? `${l.pct ?? 0} %` : l.machineTranslation ? 'brouillon automatique' : 'bientôt'}`, c);
     o.selected = c === code;
@@ -456,8 +458,13 @@ $('saveMt').onclick = async () => {
       asr: { mode: $('asrMode').value, endpoint: $('asrEndpoint').value.trim() },
     },
   });
-  $('mtMsg').textContent = 'Enregistré.';
+  $('mtMsg').textContent = 'Enregistré ✓';
 };
+// Settings save themselves as they change (the technical ones are folded away, far from the button).
+// A tick later, so handlers that adjust related fields (an address for a mode) run first.
+for (const id of ['ttsVoice', 'autoSpeak', 'onlineVoice', 'ttsMode', 'ttsEndpoint', 'asrMode', 'asrEndpoint', 'mtMode', 'mtEndpoint', 'mtModel']) {
+  $(id).addEventListener('change', () => setTimeout(() => $('saveMt').click(), 0));
+}
 $('mtMode').onchange = () => {
   if ($('mtMode').value === 'nllb') $('mtEndpoint').value = 'http://127.0.0.1:8765/translate';
   if ($('mtMode').value === 'cameroon') $('mtEndpoint').value = 'http://127.0.0.1:8768/translate';
@@ -486,7 +493,7 @@ $('ttsEndpoint').onchange = checkVoice;
  * or with the browser's voice. Checked every 3 s while this page is visible.
  */
 // One double-click starts the local voice (installs and downloads it the first time).
-const START = { auto: 'server\\start-voice.cmd   (Mac/Linux : sh server/start-voice.sh)', africa: 'server\\start-voice.cmd   (Mac/Linux : sh server/start-voice.sh)', mms: '.venv\\Scripts\\python.exe server\\tts_server.py' };
+const START = { auto: 'server\\start-voice.vbs   (Mac/Linux : sh server/start-voice.sh)', africa: 'server\\start-voice.vbs   (Mac/Linux : sh server/start-voice.sh)', mms: '.venv\\Scripts\\python.exe server\\tts_server.py' };
 let voiceTimer = 0;
 async function checkVoice() {
   clearTimeout(voiceTimer);
@@ -543,7 +550,7 @@ async function checkVoice() {
     const useMms = mode === 'mms' || (mode === 'auto' && !langVoice.africaTts && langVoice.mms);
     show('offline', 'Voix du navigateur utilisée', useMms
       ? 'Pour la voix locale MMS, lancez dans le dossier du projet :'
-      : 'Pour une voix plus naturelle, double-cliquez sur « Start Langwa voice » (téléchargement « Voix naturelle » sur le site de Langwa). Depuis le projet :', useMms ? START.mms : START[mode]);
+      : 'Pour une voix plus naturelle : téléchargez « Voix naturelle » sur le site de Langwa (langwa-five.vercel.app), puis double-cliquez sur « Start Langwa voice ». Déjà téléchargée ? Double-cliquez dessus à nouveau. Depuis le dossier du projet :', useMms ? START.mms : START[mode]);
   }
   if (!document.hidden) voiceTimer = setTimeout(checkVoice, 3000);
 }

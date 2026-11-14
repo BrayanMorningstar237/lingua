@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Langwa · Glossaire</title>
+<title>Langwa · Paramètres</title>
 <style>
   :root { --ebony: #1d1712; --ebony-2: #2a221b; --ivory: #fbf6ee; --sand: #d9c9b4; --gold: #e3a21a; --gold-soft: #f6dfa6; --forest: #1e7a4c; --terracotta: #c2502e; --indigo: #3d4a8a;
     --bg: #f8f2e8; --card: #fffcf7; --fg: #241d16; --muted: #76675a; --line: #ebdfcd; --soft: #f6eee2;
@@ -121,6 +121,38 @@
     section { padding: 12px; }
     .toolbar { gap: 7px; }
   }
+  /* page structure: purpose first, numbered sections, technical options folded */
+  .tabs { max-width: 1200px; margin: 0 auto; padding: 0 16px 12px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .tabs a { color: var(--sand); text-decoration: none; font-weight: 600; font-size: 13.5px; padding: 6px 12px; border-radius: 99px; border: 1px solid #3a3027; }
+  .tabs a:hover, .tabs a:focus-visible { color: var(--ivory); border-color: var(--gold); outline: none; }
+  section { scroll-margin-top: 16px; }
+  h2.big { font-size: 19px; margin-bottom: 4px; }
+  h2.big svg { width: 20px; height: 20px; }
+  h3 { font-size: 15px; margin: 18px 0 6px; }
+  .lead { margin: 0 0 14px; color: var(--muted); font-size: 14.5px; max-width: 760px; }
+  .intro { background: linear-gradient(135deg, color-mix(in srgb, var(--gold) 14%, var(--card)), var(--card) 60%); }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  .pcard { display: grid; gap: 4px; padding: 14px 16px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); color: inherit; text-decoration: none; transition: border-color .15s, transform .15s; }
+  .pcard:hover, .pcard:focus-visible { border-color: var(--gold); transform: translateY(-2px); outline: none; }
+  .pcard span:last-child { color: var(--muted); font-size: 13.5px; }
+  .num { width: 26px; height: 26px; border-radius: 50%; background: var(--gold); color: var(--ebony); display: grid; place-items: center; font-weight: 800; font-size: 13px; flex: none; }
+  .steps { list-style: none; padding: 0; margin: 0 0 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+  .steps li { display: flex; gap: 10px; align-items: flex-start; padding: 12px; border-radius: 12px; background: var(--soft); }
+  .steps li > div { display: grid; gap: 4px; flex: 1; min-width: 0; }
+  .steps li span:not(.num) { color: var(--muted); font-size: 13.5px; }
+  .progress { margin-bottom: 12px; }
+  details.guide, details.adv { margin: 0 0 14px; padding: 10px 14px; border-radius: 12px; background: var(--soft); }
+  details.guide > summary, details.adv > summary { cursor: pointer; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  details.guide[open] > summary, details.adv[open] > summary { margin-bottom: 8px; }
+  details.guide > div { margin: 4px 0; }
+  details.adv.top { margin: 0; background: none; padding: 0; }
+  details.adv.top > summary { font-size: 16px; }
+  details.adv.top > summary svg { color: var(--gold); }
+  .checks { display: grid; gap: 10px; align-content: start; }
+  .checkrow { font-weight: 500; display: flex; gap: 8px; align-items: flex-start; }
+  .checkrow input { margin-top: 3px; }
+  .checkrow small { display: block; }
+  .tablewrap { margin-top: 12px; border-top: 1px solid var(--line); }
 </style>
 </head>
 <body>
@@ -128,55 +160,100 @@
 <header>
   <div class="hwrap">
     <div class="logo"><svg viewBox="0 0 24 24"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></div>
-    <h1>Langwa<small>Glossaire, voix et paramètres</small></h1>
+    <h1>Paramètres Langwa<small>Traductions, voix et sécurité</small></h1>
     <label>Langue <select id="lang"></select></label>
   </div>
+  <nav class="tabs" aria-label="Sections">
+    <a href="#traductions">1 · Traductions</a><a href="#voix">2 · Voix</a><a href="#securite">3 · Sécurité</a><a href="#avance">Avancé</a>
+  </nav>
 </header>
 <main>
-  <section>
-    <h2><svg viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>Validation linguistique</h2>
-    <div class="grid2">
-      <label>Nom du validateur (locuteur natif)<input type="text" id="validator" placeholder="Nom, village ou région"></label>
-      <div><div class="muted" id="progress"></div><div class="bar"><i class="v" id="barV"></i><i class="t" id="barT"></i></div></div>
-    </div>
-    <div class="guide">
-      <div><b>Traduisez le sens, pas les mots.</b> Écrivez la phrase comme vous l'expliqueriez à un parent au marché : simple, naturelle, avec la même idée.</div>
-      <div><b>Gardez les marqueurs</b> <span class="ph">{amount}</span> <span class="ph">{name}</span>… : ils sont remplacés par les vraies valeurs de la page.</div>
-      <div><b>Les avertissements doivent garder toute leur force</b> : « jamais », « ne pas », « impossible d'annuler ».</div>
-      <div><b>Explication (facultatif)</b> : une phrase courte qui explique un mot difficile (ex. « frais » = ce que la banque prend). Elle s'affiche sous la traduction.</div>
-    </div>
-    <div class="toolbar">
-      <input type="text" id="filter" placeholder="Rechercher…" style="max-width:260px">
-      <label style="font-weight:500"><input type="checkbox" id="onlyMissing"> Seulement les phrases non traduites</label>
-      <span style="flex:1"></span>
-      <button id="importBtn" title="Fichiers de la page de contribution, fichiers de langue ou tableur CSV. Plusieurs fichiers à la fois."><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>Importer (JSON, CSV)</button><input type="file" id="import" hidden>
-      <button id="exportCsv" title="Modèle pour Google Sheets ou Excel"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>Tableur (CSV)</button>
-      <button id="export" class="primary"><svg viewBox="0 0 24 24"><path d="M12 21V9"/><path d="m7 14 5-5 5 5"/><path d="M5 3h14"/></svg>Exporter le fichier de langue</button>
+  <section class="intro">
+    <h2 class="big">À quoi sert cette page ?</h2>
+    <p class="lead">Pour lire votre banque avec Langwa, vous n’en avez pas besoin. Elle sert à trois choses :</p>
+    <div class="cards">
+      <a class="pcard" href="#traductions"><span class="num">1</span><b>Vérifier les traductions</b><span>Pour les locuteurs natifs : corriger et valider chaque phrase de la langue.</span></a>
+      <a class="pcard" href="#voix"><span class="num">2</span><b>Régler la voix</b><span>Voir si la voix naturelle est prête et choisir celle qui lit.</span></a>
+      <a class="pcard" href="#securite"><span class="num">3</span><b>Tester la sécurité</b><span>Vérifier qu’un montant ou un nom ne change jamais à la traduction.</span></a>
     </div>
   </section>
 
-  <section>
+  <section id="traductions">
+    <h2 class="big"><svg viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>1 · Vérifier les traductions</h2>
+    <p class="lead">Une phrase validée par un locuteur natif s’affiche « Validé » sur la page de la banque. Les autres restent « À valider ».</p>
+    <ol class="steps">
+      <li><span class="num">1</span><div><b>Écrivez votre nom</b><input type="text" id="validator" placeholder="Nom, village ou région" aria-label="Nom du validateur (locuteur natif)"></div></li>
+      <li><span class="num">2</span><div><b>Lisez chaque phrase</b><span>Corrigez la traduction si le sens n’est pas exact.</span></div></li>
+      <li><span class="num">3</span><div><b>Cochez « Validé »</b><span>Puis « Exporter » pour envoyer le fichier à l’équipe Langwa.</span></div></li>
+    </ol>
+    <div class="progress"><div class="muted" id="progress"></div><div class="bar"><i class="v" id="barV"></i><i class="t" id="barT"></i></div></div>
+    <details class="guide">
+      <summary>Conseils pour bien traduire</summary>
+      <div><b>Traduisez le sens, pas les mots.</b> Écrivez la phrase comme vous l’expliqueriez à un parent au marché : simple, naturelle, avec la même idée.</div>
+      <div><b>Gardez les marqueurs</b> <span class="ph">{amount}</span> <span class="ph">{name}</span>… : ils sont remplacés par les vraies valeurs de la page.</div>
+      <div><b>Les avertissements gardent toute leur force</b> : « jamais », « ne pas », « impossible d’annuler ».</div>
+      <div><b>Explication (facultatif)</b> : une phrase courte qui explique un mot difficile (ex. « frais » = ce que la banque prend). Elle s’affiche sous la traduction.</div>
+    </details>
+    <div class="toolbar">
+      <input type="text" id="filter" placeholder="Rechercher une phrase…" style="max-width:260px">
+      <label style="font-weight:500"><input type="checkbox" id="onlyMissing"> Seulement les phrases non traduites</label>
+      <span style="flex:1"></span>
+      <button id="importBtn" title="Fichiers reçus de la page de contribution (WhatsApp), fichiers de langue ou tableur CSV. Plusieurs fichiers à la fois."><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>Importer des contributions</button><input type="file" id="import" hidden>
+      <button id="exportCsv" title="Modèle pour Google Sheets ou Excel"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>Tableur (CSV)</button>
+      <button id="export" class="primary"><svg viewBox="0 0 24 24"><path d="M12 21V9"/><path d="m7 14 5-5 5 5"/><path d="M5 3h14"/></svg>Exporter</button>
+    </div>
     <div class="tablewrap">
       <table>
-        <thead><tr><th style="width:34%">Français / English</th><th>Traduction</th><th style="width:150px">Validé</th><th style="width:190px">Voix</th></tr></thead>
+        <thead><tr><th style="width:34%">Phrase de la banque (français / anglais)</th><th>Traduction</th><th style="width:150px">Validé</th><th style="width:190px">Voix enregistrée</th></tr></thead>
         <tbody id="rows"></tbody>
       </table>
     </div>
   </section>
 
-  <section>
-    <h2><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M8 7h8M8 11h6"/></svg>Importer un dictionnaire</h2>
-    <p class="muted">Collez le texte d’un dictionnaire de la langue choisie (une page web copiée, une liste « mot = sens », un tableau mot / traduction). Langwa en tire les paires mot / sens en anglais ou en français et s’en sert comme <b>mots du dictionnaire</b> (indices, jamais présentés comme traduction validée). Utilisez seulement des dictionnaires que vous avez le droit d’utiliser, et indiquez la source.</p>
-    <div class="grid2">
-      <label>Source (crédit)<input type="text" id="dictSource" placeholder="Ex. : Mankon Dictionary (MALACA), avec autorisation"></label>
-      <div class="muted" id="dictCount"></div>
+  <section id="voix">
+    <h2 class="big"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg>2 · Voix</h2>
+    <p class="lead">Langwa lit les traductions à voix haute. La meilleure est la voix naturelle hors ligne : privée, elle tourne sur cet ordinateur.</p>
+    <div id="ttsStatus" class="vstat" role="status" aria-live="polite" hidden></div>
+    <div class="grid2" style="margin-top:12px">
+      <label>Voix qui lit
+        <select id="ttsVoice">
+          <option value="female">Féminine</option>
+          <option value="default">Voix d’origine de chaque langue (masculine pour l’ewondo et le duala)</option>
+        </select>
+      </label>
+      <div class="checks">
+        <label class="checkrow"><input type="checkbox" id="autoSpeak"> Lire à voix haute les nouveaux messages importants</label>
+        <label class="checkrow"><input type="checkbox" id="onlineVoice"><span>Voix naturelles en ligne<small class="muted">Plus fluide, mais le texte lu est envoyé à Microsoft ou Google.</small></span></label>
+      </div>
     </div>
-    <textarea id="dictText" rows="6" placeholder="àbóŋ   noun&#10;pound sterling&#10;&#10;ou : ceede = argent"></textarea>
-    <div class="toolbar" style="margin-top:10px"><button id="dictImport" class="primary">Extraire les mots</button><button id="dictClear">Effacer les mots importés</button><span class="muted" id="dictMsg"></span></div>
+    <details class="adv">
+      <summary>Réglages techniques de la voix</summary>
+      <div class="grid2">
+        <label>Voix locale
+          <select id="ttsMode">
+            <option value="auto">Automatique : la voix locale si elle tourne, sinon le navigateur (recommandé)</option>
+            <option value="none">Désactivée</option>
+            <option value="africa">Africa TTS local (server/africa_tts_server.py), multilingue</option>
+            <option value="mms">MMS-TTS local (server/tts_server.py), Fulfulde et Lamnso’</option>
+          </select>
+        </label>
+        <label>Adresse<input type="url" id="ttsEndpoint"></label>
+        <label>Questions vocales (assistant)
+          <select id="asrMode">
+            <option value="browser">Navigateur, avec accord (français, anglais, pidgin)</option>
+            <option value="local">Serveur local MMS (server/asr_server.py) : détecte la langue, toutes les langues</option>
+            <option value="none">Désactivées</option>
+          </select>
+        </label>
+        <label>Adresse du serveur vocal<input type="url" id="asrEndpoint"></label>
+      </div>
+    </details>
+    <div class="toolbar" style="margin-top:12px"><button id="saveMt" class="primary">Enregistrer</button><span class="muted" id="mtMsg">Les changements sont enregistrés tout seuls.</span></div>
   </section>
 
-  <section>
-    <h2><svg viewBox="0 0 24 24"><path d="M9 3h6"/><path d="M10 3v6L4.5 18.5A2 2 0 0 0 6.2 21h11.6a2 2 0 0 0 1.7-2.5L14 9V3"/></svg>Banc d'essai : tester un nouveau message</h2>
+  <section id="securite">
+    <h2 class="big"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>3 · Tester la sécurité</h2>
+    <p class="lead">Collez n’importe quel message de banque. Langwa montre ce qu’il verrouille (montants, noms, numéros) et vérifie qu’ils restent identiques après la traduction.</p>
     <textarea id="probe" rows="3">Vous allez envoyer 25 000 FCFA à Jean-Paul Mbarga.</textarea>
     <div class="toolbar" style="margin-top:10px">
       <button id="run" class="primary"><svg viewBox="0 0 24 24"><path d="m6 4 14 8-14 8z"/></svg>Analyser</button>
@@ -186,56 +263,41 @@
     <pre id="out"></pre>
   </section>
 
-  <section>
-    <h2><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/></svg>Traduction automatique locale (open source, optionnelle)</h2>
-    <p class="muted">Sert au texte absent du glossaire. Seul le texte masqué de la page part vers des services de cet ordinateur : montants, noms et numéros restent protégés. Pour le lamnso, Langwa cherche dans un corpus local trois phrases parallèles proches et les donne au modèle comme exemples de la langue. Les résultats restent des brouillons non validés.</p>
-    <div class="grid2">
-      <label>Mode
-        <select id="mtMode">
-          <option value="none">Disabled (unless enabled by a local translation mode)</option>
-          <option value="turaco">Turaco local pour Pidgin Kamtok (Ollama requis, anglais vers Pidgin)</option>
-          <option value="openai">LLM local compatible OpenAI (Ollama, llama.cpp, LM Studio)</option>
-          <option value="nllb">Serveur NLLB-200 local (server/nllb_server.py)</option>
-          <option value="cameroon">Serveur local de traduction du Cameroun (Lamnso’, brouillon)</option>
-        </select>
-      </label>
-      <label>Adresse<input type="url" id="mtEndpoint"></label>
-      <label>Modèle (mode LLM)<input type="text" id="mtModel"></label>
-    </div>
-    <p id="turacoHelp" class="muted" hidden>Turaco traduit l’anglais vers le pidgin camerounais. Installez Ollama, libérez au moins 5 Go, puis exécutez <code>ollama run hf.co/mradermacher/Turaco-E2B-it-mt-en-wes-GGUF:Q4_K_M</code>. Laissez Ollama actif. Langwa n’envoie que le texte masqué à ce serveur local. Le modèle pèse environ 3,43 Go.</p>
-    <div class="vstat" id="mtStatus" hidden></div>
-    <p class="muted">Pour le lamnso, lancez <code>server\start-lamnso.cmd</code> : il télécharge une fois un petit modèle libre (1,1 Go), puis démarre le corpus et le modèle sur cet ordinateur. Langwa les utilise tout seul pour le lamnso. Les exemples bibliques donnent seulement le style de la langue ; ce ne sont pas des traductions bancaires validées.</p>
+  <section id="avance">
+    <details class="adv top">
+      <summary><svg viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>Avancé : dictionnaires, traduction automatique locale, cache</summary>
 
-    <h2 style="margin-top:18px"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg>Voix</h2>
-    <div class="grid2">
-      <label>Voix locale
-        <select id="ttsMode">
-          <option value="auto">Automatique : la voix locale si elle tourne, sinon le navigateur (recommandé)</option>
-          <option value="none">Disabled (unless enabled by a local translation mode)</option>
-          <option value="africa">Africa TTS local (server/africa_tts_server.py), multilingue</option>
-          <option value="mms">MMS-TTS local (server/tts_server.py), Fulfulde et Lamnso’</option>
-        </select>
-      </label>
-      <label>Timbre de la voix locale
-        <select id="ttsVoice">
-          <option value="female">Féminine</option>
-          <option value="default">Voix d'origine de chaque langue (masculine pour l'ewondo et le duala)</option>
-        </select>
-      </label>
-      <label>Adresse<input type="url" id="ttsEndpoint"></label>
-      <div id="ttsStatus" class="vstat" role="status" aria-live="polite" hidden></div>
-      <label style="font-weight:500;display:flex;gap:8px;align-items:center"><input type="checkbox" id="autoSpeak"> Lire à voix haute les nouveaux messages importants</label>
-      <label>Questions vocales (assistant)
-        <select id="asrMode">
-          <option value="browser">Navigateur, avec accord (français, anglais, pidgin)</option>
-          <option value="local">Serveur local MMS (server/asr_server.py) : détecte la langue, toutes les langues</option>
-          <option value="none">Disabled (unless enabled by a local translation mode)</option>
-        </select>
-      </label>
-      <label>Adresse du serveur vocal<input type="url" id="asrEndpoint"></label>
-      <label style="font-weight:500;display:grid;gap:2px"><span style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="onlineVoice"> Voix naturelles en ligne</span><small class="muted">Plus fluide (voix africaine Swahili sur Edge). Le texte lu est envoyé au service vocal de Microsoft ou Google.</small></label>
-    </div>
-    <div class="toolbar" style="margin-top:12px"><button id="saveMt" class="primary">Enregistrer</button><button id="clearCache">Vider le cache</button><span class="muted" id="mtMsg"></span></div>
+      <h3>Importer un dictionnaire</h3>
+      <p class="muted">Collez le texte d’un dictionnaire de la langue choisie (une page web copiée, une liste « mot = sens », un tableau mot / traduction). Langwa en tire les paires mot / sens et s’en sert comme <b>mots du dictionnaire</b> : des indices, jamais présentés comme traduction validée. Utilisez seulement des dictionnaires que vous avez le droit d’utiliser, et indiquez la source.</p>
+      <div class="grid2">
+        <label>Source (crédit)<input type="text" id="dictSource" placeholder="Ex. : Mankon Dictionary (MALACA), avec autorisation"></label>
+        <div class="muted" id="dictCount"></div>
+      </div>
+      <textarea id="dictText" rows="5" placeholder="àbóŋ   noun&#10;pound sterling&#10;&#10;ou : ceede = argent"></textarea>
+      <div class="toolbar" style="margin-top:10px"><button id="dictImport" class="primary">Extraire les mots</button><button id="dictClear">Effacer les mots importés</button><span class="muted" id="dictMsg"></span></div>
+
+      <h3>Traduction automatique locale (optionnelle)</h3>
+      <p class="muted">Pour le texte absent du glossaire. Seul le texte masqué part vers des services de cet ordinateur : montants, noms et numéros restent protégés. Les résultats restent des brouillons « À valider ».</p>
+      <div class="grid2">
+        <label>Mode
+          <select id="mtMode">
+            <option value="none">Désactivée</option>
+            <option value="turaco">Turaco local pour Pidgin Kamtok (Ollama requis, anglais vers Pidgin)</option>
+            <option value="openai">LLM local compatible OpenAI (Ollama, llama.cpp, LM Studio)</option>
+            <option value="nllb">Serveur NLLB-200 local (server/nllb_server.py)</option>
+            <option value="cameroon">Serveur local de traduction du Cameroun (Lamnso’, brouillon)</option>
+          </select>
+        </label>
+        <label>Adresse<input type="url" id="mtEndpoint"></label>
+        <label>Modèle (mode LLM)<input type="text" id="mtModel"></label>
+      </div>
+      <p id="turacoHelp" class="muted" hidden>Turaco traduit l’anglais vers le pidgin camerounais. Installez Ollama, libérez au moins 5 Go, puis exécutez <code>ollama run hf.co/mradermacher/Turaco-E2B-it-mt-en-wes-GGUF:Q4_K_M</code>. Laissez Ollama actif. Langwa n’envoie que le texte masqué à ce serveur local. Le modèle pèse environ 3,43 Go.</p>
+      <div class="vstat" id="mtStatus" hidden></div>
+      <p class="muted">Pour le lamnso, lancez <code>server\start-lamnso.cmd</code> : il télécharge une fois un petit modèle libre (1,1 Go), puis démarre le corpus et le modèle sur cet ordinateur. Les exemples bibliques donnent seulement le style de la langue ; ce ne sont pas des traductions bancaires validées.</p>
+
+      <h3>Cache</h3>
+      <div class="toolbar"><button id="clearCache">Vider le cache des traductions automatiques</button></div>
+    </details>
   </section>
 </main>
 <script src="protect.js"></script>
