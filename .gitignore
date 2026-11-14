@@ -12,7 +12,7 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
-# Local testing only (fake translations, offline test page). Never published.
+# Local testing only (placeholder translations, offline test page). Never published.
 local-dev/
 
 # Raw Wiktionary download (re-created by tools/harvest-wiktionary.mjs --refresh)

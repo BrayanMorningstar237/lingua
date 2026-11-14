@@ -1,12 +1,12 @@
 // Run with:  node --test tests/
-// The "translations" below are FAKE markers ("<<...>>") used only to test the mechanics.
+// The "translations" below are placeholder markers ("<<...>>") used only to test the mechanics.
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const P = require('../src/protect.js');
 const E = require('../src/engine.js');
 const source = require('../lang/source.json');
 
-const fake = (id, t) => ({ id, t, verified: true });
+const placeholder = (id, t) => ({ id, t, verified: true });
 const overrides = {
   available_balance: '<<SOLDE-DISPO>>',
   amount: '<<MONTANT>>',
@@ -24,7 +24,7 @@ const overrides = {
   balance: '<<SOLDE>>',
 };
 const pack = {
-  entries: source.entries.map(e => ({ ...e, ...(overrides[e.id] ? fake(e.id, overrides[e.id]) : { t: '' }) })),
+  entries: source.entries.map(e => ({ ...e, ...(overrides[e.id] ? placeholder(e.id, overrides[e.id]) : { t: '' }) })),
 };
 const engine = E.createEngine(pack);
 

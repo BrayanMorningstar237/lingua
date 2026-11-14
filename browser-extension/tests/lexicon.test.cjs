@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const E = require('../src/engine.js');
 const source = require('../lang/source.json');
 
-// Fake dictionary for the test; real data comes from Wiktionary (CC BY-SA) via tools/harvest-*.
+// Small test dictionary; real data comes from Wiktionary (CC BY-SA) via tools/harvest-*.
 const lexicon = { fr: { payer: ['sáwa'], facture: ['kálati'] }, en: { money: ['mɔ̀nì'] } };
 const engine = E.createEngine({ entries: source.entries.map(e => ({ ...e, t: '' })), lexicon });
 
