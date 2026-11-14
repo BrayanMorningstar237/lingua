@@ -191,7 +191,7 @@
 /* Data embedded by tools/build.mjs: { source, langs, terms } */
 const DATA = /*DATA*/null;
 
-const EN = /^en/i.test(navigator.language || '');
+const EN = !/^fr/i.test(navigator.language || '');
 const T = EN ? {
   subtitle: 'Help translate banking into your language', title: 'Translate Langwa into your language',
   lead: 'You will see short banking sentences. Write what they mean in your language, as you would explain it to a relative. About 2 hours for everything; you can stop and continue later.',

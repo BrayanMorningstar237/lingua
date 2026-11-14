@@ -777,7 +777,7 @@
 
 <script>
   const LANGS = /*LANGS*/{};
-  const EN = /^en/i.test(navigator.language || '');
+  const EN = !/^fr/i.test(navigator.language || '');
   if (EN) {
     document.documentElement.lang = 'en';
     document.title = 'Langwa · Online banking, in your language';

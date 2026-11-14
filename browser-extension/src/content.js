@@ -56,7 +56,7 @@
   /** Interface text: national-language version when the speaker has translated it, else French. */
   const ui = (id, fr) => state.ui.get(id) || fr;
   /** Base interface language: the browser's (French or English), until the national language is translated. */
-  const BASE = /^en/i.test(navigator.language || '') ? 'en' : 'fr';
+  const BASE = !/^fr/i.test(navigator.language || '') ? 'en' : 'fr';
   /** Interface strings: national-language translation, else French/English from the browser. */
   const uiMap = pack => new Map(pack.entries.filter(e => e.group === 'ui').map(e => [e.id, e.t || (BASE === 'en' ? e.en : e.fr)]));
   /** Phones and tablets: no Ctrl key, no hover -> long press shows the card. */

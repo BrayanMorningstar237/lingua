@@ -1,5 +1,15 @@
 const api = globalThis.browser ?? globalThis.chrome;
 const $ = id => document.getElementById(id);
+// English by default; French when the browser is in French (the page's texts carry both).
+const EN = !/^fr/i.test(navigator.language || '');
+const L = (fr, en) => (EN ? en : fr);
+if (EN) {
+  document.documentElement.lang = 'en';
+  document.title = 'Langwa · Settings';
+  for (const e of document.querySelectorAll('[data-en]')) e.innerHTML = e.dataset.en;
+  for (const e of document.querySelectorAll('[data-en-ph]')) e.placeholder = e.dataset.enPh;
+  for (const e of document.querySelectorAll('[data-en-title]')) e.title = e.dataset.enTitle;
+}
 const P = globalThis.LangwaProtect;
 const E = globalThis.LangwaEngine;
 
@@ -52,7 +62,7 @@ async function loadAll() {
   // No language chosen yet (fresh install): show the most complete one, as the menu does.
   if (!code || !langs[code]) code = ranked[0][0];
   $('lang').replaceChildren(...ranked.map(([c, l]) => {
-    const o = new Option(`${l.name} · ${l.count ? `${l.pct ?? 0} %` : l.machineTranslation ? 'brouillon automatique' : 'bientôt'}`, c);
+    const o = new Option(`${l.name} · ${l.count ? `${l.pct ?? 0} %` : l.machineTranslation ? L('brouillon automatique', 'automatic draft') : L('bientôt', 'soon')}`, c);
     o.selected = c === code;
     return o;
   }));
@@ -95,7 +105,7 @@ function progress() {
   const tr = pack.entries.filter(e => e.t).length;
   const ver = pack.entries.filter(e => e.t && e.verified).length;
   const audio = pack.entries.filter(e => e.audio || (e.audioParts || []).some(Boolean)).length;
-  $('progress').textContent = `${pack.name} : ${ver} validées, ${tr - ver} à valider, ${n - tr} à traduire · ${audio} avec voix`;
+  $('progress').textContent = L(`${pack.name} : ${ver} validées, ${tr - ver} à valider, ${n - tr} à traduire · ${audio} avec voix`, `${pack.name}: ${ver} validated, ${tr - ver} to validate, ${n - tr} to translate · ${audio} with voice`);
   $('barV').style.width = `${(100 * ver) / n}%`;
   $('barT').style.width = `${(100 * (tr - ver)) / n}%`;
 }
@@ -113,7 +123,7 @@ function row(e) {
   t.value = e.t || '';
   const ver = el('input', { type: 'checkbox' });
   ver.checked = !!e.verified;
-  const who = el('div', { class: 'muted' }, e.verified && e.validator ? `${e.validator}${e.date ? ' · ' + e.date : ''}` : e.t && e.by ? `Proposé par ${e.by}` : '');
+  const who = el('div', { class: 'muted' }, e.verified && e.validator ? `${e.validator}${e.date ? ' · ' + e.date : ''}` : e.t && e.by ? L(`Proposé par ${e.by}`, `Proposed by ${/^Brouillon IA/i.test(e.by) ? 'AI draft, to validate' : e.by}`) : '');
   const tr = el('tr', { class: e.verified ? 'row-ok' : '' });
 
   const phOk = () => !t.value.trim() || placeholders(t.value) === placeholders(e.fr);
@@ -127,7 +137,7 @@ function row(e) {
     if (changed) {
       ver.checked = false; tr.className = ''; who.textContent = '';
       audio.redraw();
-      if (hadAudio) audio.prepend(el('div', { class: 'check' }, 'Texte modifié : enregistrez à nouveau'));
+      if (hadAudio) audio.prepend(el('div', { class: 'check' }, L('Texte modifié : enregistrez à nouveau', 'Text changed: record again')));
     }
   });
   ver.addEventListener('change', async () => {
@@ -154,9 +164,9 @@ function row(e) {
       el('div', {}, highlightPh(e.en)),
       e.note ? el('div', { class: 'note' }, ico('info'), ' ', e.note) : null,
       el('div', { class: 'grp' }, `${e.group} · ${e.id}`),
-      e.check ? el('span', { class: 'check' }, 'À vérifier sur la vraie page') : null),
+      e.check ? el('span', { class: 'check' }, L('À vérifier sur la vraie page', 'Check on the real page')) : null),
     el('td', { 'data-label': 'Traduction' }, t, e.group === 'ui' || e.group === 'safety-net' ? null : x),
-    el('td', { 'data-label': 'Validation' }, el('label', { class: 'ok-label' }, ver, 'Validé'), who),
+    el('td', { 'data-label': 'Validation' }, el('label', { class: 'ok-label' }, ver, L('Validé', 'Validated')), who),
     el('td', { 'data-label': 'Voix' }, audio));
   return tr;
 }
@@ -164,9 +174,9 @@ function row(e) {
 // ---------- audio recording by the native speaker ----------
 /** Record / play / delete one clip. `save(dataUrl|'')` persists it. */
 function clipControls(url, save) {
-  const play = el('button', { class: 'icon', disabled: !url, title: 'Écouter', 'aria-label': 'Écouter', onclick: () => new Audio(url).play() }, ico('play'));
+  const play = el('button', { class: 'icon', disabled: !url, title: L('Écouter', 'Listen'), 'aria-label': L('Écouter', 'Listen'), onclick: () => new Audio(url).play() }, ico('play'));
   let rec = null;
-  const recBtn = el('button', { class: 'icon', title: 'Enregistrer (cliquez encore pour arrêter)', 'aria-label': 'Enregistrer' }, ico('mic'), url ? 'Refaire' : 'Enregistrer');
+  const recBtn = el('button', { class: 'icon', title: L('Enregistrer (cliquez encore pour arrêter)', 'Record (click again to stop)'), 'aria-label': L('Enregistrer', 'Record') }, ico('mic'), url ? L('Refaire', 'Redo') : L('Enregistrer', 'Record'));
   recBtn.onclick = async () => {
     if (rec) { rec.stop(); return; }
     try {
@@ -183,7 +193,7 @@ function clipControls(url, save) {
         fr.readAsDataURL(blob);
       };
       rec.start();
-      recBtn.replaceChildren(ico('stop'), 'Arrêter');
+      recBtn.replaceChildren(ico('stop'), L('Arrêter', 'Stop'));
       recBtn.classList.add('rec');
     } catch (err) { alert('Micro indisponible : ' + err.message); }
   };
@@ -293,7 +303,7 @@ $('import').onchange = async () => {
     try {
       const text = await f.text();
       const j = /\.csv$/i.test(f.name) ? parseCsv(text) : JSON.parse(text);
-      if (j.code && j.code !== code && !confirm(`« ${f.name} » est pour « ${j.code} », pas « ${code} ». Importer quand même ?`)) continue;
+      if (j.code && j.code !== code && !confirm(L(`« ${f.name} » est pour « ${j.code} », pas « ${code} ». Importer quand même ?`, `“${f.name}” is for “${j.code}”, not “${code}”. Import anyway?`))) continue;
       const by = (j.contributor && j.contributor.name) || '';
       for (const [id, v] of Object.entries(j.entries || {})) {
         if (!known.has(id) || !v || !v.t) continue;
@@ -310,9 +320,9 @@ $('import').onchange = async () => {
   await api.storage.local.set({ [`overrides:${code}`]: overrides });
   await loadAll();
   alert([
-    `${report.files} fichier(s) importé(s).`,
-    `${report.added} nouvelle(s) traduction(s), ${report.updated} mise(s) à jour (à revalider).`,
-    report.kept ? `${report.kept} déjà validée(s), conservée(s) sans changement.` : '',
+    L(`${report.files} fichier(s) importé(s).`, `${report.files} file(s) imported.`),
+    L(`${report.added} nouvelle(s) traduction(s), ${report.updated} mise(s) à jour (à revalider).`, `${report.added} new translation(s), ${report.updated} updated (to validate again).`),
+    report.kept ? L(`${report.kept} déjà validée(s), conservée(s) sans changement.`, `${report.kept} already validated, kept unchanged.`) : '',
     ...report.errors,
   ].filter(Boolean).join('\n'));
 };
@@ -360,26 +370,26 @@ function indexPairs(pairs) {
 async function dictCount() {
   const k = `lexicon:${code}`;
   const own = (await api.storage.local.get(k))[k];
-  $('dictCount').textContent = own ? `${Object.keys(own.en || {}).length} sens importés pour ${pack.name}${own.source ? ' · ' + own.source : ''}` : `Aucun dictionnaire importé pour ${pack.name}`;
+  $('dictCount').textContent = own ? L(`${Object.keys(own.en || {}).length} sens importés pour ${pack.name}`, `${Object.keys(own.en || {}).length} meanings imported for ${pack.name}`) + (own.source ? ' · ' + own.source : '') : L(`Aucun dictionnaire importé pour ${pack.name}`, `No dictionary imported for ${pack.name}`);
 }
 
 $('dictImport').onclick = async () => {
   const pairs = parseDictionary($('dictText').value);
-  if (!pairs.length) { $('dictMsg').textContent = 'Aucune paire mot / sens trouvée.'; return; }
+  if (!pairs.length) { $('dictMsg').textContent = L('Aucune paire mot / sens trouvée.', 'No word / meaning pair found.'); return; }
   const k = `lexicon:${code}`;
   const own = (await api.storage.local.get(k))[k] || { en: {} };
   const idx = indexPairs(pairs);
   for (const [w, terms] of Object.entries(idx)) own.en[w] = [...new Set([...(own.en[w] || []), ...terms])];
   own.source = $('dictSource').value.trim() || own.source || '';
   await api.storage.local.set({ [k]: own });
-  $('dictMsg').textContent = `${pairs.length} mots lus, ${Object.keys(idx).length} sens ajoutés. Exemples : ${pairs.slice(0, 3).map(p => p[0] + ' = ' + p[1]).join(' · ')}`;
+  $('dictMsg').textContent = L(`${pairs.length} mots lus, ${Object.keys(idx).length} sens ajoutés. Exemples : `, `${pairs.length} words read, ${Object.keys(idx).length} meanings added. Examples: `) + pairs.slice(0, 3).map(p => p[0] + ' = ' + p[1]).join(' · ');
   $('dictText').value = '';
   dictCount();
 };
 $('dictClear').onclick = async () => {
-  if (!confirm(`Effacer les mots importés pour ${pack.name} ?`)) return;
+  if (!confirm(L(`Effacer les mots importés pour ${pack.name} ?`, `Clear the imported words for ${pack.name}?`))) return;
   await api.storage.local.remove(`lexicon:${code}`);
-  $('dictMsg').textContent = 'Mots importés effacés.';
+  $('dictMsg').textContent = L('Mots importés effacés.', 'Imported words cleared.');
   dictCount();
 };
 
@@ -400,24 +410,24 @@ $('run').onclick = async () => {
   const plan = engine.plan(text);
   const local = engine.translateLocal(text);
   const lines = [
-    `Texte masqué (seul ceci peut être envoyé à un traducteur) :\n  ${m.masked}`,
-    `Valeurs protégées :\n${m.tokens.map(t => `  ${t.key} = ${t.value}  [${t.type}]`).join('\n') || '  (aucune)'}`,
+    L('Texte masqué (seul ceci peut être envoyé à un traducteur) :', 'Masked text (only this can be sent to a translator):') + `\n  ${m.masked}`,
+    L('Valeurs protégées :', 'Protected values:') + `\n${m.tokens.map(t => `  ${t.key} = ${t.value}  [${t.type}]`).join('\n') || L('  (aucune)', '  (none)')}`,
     `Type de message : ${E.classify(text) || 'information'}`,
-    plan.skip ? 'Valeur pure ou nom propre : affiché tel quel.' : `Découpage : ${plan.parts.map(p => (p.kind === 'lit' ? `[gardé] "${p.text}"` : `[à traduire] "${p.text}"`)).join(' + ')}`,
-    local ? `Résultat (glossaire / résumé sûr) : [${local.status}] ${local.text}` : '',
-    local && local.integrity ? `Contrôle d'intégrité : ${local.integrity.ok ? 'OK, tous les montants et valeurs sont identiques' : JSON.stringify(local.integrity.problems)}` : '',
+    plan.skip ? L('Valeur pure ou nom propre : affiché tel quel.', 'Pure value or proper name: shown as is.') : L('Découpage : ', 'Split: ') + plan.parts.map(p => (p.kind === 'lit' ? `${L('[gardé]', '[kept]')} "${p.text}"` : `${L('[à traduire]', '[to translate]')} "${p.text}"`)).join(' + '),
+    local ? L('Résultat (glossaire / résumé sûr) : ', 'Result (glossary / safe summary): ') + `[${local.status}] ${local.text}` : '',
+    local && local.integrity ? L('Contrôle d\'intégrité : ', 'Integrity check: ') + (local.integrity.ok ? L('OK, tous les montants et valeurs sont identiques', 'OK, every amount and value is identical') : JSON.stringify(local.integrity.problems)) : '',
   ];
   const settings = await api.runtime.sendMessage({ type: 'getSettings' });
   if (!plan.skip && settings.mt.mode !== 'none') {
     const parts = plan.parts.filter(p => p.kind === 'tr' && !engine.lookupMasked(p.masked, p.tokens));
     if (parts.length) {
       const reply = await api.runtime.sendMessage({ type: 'translateBatch', lang: code, items: parts.map(p => ({ masked: p.masked })) });
-      if (reply && reply.error) lines.push(`⚠ Serveur de traduction locale injoignable : ${reply.error}`);
+      if (reply && reply.error) lines.push(L('⚠ Serveur de traduction locale injoignable : ', '⚠ Local translation server unreachable: ') + reply.error);
       parts.forEach((p, i) => {
         const r = reply && reply.results && reply.results[i];
         if (!r) { lines.push(`Traduction locale : indisponible pour "${p.text}"`); return; }
         const un = P.unmask(r.text, p.tokens);
-        lines.push(`Traduction locale brute : ${r.text}`, un.ok ? `Après restauration : ${un.text}` : `⛔ Bloquée : ${un.problems.join('; ')}`);
+        lines.push(L('Traduction locale brute : ', 'Raw local translation: ') + r.text, un.ok ? L('Après restauration : ', 'After restoring: ') + un.text : L('⛔ Bloquée : ', '⛔ Blocked: ') + un.problems.join('; '));
       });
     }
   }
@@ -429,7 +439,7 @@ $('run').onclick = async () => {
   const steps = local && player.prepare(local.speech, ttsOn);
   $('listen').disabled = !steps;
   $('listenMsg').textContent = steps ? ''
-    : local && local.speech ? `Enregistrement manquant : ${local.speech.filter(s => s.missing).map(s => `« ${s.text} »`).join(', ')}` : '';
+    : local && local.speech ? L('Enregistrement manquant : ', 'Missing recording: ') + local.speech.filter(s => s.missing).map(s => `« ${s.text} »`).join(', ') : '';
   $('listen').onclick = () => steps && player.play(steps);
 };
 
@@ -458,7 +468,7 @@ $('saveMt').onclick = async () => {
       asr: { mode: $('asrMode').value, endpoint: $('asrEndpoint').value.trim() },
     },
   });
-  $('mtMsg').textContent = 'Enregistré ✓';
+  $('mtMsg').textContent = L('Enregistré ✓', 'Saved ✓');
 };
 // Settings save themselves as they change (the technical ones are folded away, far from the button).
 // A tick later, so handlers that adjust related fields (an address for a mode) run first.
@@ -476,7 +486,7 @@ $('mtMode').onchange = () => {
   $('turacoHelp').hidden = $('mtMode').value !== 'turaco';
   checkMt();
 };
-$('clearCache').onclick = async () => { await api.runtime.sendMessage({ type: 'clearCache', lang: code }); $('mtMsg').textContent = 'Cache vidé.'; };
+$('clearCache').onclick = async () => { await api.runtime.sendMessage({ type: 'clearCache', lang: code }); $('mtMsg').textContent = L('Cache vidé.', 'Cache cleared.'); };
 $('validator').onchange = () => api.storage.local.set({ validatorName: $('validator').value.trim() });
 $('ttsMode').onchange = () => {
   const mode = $('ttsMode').value;
@@ -501,8 +511,8 @@ async function checkVoice() {
   if (mode === 'none') { box.hidden = true; return; }
   box.hidden = false;
   const el = (tag, cls, text) => Object.assign(document.createElement(tag), cls ? { className: cls } : {}, text ? { textContent: text } : {});
-  const chips = voice => { const d = el('div', 'vchips'); d.append(el('span', 'chip ok', '✓ Traduction du texte : prête'), voice); return d; };
-  const VOICE_CHIP = { ready: ['chip ok', '✓ Voix naturelle : prête'], loading: ['chip wait', 'Voix naturelle : démarrage…'], offline: ['chip', 'Voix naturelle : non lancée'] };
+  const chips = voice => { const d = el('div', 'vchips'); d.append(el('span', 'chip ok', L('✓ Traduction du texte : prête', '✓ Text translation: ready')), voice); return d; };
+  const VOICE_CHIP = { ready: ['chip ok', L('✓ Voix naturelle : prête', '✓ Natural voice: ready')], loading: ['chip wait', L('Voix naturelle : démarrage…', 'Natural voice: starting…')], offline: ['chip', L('Voix naturelle : non lancée', 'Natural voice: not started')] };
   const show = (st, title, sub, cmd, bar) => {
     box.dataset.s = st;
     const parts = [el('b', '', title)];
@@ -524,33 +534,33 @@ async function checkVoice() {
       bar.appendChild(el('i'));
       const text = document.createElement('div');
       text.append(el('b', '', 'Installation de la voix naturelle'), chips(el('span', 'chip wait vpct')), bar,
-        el('small', 'vstep'), el('small', '', 'Vous pouvez déjà utiliser Langwa : en attendant, la voix du navigateur lit les textes.'));
+        el('small', 'vstep'), el('small', '', L('Vous pouvez déjà utiliser Langwa : en attendant, la voix du navigateur lit les textes.', 'You can already use Langwa: meanwhile, the browser voice reads the texts.')));
       box.replaceChildren(el('span', 'led'), text);
     }
     const pct = Math.max(1, Math.round((j.progress || 0) * 100));
-    const step = j.step === 'model' ? 'Téléchargement du modèle de voix'
-      : j.detail === 'resolving' ? 'Préparation de l’installation' : j.detail === 'unpacking' ? 'Installation des fichiers' : 'Téléchargement de la voix';
+    const step = j.step === 'model' ? L('Téléchargement du modèle de voix', 'Downloading the voice model')
+      : j.detail === 'resolving' ? L('Préparation de l’installation', 'Preparing the installation') : j.detail === 'unpacking' ? L('Installation des fichiers', 'Installing the files') : L('Téléchargement de la voix', 'Downloading the voice');
     const eta = j.etaSec == null ? 'calcul du temps restant…' : j.etaSec < 60 ? 'moins d’une minute' : `environ ${Math.round(j.etaSec / 60)} min restantes`;
     box.querySelector('.vpct').textContent = `Voix naturelle : ${pct} %`;
     box.querySelector('.vprog i').style.width = `${pct}%`;
     box.querySelector('.vprog').setAttribute('aria-valuenow', String(pct));
-    box.querySelector('.vstep').textContent = `${step} · ${j.doneMB || 0} / ${j.totalMB || '…'} Mo · ${eta}`;
+    box.querySelector('.vstep').textContent = `${step} · ${j.doneMB || 0} / ${j.totalMB || '…'} ${L('Mo', 'MB')} · ${eta}`;
   };
   const health = $('ttsEndpoint').value.trim().replace(/\/tts\/?$/, '/health');
   try {
     const r = await fetch(health, { signal: AbortSignal.timeout(2500) });
     const j = r.ok ? await r.json().catch(() => ({})) : {};
     if (j.status === 'installing') showInstall(j);
-    else if (!r.ok || !j.status) show('ready', 'Voix locale joignable', 'Le serveur répond. Langwa lit avec le modèle local.');
-    else if (j.status === 'ready') show('ready', 'Voix locale prête', `Langwa lit avec le modèle sur cet ordinateur (${j.threads || '?'} cœurs, ${j.cached || 0} phrases en mémoire).`);
-    else if (j.status === 'error') show('error', 'Voix locale en erreur', `${j.detail || ''} En attendant, la voix du navigateur est utilisée.`);
-    else show('loading', 'Voix locale en chargement…', `${j.detail || 'Préparation du modèle'}. En attendant, la voix du navigateur est utilisée.`, '', true);
+    else if (!r.ok || !j.status) show('ready', L('Voix locale joignable', 'Local voice reachable'), L('Le serveur répond. Langwa lit avec le modèle local.', 'The server answers. Langwa reads with the local model.'));
+    else if (j.status === 'ready') show('ready', L('Voix locale prête', 'Local voice ready'), L(`Langwa lit avec le modèle sur cet ordinateur (${j.threads || '?'} cœurs, ${j.cached || 0} phrases en mémoire).`, `Langwa reads with the model on this computer (${j.threads || '?'} cores, ${j.cached || 0} sentences in memory).`));
+    else if (j.status === 'error') show('error', L('Voix locale en erreur', 'Local voice error'), `${j.detail || ''} ` + L('En attendant, la voix du navigateur est utilisée.', 'Meanwhile, the browser voice is used.'));
+    else show('loading', L('Voix locale en chargement…', 'Local voice loading…'), `${j.detail || L('Préparation du modèle', 'Preparing the model')}. ` + L('En attendant, la voix du navigateur est utilisée.', 'Meanwhile, the browser voice is used.'), '', true);
   } catch {
     const langVoice = langs[$('lang').value] || {};
     const useMms = mode === 'mms' || (mode === 'auto' && !langVoice.africaTts && langVoice.mms);
-    show('offline', 'Voix du navigateur utilisée', useMms
-      ? 'Pour la voix locale MMS, lancez dans le dossier du projet :'
-      : 'Pour une voix plus naturelle : téléchargez « Voix naturelle » sur le site de Langwa (langwa-five.vercel.app), puis double-cliquez sur « Start Langwa voice ». Déjà téléchargée ? Double-cliquez dessus à nouveau. Depuis le dossier du projet :', useMms ? START.mms : START[mode]);
+    show('offline', L('Voix du navigateur utilisée', 'Browser voice in use'), useMms
+      ? L('Pour la voix locale MMS, lancez dans le dossier du projet :', 'For the local MMS voice, run in the project folder:')
+      : L('Pour une voix plus naturelle : téléchargez « Voix naturelle » sur le site de Langwa (langwa-five.vercel.app), puis double-cliquez sur « Start Langwa voice ». Déjà téléchargée ? Double-cliquez dessus à nouveau. Depuis le dossier du projet :', 'For a more natural voice: download “Natural voice” from the Langwa website (langwa-five.vercel.app), then double-click “Start Langwa voice”. Already downloaded? Double-click it again. From the project folder:'), useMms ? START.mms : START[mode]);
   }
   if (!document.hidden) voiceTimer = setTimeout(checkVoice, 3000);
 }
@@ -582,10 +592,10 @@ async function checkMt() {
     const text = document.createElement('div'); text.append(...parts);
     box.replaceChildren(Object.assign(document.createElement('span'), { className: 'led' }), text);
   };
-  if (!corpus && !llm) show('offline', 'Traduction lamnso éteinte', 'Lancez dans le dossier du projet (le premier lancement télécharge environ 1,1 Go) :', 'server\\start-lamnso.cmd');
-  else if (!corpus) show('offline', 'Modèle prêt, corpus lamnso éteint', 'Relancez dans le dossier du projet :', 'server\\start-lamnso.cmd');
-  else if (!llm) show('loading', 'Corpus prêt, modèle lamnso en attente', own ? `Aucune réponse de ${llmUrl}.` : 'Le modèle démarre ou n’est pas lancé :', own ? '' : 'server\\start-lamnso.cmd');
-  else show('ready', 'Traduction lamnso prête', 'Le corpus et le modèle local répondent. Les brouillons portent la mention « non validé ».');
+  if (!corpus && !llm) show('offline', L('Traduction lamnso éteinte', 'Lamnso’ translation off'), L('Lancez dans le dossier du projet (le premier lancement télécharge environ 1,1 Go) :', 'Run in the project folder (the first start downloads about 1.1 GB):'), 'server\\start-lamnso.cmd');
+  else if (!corpus) show('offline', L('Modèle prêt, corpus lamnso éteint', 'Model ready, Lamnso’ corpus off'), L('Relancez dans le dossier du projet :', 'Start again in the project folder:'), 'server\\start-lamnso.cmd');
+  else if (!llm) show('loading', L('Corpus prêt, modèle lamnso en attente', 'Corpus ready, waiting for the Lamnso’ model'), own ? L(`Aucune réponse de ${llmUrl}.`, `No answer from ${llmUrl}.`) : L('Le modèle démarre ou n’est pas lancé :', 'The model is starting or not running:'), own ? '' : 'server\\start-lamnso.cmd');
+  else show('ready', L('Traduction lamnso prête', 'Lamnso’ translation ready'), L('Le corpus et le modèle local répondent. Les brouillons portent la mention « non validé ».', 'The corpus and the local model answer. Drafts are marked “not validated”.'));
   if (!document.hidden) mtTimer = setTimeout(checkMt, 5000);
 }
 $('mtEndpoint').onchange = checkMt;

@@ -5,11 +5,14 @@ set "HIDDEN="
 if /i "%~1"=="--hidden" set "HIDDEN=1"
 rem Windows Terminal (the default on Windows 11) can crash and close the voice with it:
 rem reopen in the classic Windows console, which is stable.
-if not defined HIDDEN if defined WT_SESSION if not defined LANGWA_CONSOLE (
-  set "LANGWA_CONSOLE=1"
-  start "Langwa voice" "%SystemRoot%\System32\conhost.exe" cmd /c ""%~f0""
-  exit /b 0
-)
+rem (No bracket blocks around paths in this file: a folder such as "langwa-voice (2)" would break them.)
+if defined HIDDEN goto console_ok
+if not defined WT_SESSION goto console_ok
+if defined LANGWA_CONSOLE goto console_ok
+set "LANGWA_CONSOLE=1"
+start "Langwa voice" "%SystemRoot%\System32\conhost.exe" cmd /c ""%~f0""
+exit /b 0
+:console_ok
 title Langwa voice
 rem Langwa natural voice: double-click to start. Nothing else needs to be installed first.
 rem First time only (about 700 MB, resumes if the connection drops): a private Python (via uv,
@@ -30,12 +33,12 @@ set "CURL=%SystemRoot%\System32\curl.exe"
 set "TAR=%SystemRoot%\System32\tar.exe"
 
 rem Already running (for example started with the computer)? Then there is nothing to do.
-"%CURL%" -s -m 2 -o nul http://127.0.0.1:8770/health && (
-  echo [Langwa] The voice is already running. / La voix est deja en marche.
-  if defined HIDDEN exit /b 3
-  timeout /t 4 >nul
-  exit /b 0
-)
+"%CURL%" -s -m 2 -o nul http://127.0.0.1:8770/health || goto not_running
+echo [Langwa] The voice is already running. / La voix est deja en marche.
+if defined HIDDEN exit /b 3
+timeout /t 4 >nul
+exit /b 0
+:not_running
 
 if exist ".venv\.langwa-voice-ready" if exist "%MODELS%\africa-tts\voices\voices.json" goto run
 

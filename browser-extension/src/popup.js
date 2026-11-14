@@ -3,7 +3,7 @@ const $ = id => document.getElementById(id);
 const send = msg => api.runtime.sendMessage(msg);
 
 // Interface language: national language when translated, else the browser's (French or English).
-const BASE = /^en/i.test(navigator.language || '') ? 'en' : 'fr';
+const BASE = !/^fr/i.test(navigator.language || '') ? 'en' : 'fr';
 document.documentElement.lang = BASE;
 const TEXT = {
   fr: { validated: 'validées', toValidate: 'à valider', missing: 'manquantes', progress: 'Phrases traduites et validées par un locuteur natif' },

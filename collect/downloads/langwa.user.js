@@ -1187,7 +1187,7 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
 
     function listenBrowser(SR) {
       const code = state.pack.code;
-      const base = /^en/i.test(navigator.language || '') ? 'en-US' : 'fr-FR';
+      const base = !/^fr/i.test(navigator.language || '') ? 'en-US' : 'fr-FR';
       const lang = code === 'wes' ? 'en-NG' : base;
       const r = new SR();
       r.lang = lang;
@@ -1289,7 +1289,7 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
     const STEP_IDS = [['step_pay', 'Pay'], ['step_costs', 'Costs'], ['step_beneficiary', 'Beneficiary'], ['step_summary', 'Summary'], ['step_confirmation', 'Confirmation']];
     const QUESTIONS = [
       ['page', 'q_page', 'C’est quoi cette page ?'],
-      ['steps', 'q_steps', state.pack.code === 'wes' ? 'Wetin be the transfer steps?' : (/^en/i.test(navigator.language || '') ? 'What are the transfer steps?' : 'Quelles sont les étapes du virement ?')],
+      ['steps', 'q_steps', state.pack.code === 'wes' ? 'Wetin be the transfer steps?' : (!/^fr/i.test(navigator.language || '') ? 'What are the transfer steps?' : 'Quelles sont les étapes du virement ?')],
       ['amount', 'q_amount', 'Combien je vais payer ?'],
       ['receiver', 'q_receiver', 'Qui reçoit l’argent ?'],
       ['warning', 'q_warning', 'Y a-t-il un danger ?'],
@@ -1499,7 +1499,7 @@ globalThis.LANGWA_DATA = {"source":{"about":"Source strings (French / English). 
   /** Interface text: national-language version when the speaker has translated it, else French. */
   const ui = (id, fr) => state.ui.get(id) || fr;
   /** Base interface language: the browser's (French or English), until the national language is translated. */
-  const BASE = /^en/i.test(navigator.language || '') ? 'en' : 'fr';
+  const BASE = !/^fr/i.test(navigator.language || '') ? 'en' : 'fr';
   /** Interface strings: national-language translation, else French/English from the browser. */
   const uiMap = pack => new Map(pack.entries.filter(e => e.group === 'ui').map(e => [e.id, e.t || (BASE === 'en' ? e.en : e.fr)]));
   /** Phones and tablets: no Ctrl key, no hover -> long press shows the card. */
