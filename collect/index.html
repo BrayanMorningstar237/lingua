@@ -179,6 +179,8 @@
   .install .tile .btn { align-self: stretch; }
   .install .tile.mine { border-color: var(--gold); box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 30%, transparent), 0 18px 40px rgba(36,29,22,.1); }
   .install .tile.mine .btn { background: var(--ebony); color: var(--ivory); } .install .tile.mine .btn svg { color: var(--gold); }
+  /* opened from Langwa ("Install the offline natural voice"): show the voice step clearly */
+  .install .tile:target { border-color: var(--gold); box-shadow: 0 0 0 4px color-mix(in srgb, var(--gold) 45%, transparent), 0 18px 40px rgba(36,29,22,.12); scroll-margin-top: 90px; }
   .rec { display: none; position: absolute; top: -12px; left: 22px; font-size: 12px; font-weight: 800; letter-spacing: .02em; padding: 4px 11px; border-radius: 99px; background: var(--gold); color: var(--ebony); }
   .tile.mine .rec { display: inline-block; }
   .plat { margin-top: -4px; font-size: 13px; color: var(--muted); }
@@ -719,15 +721,16 @@
         <a class="btn soft" href="downloads/langwa.user.js"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Install Langwa">Installer Langwa</span></a>
         <small class="plat" style="margin-top:10px" data-en="Seeing code instead? The helper app from step 1 is not installed yet in this browser.">Vous voyez du code ? L’app d’aide de l’étape 1 n’est pas encore installée dans ce navigateur.</small>
       </div>
-      <div class="tile voice-tile">
+      <div class="tile voice-tile" id="voice-setup">
         <div class="ico o"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg></div>
         <h3 data-en="Natural voice (optional)">Voix naturelle (option)</h3><small class="plat" data-en="Computer: Windows, Mac, Linux">Ordinateur : Windows, Mac, Linux</small>
         <ol>
           <li data-en="Download and unzip the file.">Téléchargez et décompressez le fichier.</li>
-          <li data-en="Double-click Start Langwa voice. Nothing else to install.">Double-cliquez sur « Start Langwa voice ». Rien d’autre à installer.</li>
+          <li data-en="Double-click Start Langwa voice. No window: a progress page opens in your browser.">Double-cliquez sur « Start Langwa voice ». Aucune fenêtre : une page de progression s’ouvre dans le navigateur.</li>
           <li data-en="The first time it downloads about 700 MB, once, with live progress. Langwa then reads aloud in Pidgin, Fulfulde, Ewondo, Duala, Basaá and more.">La première fois, environ 700 Mo sont téléchargés une seule fois, avec la progression en direct. Langwa lit alors en pidgin, fulfulde, ewondo, duala, basaá et d’autres.</li>
         </ol>
         <a class="btn soft" href="downloads/langwa-voice.zip" download><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Download the voice">Télécharger la voix</span></a>
+        <small class="plat" style="margin-top:10px" data-en="Already downloaded? Just double-click Start Langwa voice again: it starts in about 20 seconds.">Déjà téléchargée ? Double-cliquez à nouveau sur « Start Langwa voice » : elle démarre en 20 secondes environ.</small>
       </div>
     </div>
     <div class="after">
@@ -883,6 +886,10 @@
   if (mine) { mine.classList.add('mine'); mine.parentElement.prepend(mine); }
   // Chrome on Android cannot run add-ons: say so plainly, and point to Firefox.
   if (/Android/i.test(ua) && /Chrome\//.test(ua) && !/Firefox|SamsungBrowser|EdgA|OPR|Opera/i.test(ua)) document.getElementById('chromeNote').hidden = false;
+  // Opened from Langwa ("Install the offline natural voice"): go straight to the voice step
+  // (the tiles were just reordered, so the browser's own jump may have landed elsewhere).
+  const goHash = () => { const t = location.hash && document.getElementById(location.hash.slice(1)); if (t) t.scrollIntoView({ block: 'center' }); };
+  goHash(); addEventListener('load', goHash);
 
 
 </script>

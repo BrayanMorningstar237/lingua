@@ -463,6 +463,8 @@ api.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       case 'tts': return synthesize(msg.lang, msg.text);
       case 'voiceStatus': return voiceStatus();
       case 'openOptions': api.runtime.openOptionsPage(); return true;
+      // the voice download, with its steps, on the Langwa website (the settings page is the glossary)
+      case 'openVoiceSetup': await api.tabs.create({ url: 'https://langwa-five.vercel.app/#voice-setup' }); return true;
       case 'chat': return chatAnswer(msg.lang, msg.question, msg.context || []).catch(() => null);
       case 'asr': return transcribe(msg.audio, msg.hint);
       case 'clearCache': await api.storage.local.remove([

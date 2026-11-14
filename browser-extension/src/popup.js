@@ -161,7 +161,7 @@ async function save(patch) {
       line.dataset.s = settings.onlineVoice ? 'ready' : 'notready';
       $('vlineSet').hidden = false;
       $('vlineSet').textContent = V.setup;
-      $('vlineSet').onclick = () => api.runtime.openOptionsPage();
+      $('vlineSet').onclick = () => { api.tabs.create({ url: 'https://langwa-five.vercel.app/#voice-setup' }); window.close(); };
       setTimeout(voiceLine, 3000);
       return;
     }

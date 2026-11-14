@@ -904,7 +904,7 @@
           ? opt('cloud', ui('ui_vfix_stop', 'Arrêter la voix en ligne'), ui('ui_vfix_stop_sub', 'Revenir à la voix intégrée de cet appareil.'), () => { setLight({ onlineVoice: false }); done(); })
           : opt('cloud', ui('ui_vfix_online', 'Utiliser la voix naturelle en ligne'), ui('ui_vfix_online_sub', 'Tout de suite. Le texte lu est envoyé à Microsoft ou Google.'), () => { setLight({ onlineVoice: true }); done(); }, 'primary'))
         : h('p', { class: 'vf-note' }, ui('ui_vfix_no_online', 'Ce navigateur n’a pas de voix en ligne. Edge en propose de très naturelles.')),
-      opt('cpu', ui('ui_vfix_offline', 'Installer la voix naturelle hors ligne'), ui('ui_vfix_offline_sub', 'Privée, sur cet ordinateur. Environ 700 Mo, une seule fois.'), () => { send({ type: 'openOptions' }); toggleVoiceFix(false); }));
+      opt('cpu', ui('ui_vfix_offline', 'Installer la voix naturelle hors ligne'), ui('ui_vfix_offline_sub', 'Privée, sur cet ordinateur. Environ 700 Mo, une seule fois.'), () => { send({ type: 'openVoiceSetup' }); toggleVoiceFix(false); }));
   }
   /** Idle voice chips follow the local voice: progress while it installs, then "Local voice". */
   function refreshChips() {
@@ -1647,7 +1647,7 @@
   function voiceTour(redo = () => {}) {
     const natural = !!(state.pack && state.pack.africaTts);
     const act = (label, onclick, cls = '') => h('button', { class: `tact ${cls}`, type: 'button', onclick }, label);
-    const install = act(ui('tour_v_install', 'Installer la voix hors ligne'), () => send({ type: 'openOptions' }));
+    const install = act(ui('tour_v_install', 'Installer la voix hors ligne'), () => send({ type: 'openVoiceSetup' }));
     const L = globalThis.LangwaSpeech;
     const prefs = [...((state.pack && state.pack.voices) || []).map(x => x.toLowerCase()), 'en', 'fr'];
     // A short sample in the online voice, so people hear the difference before choosing.
