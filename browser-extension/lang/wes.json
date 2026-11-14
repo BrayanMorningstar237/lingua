@@ -1,190 +1,327 @@
 {
   "code": "wes",
   "validation": {
-    "validators": [],
-    "status": "DRAFT. Cameroonian Pidgin English (Kamtok), written with AI assistance (Claude) in the English-based spelling common on WhatsApp. NOT validated by a native speaker: every entry is shown to users as 'Non validé' until a Cameroonian Pidgin speaker reviews it.",
+    "validators": [
+      "Brayan Morningstar (native speaker, Buea)"
+    ],
+    "status": "Cameroonian Pidgin English (Kamtok). First drafts written with AI assistance (Claude), then checked and corrected sentence by sentence by a Cameroonian native speaker (Buea). Each entry stores who validated it and when.",
     "method": "Native-speaker review in the glossary editor (options page). Each entry stores who validated it."
   },
   "entries": {
     "gist_error": {
       "t": "Na error message dis. The thing no pass.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "gist_warning": {
       "t": "Warning for security: read am well well, or ask person wey you trust make e help you.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "gist_success": {
       "t": "The thing don pass fine.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "gist_info": {
       "t": "Na information message.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "gist_keywords": {
       "t": "Important words:",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "test_banner": {
       "t": "Na test environment: all the data na fake, no real money di move.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "test_protocol": {
       "t": "How for do the test",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "back_hackathon": {
       "t": "Go back for hackathon",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "online_banking": {
       "t": "Bank for internet",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "step_pay": {
       "t": "Pay",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "step_costs": {
       "t": "See charges",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "step_beneficiary": {
       "t": "Person wey go receive am",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "step_summary": {
       "t": "Check all tindem",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "step_confirmation": {
       "t": "Confirm",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "your_account": {
       "t": "Your account",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "hello_name": {
       "t": "Hello, {name}",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "intro_balance": {
       "t": "Check how much money you get, and send money with security.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "available_balance": {
       "t": "Money wey you fit use now",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "balance": {
       "t": "Money wey dey your account",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "account_number": {
       "t": "Account number",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "current_account": {
       "t": "Account for everyday",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "savings_account": {
       "t": "Account for save money",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "perform_transfer": {
       "t": "Send money",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "view_fees": {
       "t": "Look the charges",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "recent_transactions": {
       "t": "Last things wey you do for your account",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "merchant_payment": {
       "t": "Money wey you pay for shop",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "salary_received": {
       "t": "Salary don enter",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "transfer_received": {
       "t": "Money wey person send you don enter",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "transfer_sent": {
       "t": "Money wey you send",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "electricity_bill": {
       "t": "Light bill",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "water_bill": {
       "t": "Water bill",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "cash_withdrawal": {
       "t": "Money wey you comot",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "deposit": {
       "t": "Money wey you put inside",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "airtime": {
       "t": "Buy credit",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "security": {
       "t": "Security",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "security_check_beneficiary": {
       "t": "Always check the name and number of the person wey go receive am, before you confirm the transfer.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "secure_connection": {
       "t": "Connection wey get security",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "demo_footer": {
       "t": "Safinum Pay: na test environment. No put your real personal information.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "never_share_pin": {
       "t": "No ever give your PIN to anybody, even person wey work for bank.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "fraud_warning": {
       "t": "Watch out for call or SMS wey di ask your secret code.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "irreversible": {
       "t": "When you don confirm, you no fit cancel the transfer again.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "check_details": {
       "t": "Check all the information before you confirm.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "transfer_fees": {
       "t": "Charges for send money",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "transaction_fees": {
       "t": "Charges for the transaction",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "fees": {
       "t": "Charges",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "choose_type_amount": {
       "t": "Choose how you want send and how much. The charges go calculate by ei self.",
@@ -195,627 +332,1095 @@
     },
     "operation_type": {
       "t": "Which kind operation",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "safinum_account": {
       "t": "Safinum account",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "instant_free": {
       "t": "The money go reach quick quick, and e free",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "other_bank": {
       "t": "Account for another bank",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "mobile_money": {
       "t": "Mobile Money",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "amount_to_send": {
       "t": "How much you want send",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "amount": {
       "t": "How much",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "free": {
       "t": "Free",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "total_debited": {
       "t": "All the money wey go comot for your account",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "balance_after": {
       "t": "Money wey go remain after",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "fee_rate_min": {
       "t": "{rate} of the money (at least {min})",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "beneficiary": {
       "t": "Person wey go receive am",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "beneficiary_name": {
       "t": "Name of the person wey go receive am",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "phone_number": {
       "t": "Phone number",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "account_or_phone": {
       "t": "Account number or phone number",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "reason": {
       "t": "Why you di send",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "transfer_summary": {
       "t": "All tindem wey you don enter for the transfer, so you fit confirm am",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "send_amount_to": {
       "t": "You di go send {amount} give {name}.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "pin_code": {
       "t": "PIN code",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "enter_pin": {
       "t": "Put your PIN",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "accept_terms": {
       "t": "I agree with the conditions.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "terms": {
       "t": "Conditions",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "back": {
       "t": "Go back",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "continue": {
       "t": "Continue",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "confirm": {
       "t": "Confirm",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "confirm_transfer": {
       "t": "Confirm the transfer",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "cancel": {
       "t": "Cancel",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "reference": {
       "t": "Reference",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "date": {
       "t": "Date",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "status": {
       "t": "How e be",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "transfer_success": {
       "t": "The transfer don pass fine.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "insufficient_balance": {
       "t": "Your money no reach for do this operation.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "pin_incorrect_attempts": {
       "t": "PIN no correct. You remain {count} try.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "pin_incorrect": {
       "t": "PIN no correct.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "account_locked": {
       "t": "Dem don block your account for small time.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "service_apology": {
       "t": "We sorry.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "required_field": {
       "t": "You must fill this place.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "invalid_amount": {
       "t": "This amount no correct.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "must_accept_terms": {
       "t": "You must agree with the conditions.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "session_expired": {
       "t": "Your time don finish. Log in again.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "network_error": {
       "t": "Network get problem. Try again.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "processing": {
       "t": "E di work...",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "enter_recipient_info": {
       "t": "Put the information of the person wey go receive am. Always check the number before you send.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "new_beneficiary_warning": {
       "t": "You never send money give this person from this account before. Abeg check the number well before you continue.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "reason_for_transfer": {
       "t": "Why you di send the money",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "note_optional": {
       "t": "Small note (if you want)",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "checked_name_number": {
       "t": "I don check the name and number of the person wey go receive am.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "check_info_before_confirm": {
       "t": "Check the information before you confirm the transfer.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "phone": {
       "t": "Phone",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "operation": {
       "t": "Operation",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "confirm_info_correct": {
       "t": "I confirm say all the information for up na correct.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "modify": {
       "t": "Change am",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "transfer_completed": {
       "t": "Transfer don finish",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "transfer_sent_success": {
       "t": "Your money don go fine.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "status_success": {
       "t": "E don pass",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "new_transfer": {
       "t": "New transfer",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "services_payment": {
       "t": "Pay for service",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "error": {
       "t": "Error",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "warning": {
       "t": "Warning",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_translating": {
       "t": "E di translate…",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_protected": {
       "t": "Protected, e be same as for the page",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_validated": {
       "t": "Checked",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_auto": {
       "t": "No check yet",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_summary": {
       "t": "Safe summary",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_blocked": {
       "t": "Blocked: the money no match",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_missing": {
       "t": "No translate yet",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_important": {
       "t": "Important messages",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_page": {
       "t": "For this page",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_new": {
       "t": "NEW",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_listen": {
       "t": "Hear am",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_no_audio": {
       "t": "No voice yet",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_subtitles": {
       "t": "Subtitles",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_close": {
       "t": "Close",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_empty": {
       "t": "Nothing for translate here",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_mt_down": {
       "t": "Machine translation no dey available; text wey no get translation go stay as e be",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_hint_hover": {
       "t": "Hold Ctrl and point any word: the translation go show for under.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_hint_hover_short": {
       "t": "point = translation",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_hint_listen": {
       "t": "Then press Space for hear am.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_ok": {
       "t": "I don understand",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_tagline": {
       "t": "Bank for we own language",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_active": {
       "t": "E dey work for this site",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_unsupported": {
       "t": "E no fit work for this page",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_reload_msg": {
       "t": "Reload the page make the translation show.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_reload": {
       "t": "Reload",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_language": {
       "t": "Language",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_show": {
       "t": "Show the translation",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_mode_ctrl": {
       "t": "+ point",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_mode_hover": {
       "t": "Point",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_mode_off": {
       "t": "Off",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_panel": {
       "t": "Panel",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_settings": {
       "t": "Words, voice and settings",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_choose": {
       "t": "Which language you di talk?",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_choose_sub": {
       "t": "Langwa go show the bank for this language.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_soon": {
       "t": "No translation data yet",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_later": {
       "t": "After",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_hint_touch": {
       "t": "Press any word for long: the translation go show for under.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_hint_touch_short": {
       "t": "press long = translation",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_missing_lang": {
       "t": "Dem never translate am for {lang}",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_original": {
       "t": "Original",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_n_ok": {
       "t": "checked",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_n_mt": {
       "t": "no check yet",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_n_gist": {
       "t": "summaries",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_n_block": {
       "t": "blocked",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_n_none": {
       "t": "no translate yet",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_n_ok_one": {
       "t": "checked",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_n_mt_one": {
       "t": "no check yet",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_n_gist_one": {
       "t": "summary",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_n_block_one": {
       "t": "blocked",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_n_none_one": {
       "t": "no translate yet",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_voice_human": {
       "t": "Real person voice",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_voice_neural": {
       "t": "Computer voice (neural)",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_voice_synth": {
       "t": "Computer voice",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_stop": {
       "t": "Stop",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_page_mode": {
       "t": "Translate the page",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_read_all": {
       "t": "Read everything",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_autoread": {
       "t": "Read by ei self",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_autoread_sub": {
       "t": "E go read the translation as e show",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_space_listen": {
       "t": "hear",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_hint_listen_touch": {
       "t": "Touch Hear am for hear the translation.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_dict_words": {
       "t": "Words from dictionary (no check yet)",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_online_voice": {
       "t": "Natural voice for internet",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_online_voice_sub": {
       "t": "E sweet pass. The text go go Microsoft or Google.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_online_ask": {
       "t": "You want voice wey sweet pass?",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_enable": {
       "t": "Put am on",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_no_thanks": {
       "t": "No, thank you",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_brand": {
       "t": "Na name, we no translate am",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_tab_chat": {
       "t": "Ask",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_tab_msgs": {
       "t": "Messages",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_ask_placeholder": {
       "t": "Ask your question…",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_mic": {
       "t": "Talk",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_send": {
       "t": "Send",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_listening": {
       "t": "I di listen…",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ui_switch_to": {
       "t": "Change to {lang}",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "q_page": {
       "t": "Wetin dis page be?",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "q_amount": {
       "t": "How much I go pay?",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "q_receiver": {
       "t": "Who go receive the money?",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "q_warning": {
       "t": "Any danger for here?",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "q_next": {
       "t": "Wetin I go do now?",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ans_welcome": {
       "t": "Hello! Ask me anything about dis page, write am or talk am.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ans_page": {
       "t": "Dis page na: {title}.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ans_amount": {
       "t": "All the money wey go comot: {total}.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ans_fees": {
       "t": "Charges: {fees}.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ans_no_amount": {
       "t": "I no see any amount for dis page.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ans_receiver": {
       "t": "The money go go give {name}.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ans_no_receiver": {
       "t": "I never see the person wey go receive am for dis page.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ans_warning": {
       "t": "Take care: {message}",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ans_no_warning": {
       "t": "No warning for dis page.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ans_next": {
       "t": "Now, press {button}.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ans_no_next": {
       "t": "I no see any button for press.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ans_balance": {
       "t": "Money wey you fit use: {balance}.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ans_unknown": {
       "t": "I fit answer these questions:",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ans_type_instead": {
       "t": "Write your question or touch one question for down.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ans_lang_detected": {
       "t": "You di talk {lang}?",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ans_speech_consent": {
       "t": "For understand your voice, the browser go send the recording give Google (French, English, Pidgin).",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "ans_model_note": {
       "t": "Na computer answer: check am well.",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     },
     "q_steps": {
       "t": "Wetin be the transfer steps?",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Brayan Morningstar (native speaker, Buea)",
+      "date": "2026-11-14"
     }
   }
 }

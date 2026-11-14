@@ -1,8 +1,10 @@
 {
   "code": "fub",
   "validation": {
-    "validators": [],
-    "status": "DRAFT. Written with AI assistance (Claude) from general Fula knowledge and Wiktionnaire terms. NOT validated by a native speaker: every entry is shown to users as 'Non validé'. To be reviewed by Adamawa Fulfulde speakers through the contribution page and the glossary editor.",
+    "validators": [
+      "Madam Aisatou (Fulfulde speaker)"
+    ],
+    "status": "Adamawa Fulfulde. First drafts written with AI assistance (Claude) from Fula references and Wiktionnaire. A Fulfulde speaker checked the greetings (Jam waali); the other sentences are drafts shown to users as Not validated until a speaker reviews them on the contribution page or in the glossary editor.",
     "method": "Native-speaker review in the glossary editor (options page). Each entry stores who validated it."
   },
   "entries": {
@@ -68,7 +70,10 @@
     },
     "hello_name": {
       "t": "Jam waali, {name}",
-      "by": "Brouillon IA, à valider"
+      "by": "Brouillon IA, à valider",
+      "verified": true,
+      "validator": "Madam Aisatou (Fulfulde speaker)",
+      "date": "2026-11-14"
     },
     "intro_balance": {
       "t": "Ndaar ceede maa, nde neldaa ceede e kisal.",

@@ -437,6 +437,16 @@
 
   /* how: shorter captions sit tighter */
   #how h2 { margin-bottom: 28px; }
+  /* demo video: YouTube loads only when the visitor presses play */
+  .video { position: relative; max-width: 960px; margin: 0 auto 40px; aspect-ratio: 16 / 9; border-radius: 22px; overflow: hidden; background: var(--ebony); box-shadow: 0 24px 60px rgba(36,29,22,.18); scroll-margin-top: 90px; }
+  .video img, .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; object-fit: cover; }
+  .video button { position: absolute; inset: 0; width: 100%; border: 0; padding: 0; background: linear-gradient(180deg, rgba(29,23,18,.05), rgba(29,23,18,.55)); cursor: pointer; display: grid; place-items: center; color: #fff; font: inherit; }
+  .video .play { width: 84px; height: 84px; border-radius: 50%; background: var(--gold); display: grid; place-items: center; box-shadow: 0 10px 0 #b7800f, 0 18px 40px rgba(0,0,0,.35); transition: transform .15s; }
+  .video button:hover .play, .video button:focus-visible .play { transform: scale(1.06); }
+  .video .play svg { width: 34px; height: 34px; margin-left: 5px; fill: var(--ebony); stroke: none; }
+  .video .vcap { position: absolute; left: 20px; bottom: 16px; right: 20px; text-align: left; font-weight: 700; font-size: 17px; text-shadow: 0 2px 8px rgba(0,0,0,.5); }
+  .video .vcap small { display: block; font-weight: 500; opacity: .85; font-size: 14px; }
+  @media (max-width: 600px) { .video { border-radius: 16px; margin-bottom: 28px; } .video .play { width: 64px; height: 64px; } .video .vcap { font-size: 15px; } }
   .shot figcaption { padding: 14px 16px 18px; }
   .shot span { font-size: 14.5px; }
 
@@ -521,7 +531,7 @@
     <p class="lead" data-en="Read and hear your bank in Pidgin, Fulfulde, Ewondo and more. Amounts never change.">Lisez et écoutez votre banque en pidgin, fulfulde, ewondo et plus. Les montants ne changent jamais.</p>
     <div class="cta">
       <a class="btn gold" href="#install"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg><span data-en="Install Langwa, free">Installer Langwa, gratuit</span></a>
-      <a class="btn watch" href="#how"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4z" fill="currentColor"/></svg><span data-en="See how it works">Voir comment ça marche</span></a>
+      <a class="btn watch" href="#video"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4z" fill="currentColor"/></svg><span data-en="See how it works">Voir comment ça marche</span></a>
     </div>
     <p class="facts"><span data-en="Free">Gratuit</span><span data-en="Open source">Open source</span><span data-en="No account">Sans compte</span><span data-en="Computer and phone">Ordinateur et téléphone</span></p>
     <p class="cred"><span data-en="Built for the">Conçu pour le</span> <b>SAFINUM Innovate Challenge</b></p>
@@ -597,6 +607,13 @@
 
 <section class="block alt" id="how">
   <div class="wrap">
+    <div class="video" id="video">
+      <img src="img/video-poster.jpg" alt="Langwa explique une étape de virement en pidgin" data-en-alt="Langwa explaining a transfer step in Pidgin" loading="lazy">
+      <button type="button" id="playVideo" aria-label="Lire la vidéo de démonstration (YouTube)" data-en-aria="Play the demo video (YouTube)">
+        <span class="play"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>
+        <span class="vcap"><span data-en="Langwa in 3 minutes">Langwa en 3 minutes</span><small data-en="Setup, Fulfulde, Pidgin, a new message, safety">Installation, fulfulde, pidgin, un nouveau message, sécurité</small></span>
+      </button>
+    </div>
     <h2 data-en="Four gestures. Nothing to learn.">Quatre gestes. Rien à apprendre.</h2>
     <div class="shots">
       <figure class="shot"><div class="frame"><img src="img/howto-1-choose.png" loading="lazy" alt="Fenêtre Langwa : Quelle langue parlez-vous ?" data-en-alt="Langwa window: Which language do you speak?"></div><figcaption><i>1</i><b data-en="Choose your language">Choisissez votre langue</b><span data-en="Once, the first time.">Une fois, la première fois.</span></figcaption></figure>
@@ -766,6 +783,7 @@
     <div class="fcol">
       <b data-en="Project">Projet</b>
       <a href="downloads/Langwa-Documentation.pdf" target="_blank" rel="noopener" data-en="Documentation (PDF): how Langwa works, its safety and its limits">Documentation (PDF) : fonctionnement, sécurité et limites</a>
+      <a href="https://youtu.be/2LSA_mPtrT8" target="_blank" rel="noopener" data-en="Demo video (YouTube)">Vidéo de démonstration (YouTube)</a>
       <span data-en="Built for the SAFINUM Innovate Challenge 2026">Conçu pour le SAFINUM Innovate Challenge 2026</span>
       <span data-en="Prototype: simulated operations only">Prototype : opérations simulées uniquement</span>
       <span data-en="No account, no data collected">Sans compte, sans collecte de données</span>
@@ -785,6 +803,7 @@
     document.title = 'Langwa · Online banking, in your language';
     document.querySelectorAll('[data-en]').forEach(el => { el.textContent = el.dataset.en; });
     document.querySelectorAll('[data-en-alt]').forEach(el => { el.alt = el.dataset.enAlt; });
+    document.querySelectorAll('[data-en-aria]').forEach(el => { el.setAttribute('aria-label', el.dataset.enAria); });
   }
   const el = (tag, cls, text) => Object.assign(document.createElement(tag), cls ? { className: cls } : {}, text != null ? { textContent: text } : {});
 
@@ -890,6 +909,15 @@
   if (/Android/i.test(ua) && /Chrome\//.test(ua) && !/Firefox|SamsungBrowser|EdgA|OPR|Opera/i.test(ua)) document.getElementById('chromeNote').hidden = false;
   // Opened from Langwa ("Install the offline natural voice"): go straight to the voice step
   // (the tiles were just reordered, so the browser's own jump may have landed elsewhere).
+  // Demo video: the YouTube player (privacy-enhanced domain) loads only on press.
+  document.getElementById('playVideo').addEventListener('click', () => {
+    const f = document.createElement('iframe');
+    f.src = 'https://www.youtube-nocookie.com/embed/2LSA_mPtrT8?autoplay=1&rel=0';
+    f.title = EN ? 'Langwa demo video' : 'Vidéo de démonstration de Langwa';
+    f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+    f.allowFullscreen = true;
+    document.getElementById('video').replaceChildren(f);
+  });
   const goHash = () => { const t = location.hash && document.getElementById(location.hash.slice(1)); if (t) t.scrollIntoView({ block: 'center' }); };
   goHash(); addEventListener('load', goHash);
 

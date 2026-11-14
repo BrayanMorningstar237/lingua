@@ -117,7 +117,7 @@
   <tr><td>Functional prototype or reproducible demonstration</td><td>Part 8 (installation and test) · source code and builds in the repository · <code>tools/demo/</code> reproduces the video</td></tr>
   <tr><td>Demonstration video (3 minutes or less)</td><td>Link on the cover</td></tr>
   <tr><td>Technical document: architecture, integration approach, main dependencies, known limitations</td><td>Parts 2, 3, 9 and 10 (security in 4, new content in 5, user experience in 6)</td></tr>
-  <tr><td>National languages supported and method used to validate linguistic accuracy</td><td>Part 7</td></tr>
+  <tr><td>National languages supported and method used to validate linguistic accuracy</td><td>Part 7, including how native speakers are found and how their contributions are collected, checked and used</td></tr>
 </table>
 
 <!-- ============ 1 ============ -->
@@ -278,8 +278,13 @@
   <tr><th>Language</th><th>Where it is spoken</th><th>Translated</th><th>Validated</th><th>Offline voice</th><th>Status</th></tr>
   {{langTable}}
 </table>
-<h3>How translations are made</h3>
-<p>The first drafts of the Pidgin and Fulfulde glossaries were written with AI assistance (Claude, Anthropic) and are shown to users as <b>"Not validated"</b> until a native speaker approves them. Cameroonian native speakers then corrected the Pidgin (for example "by ei self" for one thing, "Person wey go receive am" for the beneficiary). Nothing machine-made is ever marked as validated.</p>
+<h3>How translations are made and checked</h3>
+<p>The first drafts of the Pidgin and Fulfulde glossaries were written with AI assistance (Claude, Anthropic). In the extension, a sentence stays labelled <b>"Not validated"</b> until a validator ticks it; nothing machine-made is ever marked as validated by itself.</p>
+<table>
+  <tr><th style="width:24%">Language</th><th>Checked by</th></tr>
+  <tr><td>Cameroon Pidgin English</td><td>Brayan Morningstar, native speaker (Buea), checked every Pidgin sentence and corrected it where it did not sound Cameroonian: for example "by ei self" for one thing (not "by themselves"), "Person wey go receive am" for the beneficiary, "See charges", "Check all tindem".</td></tr>
+  <tr><td>Fulfulde (Adamawa)</td><td>Madam Aisatou, Fulfulde speaker, checked the greetings ("Jam waali") and a few common words, with Fulfulde-language videos as a reference. Her time was limited, so the other Fulfulde sentences remain drafts: users see them labelled <b>"Not validated"</b>, with the French original next to them and every amount locked. A full review by Adamawa Fulfulde speakers is the next step, through the contribution page.</td></tr>
+</table>
 <h3>Validation method</h3>
 <ol>
   <li><b>Write.</b> A native speaker writes or corrects each sentence in Langwa's settings (Fig. 12), or on the contribution page on a phone (Fig. 16), guided by a context note for each financial term. Rule: translate the meaning, as you would explain it to a relative.</li>
@@ -290,6 +295,53 @@
   <li><b>Measure.</b> <code>tools/demo/check-test-page.mjs</code> walks the test journey and lists any text left untranslated.</li>
 </ol>
 <figure><img src="../docs/screenshots/12-settings-page.png" alt=""><figcaption><b>Fig. 12</b> Langwa's settings: what the page is for, then the three validation steps (name, read, tick "Validated"), the voice, and the safety test.</figcaption></figure>
+
+<h3>Growing each language with native speakers</h3>
+<p>Machine translation is weak or absent for most Cameroonian languages, so Langwa improves through people who speak them. The process below is built and working today; recruiting speakers at scale is the next step.</p>
+
+<h3>1. Finding native speakers</h3>
+<ul>
+  <li><b>Personal and community networks first.</b> The Pidgin glossary was checked within the team (Buea); the Fulfulde greetings by a Fulfulde speaker from the team's network.</li>
+  <li><b>Planned outreach:</b> WhatsApp community groups of each language, students of the University of Buea (Pidgin, English-speaking regions) and of the University of Ngaoundéré (Fulfulde), and the language committees grouped in NACALCO, which already write these languages in the standard alphabet.</li>
+  <li><b>Low barrier.</b> A contributor needs only a phone: the website's "Contribute" link opens the contribution page (Fig. 16). No account, no app to install.</li>
+</ul>
+
+<h3>2. What is collected, and what never is</h3>
+<table>
+  <tr><th style="width:28%">Data</th><th>Why</th></tr>
+  <tr><td>Name (required)</td><td>Credit, and to know who wrote which sentence</td></tr>
+  <tr><td>Tribe and town (optional)</td><td>To know which variety of the language the speaker uses (Fulfulde of Garoua differs from that of Maroua)</td></tr>
+  <tr><td>Translations, and an optional one-line explanation of a hard word</td><td>The glossary itself</td></tr>
+  <tr><td>Voice recordings (optional)</td><td>A human voice for each sentence, played instead of the synthetic voice</td></tr>
+</table>
+<p>The sentences to translate are generic banking sentences ("Total à débiter", "Vérifiez le bénéficiaire"). <b>No banking data, no account details and no data from any bank page is ever collected.</b> Work is saved on the contributor's phone until they choose to send it; nothing is sent automatically. Names, tribe and town are kept with the sentences in the language files as credit; a contributor who prefers can give initials only.</p>
+
+<h3>3. How a contribution reaches users</h3>
+<div class="flow keep">
+  <div class="row"><div class="k">Translate</div><div class="v">On the contribution page: choose the language, enter a name, translate the meaning of each sentence (markers such as <code>{amount}</code> kept), optionally record it. Progress is saved on the phone.</div></div>
+  <div class="arrow">↓</div>
+  <div class="row"><div class="k">Send</div><div class="v">"Send" creates one file (<code>langwa-wes-Name-date.json</code>) that the contributor shares to the team's WhatsApp (+237 679 637 794).</div></div>
+  <div class="arrow">↓</div>
+  <div class="row"><div class="k">Merge</div><div class="v"><code>node tools/merge-contributions.mjs &lt;folder&gt;</code> merges every file received. Rules: a sentence whose markers differ from the French is rejected; a validated sentence is never overwritten (a different proposal is listed instead); when two contributors disagree, the first is kept and both are listed in a report for the validator. New text always arrives as "To validate".</div></div>
+  <div class="arrow">↓</div>
+  <div class="row"><div class="k">Validate</div><div class="v">A second native speaker reviews the sentences in Langwa's settings (Fig. 12), corrects them if needed and ticks "Validated": their name and the date are stored with the sentence. The exported file goes through the merge again.</div></div>
+  <div class="arrow">↓</div>
+  <div class="row"><div class="k">Release</div><div class="v"><code>node tools/build.mjs</code> rebuilds the extension, the phone version and the website with the new language file; publishing updates the downloads. Coverage in the language chooser and in this document is recomputed from the files.</div></div>
+</div>
+
+<h3>4. Safeguards for accuracy</h3>
+<ul>
+  <li><b>Two people per sentence:</b> the person who translates is not the person who validates.</li>
+  <li><b>Values cannot be lost:</b> markers (<code>{amount}</code>, <code>{name}</code>, <code>{count}</code>) are checked by the merge script and by the editor; a translation that drops or adds one is refused.</li>
+  <li><b>Warnings keep their force:</b> validators check that "never" and "cannot be cancelled" stay explicit.</li>
+  <li><b>Disagreements are visible,</b> never settled silently; the validator decides.</li>
+  <li><b>Audio always matches text:</b> changing a sentence deletes its recordings.</li>
+  <li><b>Measured on the real journey:</b> <code>tools/demo/check-test-page.mjs</code> lists any text of the test page still untranslated.</li>
+</ul>
+
+<h3>5. Using the data to train better models (next step)</h3>
+<p><code>node tools/merge-contributions.mjs --dataset</code> exports, per language, only the <b>validated</b> sentence pairs (French, English, national language) and their recordings, into <code>data/training/</code>. With enough validated sentences (thousands, where today there are a few hundred), this data can fine-tune an open translation model (such as NLLB-200) and the offline voice for each language. Until then, Langwa relies on the validated glossary and never shows machine output as validated. Contributors will be asked for consent before their recordings are used for training.</p>
+
 </section>
 
 <!-- ============ 8 ============ -->
@@ -363,7 +415,7 @@
 <section class="section">
 <h2><span class="n">10</span>Known limitations</h2>
 <ul>
-  <li><b>Validation is in progress.</b> Most Pidgin and Fulfulde sentences are drafts awaiting a native speaker; the interface labels them "Not validated" (coverage in part 7). Fulfulde misses two dropdown options of the test page.</li>
+  <li><b>Fulfulde validation is partial.</b> The Pidgin glossary is validated by a native speaker; in Fulfulde only the greetings are, and the other sentences are drafts labelled "Not validated" (coverage in part 7). Fulfulde also misses two dropdown options of the test page.</li>
   <li><b>Machine translation is weak for these languages.</b> Open models for Ewondo, Duala, Ghomálá', Basaá and Kom are weak or absent; NLLB-200 covers Nigerian Fulfulde, not Adamawa Fulfulde. This is why unknown sentences get a safe summary instead.</li>
   <li><b>Voice.</b> Africa TTS is trained for Ewondo, Duala, Basaá and English. Pidgin is read with the Krio speaker and rules; Fulfulde, Ghomálá', Ngemba and Kom are experimental, so pronunciation varies. The model is non-commercial (CC-BY-NC-4.0). Until the voice is installed and running, Langwa reads with the browser's voice.</li>
   <li><b>Windows.</b> "Start Langwa voice" is a Windows script file (.vbs); Microsoft plans to retire VBScript in a future Windows version, and <code>start-voice.cmd</code> is kept as a fallback.</li>
