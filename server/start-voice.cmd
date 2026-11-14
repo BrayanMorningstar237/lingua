@@ -73,7 +73,11 @@ echo [Langwa] Preparing Python inside the Langwa folder, about 20 MB...
 
 :run
 rem Installs what is missing with live progress, then runs the voice. Keep this window open.
-"%PY%" -u server\voice_setup.py --uv "%UV%" || goto fail
+"%PY%" -u server\voice_setup.py --uv "%UV%"
+set "RC=%errorlevel%"
+rem 4 = cancelled from the progress page: not an error; the next start resumes.
+if "%RC%"=="4" exit /b 4
+if not "%RC%"=="0" goto fail
 if not defined HIDDEN pause
 exit /b 0
 

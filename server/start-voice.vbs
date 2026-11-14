@@ -57,7 +57,8 @@ If Not quiet Then ShowProgress
 
 ' Run the voice hidden and wait: it keeps running until the computer stops (it sleeps when unused).
 code = sh.Run("cmd.exe /d /c """"" & here & "\start-voice.cmd"" --hidden > """ & logFile & """ 2>&1""", 0, True)
-If code <> 0 And code <> 3 And Not quiet Then
+' 3 = already running, 4 = cancelled from the progress page: neither is an error.
+If code <> 0 And code <> 3 And code <> 4 And Not quiet Then
   MsgBox "The Langwa voice could not start. This is usually the internet connection." & vbCrLf & _
     "Double-click ""Start Langwa voice"" again: it continues where it stopped." & vbCrLf & _
     "Details: " & logFile & vbCrLf & vbCrLf & _

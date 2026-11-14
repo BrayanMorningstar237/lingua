@@ -63,10 +63,40 @@ class Status(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
-    do_POST = do_GET
+    def do_POST(self):
+        # Cancel, from the progress page only: it is a local file (Origin "null"). A website
+        # (any real origin) is refused, so no page on the internet can stop a setup.
+        if self.path == "/cancel":
+            ok = self.headers.get("Origin") in (None, "null")
+            self.send_response(200 if ok else 403)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            self.wfile.write(json.dumps({"cancelled": ok}).encode())
+            if ok:
+                threading.Thread(target=cancel, daemon=True).start()
+            return
+        self.do_GET()
 
     def log_message(self, *_):
         pass
+
+
+CANCELLED = 4  # exit code: the user cancelled (the launcher shows no error for it)
+PROC = {"p": None}
+
+
+def cancel() -> None:
+    """Stop the download now; what is already downloaded stays, so the next start resumes."""
+    time.sleep(0.3)  # let the answer reach the page
+    p = PROC["p"]
+    if p and p.poll() is None:
+        if os.name == "nt":
+            subprocess.run(["taskkill", "/T", "/F", "/PID", str(p.pid)], capture_output=True)
+        else:
+            p.kill()
+    print("\n[Langwa] Setup cancelled. Start it again to resume. / Installation annulee.", flush=True)
+    os._exit(CANCELLED)
 
 
 # ---------- console progress bar (one line, redrawn twice a second) ----------
@@ -123,6 +153,7 @@ def install(uv: str) -> None:
         P.update(step="packages", detail="resolving")
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
                             encoding="utf-8", errors="replace", bufsize=1)
+    PROC["p"] = proc
     tail = []
     t_first = None
     stop = threading.Event()
