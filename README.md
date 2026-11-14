@@ -112,3 +112,10 @@ documentation and the first translation drafts. The optional offline voice uses 
 (AfriSpeech; model CC-BY-NC-4.0, non-commercial). Online browser voices and spoken questions are
 off unless the user turns them on, and are labelled as such. The full list of components and
 external services is in part 9 of the documentation.
+
+## Licence
+
+Langwa's code and language files are released under the [MIT licence](LICENSE): anyone may use,
+change and share them, keeping the copyright notice. Third-party components keep their own
+licences: the Africa TTS voice model is CC-BY-NC-4.0 (non-commercial), dictionary hints from
+Wiktionary are CC BY-SA 4.0, and the website photos are under the Unsplash licence.
